@@ -1,0 +1,1 @@
+console.log('Luxibre Alpha script loaded');
