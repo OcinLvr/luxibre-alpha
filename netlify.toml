@@ -1,3 +1,4 @@
+
 [build]
   publish = "."
   command = "echo 'Build complete'"
