@@ -4,23 +4,43 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Luxibre Alpha</title>
+  <title>Luxibre Alpha – Smart Investment Signals</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
     <h1>Luxibre Alpha</h1>
-    <p>Passive investment signals | Real-time ETF insights | Premium unlock</p>
-    <a href="#" class="button">Unlock Premium</a>
+    <p>Your smart and secure signal dashboard for ETF investors</p>
+    <nav>
+      <a href="#" class="btn">Unlock Premium</a>
+      <select id="langSwitch">
+        <option value="en">EN</option>
+        <option value="fr">FR</option>
+      </select>
+    </nav>
   </header>
-  <section>
-    <h2>ETF EURO STOXX Banks</h2>
-    <canvas id="chart" width="400" height="200"></canvas>
-    <p>Trend: <span class="bullish">Bullish</span></p>
-  </section>
+
+  <main>
+    <section class="signals">
+      <h2>ETF EURO STOXX Banks</h2>
+      <canvas id="chart" width="300" height="150"></canvas>
+      <p>Signal: <span class="signal bullish">Bullish</span></p>
+      <p>Predicted price 2030: <strong>17.60€</strong></p>
+      <p>Predicted price 2035: <strong>28.74€</strong></p>
+    </section>
+
+    <section class="cta">
+      <h3>Premium Signals</h3>
+      <p>Unlock real-time updates and exclusive predictions starting at 5€/month.</p>
+      <a href="#" class="btn primary">Subscribe Now</a>
+    </section>
+  </main>
+
   <footer>
-    <p>Parrainage Boursobank : <a href="https://bour.so/p/C99QaMM212c" target="_blank">Rejoindre ici</a></p>
+    <p>Boursobank parrainage : <a href="https://bour.so/p/C99QaMM212c" target="_blank">Rejoignez via ce lien</a></p>
+    <p><small>Secure payments via Stripe | Luxibre © 2025</small></p>
   </footer>
+
   <script src="script.js"></script>
 </body>
 </html>

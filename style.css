@@ -1,30 +1,68 @@
 
+:root {
+  --bg: #0f172a;
+  --text: #e2e8f0;
+  --accent: #3b82f6;
+  --positive: #00ff88;
+}
+
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
   margin: 0;
   padding: 0;
-  background: #0c0c0c;
-  color: white;
 }
+
 header {
-  text-align: center;
   padding: 2rem;
+  text-align: center;
+  background-color: #1e293b;
 }
-.button {
-  background: #3b82f6;
+
+nav {
+  margin-top: 1rem;
+}
+
+nav .btn {
+  background: var(--accent);
   color: white;
   padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  margin-right: 1rem;
   text-decoration: none;
-  border-radius: 4px;
 }
-section {
+
+main {
   padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
-.bullish {
-  color: #00ff88;
+
+section.signals, section.cta {
+  background: #1e293b;
+  border-radius: 12px;
+  padding: 1rem;
 }
+
+.signal.bullish {
+  color: var(--positive);
+}
+
+.btn.primary {
+  background: var(--positive);
+  color: #0f172a;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  display: inline-block;
+}
+
 footer {
   text-align: center;
   padding: 1rem;
-  background: #111;
+  font-size: 0.9rem;
+  background-color: #1e293b;
 }
