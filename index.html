@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,10 +8,10 @@
 </head>
 <body>
   <header>
-    <h1>Luxibre Alpha</h1>
-    <p>Your smart and secure signal dashboard for ETF investors</p>
+    <h1 data-i18n="title">Luxibre Alpha</h1>
+    <p data-i18n="subtitle">Smart signals for ETF and crypto investors</p>
     <nav>
-      <a href="#" class="btn">Unlock Premium</a>
+      <a href="#" class="btn" data-i18n="unlock">Unlock Premium</a>
       <select id="langSwitch">
         <option value="en">EN</option>
         <option value="fr">FR</option>
@@ -23,22 +22,33 @@
   <main>
     <section class="signals">
       <h2>ETF EURO STOXX Banks</h2>
-      <canvas id="chart" width="300" height="150"></canvas>
+      <canvas id="chart-etf" width="300" height="100"></canvas>
       <p>Signal: <span class="signal bullish">Bullish</span></p>
-      <p>Predicted price 2030: <strong>17.60€</strong></p>
-      <p>Predicted price 2035: <strong>28.74€</strong></p>
+      <p>Predicted price 2030: <strong>17.60€</strong><br>2035: <strong>28.74€</strong></p>
     </section>
 
-    <section class="cta">
-      <h3>Premium Signals</h3>
-      <p>Unlock real-time updates and exclusive predictions starting at 5€/month.</p>
-      <a href="#" class="btn primary">Subscribe Now</a>
+    <section class="signals">
+      <h2>Free Assets</h2>
+      <ul>
+        <li><strong>Bitcoin (BTC)</strong>: 64,500 € — <span class="signal bullish">Bullish</span></li>
+        <li><strong>Ethereum (ETH)</strong>: 3,100 € — <span class="signal bearish">Bearish</span></li>
+      </ul>
+    </section>
+
+    <section class="premium-section">
+      <h2>Premium Assets <span class="premium-label">(Pro)</span></h2>
+      <ul>
+        <li><strong>Solana (SOL)</strong>: 145 € — <span class="signal bullish">Bullish</span></li>
+        <li><strong>Cardano (ADA)</strong>: 0.39 € — <span class="signal bearish">Bearish</span></li>
+        <li><strong>NVIDIA (NVDA)</strong>: 1,215 € — <span class="signal bullish">Bullish</span></li>
+      </ul>
+      <p><em data-i18n="locked">Available in Premium only. Subscribe to unlock full analysis & indicators.</em></p>
     </section>
   </main>
 
   <footer>
-    <p>Boursobank parrainage : <a href="https://bour.so/p/C99QaMM212c" target="_blank">Rejoignez via ce lien</a></p>
-    <p><small>Secure payments via Stripe | Luxibre © 2025</small></p>
+    <p data-i18n="referral">Parrainage Boursobank : <a href="https://bour.so/p/C99QaMM212c" target="_blank">Rejoindre ici</a></p>
+    <p><small data-i18n="footer">Secure payments via Stripe | Luxibre © 2025</small></p>
   </footer>
 
   <script src="script.js"></script>
