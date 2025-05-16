@@ -1,1 +1,1 @@
-console.log('Luxibre Alpha v4 loaded');
+console.log('Luxibre Alpha full version loaded');
