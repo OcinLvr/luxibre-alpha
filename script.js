@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
     solPrice: "solana",
     adaPrice: "cardano"
   };
-
   for (const [id, coin] of Object.entries(prices)) {
     fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${coin}&vs_currencies=eur`)
       .then(res => res.json())
