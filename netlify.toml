@@ -1,3 +1,18 @@
 [build]
 publish = "."
-command = "echo 'Build complete'"
+command = "echo 'ready'"
+
+[[redirects]]
+  from = "/checkout"
+  to = "/checkout.html"
+  status = 200
+
+[[redirects]]
+  from = "/success"
+  to = "/success.html"
+  status = 200
+
+[[redirects]]
+  from = "/cancel"
+  to = "/cancel.html"
+  status = 200
