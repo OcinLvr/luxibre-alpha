@@ -1,1 +1,0 @@
-console.log('Luxibre v6 loaded');
