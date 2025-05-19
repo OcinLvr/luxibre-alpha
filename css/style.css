@@ -1,21 +1,111 @@
 /* style.css */
 
-.container {
-  @media (min-width: 640px) {
-    max-width: 640px;
-  }
-  @media (min-width: 768px) {
-    max-width: 768px;
-  }
-  @media (min-width: 1024px) {
-    max-width: 1024px;
-  }
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
+/* Police principale */
+body {
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+  background: #f9fafb;
+  color: #111827;
 }
 
-.signal-card:hover {
-  @apply shadow-lg transform scale-105 transition duration-200;
+/* Container responsive */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Titres */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  color: #111827;
+}
+
+/* Boutons */
+.btn {
+  @apply inline-block px-6 py-3 rounded-lg font-semibold text-white bg-green-600 hover:bg-green-700 transition duration-300 transform hover:scale-105 shadow-md;
+}
+
+.btn-outline {
+  @apply inline-block px-6 py-3 rounded-lg font-semibold text-green-600 border-2 border-green-600 hover:bg-green-50 transition duration-300;
+}
+
+/* Cartes */
+.card {
+  @apply bg-white p-6 rounded-lg shadow-sm border border-gray-200 transition-all duration-300;
+}
+
+.card:hover {
+  @apply shadow-xl transform -translate-y-1;
+}
+
+.feature-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background-color: #10b981;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+/* Sections */
+.section {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+.section-alt {
+  background-color: #f0fdf4;
+}
+
+.section-hero {
+  background-color: #064e3b;
+  color: white;
+  position: relative;
+}
+
+.section-hero .container {
+  position: relative;
+  z-index: 10;
+}
+
+.overlay {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+/* Call to Action */
+.cta {
+  background: linear-gradient(to right, #16a34a, #22c55e);
+  color: white;
+  padding: 2rem;
+  border-radius: 0.75rem;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.cta a {
+  @apply inline-block mt-4 btn;
+}
+
+/* Animations légères */
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s ease-out;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
