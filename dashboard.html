@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Espace Membre - Luxibre</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss @2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js "></script>
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+  <header class="py-6 bg-white shadow-sm">
+    <div class="container mx-auto px-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-green-600">Luxibre</h1>
+      <div class="space-x-4">
+        <span id="user-email" class="text-sm text-gray-600"></span>
+        <button id="logout-btn" class="text-sm text-red-500 hover:underline">Déconnexion</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="py-20">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold mb-8">Vos signaux financiers premium</h2>
+
+      <!-- Graphique -->
+      <div class="mb-12">
+        <canvas id="signalsChart" width="400" height="150"></canvas>
+      </div>
+
+      <!-- Liste des signaux -->
+      <div id="signals" class="grid md:grid-cols-2 gap-6"></div>
+    </div>
+  </section>
+
+  <footer class="py-10 bg-gray-100 mt-20">
+    <div class="container mx-auto px-4 text-center text-sm text-gray-600">
+      &copy; 2025 Luxibre. Tous droits réservés.
+    </div>
+  </footer>
+
+  <!-- Firebase Auth -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js "></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js "></script>
+  <script src="../js/auth.js"></script>
+
+  <!-- Chargement des données -->
+  <script src="../js/dashboard.js"></script>
+
+</body>
+</html>
