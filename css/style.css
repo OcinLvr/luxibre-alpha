@@ -1,6 +1,8 @@
 /* style.css */
 
 /* Police principale */
+@import url('https://fonts.googleapis.com/css2?family=Inter :wght@400;600;700&display=swap');
+
 body {
   font-family: 'Inter', sans-serif;
   line-height: 1.6;
@@ -8,7 +10,6 @@ body {
   color: #111827;
 }
 
-/* Container responsive */
 .container {
   width: 100%;
   max-width: 1200px;
@@ -16,13 +17,11 @@ body {
   padding: 0 1rem;
 }
 
-/* Titres */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   color: #111827;
 }
 
-/* Boutons */
 .btn {
   @apply inline-block px-6 py-3 rounded-lg font-semibold text-white bg-green-600 hover:bg-green-700 transition duration-300 transform hover:scale-105 shadow-md;
 }
@@ -31,7 +30,6 @@ h1, h2, h3, h4, h5, h6 {
   @apply inline-block px-6 py-3 rounded-lg font-semibold text-green-600 border-2 border-green-600 hover:bg-green-50 transition duration-300;
 }
 
-/* Cartes */
 .card {
   @apply bg-white p-6 rounded-lg shadow-sm border border-gray-200 transition-all duration-300;
 }
@@ -52,7 +50,6 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 1rem;
 }
 
-/* Sections */
 .section {
   padding-top: 4rem;
   padding-bottom: 4rem;
@@ -63,14 +60,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .section-hero {
-  background-color: #064e3b;
-  color: white;
+  background-image: url('https://images.unsplash.com/photo-1620714223084-8fcacc6dfd8d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80 ');
+  background-size: cover;
+  background-position: center;
   position: relative;
-}
-
-.section-hero .container {
-  position: relative;
-  z-index: 10;
 }
 
 .overlay {
@@ -84,7 +77,6 @@ h1, h2, h3, h4, h5, h6 {
   z-index: 1;
 }
 
-/* Call to Action */
 .cta {
   background: linear-gradient(to right, #16a34a, #22c55e);
   color: white;
@@ -98,7 +90,6 @@ h1, h2, h3, h4, h5, h6 {
   @apply inline-block mt-4 btn;
 }
 
-/* Animations légères */
 .fade-in {
   opacity: 0;
   transform: translateY(20px);
