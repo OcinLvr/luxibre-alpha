@@ -6,36 +6,7 @@
   <title>Luxibre - Signaux Financiers Premium</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss @2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter :wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(to right, #f8fafc, #f1f5f9);
-    }
-
-    .hero {
-      background-image: url('https://images.unsplash.com/photo-1620714223084-8fcacc6dfd8d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80 ');
-      background-size: cover;
-      background-position: center;
-    }
-
-    .card-hover:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-      transition: all 0.3s ease-in-out;
-    }
-
-    .feature-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 999px;
-      background-color: #10b981;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      margin-bottom: 1rem;
-    }
-  </style>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="bg-gray-50 text-gray-900">
 
@@ -52,98 +23,57 @@
   </header>
 
   <!-- Hero Section -->
-  <section class="hero py-32 text-white relative overflow-hidden">
-    <div class="absolute inset-0 bg-black opacity-50"></div>
-    <div class="relative container mx-auto px-4 z-10 max-w-4xl text-center">
+  <section class="section-hero text-white">
+    <div class="overlay"></div>
+    <div class="container mx-auto px-4 relative z-10 max-w-4xl text-center">
       <span class="inline-block py-1 px-3 text-xs font-semibold rounded-full bg-green-500 mb-4">📈 Analyse financière premium</span>
-      <h2 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-6">
+      <h2 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-6 fade-in">
         Obtenez des signaux fiables quotidiennement
       </h2>
-      <p class="text-lg md:text-xl mb-8 text-gray-200 max-w-2xl mx-auto">
+      <p class="text-lg md:text-xl mb-8 text-gray-200 max-w-2xl mx-auto fade-in">
         Abonnez-vous aujourd’hui et recevez quotidiennement des analyses expertes en Forex, Crypto, ETFs et plus encore.
       </p>
-      <a href="pricing.html" class="inline-block bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-lg font-semibold shadow-md transition duration-300 transform hover:scale-105">
-        Accéder aux signaux premium
-      </a>
+      <a href="pricing.html" class="fade-in btn">Accéder aux signaux premium</a>
     </div>
   </section>
 
   <!-- Features Section -->
-  <section class="py-20 bg-white">
+  <section class="section section-alt">
     <div class="container mx-auto px-4">
       <h3 class="text-3xl font-bold text-center mb-16">Ce que vous obtenez avec Luxibre</h3>
       <div class="grid md:grid-cols-3 gap-10 max-w-6xl mx-auto">
 
         <!-- Card 1 -->
-        <div class="card-hover bg-white p-8 rounded-lg shadow-lg border border-gray-200 text-center">
+        <div class="card card-hover fade-in">
           <div class="feature-icon mx-auto">📈</div>
           <h4 class="text-xl font-semibold mb-3">Signaux Quotidiens</h4>
-          <p class="text-gray-600">Analyses techniques et opportunités envoyées chaque matin.</p>
+          <p>Analyses techniques et opportunités envoyées chaque matin.</p>
         </div>
 
         <!-- Card 2 -->
-        <div class="card-hover bg-white p-8 rounded-lg shadow-lg border border-gray-200 text-center">
+        <div class="card card-hover fade-in">
           <div class="feature-icon mx-auto">📊</div>
           <h4 class="text-xl font-semibold mb-3">Graphiques Interactifs</h4>
-          <p class="text-gray-600">Suivez l’évolution des actifs avec des graphiques dynamiques.</p>
+          <p>Suivez l’évolution des actifs avec des graphiques dynamiques.</p>
         </div>
 
         <!-- Card 3 -->
-        <div class="card-hover bg-white p-8 rounded-lg shadow-lg border border-gray-200 text-center">
+        <div class="card card-hover fade-in">
           <div class="feature-icon mx-auto">🔒</div>
           <h4 class="text-xl font-semibold mb-3">Accès Exclusif</h4>
-          <p class="text-gray-600">Espace membre réservé uniquement aux abonnés premium.</p>
+          <p>Espace membre réservé uniquement aux abonnés premium.</p>
         </div>
 
       </div>
     </div>
   </section>
 
-  <!-- Stats Section -->
-  <section class="py-20 bg-gray-50">
+  <!-- CTA Section -->
+  <section class="section cta mx-4 md:mx-0">
     <div class="container mx-auto px-4 text-center">
-      <h3 class="text-3xl font-bold mb-12">Pourquoi choisir Luxibre ?</h3>
-      <div class="grid md:grid-cols-3 gap-10 max-w-5xl mx-auto">
-        <div>
-          <div class="text-4xl text-green-600 mb-4">✅</div>
-          <h4 class="text-xl font-semibold mb-2">Signaux Fiables</h4>
-          <p class="text-gray-600">Basés sur des stratégies éprouvées et des données en temps réel</p>
-        </div>
-        <div>
-          <div class="text-4xl text-green-600 mb-4">⚡</div>
-          <h4 class="text-xl font-semibold mb-2">Mises à Jour Horaire</h4>
-          <p class="text-gray-600">Signaux actualisés toutes les heures pour rester au top</p>
-        </div>
-        <div>
-          <div class="text-4xl text-green-600 mb-4">🛡️</div>
-          <h4 class="text-xl font-semibold mb-2">Sécurité Garantie</h4>
-          <p class="text-gray-600">Accès exclusif, paiements sécurisés via Stripe</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Testimonial Section -->
-  <section class="py-20 bg-white">
-    <div class="container mx-auto px-4 text-center">
-      <h3 class="text-3xl font-bold mb-12">Ils nous font déjà confiance</h3>
-      <div class="max-w-3xl mx-auto">
-        <blockquote class="text-xl italic text-gray-700 mb-6">
-          “Depuis que j'utilise Luxibre, mes gains ont augmenté de manière significative.”
-        </blockquote>
-        <p class="font-semibold text-green-600">– Marie L., Trader indépendante</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Final CTA -->
-  <section class="py-20 bg-green-600 text-white text-center">
-    <div class="container mx-auto px-4">
       <h3 class="text-3xl md:text-4xl font-bold mb-4">Prêt à multiplier vos gains ?</h3>
-      <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto">Rejoignez des centaines de traders professionnels et amateurs qui utilisent Luxibre tous les jours.</p>
-      <a href="pricing.html" class="inline-block bg-white text-green-600 font-semibold px-8 py-4 rounded-lg hover:bg-gray-100 transition">
-        Démarrer mon abonnement maintenant
-      </a>
+      <p class="text-lg md:text-xl mb-6 max-w-2xl mx-auto">Rejoignez des centaines de traders professionnels et amateurs qui utilisent Luxibre tous les jours.</p>
+      <a href="pricing.html" class="btn">Démarrer mon abonnement maintenant</a>
     </div>
   </section>
 
@@ -156,6 +86,24 @@
       <a href="legal/rgpd.md" class="underline">RGPD</a>
     </div>
   </footer>
+
+  <!-- Animation Scroll -->
+  <script>
+    const faders = document.querySelectorAll('.fade-in');
+    const appearOptions = { threshold: 0.1 };
+
+    const appearOnScroll = new IntersectionObserver(function(entries, observer) {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      });
+    }, appearOptions);
+
+    faders.forEach(fader => {
+      appearOnScroll.observe(fader);
+    });
+  </script>
 
 </body>
 </html>
