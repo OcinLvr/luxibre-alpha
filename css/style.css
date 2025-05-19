@@ -1,0 +1,21 @@
+/* style.css */
+
+.container {
+  @media (min-width: 640px) {
+    max-width: 640px;
+  }
+  @media (min-width: 768px) {
+    max-width: 768px;
+  }
+  @media (min-width: 1024px) {
+    max-width: 1024px;
+  }
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.signal-card:hover {
+  @apply shadow-lg transform scale-105 transition duration-200;
+}
