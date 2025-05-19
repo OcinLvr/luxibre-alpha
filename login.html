@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Connexion - Luxibre</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss @2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+  <header class="py-6 bg-white shadow-sm">
+    <div class="container mx-auto px-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-green-600">Luxibre</h1>
+    </div>
+  </header>
+
+  <section class="py-20">
+    <div class="container mx-auto px-4 max-w-md">
+      <h2 class="text-3xl font-bold mb-6 text-center">Connexion</h2>
+
+      <form id="login-form" class="space-y-4">
+        <input type="email" id="email" placeholder="Email" required class="w-full px-4 py-3 border rounded-lg"/>
+        <input type="password" id="password" placeholder="Mot de passe" required class="w-full px-4 py-3 border rounded-lg"/>
+        <button type="submit" class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700">
+          Se connecter
+        </button>
+      </form>
+
+      <p class="mt-4 text-center">
+        <a href="#" id="show-register" class="text-green-600 hover:underline">Pas encore de compte ? Inscrivez-vous</a>
+      </p>
+
+      <div id="register-form" class="hidden space-y-4 mt-6">
+        <h3 class="font-semibold">Créer un compte</h3>
+        <input type="email" id="new-email" placeholder="Email" required class="w-full px-4 py-3 border rounded-lg"/>
+        <input type="password" id="new-password" placeholder="Mot de passe" required class="w-full px-4 py-3 border rounded-lg"/>
+        <button id="register-btn" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700">
+          S'inscrire
+        </button>
+      </div>
+
+      <div id="error-message" class="mt-4 text-red-500 text-center hidden"></div>
+    </div>
+  </section>
+
+  <footer class="py-10 bg-gray-100 mt-20">
+    <div class="container mx-auto px-4 text-center text-sm text-gray-600">
+      &copy; 2025 Luxibre. Tous droits réservés.
+    </div>
+  </footer>
+
+  <!-- Firebase Auth -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js "></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js "></script>
+  <script src="../js/auth.js"></script>
+
+</body>
+</html>
