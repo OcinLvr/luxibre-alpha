@@ -1,0 +1,26 @@
+{
+  "last_updated": "2025-04-05T14:30:00Z",
+  "signals": [
+    {
+      "title": "EUR/USD – Opportunité haussière",
+      "description": "Zone de support claire à 1.0850, objectif 1.0920",
+      "timeframe": "H4",
+      "confidence": "Élevée",
+      "type": "forex"
+    },
+    {
+      "title": "BTC/USD – Correction prévue",
+      "description": "Résistance majeure en zone 65k$, entrée short possible",
+      "timeframe": "H1",
+      "confidence": "Moyenne",
+      "type": "crypto"
+    },
+    {
+      "title": "SPY – ETF S&P500",
+      "description": "Signal d’achat sur pullback technique",
+      "timeframe": "D1",
+      "confidence": "Élevée",
+      "type": "etf"
+    }
+  ]
+}
