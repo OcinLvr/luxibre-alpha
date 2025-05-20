@@ -2,37 +2,37 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Tableau de bord - Luxibre</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - Luxibre Alpha</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="bg-gray-50 text-gray-900">
 
-  <header class="py-6 bg-white shadow-sm">
+  <header class="py-6 bg-white shadow">
     <div class="container mx-auto px-4 flex justify-between items-center">
-      <h1 class="text-2xl font-bold text-green-600">Luxibre</h1>
-      <nav class="space-x-4 text-sm md:text-base">
-        <a href="index.html" class="hover:text-green-600">Accueil</a>
-        <a href="pricing.html" class="hover:text-green-600">Abonnement</a>
-        <a href="login.html" class="hover:text-green-600">Déconnexion</a>
+      <h1 class="text-2xl font-bold text-green-600">Luxibre Alpha</h1>
+      <nav class="space-x-4">
+        <a href="../index.html" class="hover:text-green-600">Accueil</a>
+        <a href="../pricing.html" class="hover:text-green-600">Abonnement</a>
+        <a href="../login.html" class="hover:text-green-600">Déconnexion</a>
       </nav>
     </div>
   </header>
 
-  <section class="py-12">
-    <div class="container mx-auto px-4">
-      <h2 class="text-3xl font-bold mb-8 text-center">Vos signaux d'investissement</h2>
+  <main class="container mx-auto px-4 py-10">
+    <!-- Résumé des signaux -->
+    <section class="mb-10">
+      <h2 class="text-2xl font-bold mb-4">Résumé du jour</h2>
+      <div id="summary" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+    </section>
 
-      <div id="signals-container" class="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-        <!-- Exemple de signal -->
-        <!-- Les signaux seront injectés ici en JS -->
-      </div>
-
-      <div class="text-center mt-12">
-        <p class="text-sm text-gray-500">Les signaux sont générés automatiquement à partir de données financières fiables. Veuillez toujours faire vos propres recherches avant d’investir.</p>
-      </div>
-    </div>
-  </section>
+    <!-- Signaux boursiers -->
+    <section>
+      <h2 class="text-2xl font-bold mb-4">Signaux du marché</h2>
+      <div id="signals" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </section>
+  </main>
 
   <footer class="py-10 bg-gray-100 mt-20">
     <div class="container mx-auto px-4 text-center text-sm text-gray-600">
@@ -40,8 +40,55 @@
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="js/auth-check.js"></script>
-  <script src="js/load-signals.js"></script>
+  <script>
+    async function loadSignals() {
+      const res = await fetch('../data/signals.json');
+      const data = await res.json();
+
+      const container = document.getElementById('signals');
+      const summary = document.getElementById('summary');
+
+      container.innerHTML = '';
+      summary.innerHTML = '';
+
+      const total = data.length;
+      const buys = data.filter(s => s.signal.toLowerCase() === 'achat').length;
+      const sells = data.filter(s => s.signal.toLowerCase() === 'vente').length;
+
+      // Résumé du jour
+      summary.innerHTML = `
+        <div class="bg-white p-6 rounded-lg shadow text-center">
+          <p class="text-lg font-semibold text-gray-700">Signaux totaux</p>
+          <p class="text-3xl font-bold">${total}</p>
+        </div>
+        <div class="bg-green-100 p-6 rounded-lg shadow text-center">
+          <p class="text-lg font-semibold text-green-800">Achats</p>
+          <p class="text-3xl font-bold">${buys}</p>
+        </div>
+        <div class="bg-red-100 p-6 rounded-lg shadow text-center">
+          <p class="text-lg font-semibold text-red-800">Ventes</p>
+          <p class="text-3xl font-bold">${sells}</p>
+        </div>
+      `;
+
+      // Cartes de signaux
+      data.forEach(signal => {
+        const card = document.createElement('div');
+        const couleur = signal.signal.toLowerCase() === 'achat' ? 'green' : 'red';
+
+        card.className = `bg-white p-6 rounded-lg shadow border-l-4 border-${couleur}-500`;
+        card.innerHTML = `
+          <h3 class="text-xl font-bold mb-1">${signal.nom}</h3>
+          <p class="text-sm text-gray-600 mb-2">${signal.date}</p>
+          <p class="mb-2">Prix : <strong>${signal.prix} €</strong></p>
+          <p class="text-${couleur}-600 font-semibold text-lg">${signal.signal.toUpperCase()}</p>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    loadSignals();
+  </script>
+
 </body>
 </html>
