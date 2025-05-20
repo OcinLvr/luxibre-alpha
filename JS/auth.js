@@ -1,46 +1,46 @@
-// js/auth.js
-
-// Initialisation manuelle
-if (typeof netlifyIdentity !== "undefined") {
-  netlifyIdentity.init();
-
-  // Gestion du token de confirmation dans l’URL
-  const params = new URLSearchParams(window.location.hash.slice(1));
-  const token = params.get("confirmation_token");
-
-  if (token) {
-    // Si token présent, on affiche un message ou redirige
-    alert("Votre email a été confirmé avec succès !");
-    window.location.href = "/login.html";
-  }
-
-  // Événements d'identité
-  netlifyIdentity.on("init", user => {
+// Initialisation du widget Netlify Identity
+if (window.netlifyIdentity) {
+  window.netlifyIdentity.on("init", user => {
     updateUI(user);
+
+    // Rediriger automatiquement si déjà connecté
+    if (user && window.location.pathname === "/index.html") {
+      window.location.href = "/dashboard.html";
+    }
   });
 
-  netlifyIdentity.on("login", user => {
+  window.netlifyIdentity.on("login", user => {
     updateUI(user);
-    netlifyIdentity.close();
     window.location.href = "/dashboard.html";
   });
 
-  netlifyIdentity.on("logout", () => {
+  window.netlifyIdentity.on("logout", () => {
     updateUI(null);
-    window.location.href = "/login.html";
+    window.location.href = "/index.html";
   });
+
+  window.netlifyIdentity.init(); // Très important pour charger l'état
 }
 
-// Gère les boutons dynamiques
+// Mise à jour de l'interface selon l'état de connexion
 function updateUI(user) {
   const loginBtn = document.getElementById("loginBtn");
   const logoutBtn = document.getElementById("logoutBtn");
 
   if (user) {
-    if (loginBtn) loginBtn.style.display = "none";
-    if (logoutBtn) logoutBtn.style.display = "inline-block";
+    loginBtn?.classList.add("hidden");
+    logoutBtn?.classList.remove("hidden");
   } else {
-    if (loginBtn) loginBtn.style.display = "inline-block";
-    if (logoutBtn) logoutBtn.style.display = "none";
+    loginBtn?.classList.remove("hidden");
+    logoutBtn?.classList.add("hidden");
   }
 }
+
+// Actions des boutons
+document.getElementById("loginBtn")?.addEventListener("click", () => {
+  netlifyIdentity.open("login");
+});
+
+document.getElementById("logoutBtn")?.addEventListener("click", () => {
+  netlifyIdentity.logout();
+});
