@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tableau de bord - Luxibre</title>
+  <title>Dashboard - Luxibre</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -18,41 +18,31 @@
   <!-- Header -->
   <header class="py-4 bg-white shadow-md sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
-      <h1 class="text-3xl font-bold text-green-600">Luxibre</h1>
-      <div class="space-x-4 flex items-center">
-        <span id="user-email" class="text-sm text-gray-700"></span>
-        <button id="logout-btn" class="px-4 py-2 bg-red-100 hover:bg-red-200 text-red-600 rounded-xl text-sm font-medium transition">Déconnexion</button>
-      </div>
+      <h1 class="text-2xl font-bold text-green-600">Luxibre</h1>
+      <nav class="space-x-6 hidden md:flex">
+        <a href="index.html" class="hover:text-green-600 font-medium">Accueil</a>
+        <a href="pricing.html" class="hover:text-green-600 font-medium">Abonnement</a>
+        <a href="logout.html" class="hover:text-green-600 font-medium">Déconnexion</a>
+      </nav>
     </div>
   </header>
 
-  <!-- Titre -->
-  <section class="py-16 bg-white">
-    <div class="max-w-5xl mx-auto px-6 text-center">
-      <h2 class="text-4xl md:text-5xl font-bold mb-4">📊 Vos Signaux Premium</h2>
-      <p class="text-lg text-gray-600">Analyse graphique en temps réel & opportunités à ne pas manquer</p>
-    </div>
-  </section>
+  <!-- Dashboard Content -->
+  <main class="py-16 px-6 max-w-7xl mx-auto">
+    <h2 class="text-4xl font-bold mb-10 text-center">Vos Signaux Premium</h2>
 
-  <!-- Graphique -->
-  <section class="bg-gray-100 py-10">
-    <div class="max-w-5xl mx-auto px-6">
-      <div class="bg-white rounded-xl shadow-lg p-6">
-        <canvas id="signalsChart" class="w-full h-64"></canvas>
-      </div>
+    <div id="signals" class="grid md:grid-cols-2 gap-6 mb-16">
+      <!-- Signaux chargés dynamiquement ici -->
     </div>
-  </section>
 
-  <!-- Liste des signaux -->
-  <section class="py-16 bg-white">
-    <div class="max-w-7xl mx-auto px-6">
-      <h3 class="text-2xl font-semibold mb-8">📌 Derniers signaux disponibles</h3>
-      <div id="signals" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    <h3 class="text-2xl font-semibold mb-6">Évolution des Marchés</h3>
+    <div class="bg-white p-6 rounded-xl shadow">
+      <canvas id="signalsChart" height="100"></canvas>
     </div>
-  </section>
+  </main>
 
   <!-- Footer -->
-  <footer class="py-10 bg-gray-100">
+  <footer class="py-10 bg-gray-100 mt-20">
     <div class="max-w-7xl mx-auto px-6 text-center text-sm text-gray-600">
       &copy; 2025 Luxibre. Tous droits réservés. |
       <a href="legal/mentions-legales.md" class="underline">Mentions légales</a> |
@@ -61,12 +51,62 @@
     </div>
   </footer>
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
-  <script src="/js/auth.js"></script>
+  <script>
+    fetch('/data/signals.json')
+      .then(response => response.json())
+      .then(data => {
+        const container = document.getElementById('signals');
+        data.signals.forEach(signal => {
+          container.innerHTML += `
+            <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
+              <h4 class="text-xl font-semibold">${signal.title}</h4>
+              <p class="mt-2">${signal.description}</p>
+              <small class="block mt-3 text-gray-500">Timeframe: ${signal.timeframe} | Confiance: ${signal.confidence}</small>
+            </div>
+          `;
+        });
+      });
 
-  <!-- Dashboard -->
-  <script src="/js/dashboard.js"></script>
+    fetch('/data/charts-data.json')
+      .then(res => res.json())
+      .then(chartData => {
+        const ctx = document.getElementById('signalsChart').getContext('2d');
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: chartData.labels,
+            datasets: [
+              {
+                label: 'EUR/USD',
+                data: chartData.data.eurusd,
+                borderColor: '#4CAF50',
+                tension: 0.3
+              },
+              {
+                label: 'BTC/USD',
+                data: chartData.data.btcusd,
+                borderColor: '#FF9800',
+                tension: 0.3
+              },
+              {
+                label: 'SPY ETF',
+                data: chartData.data.spy,
+                borderColor: '#2196F3',
+                tension: 0.3
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: {
+                beginAtZero: false
+              }
+            }
+          }
+        });
+      });
+  </script>
+
 </body>
 </html>
