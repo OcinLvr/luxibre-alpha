@@ -1,84 +1,97 @@
-// 🔐 Vérification premium avant affichage
-firebase.auth().onAuthStateChanged(user => {
-  if (!user) return window.location.href = '/login.html';
+// Charger les signaux financiers depuis signals.json
+fetch('/data/signals.json')
+  .then(response => response.json())
+  .then(data => {
+    const container = document.getElementById('signals');
+    container.innerHTML = ''; // Réinitialiser le contenu
 
-  // Vérifier l'abonnement Stripe via un endpoint sécurisé (ex: Cloud Function ou proxy Netlify)
-  fetch('/.netlify/functions/check-subscription', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email: user.email })
-  })
+    data.signals.forEach(signal => {
+      const color = signal.confidence >= 80 ? 'text-green-600' : signal.confidence >= 60 ? 'text-yellow-500' : 'text-red-500';
+      const icon = signal.type === 'achat' ? '⬆️' : '⬇️';
+
+      container.innerHTML += `
+        <div class="bg-white rounded-xl shadow p-6 transition hover:shadow-md">
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="text-xl font-bold text-gray-800">${icon} ${signal.title}</h3>
+            <span class="text-sm ${color} font-semibold">Confiance: ${signal.confidence}%</span>
+          </div>
+          <p class="text-gray-600 text-sm mb-2">${signal.description}</p>
+          <div class="flex justify-between text-xs text-gray-500">
+            <span>Timeframe: ${signal.timeframe}</span>
+            <span>${signal.date}</span>
+          </div>
+        </div>
+      `;
+    });
+  });
+
+// Charger et afficher les graphiques
+fetch('/data/charts-data.json')
   .then(res => res.json())
-  .then(status => {
-    if (!status.active) {
-      alert("Votre abonnement premium est inactif. Veuillez vous abonner.");
-      return window.location.href = '/pricing.html';
-    }
-
-    // 🧠 Chargement des signaux premium
-    fetch('/data/signals.json')
-      .then(response => response.json())
-      .then(data => {
-        const container = document.getElementById('signals');
-        data.signals.forEach(signal => {
-          container.innerHTML += `
-            <div class="bg-white rounded-xl shadow p-5 hover:shadow-md transition">
-              <div class="flex items-center justify-between mb-2">
-                <h3 class="text-lg font-semibold text-green-700">${signal.title}</h3>
-                <span class="text-xs text-gray-500">${signal.timeframe}</span>
-              </div>
-              <p class="text-sm text-gray-700">${signal.description}</p>
-              <div class="text-xs text-gray-400 mt-2">Confiance: ${signal.confidence}</div>
-            </div>
-          `;
-        });
-      });
-
-    // 📊 Chargement des données graphiques
-    fetch('/data/charts-data.json')
-      .then(res => res.json())
-      .then(chartData => {
-        const ctx = document.getElementById('signalsChart').getContext('2d');
-        new Chart(ctx, {
-          type: 'line',
-          data: {
-            labels: chartData.labels,
-            datasets: [
-              {
-                label: 'EUR/USD',
-                data: chartData.data.eurusd,
-                borderColor: '#16a34a',
-                backgroundColor: 'rgba(22, 163, 74, 0.1)',
-                fill: true,
-                tension: 0.3
-              },
-              {
-                label: 'BTC/USD',
-                data: chartData.data.btcusd,
-                borderColor: '#f59e0b',
-                backgroundColor: 'rgba(245, 158, 11, 0.1)',
-                fill: true,
-                tension: 0.3
-              },
-              {
-                label: 'SPY ETF',
-                data: chartData.data.spy,
-                borderColor: '#2563eb',
-                backgroundColor: 'rgba(37, 99, 235, 0.1)',
-                fill: true,
-                tension: 0.3
-              }
-            ]
+  .then(chartData => {
+    const ctx = document.getElementById('signalsChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: chartData.labels,
+        datasets: [
+          {
+            label: 'EUR/USD',
+            data: chartData.data.eurusd,
+            borderColor: '#4CAF50',
+            backgroundColor: 'rgba(76, 175, 80, 0.1)',
+            tension: 0.4,
+            fill: true
           },
-          options: {
-            responsive: true,
-            scales: {
-              y: {
-                beginAtZero: false
-              }
+          {
+            label: 'BTC/USD',
+            data: chartData.data.btcusd,
+            borderColor: '#FF9800',
+            backgroundColor: 'rgba(255, 152, 0, 0.1)',
+            tension: 0.4,
+            fill: true
+          },
+          {
+            label: 'SPY ETF',
+            data: chartData.data.spy,
+            borderColor: '#2196F3',
+            backgroundColor: 'rgba(33, 150, 243, 0.1)',
+            tension: 0.4,
+            fill: true
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+            labels: {
+              color: '#4B5563'
+            }
+          },
+          title: {
+            display: true,
+            text: 'Performance des marchés',
+            color: '#1F2937',
+            font: {
+              size: 18
             }
           }
-        });
-      });
+        },
+        scales: {
+          y: {
+            beginAtZero: false,
+            ticks: {
+              color: '#4B5563'
+            }
+          },
+          x: {
+            ticks: {
+              color: '#4B5563'
+            }
+          }
+        }
+      }
+    });
   });
-});
