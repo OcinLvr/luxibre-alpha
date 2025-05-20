@@ -2,114 +2,69 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Luxibre - Signaux Financiers Premium</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Luxibre - Accueil</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
 </head>
-<body class="bg-gray-50 text-gray-900">
+<body class="bg-gray-50 text-gray-900 min-h-screen flex flex-col">
 
-  <!-- Header -->
-  <header class="py-4 bg-white shadow-md sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
-      <h1 class="text-3xl font-bold text-green-600">Luxibre</h1>
-      <nav class="space-x-6 hidden md:flex">
-        <a href="#" class="hover:text-green-600 font-medium">Accueil</a>
-        <a href="pricing.html" class="hover:text-green-600 font-medium">Abonnement</a>
-        <a href="login.html" class="hover:text-green-600 font-medium">Connexion</a>
+  <header class="py-6 bg-white shadow-sm">
+    <div class="container mx-auto px-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-green-600">Luxibre</h1>
+      <nav class="space-x-4">
+        <a href="index.html" class="hover:text-green-600">Accueil</a>
+        <a href="pricing.html" class="hover:text-green-600">Abonnement</a>
+        <a href="login.html" class="hover:text-green-600">Connexion</a>
       </nav>
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <section class="relative bg-gray-900 text-white">
-    <div class="absolute inset-0">
-      <img src="https://images.unsplash.com/photo-1620714223084-8fcacc6dfd8d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80" class="w-full h-full object-cover opacity-60">
-    </div>
-    <div class="relative z-10 max-w-5xl mx-auto px-6 py-32 text-center">
-      <h2 class="text-5xl md:text-6xl font-extrabold leading-tight mb-6">Des Signaux Qui Parlent Argent</h2>
-      <p class="text-xl md:text-2xl text-gray-200 mb-8">Recevez chaque jour des signaux performants pour investir avec confiance.</p>
-      <a href="pricing.html" class="inline-block px-8 py-4 bg-green-600 hover:bg-green-700 text-white rounded-xl text-lg font-semibold shadow-lg transition transform hover:scale-105">Accéder aux signaux premium</a>
-    </div>
-  </section>
+  <main class="flex-grow container mx-auto px-4 py-20 max-w-3xl text-center">
+    <h2 class="text-4xl font-extrabold mb-6">Bienvenue sur Luxibre</h2>
+    <p class="text-lg mb-10 text-gray-700">
+      Profitez de signaux boursiers fiables et automatisés pour optimiser vos investissements.
+    </p>
 
-  <!-- Features Section -->
-  <section class="py-20 bg-white">
-    <div class="max-w-7xl mx-auto px-6">
-      <h3 class="text-4xl font-bold text-center mb-16">Pourquoi Luxibre ?</h3>
-      <div class="grid md:grid-cols-3 gap-10">
-        <div class="bg-gray-50 p-8 rounded-xl shadow-lg text-center hover:shadow-xl transition">
-          <div class="text-5xl mb-4">📈</div>
-          <h4 class="text-2xl font-semibold mb-2">Signaux Quotidiens</h4>
-          <p class="text-gray-600">Des opportunités concrètes chaque matin pour ne plus rater le bon moment.</p>
-        </div>
-        <div class="bg-gray-50 p-8 rounded-xl shadow-lg text-center hover:shadow-xl transition">
-          <div class="text-5xl mb-4">📊</div>
-          <h4 class="text-2xl font-semibold mb-2">Graphiques Dynamiques</h4>
-          <p class="text-gray-600">Visualisez les tendances en un clin d’œil grâce à nos outils premium.</p>
-        </div>
-        <div class="bg-gray-50 p-8 rounded-xl shadow-lg text-center hover:shadow-xl transition">
-          <div class="text-5xl mb-4">🔒</div>
-          <h4 class="text-2xl font-semibold mb-2">Espace Premium</h4>
-          <p class="text-gray-600">Accès réservé, données exclusives, pour ceux qui veulent vraiment performer.</p>
-        </div>
-      </div>
+    <div>
+      <a href="pricing.html" 
+         class="inline-block bg-green-600 text-white font-semibold py-3 px-8 rounded-lg hover:bg-green-700 transition">
+         Voir les offres d'abonnement
+      </a>
     </div>
-  </section>
+  </main>
 
-  <!-- CTA Section -->
-  <section class="py-20 bg-gradient-to-r from-red-500 to-orange-500 text-white">
-    <div class="max-w-4xl mx-auto px-6 text-center">
-      <h3 class="text-4xl md:text-5xl font-bold mb-6">Faites le choix de l'efficacité</h3>
-      <p class="text-xl md:text-2xl mb-8">Votre avenir financier commence maintenant. Ne laissez pas passer les meilleures opportunités.</p>
-      <a href="pricing.html" class="inline-block px-8 py-4 bg-white text-red-600 font-semibold rounded-xl hover:bg-gray-100 transition transform hover:scale-105">Je passe à l’action</a>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="py-10 bg-gray-100">
-    <div class="max-w-7xl mx-auto px-6 text-center text-sm text-gray-600">
-      &copy; 2025 Luxibre. Tous droits réservés. |
-      <a href="legal/mentions-legales.md" class="underline">Mentions légales</a> |
-      <a href="legal/cgu.md" class="underline">CGU</a> |
-      <a href="legal/rgpd.md" class="underline">RGPD</a>
+  <footer class="py-10 bg-gray-100 mt-auto">
+    <div class="container mx-auto px-4 text-center text-sm text-gray-600">
+      &copy; 2025 Luxibre. Tous droits réservés.
     </div>
   </footer>
 
+  <!-- Gestion confirmation e-mail via Netlify Identity -->
   <script>
-  document.addEventListener("DOMContentLoaded", async () => {
-    const url = new URL(window.location.href);
-    const token = url.searchParams.get("confirmation_token");
+    document.addEventListener("DOMContentLoaded", async () => {
+      const url = new URL(window.location.href);
+      const token = url.searchParams.get("confirmation_token");
 
-    if (token) {
-      try {
-        const result = await fetch("/.netlify/identity/verify", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ token })
-        });
+      if (token) {
+        try {
+          const res = await fetch("/.netlify/identity/verify", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ token })
+          });
 
-        if (result.ok) {
-          alert("✅ Votre adresse e-mail a été confirmée avec succès !");
-          window.location.href = "/login.html";
-        } else {
-          alert("❌ Échec de la confirmation. Le lien est peut-être expiré.");
+          if (res.ok) {
+            alert("✅ Votre adresse e-mail a été confirmée avec succès !");
+            window.location.href = "login.html";
+          } else {
+            alert("❌ Échec de la confirmation. Le lien est peut-être expiré ou invalide.");
+          }
+        } catch (error) {
+          alert("⚠️ Erreur lors de la confirmation : " + error.message);
         }
-      } catch (error) {
-        alert("⚠️ Erreur de confirmation : " + error.message);
       }
-    }
-  });
-</script>
-
+    });
+  </script>
 
 </body>
 </html>
