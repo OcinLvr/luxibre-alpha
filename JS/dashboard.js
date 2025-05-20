@@ -1,97 +1,60 @@
-// Charger les signaux financiers depuis signals.json
-fetch('/data/signals.json')
-  .then(response => response.json())
-  .then(data => {
-    const container = document.getElementById('signals');
-    container.innerHTML = ''; // Réinitialiser le contenu
+// dashboard.js
 
-    data.signals.forEach(signal => {
-      const color = signal.confidence >= 80 ? 'text-green-600' : signal.confidence >= 60 ? 'text-yellow-500' : 'text-red-500';
-      const icon = signal.type === 'achat' ? '⬆️' : '⬇️';
+document.addEventListener("DOMContentLoaded", async () => {
+  const container = document.getElementById("signals-container");
 
-      container.innerHTML += `
-        <div class="bg-white rounded-xl shadow p-6 transition hover:shadow-md">
-          <div class="flex items-center justify-between mb-2">
-            <h3 class="text-xl font-bold text-gray-800">${icon} ${signal.title}</h3>
-            <span class="text-sm ${color} font-semibold">Confiance: ${signal.confidence}%</span>
-          </div>
-          <p class="text-gray-600 text-sm mb-2">${signal.description}</p>
-          <div class="flex justify-between text-xs text-gray-500">
-            <span>Timeframe: ${signal.timeframe}</span>
-            <span>${signal.date}</span>
-          </div>
+  try {
+    const response = await fetch("../data/signals.json");
+    const data = await response.json();
+
+    if (!Array.isArray(data) || data.length === 0) {
+      container.innerHTML = "<p class='text-center text-gray-600'>Aucun signal disponible pour le moment.</p>";
+      return;
+    }
+
+    data.forEach((signal) => {
+      const card = document.createElement("div");
+      card.className =
+        "bg-white rounded-xl shadow p-6 transition hover:shadow-lg border-t-4 mb-6 border-" +
+        (signal.direction === "Achat" ? "green-500" : "red-500");
+
+      const lastUpdated = new Date(signal.date).toLocaleDateString("fr-FR", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      });
+
+      card.innerHTML = `
+        <h3 class="text-xl font-semibold mb-2">${signal.nom}</h3>
+        <p class="text-sm text-gray-500 mb-4">${signal.secteur || "Secteur inconnu"}</p>
+        <div class="flex justify-between items-center mb-4">
+          <span class="text-sm text-gray-600">Dernier cours :</span>
+          <span class="font-bold text-lg">${signal.prix} €</span>
+        </div>
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-sm text-gray-600">Tendance :</span>
+          <span class="font-semibold ${
+            signal.direction === "Achat" ? "text-green-600" : "text-red-600"
+          }">${signal.direction}</span>
+        </div>
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-sm text-gray-600">Volatilité :</span>
+          <span>${signal.volatilite || "N/A"}</span>
+        </div>
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-sm text-gray-600">Confiance :</span>
+          <span class="font-semibold">${signal.confiance || "N/A"}%</span>
+        </div>
+        <div class="text-right text-xs text-gray-400 mt-4">
+          Mis à jour le ${lastUpdated}
         </div>
       `;
-    });
-  });
 
-// Charger et afficher les graphiques
-fetch('/data/charts-data.json')
-  .then(res => res.json())
-  .then(chartData => {
-    const ctx = document.getElementById('signalsChart').getContext('2d');
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: chartData.labels,
-        datasets: [
-          {
-            label: 'EUR/USD',
-            data: chartData.data.eurusd,
-            borderColor: '#4CAF50',
-            backgroundColor: 'rgba(76, 175, 80, 0.1)',
-            tension: 0.4,
-            fill: true
-          },
-          {
-            label: 'BTC/USD',
-            data: chartData.data.btcusd,
-            borderColor: '#FF9800',
-            backgroundColor: 'rgba(255, 152, 0, 0.1)',
-            tension: 0.4,
-            fill: true
-          },
-          {
-            label: 'SPY ETF',
-            data: chartData.data.spy,
-            borderColor: '#2196F3',
-            backgroundColor: 'rgba(33, 150, 243, 0.1)',
-            tension: 0.4,
-            fill: true
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: {
-            position: 'top',
-            labels: {
-              color: '#4B5563'
-            }
-          },
-          title: {
-            display: true,
-            text: 'Performance des marchés',
-            color: '#1F2937',
-            font: {
-              size: 18
-            }
-          }
-        },
-        scales: {
-          y: {
-            beginAtZero: false,
-            ticks: {
-              color: '#4B5563'
-            }
-          },
-          x: {
-            ticks: {
-              color: '#4B5563'
-            }
-          }
-        }
-      }
+      container.appendChild(card);
     });
-  });
+  } catch (error) {
+    container.innerHTML =
+      "<p class='text-center text-red-600'>Erreur de chargement des signaux.</p>";
+    console.error("Erreur lors du chargement des signaux :", error);
+  }
+});
