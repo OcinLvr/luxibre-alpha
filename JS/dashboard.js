@@ -1,60 +1,58 @@
-// dashboard.js
+// js/dashboard.js
 
-document.addEventListener("DOMContentLoaded", async () => {
+document.addEventListener("DOMContentLoaded", () => {
   const container = document.getElementById("signals-container");
 
-  try {
-    const response = await fetch("../data/signals.json");
-    const data = await response.json();
+  fetch("data/signals.json")
+    .then((response) => {
+      if (!response.ok) throw new Error("Erreur de chargement des signaux.");
+      return response.json();
+    })
+    .then((data) => {
+      if (!Array.isArray(data)) throw new Error("Données de signaux invalides.");
 
-    if (!Array.isArray(data) || data.length === 0) {
-      container.innerHTML = "<p class='text-center text-gray-600'>Aucun signal disponible pour le moment.</p>";
-      return;
-    }
-
-    data.forEach((signal) => {
-      const card = document.createElement("div");
-      card.className =
-        "bg-white rounded-xl shadow p-6 transition hover:shadow-lg border-t-4 mb-6 border-" +
-        (signal.direction === "Achat" ? "green-500" : "red-500");
-
-      const lastUpdated = new Date(signal.date).toLocaleDateString("fr-FR", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
+      container.innerHTML = ""; // Clear loader or fallback
+      data.forEach((signal) => {
+        const signalCard = createSignalCard(signal);
+        container.appendChild(signalCard);
       });
-
-      card.innerHTML = `
-        <h3 class="text-xl font-semibold mb-2">${signal.nom}</h3>
-        <p class="text-sm text-gray-500 mb-4">${signal.secteur || "Secteur inconnu"}</p>
-        <div class="flex justify-between items-center mb-4">
-          <span class="text-sm text-gray-600">Dernier cours :</span>
-          <span class="font-bold text-lg">${signal.prix} €</span>
-        </div>
-        <div class="flex justify-between items-center mb-2">
-          <span class="text-sm text-gray-600">Tendance :</span>
-          <span class="font-semibold ${
-            signal.direction === "Achat" ? "text-green-600" : "text-red-600"
-          }">${signal.direction}</span>
-        </div>
-        <div class="flex justify-between items-center mb-2">
-          <span class="text-sm text-gray-600">Volatilité :</span>
-          <span>${signal.volatilite || "N/A"}</span>
-        </div>
-        <div class="flex justify-between items-center mb-2">
-          <span class="text-sm text-gray-600">Confiance :</span>
-          <span class="font-semibold">${signal.confiance || "N/A"}%</span>
-        </div>
-        <div class="text-right text-xs text-gray-400 mt-4">
-          Mis à jour le ${lastUpdated}
-        </div>
-      `;
-
-      container.appendChild(card);
+    })
+    .catch((error) => {
+      console.error(error);
+      container.innerHTML = "<p class='text-red-500'>Erreur de chargement des signaux.</p>";
     });
-  } catch (error) {
-    container.innerHTML =
-      "<p class='text-center text-red-600'>Erreur de chargement des signaux.</p>";
-    console.error("Erreur lors du chargement des signaux :", error);
-  }
 });
+
+function createSignalCard(signal) {
+  const card = document.createElement("div");
+  card.className = "bg-white p-6 rounded-xl shadow hover:shadow-lg transition";
+
+  const signalColor =
+    signal.signal === "Acheter"
+      ? "text-green-600"
+      : signal.signal === "Vendre"
+      ? "text-red-600"
+      : "text-gray-600";
+
+  card.innerHTML = `
+    <h3 class="text-lg font-semibold mb-1">${signal.name}</h3>
+    <p class="text-sm text-gray-500 mb-2">${signal.symbol}</p>
+    <p class="text-xl font-bold mb-2">${signal.price.toFixed(2)} €</p>
+    <p class="text-md font-medium mb-1 ${signalColor}">${signal.signal}</p>
+    <div class="text-sm text-gray-500 mb-1">Confiance : ${(signal.confidence * 100).toFixed(0)}%</div>
+    <div class="text-xs text-gray-400">MAJ : ${formatDate(signal.lastUpdated)}</div>
+  `;
+
+  return card;
+}
+
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  return date.toLocaleDateString("fr-FR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+}
