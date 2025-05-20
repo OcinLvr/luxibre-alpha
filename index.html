@@ -83,14 +83,13 @@
   </footer>
 
   <script>
-  // Gestion de la vérification email via le lien reçu par mail Netlify
   document.addEventListener("DOMContentLoaded", async () => {
-    const params = new URLSearchParams(window.location.search);
-    const token = params.get("confirmation_token");
+    const url = new URL(window.location.href);
+    const token = url.searchParams.get("confirmation_token");
 
     if (token) {
       try {
-        const response = await fetch("/.netlify/identity/confirm", {
+        const result = await fetch("/.netlify/identity/verify", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -98,18 +97,19 @@
           body: JSON.stringify({ token })
         });
 
-        if (response.ok) {
-          alert("✅ Votre email a bien été confirmé ! Vous pouvez maintenant vous connecter.");
+        if (result.ok) {
+          alert("✅ Votre adresse e-mail a été confirmée avec succès !");
           window.location.href = "/login.html";
         } else {
-          alert("❌ Erreur lors de la confirmation de votre email. Veuillez réessayer.");
+          alert("❌ Échec de la confirmation. Le lien est peut-être expiré.");
         }
-      } catch (err) {
-        console.error("Erreur réseau :", err);
+      } catch (error) {
+        alert("⚠️ Erreur de confirmation : " + error.message);
       }
     }
   });
 </script>
+
 
 </body>
 </html>
