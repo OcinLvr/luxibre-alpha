@@ -2,111 +2,46 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard - Luxibre</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tableau de bord - Luxibre</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-    }
-  </style>
 </head>
 <body class="bg-gray-50 text-gray-900">
 
-  <!-- Header -->
-  <header class="py-4 bg-white shadow-md sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
+  <header class="py-6 bg-white shadow-sm">
+    <div class="container mx-auto px-4 flex justify-between items-center">
       <h1 class="text-2xl font-bold text-green-600">Luxibre</h1>
-      <nav class="space-x-6 hidden md:flex">
-        <a href="index.html" class="hover:text-green-600 font-medium">Accueil</a>
-        <a href="pricing.html" class="hover:text-green-600 font-medium">Abonnement</a>
-        <a href="logout.html" class="hover:text-green-600 font-medium">Déconnexion</a>
+      <nav class="space-x-4 text-sm md:text-base">
+        <a href="index.html" class="hover:text-green-600">Accueil</a>
+        <a href="pricing.html" class="hover:text-green-600">Abonnement</a>
+        <a href="login.html" class="hover:text-green-600">Déconnexion</a>
       </nav>
     </div>
   </header>
 
-  <!-- Dashboard Content -->
-  <main class="py-16 px-6 max-w-7xl mx-auto">
-    <h2 class="text-4xl font-bold mb-10 text-center">Vos Signaux Premium</h2>
+  <section class="py-12">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold mb-8 text-center">Vos signaux d'investissement</h2>
 
-    <div id="signals" class="grid md:grid-cols-2 gap-6 mb-16">
-      <!-- Signaux chargés dynamiquement ici -->
+      <div id="signals-container" class="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        <!-- Exemple de signal -->
+        <!-- Les signaux seront injectés ici en JS -->
+      </div>
+
+      <div class="text-center mt-12">
+        <p class="text-sm text-gray-500">Les signaux sont générés automatiquement à partir de données financières fiables. Veuillez toujours faire vos propres recherches avant d’investir.</p>
+      </div>
     </div>
+  </section>
 
-    <h3 class="text-2xl font-semibold mb-6">Évolution des Marchés</h3>
-    <div class="bg-white p-6 rounded-xl shadow">
-      <canvas id="signalsChart" height="100"></canvas>
-    </div>
-  </main>
-
-  <!-- Footer -->
   <footer class="py-10 bg-gray-100 mt-20">
-    <div class="max-w-7xl mx-auto px-6 text-center text-sm text-gray-600">
-      &copy; 2025 Luxibre. Tous droits réservés. |
-      <a href="legal/mentions-legales.md" class="underline">Mentions légales</a> |
-      <a href="legal/cgu.md" class="underline">CGU</a> |
-      <a href="legal/rgpd.md" class="underline">RGPD</a>
+    <div class="container mx-auto px-4 text-center text-sm text-gray-600">
+      &copy; 2025 Luxibre. Tous droits réservés.
     </div>
   </footer>
 
-  <script>
-    fetch('/data/signals.json')
-      .then(response => response.json())
-      .then(data => {
-        const container = document.getElementById('signals');
-        data.signals.forEach(signal => {
-          container.innerHTML += `
-            <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
-              <h4 class="text-xl font-semibold">${signal.title}</h4>
-              <p class="mt-2">${signal.description}</p>
-              <small class="block mt-3 text-gray-500">Timeframe: ${signal.timeframe} | Confiance: ${signal.confidence}</small>
-            </div>
-          `;
-        });
-      });
-
-    fetch('/data/charts-data.json')
-      .then(res => res.json())
-      .then(chartData => {
-        const ctx = document.getElementById('signalsChart').getContext('2d');
-        new Chart(ctx, {
-          type: 'line',
-          data: {
-            labels: chartData.labels,
-            datasets: [
-              {
-                label: 'EUR/USD',
-                data: chartData.data.eurusd,
-                borderColor: '#4CAF50',
-                tension: 0.3
-              },
-              {
-                label: 'BTC/USD',
-                data: chartData.data.btcusd,
-                borderColor: '#FF9800',
-                tension: 0.3
-              },
-              {
-                label: 'SPY ETF',
-                data: chartData.data.spy,
-                borderColor: '#2196F3',
-                tension: 0.3
-              }
-            ]
-          },
-          options: {
-            responsive: true,
-            scales: {
-              y: {
-                beginAtZero: false
-              }
-            }
-          }
-        });
-      });
-  </script>
-
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="js/auth-check.js"></script>
+  <script src="js/load-signals.js"></script>
 </body>
 </html>
