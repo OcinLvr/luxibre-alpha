@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Confirmation d'e-mail - Luxibre</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-50 text-gray-900 flex items-center justify-center min-h-screen">
+
+  <main class="bg-white p-10 rounded-lg shadow-lg max-w-md text-center">
+    <h1 class="text-2xl font-bold mb-6">Confirmation de votre e-mail</h1>
+    <p id="message" class="mb-6 text-gray-700">Traitement de la confirmation...</p>
+    <a id="login-link" href="login.html" class="hidden inline-block mt-4 text-green-600 hover:underline font-semibold">Retour à la connexion</a>
+  </main>
+
+  <script>
+    async function confirmEmail(token) {
+      try {
+        const res = await fetch("/.netlify/identity/verify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token })
+        });
+
+        const messageEl = document.getElementById("message");
+        const loginLink = document.getElementById("login-link");
+
+        if (res.ok) {
+          messageEl.textContent = "✅ Votre adresse e-mail a été confirmée avec succès ! Vous pouvez maintenant vous connecter.";
+          loginLink.classList.remove("hidden");
+        } else {
+          messageEl.textContent = "❌ La confirmation a échoué. Le lien est peut-être expiré ou invalide.";
+          loginLink.classList.remove("hidden");
+        }
+      } catch (error) {
+        document.getElementById("message").textContent = "⚠️ Erreur lors de la confirmation : " + error.message;
+        document.getElementById("login-link").classList.remove("hidden");
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const token = urlParams.get("confirmation_token");
+      if (token) {
+        confirmEmail(token);
+      } else {
+        const messageEl = document.getElementById("message");
+        messageEl.textContent = "Aucun token de confirmation détecté dans l'URL.";
+        document.getElementById("login-link").classList.remove("hidden");
+      }
+    });
+  </script>
+
+</body>
+</html>
