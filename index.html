@@ -82,5 +82,34 @@
     </div>
   </footer>
 
+  <script>
+  // Gestion de la vérification email via le lien reçu par mail Netlify
+  document.addEventListener("DOMContentLoaded", async () => {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get("confirmation_token");
+
+    if (token) {
+      try {
+        const response = await fetch("/.netlify/identity/confirm", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ token })
+        });
+
+        if (response.ok) {
+          alert("✅ Votre email a bien été confirmé ! Vous pouvez maintenant vous connecter.");
+          window.location.href = "/login.html";
+        } else {
+          alert("❌ Erreur lors de la confirmation de votre email. Veuillez réessayer.");
+        }
+      } catch (err) {
+        console.error("Erreur réseau :", err);
+      }
+    }
+  });
+</script>
+
 </body>
 </html>
