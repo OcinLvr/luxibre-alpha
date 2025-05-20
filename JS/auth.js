@@ -1,60 +1,32 @@
-// Initialisation Firebase (à remplacer par tes propres clés)
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "your-project.firebaseapp.com",
-  projectId: "your-project-id",
-  appId: "your-app-id"
-};
+// js/auth.js
 
-// Initialiser Firebase
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-
-// Connexion utilisateur
-document.getElementById('login-form')?.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
-
-  auth.signInWithEmailAndPassword(email, password)
-    .then(() => {
-      window.location.href = 'dashboard.html';
-    })
-    .catch((error) => {
-      document.getElementById('error-message').textContent = error.message;
-      document.getElementById('error-message').classList.remove('hidden');
-    });
-});
-
-// Inscription utilisateur
-document.getElementById('register-btn')?.addEventListener('click', () => {
-  const email = document.getElementById('new-email').value;
-  const password = document.getElementById('new-password').value;
-
-  auth.createUserWithEmailAndPassword(email, password)
-    .then(() => {
-      window.location.href = 'dashboard.html';
-    })
-    .catch((error) => {
-      document.getElementById('error-message').textContent = error.message;
-      document.getElementById('error-message').classList.remove('hidden');
-    });
-});
-
-// Déconnexion
-document.getElementById('logout-btn')?.addEventListener('click', () => {
-  auth.signOut().then(() => {
-    window.location.href = 'login.html';
+if (typeof netlifyIdentity !== "undefined") {
+  netlifyIdentity.on("init", user => {
+    updateUI(user);
   });
-});
 
-// Vérifier si l'utilisateur est connecté
-auth.onAuthStateChanged(user => {
+  netlifyIdentity.on("login", user => {
+    updateUI(user);
+    netlifyIdentity.close();
+    window.location.href = "/dashboard.html";
+  });
+
+  netlifyIdentity.on("logout", () => {
+    updateUI(null);
+    window.location.href = "/login.html";
+  });
+}
+
+// Affiche ou masque les boutons selon l’état de connexion
+function updateUI(user) {
+  const loginBtn = document.getElementById("loginBtn");
+  const logoutBtn = document.getElementById("logoutBtn");
+
   if (user) {
-    document.getElementById('user-email') ? document.getElementById('user-email').textContent = user.email : null;
+    if (loginBtn) loginBtn.style.display = "none";
+    if (logoutBtn) logoutBtn.style.display = "inline-block";
   } else {
-    if (window.location.pathname.includes('dashboard')) {
-      window.location.href = 'login.html';
-    }
+    if (loginBtn) loginBtn.style.display = "inline-block";
+    if (logoutBtn) logoutBtn.style.display = "none";
   }
-});
+}
