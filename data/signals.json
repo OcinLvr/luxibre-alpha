@@ -1,17 +1,18 @@
 [
   {
-    "name": "ETF EURO STOXX Banks",
-    "price": 11.42,
-    "recommendation": "buy"
+    "symbol": "DE000A2QP372",
+    "name": "iShares EURO STOXX Banks",
+    "price": 15.35,
+    "signal": "Acheter",
+    "confidence": 0.82,
+    "lastUpdated": "2025-05-20T08:00:00Z"
   },
   {
+    "symbol": "AAPL",
     "name": "Apple Inc.",
-    "price": 184.25,
-    "recommendation": "hold"
-  },
-  {
-    "name": "Tesla Inc.",
-    "price": 176.88,
-    "recommendation": "sell"
+    "price": 186.10,
+    "signal": "Vendre",
+    "confidence": 0.78,
+    "lastUpdated": "2025-05-20T08:00:00Z"
   }
 ]
