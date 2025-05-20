@@ -1,28 +1,30 @@
-// Initialisation du widget Netlify Identity
 if (window.netlifyIdentity) {
   window.netlifyIdentity.on("init", user => {
     updateUI(user);
 
-    // Rediriger automatiquement si déjà connecté
-    if (user && window.location.pathname === "/index.html") {
-      window.location.href = "/dashboard.html";
+    // Redirection automatique si connecté ET sur la page d'accueil
+    if (user) {
+      const path = window.location.pathname;
+      // On redirige uniquement si on est sur la page d'accueil (index.html ou /)
+      if (path === "/" || path === "/index.html") {
+        window.location.replace("/dashboard.html");
+      }
     }
   });
 
   window.netlifyIdentity.on("login", user => {
     updateUI(user);
-    window.location.href = "/dashboard.html";
+    window.location.replace("/dashboard.html");
   });
 
   window.netlifyIdentity.on("logout", () => {
     updateUI(null);
-    window.location.href = "/index.html";
+    window.location.replace("/index.html");
   });
 
-  window.netlifyIdentity.init(); // Très important pour charger l'état
+  window.netlifyIdentity.init();
 }
 
-// Mise à jour de l'interface selon l'état de connexion
 function updateUI(user) {
   const loginBtn = document.getElementById("loginBtn");
   const logoutBtn = document.getElementById("logoutBtn");
@@ -36,7 +38,6 @@ function updateUI(user) {
   }
 }
 
-// Actions des boutons
 document.getElementById("loginBtn")?.addEventListener("click", () => {
   netlifyIdentity.open("login");
 });
