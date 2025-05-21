@@ -2,15 +2,47 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Connexion - Luxibre Alpha</title>
-  <script defer src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Connexion – Luxibre Alpha</title>
+  <link href="styles.css" rel="stylesheet" />
 </head>
-<body class="bg-gray-900 text-white text-center py-20">
-  <h1 class="text-3xl font-bold mb-6">Connexion</h1>
-  <div data-netlify-identity-button class="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded inline-block"></div>
-  <script>
-    netlifyIdentity.init();
+<body>
+  <div class="container">
+    <h1>Connexion</h1>
+    <form id="login-form">
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Mot de passe" required />
+      <button type="submit">Se connecter</button>
+    </form>
+    <p id="message"></p>
+  </div>
+
+  <script type="module">
+    import { supabase } from './scripts/supabase.js';
+
+    const form = document.getElementById('login-form');
+    const message = document.getElementById('message');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (error) {
+        message.textContent = 'Erreur : ' + error.message;
+      } else {
+        message.textContent = 'Connexion réussie. Redirection...';
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 1000);
+      }
+    });
   </script>
 </body>
 </html>
