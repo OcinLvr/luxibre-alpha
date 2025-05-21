@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Luxibre Alpha - Signaux Boursiers Premium</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <style>
     body {
@@ -16,12 +16,13 @@
 <body class="bg-gray-50 text-gray-900">
 
   <!-- Header -->
-  <header class="bg-white shadow-md sticky top-0 z-50">
+  <header class="bg-white shadow sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-      <h1 class="text-2xl font-extrabold text-green-600">Luxibre Alpha</h1>
-      <nav class="space-x-6 flex items-center text-sm font-medium">
+      <h1 class="text-2xl font-bold text-green-600">Luxibre Alpha</h1>
+      <nav class="space-x-6 hidden md:flex items-center text-sm font-medium">
         <a href="index.html" class="hover:text-green-600">Accueil</a>
         <a href="pricing.html" class="hover:text-green-600">Abonnement</a>
+        <a href="dashboard.html" class="hover:text-green-600">Dashboard</a>
         <button id="loginBtn" class="hover:text-green-600 hidden">Connexion</button>
         <button id="logoutBtn" class="hover:text-green-600 hidden">Déconnexion</button>
       </nav>
@@ -29,56 +30,87 @@
   </header>
 
   <!-- Hero -->
-  <section class="relative bg-gradient-to-br from-green-600 to-blue-600 text-white">
-    <div class="max-w-5xl mx-auto px-6 py-24 text-center">
-      <h2 class="text-5xl font-extrabold mb-6">Investissez avec précision</h2>
-      <p class="text-xl mb-8">Des signaux boursiers puissants, générés automatiquement, pour guider vos décisions.</p>
-      <a href="pricing.html" class="bg-white text-green-700 font-semibold px-6 py-3 rounded-xl shadow-lg hover:bg-gray-100 transition">Voir les offres</a>
+  <section class="bg-gradient-to-br from-green-600 to-green-400 text-white py-24">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <h2 class="text-4xl md:text-5xl font-bold mb-4">Investissez plus intelligemment</h2>
+      <p class="text-lg md:text-xl mb-8">Recevez chaque jour des signaux automatisés et fiables pour optimiser vos décisions financières.</p>
+      <a href="pricing.html" class="inline-block px-6 py-3 bg-white text-green-600 font-semibold rounded-xl hover:bg-gray-100 transition">Découvrir les offres Premium</a>
     </div>
   </section>
 
   <!-- Features -->
   <section class="py-20 bg-white">
     <div class="max-w-6xl mx-auto px-6">
-      <h3 class="text-3xl font-bold text-center mb-14">Pourquoi choisir Luxibre Alpha ?</h3>
+      <h3 class="text-3xl font-bold text-center mb-12">Ce que vous obtenez</h3>
       <div class="grid md:grid-cols-3 gap-8">
-        <div class="p-6 bg-gray-50 rounded-xl shadow hover:shadow-lg transition">
-          <div class="text-4xl mb-4">⚡</div>
-          <h4 class="text-xl font-semibold mb-2">Signaux Automatisés</h4>
-          <p class="text-gray-600">Mis à jour chaque jour avec notre système intelligent 100% autonome.</p>
+        <div class="bg-gray-50 p-6 rounded-xl shadow text-center">
+          <div class="text-5xl mb-3">📈</div>
+          <h4 class="text-xl font-semibold mb-2">Signaux Quotidiens</h4>
+          <p class="text-gray-600">Des signaux précis et à jour sur les actions et ETF populaires.</p>
         </div>
-        <div class="p-6 bg-gray-50 rounded-xl shadow hover:shadow-lg transition">
-          <div class="text-4xl mb-4">📈</div>
-          <h4 class="text-xl font-semibold mb-2">Tendance du Marché</h4>
-          <p class="text-gray-600">Visualisez les meilleures opportunités du jour sur notre dashboard clair.</p>
+        <div class="bg-gray-50 p-6 rounded-xl shadow text-center">
+          <div class="text-5xl mb-3">⚡</div>
+          <h4 class="text-xl font-semibold mb-2">Interface Réactive</h4>
+          <p class="text-gray-600">Un dashboard rapide et intuitif, optimisé pour mobile et desktop.</p>
         </div>
-        <div class="p-6 bg-gray-50 rounded-xl shadow hover:shadow-lg transition">
-          <div class="text-4xl mb-4">🔐</div>
-          <h4 class="text-xl font-semibold mb-2">Espace sécurisé</h4>
-          <p class="text-gray-600">Accès membre avec connexion sécurisée. Vos données sont protégées.</p>
+        <div class="bg-gray-50 p-6 rounded-xl shadow text-center">
+          <div class="text-5xl mb-3">🔐</div>
+          <h4 class="text-xl font-semibold mb-2">Espace Premium Sécurisé</h4>
+          <p class="text-gray-600">Réservé aux abonnés, avec données exclusives et mise à jour en temps réel.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- CTA -->
-  <section class="bg-green-600 text-white py-20">
+  <!-- Call to Action -->
+  <section class="py-20 bg-gray-900 text-white">
     <div class="max-w-4xl mx-auto px-6 text-center">
-      <h3 class="text-3xl md:text-4xl font-bold mb-4">Prêt à booster vos investissements ?</h3>
-      <p class="text-lg mb-6">Abonnez-vous maintenant et accédez à des signaux puissants et fiables dès aujourd’hui.</p>
-      <a href="pricing.html" class="bg-white text-green-700 font-semibold px-6 py-3 rounded-xl hover:bg-gray-100 transition">Je m'abonne</a>
+      <h3 class="text-3xl md:text-4xl font-bold mb-4">Prêt à transformer vos investissements ?</h3>
+      <p class="text-lg mb-8">Passez à l’action avec des signaux conçus pour gagner du temps et de l'argent.</p>
+      <a href="pricing.html" class="inline-block px-6 py-3 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl transition">Voir les formules</a>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="py-8 bg-gray-100 text-center text-sm text-gray-600">
-    &copy; 2025 Luxibre Alpha. Tous droits réservés. |
+  <footer class="py-6 bg-gray-100 text-center text-sm text-gray-600">
+    &copy; 2025 Luxibre. Tous droits réservés. |
     <a href="legal/mentions-legales.md" class="underline">Mentions légales</a> |
     <a href="legal/cgu.md" class="underline">CGU</a> |
     <a href="legal/rgpd.md" class="underline">RGPD</a>
   </footer>
 
-  <script src="js/auth-check.js"></script>
+  <!-- Login/Logout logic -->
+  <script>
+    const loginBtn = document.getElementById("loginBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
 
+    netlifyIdentity.on("init", user => {
+      if (user) {
+        loginBtn.classList.add("hidden");
+        logoutBtn.classList.remove("hidden");
+      } else {
+        loginBtn.classList.remove("hidden");
+        logoutBtn.classList.add("hidden");
+      }
+    });
+
+    netlifyIdentity.on("login", () => {
+      location.reload();
+    });
+
+    netlifyIdentity.on("logout", () => {
+      location.reload();
+    });
+
+    loginBtn?.addEventListener("click", () => {
+      netlifyIdentity.open("login");
+    });
+
+    logoutBtn?.addEventListener("click", () => {
+      netlifyIdentity.logout();
+    });
+
+    netlifyIdentity.init();
+  </script>
 </body>
 </html>
