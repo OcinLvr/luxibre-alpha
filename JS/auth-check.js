@@ -1,18 +1,47 @@
-if (typeof netlifyIdentity === 'undefined') {
-  const script = document.createElement('script');
-  script.src = 'https://identity.netlify.com/v1/netlify-identity-widget.js';
-  script.onload = () => netlifyIdentityInit();
-  document.head.appendChild(script);
-} else {
-  netlifyIdentityInit();
-}
+document.addEventListener("DOMContentLoaded", () => {
+  const protectedPages = ["pricing.html", "dashboard.html"];
+  const currentPage = window.location.pathname.split("/").pop();
 
-function netlifyIdentityInit() {
-  netlifyIdentity.on('init', user => {
-    if (!user && window.location.pathname !== '/' && window.location.pathname !== '/index.html') {
-      alert("Vous devez être connecté pour accéder à cette page.");
-      netlifyIdentity.open('login');
+  const showMessage = () => {
+    const message = document.createElement("div");
+    message.textContent = "Veuillez vous connecter pour accéder à cette page.";
+    message.style.cssText = `
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #f87171;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      z-index: 9999;
+    `;
+    document.body.appendChild(message);
+    setTimeout(() => message.remove(), 3000);
+  };
+
+  netlifyIdentity.on("init", user => {
+    if (!user && protectedPages.includes(currentPage)) {
+      showMessage();
+      setTimeout(() => {
+        netlifyIdentity.open("login");
+      }, 800);
     }
   });
+
+  netlifyIdentity.on("login", () => {
+    netlifyIdentity.close();
+    if (protectedPages.includes(currentPage)) {
+      window.location.href = "/dashboard.html";
+    }
+  });
+
+  netlifyIdentity.on("logout", () => {
+    if (protectedPages.includes(currentPage)) {
+      window.location.href = "/";
+    }
+  });
+
   netlifyIdentity.init();
-}
+});
