@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Luxibre - Dashboard</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard - Luxibre Alpha</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -16,28 +16,37 @@
 </head>
 <body class="bg-gray-50 text-gray-900">
 
-  <!-- Header -->
   <header class="py-4 bg-white shadow-md sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
       <h1 class="text-3xl font-bold text-green-600">Luxibre</h1>
-      <nav class="space-x-6 hidden md:flex items-center">
+      <nav class="hidden md:flex space-x-6 items-center">
         <a href="index.html" class="hover:text-green-600 font-medium">Accueil</a>
         <a href="pricing.html" class="hover:text-green-600 font-medium">Abonnement</a>
+        <button id="loginBtn" class="hover:text-green-600 font-medium hidden">Connexion</button>
         <button id="logoutBtn" class="hover:text-green-600 font-medium hidden">Déconnexion</button>
       </nav>
+      <div class="md:hidden">
+        <button id="menuToggle" class="text-green-600 text-2xl">&#9776;</button>
+      </div>
+    </div>
+    <div id="mobileMenu" class="md:hidden hidden px-6 pt-4 pb-2 bg-white space-y-2">
+      <a href="index.html" class="block text-gray-800 hover:text-green-600">Accueil</a>
+      <a href="pricing.html" class="block text-gray-800 hover:text-green-600">Abonnement</a>
+      <button id="mobileLoginBtn" class="block text-left w-full text-gray-800 hover:text-green-600 hidden">Connexion</button>
+      <button id="mobileLogoutBtn" class="block text-left w-full text-gray-800 hover:text-green-600 hidden">Déconnexion</button>
     </div>
   </header>
 
-  <!-- Alert -->
-  <div id="alert" class="hidden bg-yellow-100 text-yellow-800 text-center py-3 text-sm"></div>
+  <main class="max-w-7xl mx-auto px-6 py-12">
+    <h2 class="text-3xl font-bold mb-8 text-center">Vos signaux boursiers</h2>
 
-  <!-- Content -->
-  <main class="max-w-5xl mx-auto px-4 py-10">
-    <h2 class="text-3xl font-bold mb-6 text-center">Vos Signaux</h2>
-    <div id="signals" class="grid md:grid-cols-2 gap-6"></div>
+    <div id="signalsContainer" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
+
+    <div id="premiumNotice" class="text-center mt-10 text-red-600 font-semibold hidden">
+      Vous devez passer à la version Premium pour voir tous les signaux.
+    </div>
   </main>
 
-  <!-- Footer -->
   <footer class="py-10 bg-gray-100">
     <div class="max-w-7xl mx-auto px-6 text-center text-sm text-gray-600">
       &copy; 2025 Luxibre. Tous droits réservés.
@@ -46,46 +55,57 @@
 
   <script src="js/auth-check.js"></script>
   <script>
-    const signalsContainer = document.getElementById('signals');
-    const user = netlifyIdentity.currentUser();
+    netlifyIdentity.on("init", user => {
+      document.getElementById("loginBtn").classList.toggle("hidden", !!user);
+      document.getElementById("logoutBtn").classList.toggle("hidden", !user);
+      document.getElementById("mobileLoginBtn").classList.toggle("hidden", !!user);
+      document.getElementById("mobileLogoutBtn").classList.toggle("hidden", !user);
+    });
 
-    fetch('data/signals.json')
+    document.getElementById("loginBtn").onclick = () => netlifyIdentity.open("login");
+    document.getElementById("logoutBtn").onclick = () => netlifyIdentity.logout();
+    document.getElementById("mobileLoginBtn").onclick = () => netlifyIdentity.open("login");
+    document.getElementById("mobileLogoutBtn").onclick = () => netlifyIdentity.logout();
+    document.getElementById("menuToggle").onclick = () => {
+      const menu = document.getElementById("mobileMenu");
+      menu.classList.toggle("hidden");
+    };
+
+    fetch("data/signals.json")
       .then(res => res.json())
       .then(data => {
-        const premium = user && user.app_metadata.roles?.includes('premium');
+        const container = document.getElementById("signalsContainer");
+        const isPremium = true; // Remplace ceci par un vrai contrôle utilisateur
 
-        data.forEach(signal => {
-          const signalBox = document.createElement('div');
-          signalBox.className = 'bg-white p-6 rounded-lg shadow-md';
-          signalBox.innerHTML = `
-            <h3 class="text-xl font-bold mb-2">${signal.name}</h3>
-            <p class="mb-1">Prix : <span class="font-semibold">${premium ? signal.price + '€' : '<span class=\"blur-sm\">???</span>'}</span></p>
-            <p class="mb-1">Tendance : <span class="font-semibold">${premium ? signal.trend : '<span class=\"blur-sm\">???</span>'}</span></p>
-            <canvas id="chart-${signal.id}" height="100"></canvas>
+        data.signals.forEach((signal, index) => {
+          if (!isPremium && index >= 3) return document.getElementById("premiumNotice").classList.remove("hidden");
+
+          const card = document.createElement("div");
+          card.className = "bg-white p-6 rounded-xl shadow-md";
+          card.innerHTML = `
+            <h3 class="text-xl font-semibold text-green-700 mb-2">${signal.name}</h3>
+            <p class="text-gray-600 mb-4">Prix actuel : <strong>${signal.price}€</strong></p>
+            <canvas id="chart-${index}" class="w-full h-32"></canvas>
           `;
-          signalsContainer.appendChild(signalBox);
+          container.appendChild(card);
 
-          const ctx = document.getElementById(`chart-${signal.id}`).getContext('2d');
-          new Chart(ctx, {
+          new Chart(document.getElementById(`chart-${index}`), {
             type: 'line',
             data: {
-              labels: signal.history.map(h => h.date),
+              labels: signal.history.map((_, i) => i),
               datasets: [{
-                label: 'Historique',
-                data: signal.history.map(h => h.price),
-                borderColor: '#10B981',
-                fill: false
+                label: 'Évolution',
+                data: signal.history,
+                backgroundColor: 'rgba(16,185,129,0.1)',
+                borderColor: 'rgba(16,185,129,1)',
+                fill: true,
               }]
             },
-            options: {
-              responsive: true,
-              plugins: {
-                legend: { display: false }
-              }
-            }
+            options: { scales: { x: { display: false }, y: { display: false } }, plugins: { legend: { display: false } } }
           });
         });
       });
   </script>
+
 </body>
 </html>
