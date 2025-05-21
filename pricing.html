@@ -2,48 +2,90 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tarifs - Luxibre Alpha</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Abonnement - Luxibre Alpha</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
 </head>
-<body class="bg-gray-900 text-white">
+<body class="bg-gray-50 text-gray-900">
 
-  <header class="p-6 flex justify-between items-center bg-gray-800 shadow-md">
-    <h1 class="text-2xl font-bold">Luxibre Alpha</h1>
-    <nav class="space-x-4">
-      <a href="/index.html" class="hover:underline">Accueil</a>
-      <a href="/dashboard.html" class="hover:underline">Dashboard</a>
-      <a href="/login.html" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded">Connexion</a>
-    </nav>
+  <!-- Header -->
+  <header class="bg-white shadow sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-green-600">Luxibre Alpha</h1>
+      <nav class="space-x-6 hidden md:flex items-center text-sm font-medium">
+        <a href="index.html" class="hover:text-green-600">Accueil</a>
+        <a href="pricing.html" class="text-green-600 font-semibold">Abonnement</a>
+        <a href="dashboard.html" class="hover:text-green-600">Dashboard</a>
+        <button id="logoutBtn" class="hover:text-green-600 hidden">Déconnexion</button>
+      </nav>
+    </div>
   </header>
 
-  <main class="text-center py-20 px-4">
-    <h2 class="text-4xl font-bold mb-8">Choisissez votre plan</h2>
-    <div class="flex flex-col md:flex-row justify-center items-stretch gap-8 max-w-5xl mx-auto">
+  <!-- Pricing content -->
+  <main class="max-w-4xl mx-auto px-6 py-16 text-center">
+    <h2 class="text-4xl font-bold mb-6">Choisissez votre abonnement</h2>
+    <p class="text-gray-600 mb-12">Accédez à des signaux boursiers puissants et exclusifs dès aujourd’hui.</p>
 
+    <div class="grid md:grid-cols-2 gap-8">
       <!-- Gratuit -->
-      <div class="bg-gray-800 p-8 rounded-lg w-full md:w-1/2">
-        <h3 class="text-2xl font-semibold mb-4">Gratuit</h3>
-        <p class="mb-6">Accédez à un signal par jour, données de base</p>
-        <p class="text-3xl font-bold mb-6">0€ / mois</p>
-        <a href="/login.html" class="bg-gray-600 hover:bg-gray-700 px-5 py-2 rounded text-white">Commencer</a>
+      <div class="bg-white p-6 rounded-xl shadow border">
+        <h3 class="text-2xl font-semibold text-gray-800 mb-4">Gratuit</h3>
+        <p class="text-3xl font-bold mb-2">0 €</p>
+        <ul class="text-gray-600 mb-6 space-y-2">
+          <li>Signaux limités (1 par jour)</li>
+          <li>Accès partiel au dashboard</li>
+        </ul>
+        <a href="dashboard.html" class="inline-block bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600 transition">Commencer</a>
       </div>
 
       <!-- Premium -->
-      <div class="bg-green-600 p-8 rounded-lg w-full md:w-1/2 text-white">
+      <div class="bg-green-600 text-white p-6 rounded-xl shadow border border-green-700">
         <h3 class="text-2xl font-semibold mb-4">Premium</h3>
-        <p class="mb-6">Tous les signaux en temps réel, données détaillées</p>
-        <p class="text-3xl font-bold mb-6">5€ / mois</p>
-        <button id="subscribeBtn" class="bg-white text-green-700 px-5 py-2 rounded hover:bg-gray-200">S'abonner</button>
+        <p class="text-3xl font-bold mb-2">5 €/mois</p>
+        <ul class="mb-6 space-y-2">
+          <li>Accès à tous les signaux</li>
+          <li>Notifications quotidiennes</li>
+          <li>Support prioritaire</li>
+        </ul>
+        <a href="checkout.html" class="inline-block bg-white text-green-700 font-semibold px-6 py-2 rounded hover:bg-gray-100 transition">S’abonner</a>
       </div>
-
     </div>
   </main>
 
-  <footer class="text-center text-sm py-6 bg-gray-800">
-    © 2025 Luxibre Alpha. Tous droits réservés.
+  <!-- Footer -->
+  <footer class="py-6 bg-gray-100 text-center text-sm text-gray-600">
+    &copy; 2025 Luxibre. Tous droits réservés.
   </footer>
 
-  <script src="/js/stripe.js"></script>
+  <!-- Auth check -->
+  <script src="js/auth-check.js"></script>
+
+  <!-- Logout -->
+  <script>
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    netlifyIdentity.on("init", user => {
+      if (user) {
+        logoutBtn.classList.remove("hidden");
+      }
+    });
+
+    netlifyIdentity.on("logout", () => {
+      window.location.href = "/index.html";
+    });
+
+    logoutBtn?.addEventListener("click", () => {
+      netlifyIdentity.logout();
+    });
+
+    netlifyIdentity.init();
+  </script>
 </body>
 </html>
