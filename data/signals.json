@@ -1,18 +1,17 @@
 [
   {
-    "symbol": "DE000A2QP372",
-    "name": "iShares EURO STOXX Banks",
-    "price": 15.35,
-    "signal": "Acheter",
-    "confidence": 0.82,
-    "lastUpdated": "2025-05-20T08:00:00Z"
+    "title": "ETF iShares EURO STOXX Banks",
+    "description": "Signal détecté par IA. Tendance haussière probable.",
+    "recommendation": "💹 Acheter"
   },
   {
-    "symbol": "AAPL",
-    "name": "Apple Inc.",
-    "price": 186.10,
-    "signal": "Vendre",
-    "confidence": 0.78,
-    "lastUpdated": "2025-05-20T08:00:00Z"
+    "title": "Apple Inc.",
+    "description": "Volatilité modérée, hausse en formation.",
+    "recommendation": "📈 Conserver"
+  },
+  {
+    "title": "Tesla Inc.",
+    "description": "Tendance baissière confirmée.",
+    "recommendation": "🔻 Vendre"
   }
 ]
