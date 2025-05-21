@@ -95,24 +95,27 @@
   </footer>
 
   <!-- Scripts -->
-  <script src="js/auth-check.js"></script>
   <script>
-    netlifyIdentity.on("init", user => {
-      document.getElementById("loginBtn").classList.toggle("hidden", !!user);
-      document.getElementById("logoutBtn").classList.toggle("hidden", !user);
-      document.getElementById("mobileLoginBtn").classList.toggle("hidden", !!user);
-      document.getElementById("mobileLogoutBtn").classList.toggle("hidden", !user);
+    // Boutons de redirection vers login.html
+    document.getElementById("loginBtn").addEventListener("click", () => {
+      window.location.href = "login.html";
+    });
+    document.getElementById("mobileLoginBtn").addEventListener("click", () => {
+      window.location.href = "login.html";
     });
 
-    document.getElementById("loginBtn").onclick = () => netlifyIdentity.open("login");
-    document.getElementById("logoutBtn").onclick = () => netlifyIdentity.logout();
-    document.getElementById("mobileLoginBtn").onclick = () => netlifyIdentity.open("login");
-    document.getElementById("mobileLogoutBtn").onclick = () => netlifyIdentity.logout();
+    // Menu mobile toggle
+    document.getElementById("menuToggle").addEventListener("click", () => {
+      document.getElementById("mobileMenu").classList.toggle("hidden");
+    });
 
-    document.getElementById("menuToggle").onclick = () => {
-      const menu = document.getElementById("mobileMenu");
-      menu.classList.toggle("hidden");
-    };
+    // Placeholder pour logout futur avec Supabase
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      console.log("Déconnexion Supabase à implémenter");
+    });
+    document.getElementById("mobileLogoutBtn").addEventListener("click", () => {
+      console.log("Déconnexion Supabase à implémenter");
+    });
   </script>
 
 </body>
