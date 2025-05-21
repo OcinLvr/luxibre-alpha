@@ -2,87 +2,48 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Offres d'abonnement - Luxibre</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tarifs - Luxibre Alpha</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-50 text-gray-900">
+<body class="bg-gray-900 text-white">
 
-  <header class="bg-white shadow">
-    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-      <a href="../index.html" class="text-2xl font-bold text-green-600">Luxibre</a>
-      <nav class="space-x-6 text-sm font-medium">
-        <a href="../index.html" class="hover:text-green-600">Accueil</a>
-        <a href="pricing.html" class="text-green-600 underline">Abonnement</a>
-        <a href="../login.html" class="hover:text-green-600">Connexion</a>
-      </nav>
-    </div>
+  <header class="p-6 flex justify-between items-center bg-gray-800 shadow-md">
+    <h1 class="text-2xl font-bold">Luxibre Alpha</h1>
+    <nav class="space-x-4">
+      <a href="/index.html" class="hover:underline">Accueil</a>
+      <a href="/dashboard.html" class="hover:underline">Dashboard</a>
+      <a href="/login.html" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded">Connexion</a>
+    </nav>
   </header>
 
-  <section class="py-20">
-    <div class="container mx-auto px-4 text-center">
-      <h2 class="text-3xl font-extrabold mb-4">Choisissez votre abonnement</h2>
-      <p class="text-gray-600 max-w-2xl mx-auto mb-12">
-        Optez pour la formule qui correspond à vos besoins. Testez le Premium sans risque : aucun engagement, annulation possible à tout moment.
-      </p>
+  <main class="text-center py-20 px-4">
+    <h2 class="text-4xl font-bold mb-8">Choisissez votre plan</h2>
+    <div class="flex flex-col md:flex-row justify-center items-stretch gap-8 max-w-5xl mx-auto">
 
-      <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-        
-        <!-- Freemium -->
-        <div class="bg-white p-8 rounded-lg shadow-sm border border-gray-200">
-          <h3 class="text-xl font-semibold mb-2">Freemium</h3>
-          <p class="text-4xl font-bold mb-6 text-gray-800">Gratuit</p>
-          <ul class="text-left space-y-2 text-gray-700 mb-6">
-            <li>✔️ 3 signaux par semaine</li>
-            <li>✔️ Accès aux archives</li>
-            <li>✖️ Pas de graphiques interactifs</li>
-            <li>✖️ Aucun support prioritaire</li>
-          </ul>
-          <button class="w-full py-3 bg-gray-200 rounded hover:bg-gray-300 cursor-not-allowed">
-            Inclus automatiquement
-          </button>
-        </div>
-
-        <!-- Premium -->
-        <div class="bg-white p-8 rounded-lg shadow-md border-2 border-green-500 relative">
-          <div class="absolute top-0 right-0 bg-green-500 text-white text-xs px-3 py-1 rounded-bl-lg">Recommandé</div>
-          <h3 class="text-xl font-semibold mb-2">Premium</h3>
-          <p class="text-4xl font-bold mb-2 text-green-600">5€/mois</p>
-          <p class="text-sm text-gray-500 mb-6">Accès complet pour un prix imbattable</p>
-          <ul class="text-left space-y-2 text-gray-700 mb-6">
-            <li>✔️ Signaux quotidiens fiables</li>
-            <li>✔️ Graphiques interactifs</li>
-            <li>✔️ Analyse technique simplifiée</li>
-            <li>✔️ Support prioritaire</li>
-          </ul>
-          <button id="checkout-button" class="w-full py-3 bg-green-600 text-white rounded hover:bg-green-700 transition">
-            Commencer dès aujourd’hui
-          </button>
-        </div>
+      <!-- Gratuit -->
+      <div class="bg-gray-800 p-8 rounded-lg w-full md:w-1/2">
+        <h3 class="text-2xl font-semibold mb-4">Gratuit</h3>
+        <p class="mb-6">Accédez à un signal par jour, données de base</p>
+        <p class="text-3xl font-bold mb-6">0€ / mois</p>
+        <a href="/login.html" class="bg-gray-600 hover:bg-gray-700 px-5 py-2 rounded text-white">Commencer</a>
       </div>
 
-      <!-- Conditions d'abonnement -->
-      <div class="mt-16 max-w-3xl mx-auto text-sm text-gray-600 text-left bg-white p-6 rounded-lg shadow-sm border">
-        <h4 class="text-lg font-bold mb-2 text-gray-800">Conditions de l’abonnement Premium :</h4>
-        <ul class="list-disc pl-5 space-y-2">
-          <li>L’abonnement est sans engagement, vous pouvez annuler à tout moment.</li>
-          <li>En cas d’annulation, l’abonnement reste actif jusqu’à 30 jours après la date de paiement.</li>
-          <li>⚠️ Aucun remboursement n’est possible après validation du paiement.</li>
-          <li>Le tarif est fixe à 5€ TTC par mois, sauf évolution notifiée à l’avance.</li>
-        </ul>
+      <!-- Premium -->
+      <div class="bg-green-600 p-8 rounded-lg w-full md:w-1/2 text-white">
+        <h3 class="text-2xl font-semibold mb-4">Premium</h3>
+        <p class="mb-6">Tous les signaux en temps réel, données détaillées</p>
+        <p class="text-3xl font-bold mb-6">5€ / mois</p>
+        <button id="subscribeBtn" class="bg-white text-green-700 px-5 py-2 rounded hover:bg-gray-200">S'abonner</button>
       </div>
-    </div>
-  </section>
 
-  <footer class="py-10 bg-gray-100 mt-20">
-    <div class="container mx-auto px-4 text-center text-sm text-gray-600">
-      &copy; 2025 Luxibre. Tous droits réservés.
     </div>
+  </main>
+
+  <footer class="text-center text-sm py-6 bg-gray-800">
+    © 2025 Luxibre Alpha. Tous droits réservés.
   </footer>
 
-  <!-- Stripe -->
-  <script src="https://js.stripe.com/v3/"></script>
-  <script src="../js/stripe.js"></script>
-
+  <script src="/js/stripe.js"></script>
 </body>
 </html>
