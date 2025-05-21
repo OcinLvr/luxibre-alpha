@@ -3,50 +3,84 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard - Luxibre Alpha</title>
+  <title>Tableau de bord - Luxibre Alpha</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body class="bg-gray-900 text-white">
+<body class="bg-gray-100 text-gray-800">
 
-  <header class="p-6 flex justify-between items-center bg-gray-800 shadow-md">
-    <h1 class="text-2xl font-bold">Luxibre Alpha</h1>
-    <button id="logoutBtn" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded">Déconnexion</button>
-  </header>
+  <nav class="bg-white shadow-md px-4 py-3 flex justify-between items-center">
+    <h1 class="text-2xl font-bold text-indigo-600">Luxibre Alpha</h1>
+    <button onclick="logout()" class="text-sm text-red-500 hover:underline">Se déconnecter</button>
+  </nav>
 
-  <main class="p-6">
-    <h2 class="text-3xl font-bold mb-6">Signaux du jour</h2>
-    <div id="signals" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <!-- Cartes signaux -->
+  <main class="p-6 max-w-4xl mx-auto">
+    <h2 class="text-xl font-semibold mb-4">Signaux Boursiers</h2>
+
+    <div id="signals-container" class="grid md:grid-cols-2 gap-4">
+
+      <!-- Signal gratuit -->
+      <div class="bg-white p-4 rounded shadow">
+        <h3 class="text-lg font-bold">Signal Gratuit</h3>
+        <p class="text-sm mt-1">Acheter l'action ABC à 9h30</p>
+      </div>
+
+      <!-- Signal premium 1 -->
+      <div class="premium bg-white p-4 rounded shadow">
+        <h3 class="text-lg font-bold text-indigo-600">Signal Premium</h3>
+        <p class="text-sm mt-1">Acheter l'action XYZ à 10h00</p>
+      </div>
+
+      <!-- Signal premium 2 -->
+      <div class="premium bg-white p-4 rounded shadow">
+        <h3 class="text-lg font-bold text-indigo-600">Signal Premium</h3>
+        <p class="text-sm mt-1">Vendre l'action DEF à 14h15</p>
+      </div>
+
     </div>
   </main>
 
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <script src="/js/auth-check.js"></script>
-  <script src="/js/dashboard.js"></script>
   <script>
-  async function checkUserRole() {
-    const userEmail = localStorage.getItem("userEmail");
-    if (!userEmail) return;
+    netlifyIdentity.on("init", user => {
+      if (!user) netlifyIdentity.open();
+      else {
+        localStorage.setItem("userEmail", user.email);
+        checkUserRole();
+      }
+    });
 
-    const res = await fetch(`/.netlify/functions/get-role?email=${userEmail}`);
-    const data = await res.json();
+    netlifyIdentity.on("login", user => {
+      localStorage.setItem("userEmail", user.email);
+      netlifyIdentity.close();
+      checkUserRole();
+    });
 
-    if (data.role !== "premium") {
-      document.querySelectorAll(".premium").forEach(el => {
-        el.classList.add("blur-sm", "pointer-events-none");
-      });
-      const message = document.createElement("div");
-      message.innerHTML = `
-        <div class="text-center bg-yellow-200 text-yellow-800 p-3 rounded mt-4">
-          Ce contenu est réservé aux membres Premium.
-          <a href="/pricing.html" class="underline ml-2">Passer à Premium</a>
-        </div>`;
-      document.querySelector("#signals-container").appendChild(message);
+    function logout() {
+      localStorage.removeItem("userEmail");
+      netlifyIdentity.logout();
+      location.reload();
     }
-  }
 
-  checkUserRole();
-</script>
+    async function checkUserRole() {
+      const email = localStorage.getItem("userEmail");
+      if (!email) return;
 
+      const res = await fetch(`/.netlify/functions/get-role?email=${email}`);
+      const data = await res.json();
+
+      if (data.role !== "premium") {
+        document.querySelectorAll(".premium").forEach(el => {
+          el.classList.add("blur-sm", "pointer-events-none");
+        });
+        const msg = document.createElement("div");
+        msg.innerHTML = `
+          <div class="col-span-2 bg-yellow-100 text-yellow-800 text-sm text-center p-3 rounded">
+            Ce contenu est réservé aux membres Premium.
+            <a href="/pricing.html" class="text-indigo-600 underline ml-2">Passer à Premium</a>
+          </div>`;
+        document.getElementById("signals-container").appendChild(msg);
+      }
+    }
+  </script>
 </body>
 </html>
