@@ -1,32 +1,32 @@
-name: Update Daily Signals
+name: Mettre à jour les signaux
 
 on:
   schedule:
-    - cron: "0 6 * * *" # Tous les jours à 6h UTC
-  workflow_dispatch: # Permet le déclenchement manuel si besoin
+    - cron: '0 7-15 * * 1-5' # 9h à 17h heure de Paris (UTC+2 => UTC 7h à 15h)
+  workflow_dispatch:
 
 jobs:
-  update:
+  update-signals:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
+      - name: Cloner le repo
+        uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Configurer Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: '18'
 
-      - name: Install dependencies
+      - name: Installer les dépendances
         run: npm install
 
-      - name: Generate signals
+      - name: Générer les signaux
         run: node scripts/generate-signals.js
 
-      - name: Commit and push changes
+      - name: Commit & Push
         run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
+          git config --global user.name 'luxibre-bot'
+          git config --global user.email 'bot@luxibre.com'
           git add data/signals.json
-          git commit -m "Mise à jour automatique des signaux"
+          git commit -m "MàJ automatique des signaux"
           git push
