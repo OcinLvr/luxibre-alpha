@@ -3,58 +3,86 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Inscription – Luxibre Alpha</title>
-  <link href="styles.css" rel="stylesheet" />
+  <title>Créer un compte – Luxibre Alpha</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: #f1f5f9;
+      font-family: sans-serif;
+    }
+    .signup-container {
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #cbd5e0;
+      border-radius: 0.5rem;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #3b82f6;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
+    .error {
+      color: red;
+      margin-bottom: 1rem;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Créer un compte</h1>
-    <form id="signup-form">
-      <input type="email" id="email" placeholder="Email" required />
-      <input type="password" id="password" placeholder="Mot de passe" required />
-      <button type="submit">S'inscrire</button>
-    </form>
-    <p id="message"></p>
+  <div class="signup-container">
+    <h2>Créer un compte</h2>
+    <div class="error" id="error"></div>
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="password" id="password" placeholder="Mot de passe" required />
+    <button onclick="signup()">S'inscrire</button>
+    <p style="margin-top:1rem; text-align:center;">
+      Déjà inscrit ? <a href="login.html">Se connecter</a>
+    </p>
   </div>
 
-  <script type="module">
-    import { supabase } from './scripts/supabase.js';
+  <script>
+    const supabase = supabase.createClient(
+      'https://jrgdwozxcilasllpvikh.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpyZ2R3b3p4Y2lsYXNsbHB2aWtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4MjQ0NTEsImV4cCI6MjA2MzQwMDQ1MX0.S2oGP2rdtq1IkW-oH5mC8omm698PdCgQJtGVLlIFj3w'
+    );
 
-    const form = document.getElementById('signup-form');
-    const message = document.getElementById('message');
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const email = document.getElementById('email').value.trim();
+    async function signup() {
+      const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
-
       const { data, error } = await supabase.auth.signUp({
         email,
         password
       });
 
+      const errorBox = document.getElementById('error');
       if (error) {
-        message.textContent = 'Erreur : ' + error.message;
-        return;
-      }
-
-      // Ajouter un rôle dans la table users (par défaut : gratuit)
-      const userId = data.user?.id;
-      if (userId) {
-        const { error: dbError } = await supabase
-          .from('users')
-          .insert([{ id: userId, email, role: 'gratuit' }]);
-
-        if (dbError) {
-          message.textContent = 'Compte créé, mais erreur base de données.';
-          console.error(dbError);
-        } else {
-          message.textContent = 'Inscription réussie. Vérifiez vos emails.';
-        }
+        errorBox.textContent = error.message;
       } else {
-        message.textContent = 'Inscription réussie. Vérifiez vos emails.';
+        errorBox.textContent = "";
+        alert("Vérifie ta boîte mail pour confirmer ton inscription !");
+        window.location.href = "login.html";
       }
-    });
+    }
   </script>
 </body>
 </html>
