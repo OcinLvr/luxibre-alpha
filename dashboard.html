@@ -1,79 +1,91 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dashboard - Luxibre Alpha</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luxibre - Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
       font-family: 'Inter', sans-serif;
     }
   </style>
 </head>
-<body class="bg-gray-100 text-gray-900">
+<body class="bg-gray-50 text-gray-900">
 
   <!-- Header -->
-  <header class="bg-white shadow sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-      <h1 class="text-2xl font-bold text-green-600">Luxibre Alpha</h1>
-      <nav class="space-x-6 hidden md:flex items-center text-sm font-medium">
-        <a href="index.html" class="hover:text-green-600">Accueil</a>
-        <a href="pricing.html" class="hover:text-green-600">Abonnement</a>
-        <a href="dashboard.html" class="text-green-600 font-semibold">Dashboard</a>
-        <button id="logoutBtn" class="hover:text-green-600 hidden">Déconnexion</button>
+  <header class="py-4 bg-white shadow-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
+      <h1 class="text-3xl font-bold text-green-600">Luxibre</h1>
+      <nav class="space-x-6 hidden md:flex items-center">
+        <a href="index.html" class="hover:text-green-600 font-medium">Accueil</a>
+        <a href="pricing.html" class="hover:text-green-600 font-medium">Abonnement</a>
+        <button id="logoutBtn" class="hover:text-green-600 font-medium hidden">Déconnexion</button>
       </nav>
     </div>
   </header>
 
-  <!-- Dashboard content -->
-  <main class="max-w-6xl mx-auto px-6 py-12">
-    <h2 class="text-3xl font-bold mb-8">Vos signaux boursiers</h2>
+  <!-- Alert -->
+  <div id="alert" class="hidden bg-yellow-100 text-yellow-800 text-center py-3 text-sm"></div>
 
-    <div class="grid md:grid-cols-2 gap-6">
-      <div class="bg-white p-6 rounded-xl shadow">
-        <h3 class="text-xl font-semibold mb-2">ETF EURO STOXX Banks</h3>
-        <p class="text-green-600 font-bold text-2xl">Acheter</p>
-        <p class="text-sm text-gray-500 mt-1">Basé sur l'analyse du jour.</p>
-      </div>
-      <div class="bg-white p-6 rounded-xl shadow">
-        <h3 class="text-xl font-semibold mb-2">Tesla Inc.</h3>
-        <p class="text-red-600 font-bold text-2xl">Vendre</p>
-        <p class="text-sm text-gray-500 mt-1">Signal généré automatiquement.</p>
-      </div>
-    </div>
+  <!-- Content -->
+  <main class="max-w-5xl mx-auto px-4 py-10">
+    <h2 class="text-3xl font-bold mb-6 text-center">Vos Signaux</h2>
+    <div id="signals" class="grid md:grid-cols-2 gap-6"></div>
   </main>
 
   <!-- Footer -->
-  <footer class="py-6 bg-gray-100 text-center text-sm text-gray-600">
-    &copy; 2025 Luxibre. Tous droits réservés.
+  <footer class="py-10 bg-gray-100">
+    <div class="max-w-7xl mx-auto px-6 text-center text-sm text-gray-600">
+      &copy; 2025 Luxibre. Tous droits réservés.
+    </div>
   </footer>
 
-  <!-- Auth check -->
   <script src="js/auth-check.js"></script>
-
-  <!-- Logout -->
   <script>
-    const logoutBtn = document.getElementById("logoutBtn");
+    const signalsContainer = document.getElementById('signals');
+    const user = netlifyIdentity.currentUser();
 
-    netlifyIdentity.on("init", user => {
-      if (user) {
-        logoutBtn.classList.remove("hidden");
-      }
-    });
+    fetch('data/signals.json')
+      .then(res => res.json())
+      .then(data => {
+        const premium = user && user.app_metadata.roles?.includes('premium');
 
-    netlifyIdentity.on("logout", () => {
-      window.location.href = "/index.html";
-    });
+        data.forEach(signal => {
+          const signalBox = document.createElement('div');
+          signalBox.className = 'bg-white p-6 rounded-lg shadow-md';
+          signalBox.innerHTML = `
+            <h3 class="text-xl font-bold mb-2">${signal.name}</h3>
+            <p class="mb-1">Prix : <span class="font-semibold">${premium ? signal.price + '€' : '<span class=\"blur-sm\">???</span>'}</span></p>
+            <p class="mb-1">Tendance : <span class="font-semibold">${premium ? signal.trend : '<span class=\"blur-sm\">???</span>'}</span></p>
+            <canvas id="chart-${signal.id}" height="100"></canvas>
+          `;
+          signalsContainer.appendChild(signalBox);
 
-    logoutBtn?.addEventListener("click", () => {
-      netlifyIdentity.logout();
-    });
-
-    netlifyIdentity.init();
+          const ctx = document.getElementById(`chart-${signal.id}`).getContext('2d');
+          new Chart(ctx, {
+            type: 'line',
+            data: {
+              labels: signal.history.map(h => h.date),
+              datasets: [{
+                label: 'Historique',
+                data: signal.history.map(h => h.price),
+                borderColor: '#10B981',
+                fill: false
+              }]
+            },
+            options: {
+              responsive: true,
+              plugins: {
+                legend: { display: false }
+              }
+            }
+          });
+        });
+      });
   </script>
-
 </body>
 </html>
