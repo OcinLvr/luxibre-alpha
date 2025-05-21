@@ -2,47 +2,85 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Connexion – Luxibre Alpha</title>
-  <link href="styles.css" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background: #f1f5f9;
+      font-family: sans-serif;
+    }
+    .login-container {
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #cbd5e0;
+      border-radius: 0.5rem;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #10b981;
+      color: white;
+      font-weight: bold;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
+    .error {
+      color: red;
+      margin-bottom: 1rem;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Connexion</h1>
-    <form id="login-form">
-      <input type="email" id="email" placeholder="Email" required />
-      <input type="password" id="password" placeholder="Mot de passe" required />
-      <button type="submit">Se connecter</button>
-    </form>
-    <p id="message"></p>
+  <div class="login-container">
+    <h2>Connexion à Luxibre Alpha</h2>
+    <div class="error" id="error"></div>
+    <input type="email" id="email" placeholder="Email" required />
+    <input type="password" id="password" placeholder="Mot de passe" required />
+    <button onclick="login()">Se connecter</button>
+    <p style="margin-top:1rem; text-align:center;">
+      Pas encore de compte ? <a href="signup.html">Créer un compte</a>
+    </p>
   </div>
 
-  <script type="module">
-    import { supabase } from './scripts/supabase.js';
+  <script>
+    const supabase = supabase.createClient(
+      'https://jrgdwozxcilasllpvikh.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpyZ2R3b3p4Y2lsYXNsbHB2aWtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4MjQ0NTEsImV4cCI6MjA2MzQwMDQ1MX0.S2oGP2rdtq1IkW-oH5mC8omm698PdCgQJtGVLlIFj3w'
+    );
 
-    const form = document.getElementById('login-form');
-    const message = document.getElementById('message');
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const email = document.getElementById('email').value.trim();
+    async function login() {
+      const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
-
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password
       });
-
+      const errorBox = document.getElementById('error');
       if (error) {
-        message.textContent = 'Erreur : ' + error.message;
+        errorBox.textContent = error.message;
       } else {
-        message.textContent = 'Connexion réussie. Redirection...';
-        setTimeout(() => {
-          window.location.href = 'dashboard.html';
-        }, 1000);
+        errorBox.textContent = "";
+        window.location.href = "dashboard.html";
       }
-    });
+    }
   </script>
 </body>
 </html>
