@@ -6,7 +6,6 @@
   <title>Abonnement - Luxibre Alpha</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -22,7 +21,7 @@
       <nav class="hidden md:flex space-x-6 items-center">
         <a href="index.html" class="hover:text-green-600 font-medium">Accueil</a>
         <a href="pricing.html" class="hover:text-green-600 font-medium">Abonnement</a>
-        <button id="loginBtn" class="hover:text-green-600 font-medium hidden">Connexion</button>
+        <button id="loginBtn" class="hover:text-green-600 font-medium">Connexion</button>
         <button id="logoutBtn" class="hover:text-green-600 font-medium hidden">Déconnexion</button>
       </nav>
       <div class="md:hidden">
@@ -32,7 +31,7 @@
     <div id="mobileMenu" class="md:hidden hidden px-6 pt-4 pb-2 bg-white space-y-2">
       <a href="index.html" class="block text-gray-800 hover:text-green-600">Accueil</a>
       <a href="pricing.html" class="block text-gray-800 hover:text-green-600">Abonnement</a>
-      <button id="mobileLoginBtn" class="block text-left w-full text-gray-800 hover:text-green-600 hidden">Connexion</button>
+      <button id="mobileLoginBtn" class="block text-left w-full text-gray-800 hover:text-green-600">Connexion</button>
       <button id="mobileLogoutBtn" class="block text-left w-full text-gray-800 hover:text-green-600 hidden">Déconnexion</button>
     </div>
   </header>
@@ -82,24 +81,27 @@
   </footer>
 
   <!-- Scripts -->
-  <script src="js/auth-check.js"></script>
   <script>
-    netlifyIdentity.on("init", user => {
-      document.getElementById("loginBtn").classList.toggle("hidden", !!user);
-      document.getElementById("logoutBtn").classList.toggle("hidden", !user);
-      document.getElementById("mobileLoginBtn").classList.toggle("hidden", !!user);
-      document.getElementById("mobileLogoutBtn").classList.toggle("hidden", !user);
+    // Boutons de redirection vers login.html
+    document.getElementById("loginBtn").addEventListener("click", () => {
+      window.location.href = "login.html";
+    });
+    document.getElementById("mobileLoginBtn").addEventListener("click", () => {
+      window.location.href = "login.html";
     });
 
-    document.getElementById("loginBtn").onclick = () => netlifyIdentity.open("login");
-    document.getElementById("logoutBtn").onclick = () => netlifyIdentity.logout();
-    document.getElementById("mobileLoginBtn").onclick = () => netlifyIdentity.open("login");
-    document.getElementById("mobileLogoutBtn").onclick = () => netlifyIdentity.logout();
+    // Menu mobile toggle
+    document.getElementById("menuToggle").addEventListener("click", () => {
+      document.getElementById("mobileMenu").classList.toggle("hidden");
+    });
 
-    document.getElementById("menuToggle").onclick = () => {
-      const menu = document.getElementById("mobileMenu");
-      menu.classList.toggle("hidden");
-    };
+    // Placeholder pour logout futur avec Supabase
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      console.log("Déconnexion Supabase à implémenter");
+    });
+    document.getElementById("mobileLogoutBtn").addEventListener("click", () => {
+      console.log("Déconnexion Supabase à implémenter");
+    });
   </script>
 
 </body>
