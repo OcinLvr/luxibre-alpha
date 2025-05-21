@@ -1,47 +1,16 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   const protectedPages = ["pricing.html", "dashboard.html"];
   const currentPage = window.location.pathname.split("/").pop();
 
-  const showMessage = () => {
-    const message = document.createElement("div");
-    message.textContent = "Veuillez vous connecter pour accéder à cette page.";
-    message.style.cssText = `
-      position: fixed;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: #f87171;
-      color: white;
-      padding: 12px 20px;
-      border-radius: 8px;
-      font-weight: bold;
-      z-index: 9999;
-    `;
-    document.body.appendChild(message);
-    setTimeout(() => message.remove(), 3000);
-  };
+  const supabase = supabase.createClient(
+    'https://jrgdwozxcilasllpvikh.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpyZ2R3b3p4Y2lsYXNsbHB2aWtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4MjQ0NTEsImV4cCI6MjA2MzQwMDQ1MX0.S2oGP2rdtq1IkW-oH5mC8omm698PdCgQJtGVLlIFj3w'
+  );
 
-  netlifyIdentity.on("init", user => {
-    if (!user && protectedPages.includes(currentPage)) {
-      showMessage();
-      setTimeout(() => {
-        netlifyIdentity.open("login");
-      }, 800);
-    }
-  });
+  const { data: { session } } = await supabase.auth.getSession();
 
-  netlifyIdentity.on("login", () => {
-    netlifyIdentity.close();
-    if (protectedPages.includes(currentPage)) {
-      window.location.href = "/dashboard.html";
-    }
-  });
-
-  netlifyIdentity.on("logout", () => {
-    if (protectedPages.includes(currentPage)) {
-      window.location.href = "/";
-    }
-  });
-
-  netlifyIdentity.init();
+  if (!session && protectedPages.includes(currentPage)) {
+    alert("Veuillez vous connecter pour accéder à cette page.");
+    window.location.href = "login.html";
+  }
 });
