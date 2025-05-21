@@ -1,31 +1,23 @@
 const fs = require('fs');
 const path = require('path');
 
-const today = new Date().toLocaleDateString("fr-FR");
+const actions = ['Acheter', 'Vendre'];
+const stocks = ['BNP', 'Société Générale', 'AXA', 'TotalEnergies', 'Airbus', 'LVMH'];
+const now = new Date().toISOString();
 
-const signals = [
-  {
-    title: "ETF iShares EURO STOXX Banks",
-    description: `Analyse du ${today} : rebond technique en cours.`,
-    recommendation: "💹 Acheter"
-  },
-  {
-    title: "Apple Inc.",
-    description: `Analyse du ${today} : momentum positif.`,
-    recommendation: "📈 Conserver"
-  },
-  {
-    title: "Tesla Inc.",
-    description: `Analyse du ${today} : surévaluation probable.`,
-    recommendation: "🔻 Vendre"
-  }
-];
+function randomSignal() {
+  return {
+    action: actions[Math.floor(Math.random() * actions.length)],
+    titre: stocks[Math.floor(Math.random() * stocks.length)],
+    heure: new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' }),
+    date: new Date().toLocaleDateString('fr-FR'),
+    premium: Math.random() > 0.5
+  };
+}
 
-// Écrit dans data/signals.json
-fs.writeFileSync(
-  path.join(__dirname, '../data/signals.json'),
-  JSON.stringify(signals, null, 2),
-  'utf-8'
-);
+const signals = Array.from({ length: 5 }, () => randomSignal());
 
-console.log("Signaux mis à jour avec succès.");
+const filePath = path.join(__dirname, '../data/signals.json');
+fs.writeFileSync(filePath, JSON.stringify(signals, null, 2));
+
+console.log('Signaux mis à jour.');
