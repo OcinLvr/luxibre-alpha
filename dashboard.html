@@ -23,5 +23,30 @@
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <script src="/js/auth-check.js"></script>
   <script src="/js/dashboard.js"></script>
+  <script>
+  async function checkUserRole() {
+    const userEmail = localStorage.getItem("userEmail");
+    if (!userEmail) return;
+
+    const res = await fetch(`/.netlify/functions/get-role?email=${userEmail}`);
+    const data = await res.json();
+
+    if (data.role !== "premium") {
+      document.querySelectorAll(".premium").forEach(el => {
+        el.classList.add("blur-sm", "pointer-events-none");
+      });
+      const message = document.createElement("div");
+      message.innerHTML = `
+        <div class="text-center bg-yellow-200 text-yellow-800 p-3 rounded mt-4">
+          Ce contenu est réservé aux membres Premium.
+          <a href="/pricing.html" class="underline ml-2">Passer à Premium</a>
+        </div>`;
+      document.querySelector("#signals-container").appendChild(message);
+    }
+  }
+
+  checkUserRole();
+</script>
+
 </body>
 </html>
