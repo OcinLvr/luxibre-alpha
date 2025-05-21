@@ -1,108 +1,79 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Luxibre Alpha - Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="auth-check.js" defer></script>
-    <link rel="icon" href="/favicon.ico" />
-  </head>
-  <body class="bg-gray-100 text-gray-800 font-sans min-h-screen">
-    <!-- Navbar -->
-    <nav class="bg-white shadow-md p-4 flex justify-between items-center">
-      <h1 class="text-xl font-bold text-indigo-600">Luxibre Alpha</h1>
-      <div class="flex gap-4 items-center">
-        <button id="filter-all" class="text-sm text-gray-700 hover:underline">Tous</button>
-        <button id="filter-free" class="text-sm text-gray-700 hover:underline">Gratuit</button>
-        <button id="filter-premium" class="text-sm text-gray-700 hover:underline">Premium</button>
-        <button id="logoutBtn" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Déconnexion</button>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard - Luxibre Alpha</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-900">
+
+  <!-- Header -->
+  <header class="bg-white shadow sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-green-600">Luxibre Alpha</h1>
+      <nav class="space-x-6 hidden md:flex items-center text-sm font-medium">
+        <a href="index.html" class="hover:text-green-600">Accueil</a>
+        <a href="pricing.html" class="hover:text-green-600">Abonnement</a>
+        <a href="dashboard.html" class="text-green-600 font-semibold">Dashboard</a>
+        <button id="logoutBtn" class="hover:text-green-600 hidden">Déconnexion</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Dashboard content -->
+  <main class="max-w-6xl mx-auto px-6 py-12">
+    <h2 class="text-3xl font-bold mb-8">Vos signaux boursiers</h2>
+
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="bg-white p-6 rounded-xl shadow">
+        <h3 class="text-xl font-semibold mb-2">ETF EURO STOXX Banks</h3>
+        <p class="text-green-600 font-bold text-2xl">Acheter</p>
+        <p class="text-sm text-gray-500 mt-1">Basé sur l'analyse du jour.</p>
       </div>
-    </nav>
+      <div class="bg-white p-6 rounded-xl shadow">
+        <h3 class="text-xl font-semibold mb-2">Tesla Inc.</h3>
+        <p class="text-red-600 font-bold text-2xl">Vendre</p>
+        <p class="text-sm text-gray-500 mt-1">Signal généré automatiquement.</p>
+      </div>
+    </div>
+  </main>
 
-    <!-- Promo Premium -->
-    <section class="bg-indigo-50 border border-indigo-200 p-4 text-center">
-      <p class="text-sm">
-        Envie d'aller plus loin ? Débloquez les signaux Premium pour maximiser vos chances de gains.
-        <a href="/pricing.html" class="text-indigo-600 font-medium underline ml-1">Passer en Premium</a>
-      </p>
-    </section>
+  <!-- Footer -->
+  <footer class="py-6 bg-gray-100 text-center text-sm text-gray-600">
+    &copy; 2025 Luxibre. Tous droits réservés.
+  </footer>
 
-    <!-- Signaux -->
-    <main class="max-w-5xl mx-auto px-4 py-6">
-      <h2 class="text-2xl font-bold mb-6">Signaux boursiers</h2>
-      <div id="signalsContainer" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
-    </main>
+  <!-- Auth check -->
+  <script src="js/auth-check.js"></script>
 
-    <script>
-      const signalsContainer = document.getElementById("signalsContainer");
-      const filterBtns = {
-        all: document.getElementById("filter-all"),
-        free: document.getElementById("filter-free"),
-        premium: document.getElementById("filter-premium"),
-      };
+  <!-- Logout -->
+  <script>
+    const logoutBtn = document.getElementById("logoutBtn");
 
-      let userRole = "free"; // par défaut
-
-      // Charger le rôle depuis Supabase
-      fetch("/.netlify/functions/get-role")
-        .then((res) => res.json())
-        .then((data) => {
-          userRole = data.role || "free";
-        })
-        .catch(() => {});
-
-      function displaySignals(signals, filter = "all") {
-        signalsContainer.innerHTML = "";
-        signals.forEach((signal) => {
-          const isPremium = signal.premium === true;
-          if (
-            filter === "free" && isPremium ||
-            filter === "premium" && !isPremium
-          ) return;
-
-          const isAllowed = !isPremium || userRole === "premium";
-
-          const card = document.createElement("div");
-          card.className = "bg-white p-4 rounded-2xl shadow hover:shadow-lg transition";
-
-          card.innerHTML = `
-            <div class="flex justify-between items-center mb-2">
-              <h3 class="text-lg font-semibold text-gray-900">${signal.name}</h3>
-              ${isPremium
-                ? `<span class="text-xs px-2 py-1 rounded-full ${
-                    isAllowed ? "bg-indigo-100 text-indigo-600" : "bg-gray-200 text-gray-500"
-                  }">Premium</span>`
-                : `<span class="text-xs px-2 py-1 rounded-full bg-green-100 text-green-600">Gratuit</span>`}
-            </div>
-            <p class="text-sm text-gray-600">Prix : ${signal.price} €</p>
-            <p class="text-sm text-gray-600">Tendance : <strong>${signal.trend}</strong></p>
-            ${
-              isAllowed
-                ? `<p class="mt-2 text-sm text-gray-800">${signal.message}</p>`
-                : `<p class="mt-2 text-sm text-gray-400 italic">Contenu réservé aux membres Premium</p>`
-            }
-          `;
-
-          signalsContainer.appendChild(card);
-        });
+    netlifyIdentity.on("init", user => {
+      if (user) {
+        logoutBtn.classList.remove("hidden");
       }
+    });
 
-      fetch("/data/signals.json")
-        .then((res) => res.json())
-        .then((data) => {
-          displaySignals(data);
-          filterBtns.all.addEventListener("click", () => displaySignals(data, "all"));
-          filterBtns.free.addEventListener("click", () => displaySignals(data, "free"));
-          filterBtns.premium.addEventListener("click", () => displaySignals(data, "premium"));
-        });
+    netlifyIdentity.on("logout", () => {
+      window.location.href = "/index.html";
+    });
 
-      document.getElementById("logoutBtn").addEventListener("click", async () => {
-        const { supabase } = await import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm");
-        const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        await client.auth.signOut();
-        window.location.href = "/login.html";
-      });
-    </script>
-  </body>
+    logoutBtn?.addEventListener("click", () => {
+      netlifyIdentity.logout();
+    });
+
+    netlifyIdentity.init();
+  </script>
+
+</body>
 </html>
