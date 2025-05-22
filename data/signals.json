@@ -2,33 +2,31 @@
   "signals": [
     {
       "name": "ETF iShares EURO STOXX Banks",
-      "price": 12.34,
-      "history": [11.5, 11.8, 12.0, 12.2, 12.34]
+      "price": 25.30,
+      "history": [24.5, 25.1, 25.0, 25.3, 25.2, 25.3],
+      "recommendation": "💹 Acheter",
+      "premium": false
     },
     {
       "name": "Apple Inc.",
-      "price": 189.45,
-      "history": [185.2, 186.8, 188.0, 188.9, 189.45]
+      "price": 152.40,
+      "history": [150.0, 151.2, 152.5, 152.0, 152.4, 152.3],
+      "recommendation": "📈 Conserver",
+      "premium": false
     },
     {
       "name": "Tesla Inc.",
-      "price": 172.30,
-      "history": [180.0, 177.5, 175.2, 173.0, 172.3]
+      "price": 610.20,
+      "history": [620, 615, 612, 610, 608, 610],
+      "recommendation": "🔻 Vendre",
+      "premium": true
     },
     {
-      "name": "Microsoft Corp.",
-      "price": 324.10,
-      "history": [320.0, 321.5, 322.0, 323.5, 324.1]
-    },
-    {
-      "name": "NVIDIA Corp.",
-      "price": 960.80,
-      "history": [940.5, 945.0, 950.0, 955.2, 960.8]
-    },
-    {
-      "name": "Meta Platforms",
-      "price": 461.23,
-      "history": [455.0, 457.8, 459.0, 460.5, 461.2]
+      "name": "Amazon.com Inc.",
+      "price": 3305.50,
+      "history": [3290, 3300, 3310, 3305, 3302, 3305],
+      "recommendation": "💹 Acheter",
+      "premium": true
     }
   ]
 }
