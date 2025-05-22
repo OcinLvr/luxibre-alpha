@@ -5,6 +5,9 @@ on:
     - cron: '0 7-15 * * 1-5' # 9h à 17h heure de Paris (UTC+2 => UTC 7h à 15h)
   workflow_dispatch:
 
+permissions:
+  contents: write  # <--- Ajout de la permission d’écriture sur le repo
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,8 +29,8 @@ jobs:
 
       - name: Commit et push des signaux
         run: |
-          git config --global user.name 'github-actions'
-          git config --global user.email 'github-actions@github.com'
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add data/signals.json
-          git commit -m "Mise à jour automatique des signaux"
+          git commit -m "Mise à jour automatique des signaux" || echo "Aucun changement à commit"
           git push
