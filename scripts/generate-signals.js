@@ -1,7 +1,14 @@
 // scripts/generate-signals.js
-const fs = require('fs');
-const axios = require('axios');
-require('dotenv').config();
+import fs from 'fs';
+import axios from 'axios';
+import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const API_KEY = process.env.ALPHA_VANTAGE_API_KEY;
 const STOCKS = [
@@ -33,7 +40,7 @@ async function fetchStock(symbol) {
   return { history, price };
 }
 
-(async () => {
+const generateSignals = async () => {
   const signals = [];
 
   for (const stock of STOCKS) {
@@ -53,5 +60,8 @@ async function fetchStock(symbol) {
     }
   }
 
-  fs.writeFileSync('data/signals.json', JSON.stringify({ signals }, null, 2));
-})();
+  fs.writeFileSync(path.join(__dirname, '../data/signals.json'), JSON.stringify({ signals }, null, 2));
+  console.log("Fichier signals.json généré !");
+};
+
+generateSignals();
