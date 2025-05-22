@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Connexion – Luxibre Alpha</title>
   <link rel="stylesheet" href="styles.css" />
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <style>
     body {
       display: flex;
@@ -46,11 +45,6 @@
       margin-bottom: 1rem;
       font-weight: bold;
     }
-    .message {
-      margin-top: 1rem;
-      font-weight: bold;
-      text-align: center;
-    }
   </style>
 </head>
 <body>
@@ -60,35 +54,32 @@
     <input type="email" id="email" placeholder="Email" required />
     <input type="password" id="password" placeholder="Mot de passe" required />
     <button onclick="login()">Connexion</button>
-    <p class="message" id="message"></p>
     <p style="margin-top:1rem; text-align:center;">
       Pas encore inscrit ? <a href="signup.html">Créer un compte</a>
     </p>
   </div>
 
-  <script>
-    const supabase = supabase.createClient(
-      'https://jrgdwozxcilasllpvikh.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpyZ2R3b3p4Y2lsYXNsbHB2aWtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4MjQ0NTEsImV4cCI6MjA2MzQwMDQ1MX0.S2oGP2rdtq1IkW-oH5mC8omm698PdCgQJtGVLlIFj3w'
-    );
+  <!-- Charger Supabase -->
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+    const supabase = createClient('https://jrgdwozxcilasllpvikh.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...');
+    window.supabase = supabase;
+  </script>
 
+  <!-- Script principal -->
+  <script>
     async function login() {
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
       const errorBox = document.getElementById('error');
-      const messageBox = document.getElementById('message');
-      errorBox.textContent = "";
-      messageBox.textContent = "";
 
-      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      const { data, error } = await window.supabase.auth.signInWithPassword({ email, password });
 
       if (error) {
         errorBox.textContent = error.message;
       } else {
-        messageBox.textContent = "Connexion réussie, redirection...";
-        setTimeout(() => {
-          window.location.href = "dashboard.html";
-        }, 1000);
+        errorBox.textContent = "";
+        window.location.href = "dashboard.html"; // Redirige vers le dashboard
       }
     }
   </script>
