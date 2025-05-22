@@ -1,4 +1,4 @@
-name: Mettre à jour les signaux
+name: Générer les signaux
 
 on:
   schedule:
@@ -6,27 +6,28 @@ on:
   workflow_dispatch:
 
 jobs:
-  update-signals:
+  build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Cloner le repo
         uses: actions/checkout@v3
 
-      - name: Configurer Node.js
+      - name: Installer Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
       - name: Installer les dépendances
-        run: npm install
+        run: npm install axios dotenv
 
-      - name: Générer les signaux
+      - name: Exécuter le script de génération
         run: node scripts/generate-signals.js
 
-      - name: Commit & Push
+      - name: Commit et push des signaux
         run: |
-          git config --global user.name 'luxibre-bot'
-          git config --global user.email 'bot@luxibre.com'
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
           git add data/signals.json
-          git commit -m "MàJ automatique des signaux"
+          git commit -m "Mise à jour automatique des signaux"
           git push
