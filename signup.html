@@ -41,10 +41,18 @@
       border-radius: 0.5rem;
       cursor: pointer;
     }
+    .message {
+      margin-top: 1rem;
+      font-weight: bold;
+      text-align: center;
+    }
     .error {
       color: red;
       margin-bottom: 1rem;
       font-weight: bold;
+    }
+    .success {
+      color: green;
     }
   </style>
 </head>
@@ -55,6 +63,7 @@
     <input type="email" id="email" placeholder="Email" required />
     <input type="password" id="password" placeholder="Mot de passe" required />
     <button onclick="signup()">S'inscrire</button>
+    <p class="message" id="message"></p>
     <p style="margin-top:1rem; text-align:center;">
       Déjà inscrit ? <a href="login.html">Se connecter</a>
     </p>
@@ -69,18 +78,20 @@
     async function signup() {
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password
-      });
-
       const errorBox = document.getElementById('error');
+      const messageBox = document.getElementById('message');
+      errorBox.textContent = "";
+      messageBox.textContent = "";
+
+      const { data, error } = await supabase.auth.signUp({ email, password });
+
       if (error) {
         errorBox.textContent = error.message;
       } else {
-        errorBox.textContent = "";
-        alert("Vérifie ta boîte mail pour confirmer ton inscription !");
-        window.location.href = "login.html";
+        messageBox.textContent = "Un email de confirmation a été envoyé. Merci de valider ton inscription avant de te connecter.";
+        messageBox.classList.add("success");
+        // Optionnel : désactiver le bouton pour éviter les doubles inscriptions
+        document.querySelector("button").disabled = true;
       }
     }
   </script>
