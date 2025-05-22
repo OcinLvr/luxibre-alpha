@@ -2,138 +2,178 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard - Luxibre Alpha</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tableau de bord Luxibre Alpha - Signaux boursiers</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <style>
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f9fafb;
+      margin: 0; padding: 0;
+      color: #111827;
+    }
+    header {
+      background-color: #10b981;
+      color: white;
+      padding: 1rem 2rem;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+    main {
+      max-width: 960px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    #premiumNotice {
+      background-color: #d1fae5;
+      color: #065f46;
+      border: 1px solid #10b981;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      display: none;
+      text-align: center;
+    }
+    #signalsContainer {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+      position: relative;
+      transition: filter 0.3s ease;
+    }
+    .card h3 {
+      color: #047857;
+      margin: 0 0 0.5rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    .card p {
+      margin: 0.25rem 0;
+      font-weight: 600;
+    }
+    .recommendation {
+      margin-top: 1rem;
+      font-size: 1.1rem;
+    }
+    .unlock-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background-color: #10b981;
+      color: white;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      border-radius: 0.5rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      z-index: 10;
+    }
+    .unlock-btn:hover {
+      background-color: #059669;
     }
   </style>
 </head>
-<body class="bg-gray-50 text-gray-900">
-
-  <header class="py-4 bg-white shadow-md sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
-      <h1 class="text-3xl font-bold text-green-600">Luxibre</h1>
-      <nav class="hidden md:flex space-x-6 items-center">
-        <a href="index.html" class="hover:text-green-600 font-medium">Accueil</a>
-        <a href="pricing.html" class="hover:text-green-600 font-medium">Abonnement</a>
-        <button id="loginBtn" class="hover:text-green-600 font-medium hidden">Connexion</button>
-        <button id="logoutBtn" class="hover:text-green-600 font-medium hidden">Déconnexion</button>
-      </nav>
-      <div class="md:hidden">
-        <button id="menuToggle" class="text-green-600 text-2xl">&#9776;</button>
-      </div>
-    </div>
-    <div id="mobileMenu" class="md:hidden hidden px-6 pt-4 pb-2 bg-white space-y-2">
-      <a href="index.html" class="block text-gray-800 hover:text-green-600">Accueil</a>
-      <a href="pricing.html" class="block text-gray-800 hover:text-green-600">Abonnement</a>
-      <button id="mobileLoginBtn" class="block text-left w-full text-gray-800 hover:text-green-600 hidden">Connexion</button>
-      <button id="mobileLogoutBtn" class="block text-left w-full text-gray-800 hover:text-green-600 hidden">Déconnexion</button>
-    </div>
+<body>
+  <header>
+    Luxibre Alpha - Tableau de bord des signaux boursiers
   </header>
-
-  <main class="max-w-7xl mx-auto px-6 py-12">
-    <h2 class="text-3xl font-bold mb-8 text-center">Vos signaux boursiers</h2>
-
-    <div id="signalsContainer" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
-
-    <div id="premiumNotice" class="text-center mt-10 text-red-600 font-semibold hidden">
-      Vous devez passer à la version Premium pour voir tous les signaux.
-    </div>
+  <main>
+    <div id="premiumNotice"></div>
+    <div id="signalsContainer"></div>
   </main>
 
-  <footer class="py-10 bg-gray-100">
-    <div class="max-w-7xl mx-auto px-6 text-center text-sm text-gray-600">
-      &copy; 2025 Luxibre. Tous droits réservés.
-    </div>
-  </footer>
-
-  <script src="js/auth-check.js"></script>
   <script>
-  // Simuler ici le statut d'abonnement (à remplacer par vrai contrôle d'authentification)
-  const isPremium = false; // change à true si l'utilisateur est premium
+    // Statut d'abonnement simulé (à remplacer par ton vrai système d'authentification)
+    const isPremium = false; // Passe à true pour tester la version premium
 
-  fetch("data/signals.json")
-    .then(res => res.json())
-    .then(data => {
-      const container = document.getElementById("signalsContainer");
-      let hasPremiumSignalsBlocked = false;
+    fetch("data/signals.json")
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById("signalsContainer");
+        const premiumNotice = document.getElementById("premiumNotice");
+        let hasPremiumSignalsBlocked = false;
 
-      data.signals.forEach((signal, index) => {
-        const isSignalPremium = signal.premium;
+        data.signals.forEach((signal, index) => {
+          const isSignalPremium = signal.premium;
 
-        // Création de la carte signal
-        const card = document.createElement("div");
-        card.className = "bg-white p-6 rounded-xl shadow-md relative";
+          // Création de la carte
+          const card = document.createElement("div");
+          card.className = "card";
 
-        // Si signal premium et utilisateur non premium => flouter
-        if (isSignalPremium && !isPremium) {
-          card.style.filter = "blur(4px)";
-          card.style.position = "relative";
+          // Floutage si signal premium et utilisateur non premium
+          if (isSignalPremium && !isPremium) {
+            card.style.filter = "blur(4px)";
+            card.style.position = "relative";
+          }
+
+          card.innerHTML = `
+            <h3>${signal.name}</h3>
+            <p>Prix actuel : <strong>${signal.price}€</strong></p>
+            <p class="recommendation">${signal.recommendation}</p>
+            <canvas id="chart-${index}" width="280" height="120"></canvas>
+          `;
+
+          // Bouton débloquer pour signaux premium floutés
+          if (isSignalPremium && !isPremium) {
+            const unlockBtn = document.createElement("button");
+            unlockBtn.textContent = "Débloquer avec abonnement";
+            unlockBtn.className = "unlock-btn";
+            unlockBtn.onclick = () => {
+              alert("Pour débloquer ce signal, veuillez souscrire à la version Premium.");
+              window.location.href = "pricing.html"; // lien vers la page d'abonnement
+            };
+            card.appendChild(unlockBtn);
+            hasPremiumSignalsBlocked = true;
+          }
+
+          container.appendChild(card);
+
+          // Afficher le graphique uniquement si visible
+          if (!(isSignalPremium && !isPremium)) {
+            new Chart(document.getElementById(`chart-${index}`), {
+              type: "line",
+              data: {
+                labels: signal.history.map((_, i) => i + 1),
+                datasets: [{
+                  label: "Évolution",
+                  data: signal.history,
+                  backgroundColor: "rgba(16,185,129,0.1)",
+                  borderColor: "rgba(16,185,129,1)",
+                  fill: true,
+                  tension: 0.3,
+                }]
+              },
+              options: {
+                scales: {
+                  x: { display: false },
+                  y: { display: false }
+                },
+                plugins: { legend: { display: false } },
+                elements: { point: { radius: 0 } }
+              }
+            });
+          }
+        });
+
+        // Afficher le message d'incitation au premium si nécessaire
+        if (hasPremiumSignalsBlocked) {
+          premiumNotice.style.display = "block";
+          premiumNotice.textContent = "Certains signaux sont réservés aux abonnés Premium. Passez à la version Premium pour les débloquer.";
         }
-
-        card.innerHTML = `
-          <h3 class="text-xl font-semibold text-green-700 mb-1">${signal.name}</h3>
-          <p class="text-gray-600 mb-2">Prix actuel : <strong>${signal.price}€</strong></p>
-          <p class="mb-4 font-semibold">${signal.recommendation}</p>
-          <canvas id="chart-${index}" class="w-full h-32"></canvas>
-        `;
-
-        // Ajout bouton débloquer pour signaux premium floutés
-        if (isSignalPremium && !isPremium) {
-          const unlockBtn = document.createElement("button");
-          unlockBtn.textContent = "Débloquer avec abonnement";
-          unlockBtn.className = "absolute top-4 right-4 bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700";
-          unlockBtn.onclick = () => {
-            alert("Pour débloquer ce signal, veuillez souscrire à la version Premium.");
-            // Ici tu peux rediriger vers la page d'abonnement
-            window.location.href = "pricing.html";
-          };
-          card.appendChild(unlockBtn);
-          hasPremiumSignalsBlocked = true;
-        }
-
-        container.appendChild(card);
-
-        // Affichage du graphique uniquement si visible
-        if (!(isSignalPremium && !isPremium)) {
-          new Chart(document.getElementById(`chart-${index}`), {
-            type: "line",
-            data: {
-              labels: signal.history.map((_, i) => i + 1),
-              datasets: [{
-                label: "Évolution",
-                data: signal.history,
-                backgroundColor: "rgba(16,185,129,0.1)",
-                borderColor: "rgba(16,185,129,1)",
-                fill: true,
-              }]
-            },
-            options: {
-              scales: { x: { display: false }, y: { display: false } },
-              plugins: { legend: { display: false } },
-              elements: { line: { tension: 0.3 } }
-            }
-          });
-        }
+      })
+      .catch(err => {
+        console.error("Erreur chargement signaux:", err);
       });
-
-      // Affiche un message incitatif si des signaux premium sont bloqués
-      if (hasPremiumSignalsBlocked) {
-        document.getElementById("premiumNotice").classList.remove("hidden");
-        document.getElementById("premiumNotice").textContent = "Certains signaux sont réservés aux abonnés Premium. Passez à la version Premium pour les débloquer.";
-      }
-    })
-    .catch(err => {
-      console.error("Erreur chargement signaux:", err);
-    });
-</script>
-
-
+  </script>
 </body>
 </html>
