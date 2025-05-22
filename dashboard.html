@@ -3,205 +3,254 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Tableau de bord Luxibre Alpha - Signaux boursiers</title>
+  <title>Luxibre Alpha - Tableau de bord</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    /* Reset & base */
+    /* Fonts import */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+    /* Reset */
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f5f7fa;
-      margin: 0; padding: 0;
-      color: #2c3e50;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #e0f2fe, #ffffff);
+      color: #1e293b;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
     }
+
     header {
-      background-color: #22c55e; /* vert clair */
-      color: white;
-      padding: 1.2rem 2rem;
-      text-align: center;
-      font-size: 1.8rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      box-shadow: 0 3px 6px rgba(34,197,94,0.4);
-      user-select: none;
-    }
-    main {
+      width: 100%;
       max-width: 960px;
-      margin: 2.5rem auto;
-      padding: 0 1rem 3rem;
-    }
-    #premiumNotice {
-      background-color: #dcfce7;
-      color: #166534;
-      border: 1.5px solid #22c55e;
-      padding: 1rem 1.5rem;
-      margin-bottom: 2rem;
-      border-radius: 0.75rem;
-      font-weight: 600;
+      padding: 1.5rem 2rem;
+      background: #22c55e;
+      color: white;
+      font-weight: 700;
+      font-size: 2.2rem;
+      letter-spacing: 0.15em;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(34,197,94,0.45);
       text-align: center;
-      font-size: 1.1rem;
-      box-shadow: 0 1px 5px rgba(34,197,94,0.2);
+      user-select: none;
+      margin-bottom: 2.5rem;
+      font-family: 'Poppins', sans-serif;
+      text-transform: uppercase;
     }
+
+    main {
+      width: 100%;
+      max-width: 960px;
+    }
+
+    #premiumNotice {
+      background: #dcfce7;
+      color: #166534;
+      border-left: 6px solid #22c55e;
+      padding: 1.3rem 2rem;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 1.15rem;
+      margin-bottom: 2.8rem;
+      box-shadow: 0 4px 12px rgba(34,197,94,0.15);
+      user-select: none;
+      text-align: center;
+      font-family: 'Poppins', sans-serif;
+    }
+
     #signalsContainer {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 1.8rem;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2.4rem;
     }
+
     .card {
       background: white;
-      padding: 1.8rem 2rem 2rem;
-      border-radius: 1.2rem;
-      box-shadow: 0 4px 15px rgba(44, 62, 80, 0.1);
+      border-radius: 20px;
+      padding: 2rem 2.5rem 2.8rem;
+      box-shadow: 0 16px 40px rgba(34, 197, 94, 0.12);
       position: relative;
-      transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.3s ease;
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s ease;
       cursor: default;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 330px;
     }
+
     .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 10px 20px rgba(34, 197, 94, 0.25);
-      filter: none !important;
+      transform: translateY(-10px);
+      box-shadow: 0 30px 60px rgba(34, 197, 94, 0.25);
     }
+
     .card.blur {
-      filter: blur(5px);
+      filter: blur(6px);
       pointer-events: none;
       user-select: none;
+      position: relative;
     }
+
     .card h3 {
-      color: #16a34a;
-      margin: 0 0 1.2rem;
-      font-size: 1.5rem;
+      font-size: 1.75rem;
       font-weight: 700;
+      color: #16a34a;
+      margin-bottom: 1.4rem;
       letter-spacing: 0.03em;
     }
+
     .card p {
-      margin: 0.3rem 0;
       font-weight: 600;
-      font-size: 1.05rem;
-      color: #374151;
+      font-size: 1.1rem;
+      color: #334155;
+      margin-bottom: 0.85rem;
+      line-height: 1.4;
     }
+
     .recommendation {
-      margin-top: 1.3rem;
-      font-size: 1.2rem;
+      margin-top: 1.6rem;
       font-weight: 700;
+      font-size: 1.35rem;
       color: #065f46;
+      letter-spacing: 0.02em;
+      user-select: text;
     }
+
     canvas {
-      margin-top: 1rem;
-      border-radius: 0.8rem;
+      margin-top: 1.6rem;
+      border-radius: 14px;
       background: #f0fdf4;
-      box-shadow: inset 0 0 5px rgba(22,163,74,0.2);
-    }
-    .unlock-btn {
-      position: absolute;
-      top: 1.3rem;
-      right: 1.6rem;
-      background-color: #22c55e;
-      color: white;
-      border: none;
-      padding: 0.55rem 1.2rem;
-      border-radius: 0.6rem;
-      font-weight: 700;
-      font-size: 1rem;
-      cursor: pointer;
-      box-shadow: 0 3px 8px rgba(34,197,94,0.5);
-      transition: background-color 0.3s ease, box-shadow 0.3s ease;
-      z-index: 15;
+      box-shadow: inset 0 0 14px rgba(22, 163, 74, 0.2);
+      max-width: 100%;
+      height: 130px !important;
       user-select: none;
     }
-    .unlock-btn:hover {
-      background-color: #16a34a;
-      box-shadow: 0 5px 15px rgba(22,163,74,0.6);
+
+    .unlock-btn {
+      position: absolute;
+      top: 1.6rem;
+      right: 2.2rem;
+      background: linear-gradient(135deg, #16a34a, #22c55e);
+      border: none;
+      padding: 0.65rem 1.5rem;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(22, 163, 74, 0.6);
+      transition: background 0.35s ease, box-shadow 0.35s ease;
+      user-select: none;
+      z-index: 20;
     }
-    @media (max-width: 600px) {
+
+    .unlock-btn:hover {
+      background: linear-gradient(135deg, #0f766e, #15803d);
+      box-shadow: 0 8px 22px rgba(15, 118, 110, 0.8);
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
       header {
-        font-size: 1.4rem;
-        padding: 1rem 1rem;
+        font-size: 1.6rem;
+        padding: 1.2rem 1.5rem;
       }
       main {
-        margin: 1.5rem auto;
-        padding: 0 0.7rem 2rem;
+        max-width: 100%;
+      }
+      #signalsContainer {
+        grid-template-columns: 1fr;
+        gap: 1.8rem;
       }
       .card {
-        padding: 1.3rem 1.5rem 1.8rem;
+        min-height: auto;
+        padding: 1.6rem 1.8rem 2.2rem;
       }
       .unlock-btn {
         top: 1rem;
         right: 1rem;
-        padding: 0.45rem 1rem;
-        font-size: 0.9rem;
+        padding: 0.5rem 1.2rem;
+        font-size: 0.95rem;
+      }
+      canvas {
+        height: 120px !important;
       }
     }
   </style>
 </head>
 <body>
-  <header>
-    Luxibre Alpha - Tableau de bord des signaux boursiers
-  </header>
+  <header>Luxibre Alpha - Tableau de bord des signaux boursiers</header>
   <main>
     <div id="premiumNotice"></div>
     <div id="signalsContainer"></div>
   </main>
 
   <script>
-    const isPremium = false; // changer à true pour tester premium
+    const isPremium = false; // Change à true pour tester l’accès Premium
 
     fetch("data/signals.json")
       .then(res => {
-        if (!res.ok) throw new Error("HTTP error " + res.status);
+        if (!res.ok) throw new Error("Erreur HTTP " + res.status);
         return res.json();
       })
       .then(data => {
         const container = document.getElementById("signalsContainer");
         const premiumNotice = document.getElementById("premiumNotice");
-        let hasPremiumSignalsBlocked = false;
+        let hasPremiumBlocked = false;
 
-        data.signals.forEach((signal, index) => {
-          const isSignalPremium = signal.premium;
+        data.signals.forEach((signal, i) => {
+          const isPremiumSignal = signal.premium;
 
           const card = document.createElement("div");
           card.className = "card";
-
-          if (isSignalPremium && !isPremium) {
+          if (isPremiumSignal && !isPremium) {
             card.classList.add("blur");
           }
 
           card.innerHTML = `
             <h3>${signal.name}</h3>
-            <p>Prix actuel : <strong>${signal.price}€</strong></p>
+            <p>Prix actuel : <strong>${signal.price.toFixed(2)}€</strong></p>
             <p class="recommendation">${signal.recommendation}</p>
-            <canvas id="chart-${index}" width="280" height="120"></canvas>
+            <canvas id="chart-${i}" width="280" height="130"></canvas>
           `;
 
-          if (isSignalPremium && !isPremium) {
-            const unlockBtn = document.createElement("button");
-            unlockBtn.textContent = "Débloquer avec abonnement";
-            unlockBtn.className = "unlock-btn";
-            unlockBtn.onclick = () => {
-              alert("Pour débloquer ce signal, veuillez souscrire à la version Premium.");
+          if (isPremiumSignal && !isPremium) {
+            const btn = document.createElement("button");
+            btn.className = "unlock-btn";
+            btn.textContent = "Débloquer Premium";
+            btn.onclick = () => {
+              alert("Pour accéder à ce signal, souscrivez à l’abonnement Premium.");
               window.location.href = "pricing.html";
             };
-            card.appendChild(unlockBtn);
-            hasPremiumSignalsBlocked = true;
+            card.appendChild(btn);
+            hasPremiumBlocked = true;
           }
 
           container.appendChild(card);
 
-          if (!(isSignalPremium && !isPremium)) {
-            new Chart(document.getElementById(`chart-${index}`), {
-              type: "line",
+          if (!(isPremiumSignal && !isPremium)) {
+            new Chart(document.getElementById(`chart-${i}`), {
+              type: 'line',
               data: {
-                labels: signal.history.map((_, i) => i + 1),
+                labels: signal.history.map((_, idx) => idx + 1),
                 datasets: [{
                   label: "Évolution",
                   data: signal.history,
                   backgroundColor: "rgba(34,197,94,0.15)",
-                  borderColor: "rgba(34,197,94,0.8)",
+                  borderColor: "rgba(34,197,94,0.85)",
                   fill: true,
                   tension: 0.3,
+                  borderWidth: 2,
+                  pointRadius: 0
                 }]
               },
               options: {
+                responsive: true,
+                maintainAspectRatio: false,
                 scales: {
                   x: { display: false },
                   y: { display: false }
@@ -213,13 +262,13 @@
           }
         });
 
-        if (hasPremiumSignalsBlocked) {
+        if (hasPremiumBlocked) {
           premiumNotice.style.display = "block";
           premiumNotice.textContent = "Certains signaux sont réservés aux abonnés Premium. Passez à la version Premium pour les débloquer.";
         }
       })
       .catch(err => {
-        console.error("Erreur chargement signaux:", err);
+        console.error("Erreur chargement signaux :", err);
       });
   </script>
 </body>
