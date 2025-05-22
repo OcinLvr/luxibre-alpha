@@ -34,7 +34,7 @@
     button {
       width: 100%;
       padding: 10px;
-      background: #10b981;
+      background: #3b82f6;
       color: white;
       font-weight: bold;
       border: none;
@@ -46,17 +46,23 @@
       margin-bottom: 1rem;
       font-weight: bold;
     }
+    .message {
+      margin-top: 1rem;
+      font-weight: bold;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
   <div class="login-container">
-    <h2>Connexion à Luxibre Alpha</h2>
+    <h2>Se connecter</h2>
     <div class="error" id="error"></div>
     <input type="email" id="email" placeholder="Email" required />
     <input type="password" id="password" placeholder="Mot de passe" required />
-    <button onclick="login()">Se connecter</button>
+    <button onclick="login()">Connexion</button>
+    <p class="message" id="message"></p>
     <p style="margin-top:1rem; text-align:center;">
-      Pas encore de compte ? <a href="signup.html">Créer un compte</a>
+      Pas encore inscrit ? <a href="signup.html">Créer un compte</a>
     </p>
   </div>
 
@@ -69,16 +75,20 @@
     async function login() {
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password
-      });
       const errorBox = document.getElementById('error');
+      const messageBox = document.getElementById('message');
+      errorBox.textContent = "";
+      messageBox.textContent = "";
+
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
       if (error) {
         errorBox.textContent = error.message;
       } else {
-        errorBox.textContent = "";
-        window.location.href = "dashboard.html";
+        messageBox.textContent = "Connexion réussie, redirection...";
+        setTimeout(() => {
+          window.location.href = "dashboard.html";
+        }, 1000);
       }
     }
   </script>
