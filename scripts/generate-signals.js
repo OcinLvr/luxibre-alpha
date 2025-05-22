@@ -31,16 +31,16 @@ const STOCKS = [
 ];
 
 // Moyenne mobile simple
-function calculateSMA(data) {
-  if (data.length === 0) return 0;
-  return data.reduce((sum, val) => sum + val, 0) / data.length;
+function calculateSMA(data, period = 5) {
+  if (data.length < period) return null;
+  return data.slice(-period).reduce((sum, val) => sum + val, 0) / period;
 }
 
-// RSI simplifié (basé sur 5 derniers jours)
-function calculateRSI(data) {
-  if (data.length < 2) return 50; // neutre si pas assez de données
+// RSI simplifié (basé sur 14 derniers jours)
+function calculateRSI(data, period = 14) {
+  if (data.length < period) return 50; // neutre si pas assez de données
   let gains = 0, losses = 0;
-  for (let i = 1; i < data.length; i++) {
+  for (let i = 1; i <= period; i++) {
     const diff = data[i] - data[i - 1];
     if (diff > 0) gains += diff;
     else losses -= diff;
@@ -50,30 +50,27 @@ function calculateRSI(data) {
   return 100 - (100 / (1 + rs));
 }
 
-// MACD simplifié : différence entre SMA 5j et SMA 10j
+// MACD simplifié : différence entre SMA 12j et SMA 26j
 function calculateMACD(data) {
-  const short = data.slice(-5);
-  const long = data.slice(-10);
-  const smaShort = calculateSMA(short);
-  const smaLong = calculateSMA(long);
-  return smaShort - smaLong;
+  const sma12 = calculateSMA(data, 12);
+  const sma26 = calculateSMA(data, 26);
+  if (sma12 === null || sma26 === null) return 0;
+  return sma12 - sma26;
 }
 
 // Calcul de la recommandation finale selon indicateurs combinés
 function calculateRecommendation(history) {
-  if (history.length < 10) return "Conserver"; // trop peu de données
+  if (history.length < 26) return "Conserver"; // trop peu de données
 
-  const shortHistory = history.slice(-5);
   const latest = history[history.length - 1];
-  const first = history[history.length - 6];
-
+  const first = history[history.length - 26];
   const change = ((latest - first) / first) * 100;
-  const sma = calculateSMA(shortHistory);
-  const rsi = calculateRSI(shortHistory);
+  const sma = calculateSMA(history, 5);
+  const rsi = calculateRSI(history, 14);
   const macd = calculateMACD(history);
 
-  if (change > 1 && rsi < 70 && macd > 0 && latest > sma) return "Acheter";
-  if (change < -1 && rsi > 30 && macd < 0 && latest < sma) return "Vendre";
+  if (change > 2 && rsi < 70 && macd > 0 && latest > sma) return "Acheter";
+  if (change < -2 && rsi > 30 && macd < 0 && latest < sma) return "Vendre";
   return "Conserver";
 }
 
@@ -83,7 +80,7 @@ async function fetchStock(symbol) {
   const daily = res.data["Time Series (Daily)"];
   if (!daily) return null;
 
-  const dates = Object.keys(daily).slice(0, 10).reverse();
+  const dates = Object.keys(daily).slice(0, 26).reverse();
   const history = dates.map(date => parseFloat(daily[date]["4. close"]));
   const price = history[history.length - 1];
 
@@ -96,7 +93,7 @@ const generate = async () => {
   for (const stock of STOCKS) {
     try {
       const data = await fetchStock(stock.symbol);
-      if (!data || data.history.length < 10) {
+      if (!data || data.history.length < 26) {
         console.warn(`Données insuffisantes pour ${stock.symbol}`);
         continue;
       }
