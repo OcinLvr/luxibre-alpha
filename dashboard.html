@@ -7,7 +7,6 @@
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
   <style>
     body {
       font-family: 'Inter', sans-serif;
@@ -21,6 +20,9 @@
     .card:hover {
       transform: translateY(-5px);
       box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    .blur-sm {
+      filter: blur(4px);
     }
   </style>
 </head>
@@ -49,14 +51,11 @@
     </div>
   </header>
 
-  <!-- Hero Section with Lottie -->
-  <section class="bg-gray-900 text-white py-12 relative text-center">
-    <div class="max-w-3xl mx-auto px-6 z-10 relative">
+  <!-- Hero Section -->
+  <section class="bg-gray-900 text-white py-12 text-center">
+    <div class="max-w-3xl mx-auto px-6">
       <h2 class="text-4xl font-extrabold mb-6">Votre Tableau de Bord Financier</h2>
       <p class="text-xl text-gray-300 mb-8">Accédez à des signaux boursiers précis et des analyses en temps réel.</p>
-    </div>
-    <div class="absolute inset-0 flex items-center justify-center opacity-30 pointer-events-none">
-      <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_zrqthn6o.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></lottie-player>
     </div>
   </section>
 
