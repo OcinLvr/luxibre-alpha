@@ -7,9 +7,27 @@ dotenv.config();
 
 const API_KEY = process.env.ALPHA_VANTAGE_API_KEY;
 const STOCKS = [
-  { symbol: "AAPL", name: "Apple Inc." },
-  { symbol: "TSLA", name: "Tesla Inc." },
-  { symbol: "EXX1.DE", name: "ETF iShares EURO STOXX Banks" }
+  { symbol: "AAPL", name: "Apple Inc.", premium: false },
+  { symbol: "TSLA", name: "Tesla Inc.", premium: true },
+  { symbol: "EXX1.DE", name: "ETF iShares EURO STOXX Banks", premium: false },
+  { symbol: "MSFT", name: "Microsoft Corp.", premium: true },
+  { symbol: "AMZN", name: "Amazon.com Inc.", premium: true },
+  { symbol: "GOOGL", name: "Alphabet Inc.", premium: false },
+  { symbol: "META", name: "Meta Platforms Inc.", premium: true },
+  { symbol: "NVDA", name: "NVIDIA Corp.", premium: false },
+  { symbol: "JPM", name: "JPMorgan Chase & Co.", premium: true },
+  { symbol: "V", name: "Visa Inc.", premium: false },
+  { symbol: "WMT", name: "Walmart Inc.", premium: true },
+  { symbol: "DIS", name: "The Walt Disney Company", premium: false },
+  { symbol: "NFLX", name: "Netflix Inc.", premium: true },
+  { symbol: "PYPL", name: "PayPal Holdings Inc.", premium: false },
+  { symbol: "ADBE", name: "Adobe Inc.", premium: true },
+  { symbol: "CRM", name: "Salesforce.com Inc.", premium: false },
+  { symbol: "INTC", name: "Intel Corp.", premium: true },
+  { symbol: "CMCSA", name: "Comcast Corp.", premium: false },
+  { symbol: "PEP", name: "PepsiCo Inc.", premium: true },
+  { symbol: "CSCO", name: "Cisco Systems Inc.", premium: false },
+  { symbol: "AVGO", name: "Broadcom Inc.", premium: true }
 ];
 
 // Moyenne mobile simple
@@ -28,7 +46,7 @@ function calculateRSI(data) {
     else losses -= diff;
   }
   if (gains + losses === 0) return 50; // éviter division par 0 ou RSI extrême
-  const rs = gains / (losses || 1); 
+  const rs = gains / (losses || 1);
   return 100 - (100 / (1 + rs));
 }
 
@@ -89,6 +107,7 @@ const generate = async () => {
         price: data.price,
         history: data.history,
         recommendation,
+        premium: stock.premium,
         updated: new Date().toISOString()
       });
     } catch (err) {
