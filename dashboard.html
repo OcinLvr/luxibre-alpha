@@ -55,57 +55,85 @@
 
   <script src="js/auth-check.js"></script>
   <script>
-    netlifyIdentity.on("init", user => {
-      document.getElementById("loginBtn").classList.toggle("hidden", !!user);
-      document.getElementById("logoutBtn").classList.toggle("hidden", !user);
-      document.getElementById("mobileLoginBtn").classList.toggle("hidden", !!user);
-      document.getElementById("mobileLogoutBtn").classList.toggle("hidden", !user);
-    });
+  // Simuler ici le statut d'abonnement (à remplacer par vrai contrôle d'authentification)
+  const isPremium = false; // change à true si l'utilisateur est premium
 
-    document.getElementById("loginBtn").onclick = () => netlifyIdentity.open("login");
-    document.getElementById("logoutBtn").onclick = () => netlifyIdentity.logout();
-    document.getElementById("mobileLoginBtn").onclick = () => netlifyIdentity.open("login");
-    document.getElementById("mobileLogoutBtn").onclick = () => netlifyIdentity.logout();
-    document.getElementById("menuToggle").onclick = () => {
-      const menu = document.getElementById("mobileMenu");
-      menu.classList.toggle("hidden");
-    };
+  fetch("data/signals.json")
+    .then(res => res.json())
+    .then(data => {
+      const container = document.getElementById("signalsContainer");
+      let hasPremiumSignalsBlocked = false;
 
-    fetch("data/signals.json")
-      .then(res => res.json())
-      .then(data => {
-        const container = document.getElementById("signalsContainer");
-        const isPremium = true; // Remplace ceci par un vrai contrôle utilisateur
+      data.signals.forEach((signal, index) => {
+        const isSignalPremium = signal.premium;
 
-        data.signals.forEach((signal, index) => {
-          if (!isPremium && index >= 3) return document.getElementById("premiumNotice").classList.remove("hidden");
+        // Création de la carte signal
+        const card = document.createElement("div");
+        card.className = "bg-white p-6 rounded-xl shadow-md relative";
 
-          const card = document.createElement("div");
-          card.className = "bg-white p-6 rounded-xl shadow-md";
-          card.innerHTML = `
-            <h3 class="text-xl font-semibold text-green-700 mb-2">${signal.name}</h3>
-            <p class="text-gray-600 mb-4">Prix actuel : <strong>${signal.price}€</strong></p>
-            <canvas id="chart-${index}" class="w-full h-32"></canvas>
-          `;
-          container.appendChild(card);
+        // Si signal premium et utilisateur non premium => flouter
+        if (isSignalPremium && !isPremium) {
+          card.style.filter = "blur(4px)";
+          card.style.position = "relative";
+        }
 
+        card.innerHTML = `
+          <h3 class="text-xl font-semibold text-green-700 mb-1">${signal.name}</h3>
+          <p class="text-gray-600 mb-2">Prix actuel : <strong>${signal.price}€</strong></p>
+          <p class="mb-4 font-semibold">${signal.recommendation}</p>
+          <canvas id="chart-${index}" class="w-full h-32"></canvas>
+        `;
+
+        // Ajout bouton débloquer pour signaux premium floutés
+        if (isSignalPremium && !isPremium) {
+          const unlockBtn = document.createElement("button");
+          unlockBtn.textContent = "Débloquer avec abonnement";
+          unlockBtn.className = "absolute top-4 right-4 bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700";
+          unlockBtn.onclick = () => {
+            alert("Pour débloquer ce signal, veuillez souscrire à la version Premium.");
+            // Ici tu peux rediriger vers la page d'abonnement
+            window.location.href = "pricing.html";
+          };
+          card.appendChild(unlockBtn);
+          hasPremiumSignalsBlocked = true;
+        }
+
+        container.appendChild(card);
+
+        // Affichage du graphique uniquement si visible
+        if (!(isSignalPremium && !isPremium)) {
           new Chart(document.getElementById(`chart-${index}`), {
-            type: 'line',
+            type: "line",
             data: {
-              labels: signal.history.map((_, i) => i),
+              labels: signal.history.map((_, i) => i + 1),
               datasets: [{
-                label: 'Évolution',
+                label: "Évolution",
                 data: signal.history,
-                backgroundColor: 'rgba(16,185,129,0.1)',
-                borderColor: 'rgba(16,185,129,1)',
+                backgroundColor: "rgba(16,185,129,0.1)",
+                borderColor: "rgba(16,185,129,1)",
                 fill: true,
               }]
             },
-            options: { scales: { x: { display: false }, y: { display: false } }, plugins: { legend: { display: false } } }
+            options: {
+              scales: { x: { display: false }, y: { display: false } },
+              plugins: { legend: { display: false } },
+              elements: { line: { tension: 0.3 } }
+            }
           });
-        });
+        }
       });
-  </script>
+
+      // Affiche un message incitatif si des signaux premium sont bloqués
+      if (hasPremiumSignalsBlocked) {
+        document.getElementById("premiumNotice").classList.remove("hidden");
+        document.getElementById("premiumNotice").textContent = "Certains signaux sont réservés aux abonnés Premium. Passez à la version Premium pour les débloquer.";
+      }
+    })
+    .catch(err => {
+      console.error("Erreur chargement signaux:", err);
+    });
+</script>
+
 
 </body>
 </html>
