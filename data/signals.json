@@ -16,7 +16,8 @@
         201.36
       ],
       "recommendation": "Conserver",
-      "updated": "2025-05-22T21:12:25.734Z"
+      "premium": false,
+      "updated": "2025-05-22T21:30:57.302Z"
     },
     {
       "name": "Tesla Inc.",
@@ -34,7 +35,8 @@
         341.04
       ],
       "recommendation": "Conserver",
-      "updated": "2025-05-22T21:12:25.965Z"
+      "premium": true,
+      "updated": "2025-05-22T21:30:57.378Z"
     },
     {
       "name": "ETF iShares EURO STOXX Banks",
@@ -52,7 +54,350 @@
         20.32
       ],
       "recommendation": "Conserver",
-      "updated": "2025-05-22T21:12:26.175Z"
+      "premium": false,
+      "updated": "2025-05-22T21:30:57.445Z"
+    },
+    {
+      "name": "Microsoft Corp.",
+      "price": 454.86,
+      "history": [
+        438.73,
+        449.26,
+        449.14,
+        452.94,
+        453.13,
+        454.27,
+        458.87,
+        458.17,
+        452.57,
+        454.86
+      ],
+      "recommendation": "Conserver",
+      "premium": true,
+      "updated": "2025-05-22T21:30:57.526Z"
+    },
+    {
+      "name": "Amazon.com Inc.",
+      "price": 203.1,
+      "history": [
+        193.06,
+        208.64,
+        211.37,
+        210.25,
+        205.17,
+        205.59,
+        206.16,
+        204.07,
+        201.12,
+        203.1
+      ],
+      "recommendation": "Vendre",
+      "premium": true,
+      "updated": "2025-05-22T21:30:57.620Z"
+    },
+    {
+      "name": "Alphabet Inc.",
+      "price": 170.87,
+      "history": [
+        152.75,
+        158.46,
+        159.53,
+        165.37,
+        163.96,
+        166.19,
+        166.54,
+        163.98,
+        168.56,
+        170.87
+      ],
+      "recommendation": "Conserver",
+      "premium": false,
+      "updated": "2025-05-22T21:30:57.701Z"
+    },
+    {
+      "name": "Meta Platforms Inc.",
+      "price": 636.57,
+      "history": [
+        592.49,
+        639.43,
+        656.03,
+        659.36,
+        643.88,
+        640.34,
+        640.43,
+        637.1,
+        635.5,
+        636.57
+      ],
+      "recommendation": "Conserver",
+      "premium": true,
+      "updated": "2025-05-22T21:30:57.771Z"
+    },
+    {
+      "name": "NVIDIA Corp.",
+      "price": 132.83,
+      "history": [
+        116.65,
+        123,
+        129.93,
+        135.34,
+        134.83,
+        135.4,
+        135.57,
+        134.38,
+        131.8,
+        132.83
+      ],
+      "recommendation": "Conserver",
+      "premium": false,
+      "updated": "2025-05-22T21:30:57.852Z"
+    },
+    {
+      "name": "JPMorgan Chase & Co.",
+      "price": 260.635,
+      "history": [
+        253.08,
+        260.05,
+        263.01,
+        265.64,
+        267.49,
+        267.56,
+        264.88,
+        265.68,
+        261.04,
+        260.635
+      ],
+      "recommendation": "Conserver",
+      "premium": true,
+      "updated": "2025-05-22T21:30:57.922Z"
+    },
+    {
+      "name": "Visa Inc.",
+      "price": 358.3,
+      "history": [
+        351.27,
+        352.54,
+        355.85,
+        356.14,
+        356.46,
+        362.3,
+        365.12,
+        367.9,
+        366.84,
+        358.3
+      ],
+      "recommendation": "Conserver",
+      "premium": false,
+      "updated": "2025-05-22T21:30:58.083Z"
+    },
+    {
+      "name": "Walmart Inc.",
+      "price": 95.92,
+      "history": [
+        96.72,
+        96.75,
+        95.88,
+        96.83,
+        96.35,
+        98.24,
+        98.12,
+        97.8,
+        96.43,
+        95.92
+      ],
+      "recommendation": "Conserver",
+      "premium": true,
+      "updated": "2025-05-22T21:30:58.164Z"
+    },
+    {
+      "name": "The Walt Disney Company",
+      "price": 111.11,
+      "history": [
+        105.94,
+        110.49,
+        111.38,
+        112.94,
+        112.22,
+        113.42,
+        112.66,
+        112.36,
+        110.46,
+        111.11
+      ],
+      "recommendation": "Conserver",
+      "premium": false,
+      "updated": "2025-05-22T21:30:58.369Z"
+    },
+    {
+      "name": "Netflix Inc.",
+      "price": 1187.97,
+      "history": [
+        1140.22,
+        1110,
+        1138.44,
+        1150.99,
+        1177.98,
+        1191.53,
+        1191.64,
+        1192.02,
+        1194.63,
+        1187.97
+      ],
+      "recommendation": "Conserver",
+      "premium": true,
+      "updated": "2025-05-22T21:30:58.572Z"
+    },
+    {
+      "name": "PayPal Holdings Inc.",
+      "price": 71.45,
+      "history": [
+        70.26,
+        72.31,
+        72.29,
+        72.68,
+        71.57,
+        72.18,
+        72.32,
+        72.61,
+        71.65,
+        71.45
+      ],
+      "recommendation": "Conserver",
+      "premium": false,
+      "updated": "2025-05-22T21:30:58.751Z"
+    },
+    {
+      "name": "Adobe Inc.",
+      "price": 414.33,
+      "history": [
+        383.28,
+        395.94,
+        397.4,
+        399.47,
+        404.69,
+        417.125,
+        420.68,
+        417.61,
+        414.03,
+        414.33
+      ],
+      "recommendation": "Conserver",
+      "premium": true,
+      "updated": "2025-05-22T21:30:58.954Z"
+    },
+    {
+      "name": "Salesforce.com Inc.",
+      "price": 283.24,
+      "history": [
+        275.42,
+        288.82,
+        289.17,
+        290.74,
+        290.76,
+        291.15,
+        287.63,
+        288.06,
+        282.28,
+        283.24
+      ],
+      "recommendation": "Conserver",
+      "premium": false,
+      "updated": "2025-05-22T21:30:59.126Z"
+    },
+    {
+      "name": "Intel Corp.",
+      "price": 20.55,
+      "history": [
+        21.42,
+        22.18,
+        22.56,
+        21.52,
+        21.55,
+        21.66,
+        21.38,
+        21.27,
+        20.69,
+        20.55
+      ],
+      "recommendation": "Conserver",
+      "premium": true,
+      "updated": "2025-05-22T21:30:59.203Z"
+    },
+    {
+      "name": "Comcast Corp.",
+      "price": 34.59,
+      "history": [
+        34.25,
+        34.72,
+        34.79,
+        34.56,
+        35.33,
+        35.48,
+        35.44,
+        35.59,
+        35.1,
+        34.59
+      ],
+      "recommendation": "Conserver",
+      "premium": false,
+      "updated": "2025-05-22T21:30:59.391Z"
+    },
+    {
+      "name": "PepsiCo Inc.",
+      "price": 130.12,
+      "history": [
+        130.44,
+        131.68,
+        130.31,
+        128.45,
+        131.5,
+        131.98,
+        131.79,
+        131.8,
+        130.15,
+        130.12
+      ],
+      "recommendation": "Conserver",
+      "premium": true,
+      "updated": "2025-05-22T21:30:59.556Z"
+    },
+    {
+      "name": "Cisco Systems Inc.",
+      "price": 63.36,
+      "history": [
+        59.77,
+        61.67,
+        61.78,
+        61.29,
+        64.26,
+        63.62,
+        63.92,
+        63.42,
+        63.2,
+        63.36
+      ],
+      "recommendation": "Conserver",
+      "premium": false,
+      "updated": "2025-05-22T21:30:59.744Z"
+    },
+    {
+      "name": "Broadcom Inc.",
+      "price": 230.53,
+      "history": [
+        208.2,
+        221.58,
+        232.42,
+        232.12,
+        232.64,
+        228.61,
+        230.63,
+        231.68,
+        229.73,
+        230.53
+      ],
+      "recommendation": "Conserver",
+      "premium": true,
+      "updated": "2025-05-22T21:30:59.903Z"
     }
   ]
 }
