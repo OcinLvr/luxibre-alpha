@@ -2,9 +2,8 @@
   "signals": [
     {
       "name": "Apple Inc.",
-      "price": 202.09,
+      "price": 201.36,
       "history": [
-        197.49,
         198.53,
         210.79,
         212.93,
@@ -13,16 +12,16 @@
         211.26,
         208.78,
         206.86,
-        202.09
+        202.09,
+        201.36
       ],
       "recommendation": "Conserver",
-      "updated": "2025-05-22T20:02:49.593Z"
+      "updated": "2025-05-22T21:12:25.734Z"
     },
     {
       "name": "Tesla Inc.",
-      "price": 334.62,
+      "price": 341.04,
       "history": [
-        284.82,
         298.26,
         318.38,
         334.07,
@@ -31,10 +30,11 @@
         349.98,
         342.09,
         343.82,
-        334.62
+        334.62,
+        341.04
       ],
       "recommendation": "Conserver",
-      "updated": "2025-05-22T20:02:49.760Z"
+      "updated": "2025-05-22T21:12:25.965Z"
     },
     {
       "name": "ETF iShares EURO STOXX Banks",
@@ -52,7 +52,7 @@
         20.32
       ],
       "recommendation": "Conserver",
-      "updated": "2025-05-22T20:02:49.913Z"
+      "updated": "2025-05-22T21:12:26.175Z"
     }
   ]
 }
