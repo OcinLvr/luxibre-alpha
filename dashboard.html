@@ -2,196 +2,158 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Luxibre Alpha - Tableau de bord</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tableau de bord Luxibre Alpha - Signaux boursiers</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
   <style>
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f9fafb;
+      margin: 0; padding: 0;
+      color: #111827;
     }
-    .chart-container {
-      height: 100px;
+    header {
+      background-color: #10b981;
+      color: white;
+      padding: 1rem 2rem;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+    main {
+      max-width: 960px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    #premiumNotice {
+      background-color: #d1fae5;
+      color: #065f46;
+      border: 1px solid #10b981;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      display: none;
+      text-align: center;
+    }
+    #signalsContainer {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
     }
     .card {
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      background: white;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+      position: relative;
+      transition: filter 0.3s ease;
     }
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    .card h3 {
+      color: #047857;
+      margin: 0 0 0.5rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+    .card p {
+      margin: 0.25rem 0;
+      font-weight: 600;
+    }
+    .recommendation {
+      margin-top: 1rem;
+      font-size: 1.1rem;
+    }
+    .unlock-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background-color: #10b981;
+      color: white;
+      border: none;
+      padding: 0.4rem 0.8rem;
+      border-radius: 0.5rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      z-index: 10;
+    }
+    .unlock-btn:hover {
+      background-color: #059669;
     }
   </style>
 </head>
-<body class="bg-gray-50 text-gray-900">
-
-  <!-- Header -->
-  <header class="py-4 bg-white shadow-md sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
-      <h1 class="text-3xl font-bold text-green-600">Luxibre</h1>
-      <nav class="hidden md:flex space-x-6 items-center">
-        <a href="index.html" class="hover:text-green-600 font-medium">Accueil</a>
-        <a href="pricing.html" class="hover:text-green-600 font-medium">Abonnement</a>
-        <button id="loginBtn" class="hover:text-green-600 font-medium">Connexion</button>
-        <button id="logoutBtn" class="hover:text-green-600 font-medium hidden">Déconnexion</button>
-      </nav>
-      <!-- Mobile menu -->
-      <div class="md:hidden">
-        <button id="menuToggle" class="text-green-600 text-2xl">&#9776;</button>
-      </div>
-    </div>
-    <div id="mobileMenu" class="md:hidden hidden px-6 pt-4 pb-2 bg-white space-y-2">
-      <a href="index.html" class="block text-gray-800 hover:text-green-600">Accueil</a>
-      <a href="pricing.html" class="block text-gray-800 hover:text-green-600">Abonnement</a>
-      <button id="mobileLoginBtn" class="block text-left w-full text-gray-800 hover:text-green-600">Connexion</button>
-      <button id="mobileLogoutBtn" class="block text-left w-full text-gray-800 hover:text-green-600 hidden">Déconnexion</button>
-    </div>
+<body>
+  <header>
+    Luxibre Alpha - Tableau de bord des signaux boursiers
   </header>
-
-  <!-- Hero Section with Lottie -->
-  <section class="bg-gray-900 text-white py-12 relative text-center">
-    <div class="max-w-3xl mx-auto px-6 z-10 relative">
-      <h2 class="text-4xl font-extrabold mb-6">Votre Tableau de Bord Financier</h2>
-      <p class="text-xl text-gray-300 mb-8">Accédez à des signaux boursiers précis et des analyses en temps réel.</p>
-    </div>
-    <div class="absolute inset-0 flex items-center justify-center opacity-30 pointer-events-none">
-      <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_zrqthn6o.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></lottie-player>
-    </div>
-  </section>
-
-  <!-- Dashboard Content -->
-  <main class="max-w-7xl mx-auto px-6 py-10">
-    <div id="premiumNotice" class="bg-green-50 border-l-4 border-green-500 p-4 mb-6 hidden">
-      <p class="text-green-700 font-medium">Certains signaux sont réservés aux abonnés Premium. Passez à la version Premium pour les débloquer.</p>
-    </div>
-    <div id="signalsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+  <main>
+    <div id="premiumNotice"></div>
+    <div id="signalsContainer"></div>
   </main>
 
-  <!-- Footer -->
-  <footer class="py-10 bg-gray-100">
-    <div class="max-w-7xl mx-auto px-6 text-center text-sm text-gray-600">
-      &copy; 2025 Luxibre. Tous droits réservés. |
-      <a href="legal/mentions-legales.md" class="underline">Mentions légales</a> |
-      <a href="legal/cgu.md" class="underline">CGU</a> |
-      <a href="legal/rgpd.md" class="underline">RGPD</a>
-    </div>
-  </footer>
-
-  <!-- Supabase et logique auth -->
-  <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-
-    const supabase = createClient(
-      'https://jrgdwozxcilasllpvikh.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpyZ2R3b3p4Y2lsYXNsbHB2aWtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4MjQ0NTEsImV4cCI6MjA2MzQwMDQ1MX0.S2oGP2rdtq1IkW-oH5mC8omm698PdCgQJtGVLlIFj3w'
-    );
-
-    const loginBtn = document.getElementById("loginBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
-    const mobileLoginBtn = document.getElementById("mobileLoginBtn");
-    const mobileLogoutBtn = document.getElementById("mobileLogoutBtn");
-
-    const { data: { user } } = await supabase.auth.getUser();
-
-    if (user) {
-      loginBtn.classList.add("hidden");
-      logoutBtn.classList.remove("hidden");
-      mobileLoginBtn.classList.add("hidden");
-      mobileLogoutBtn.classList.remove("hidden");
-    } else {
-      loginBtn.classList.remove("hidden");
-      logoutBtn.classList.add("hidden");
-      mobileLoginBtn.classList.remove("hidden");
-      mobileLogoutBtn.classList.add("hidden");
-    }
-
-    logoutBtn.addEventListener("click", async () => {
-      await supabase.auth.signOut();
-      window.location.href = "login.html";
-    });
-
-    mobileLogoutBtn.addEventListener("click", async () => {
-      await supabase.auth.signOut();
-      window.location.href = "login.html";
-    });
-
-    loginBtn.addEventListener("click", () => {
-      window.location.href = "login.html";
-    });
-
-    mobileLoginBtn.addEventListener("click", () => {
-      window.location.href = "login.html";
-    });
-
-    document.getElementById("menuToggle").addEventListener("click", () => {
-      document.getElementById("mobileMenu").classList.toggle("hidden");
-    });
-
-    // Fetch and display signals
-    const isPremium = false; // Change to true to test Premium access
+  <script>
+    // Statut d'abonnement simulé (à remplacer par ton vrai système d'authentification)
+    const isPremium = false; // Passe à true pour tester la version premium
 
     fetch("data/signals.json")
-      .then(res => {
-        if (!res.ok) throw new Error("Erreur HTTP " + res.status);
-        return res.json();
-      })
+      .then(res => res.json())
       .then(data => {
         const container = document.getElementById("signalsContainer");
         const premiumNotice = document.getElementById("premiumNotice");
-        let hasPremiumBlocked = false;
+        let hasPremiumSignalsBlocked = false;
 
-        data.signals.forEach((signal, i) => {
-          const isPremiumSignal = signal.premium;
+        data.signals.forEach((signal, index) => {
+          const isSignalPremium = signal.premium;
 
+          // Création de la carte
           const card = document.createElement("div");
-          card.className = "card bg-white rounded-xl shadow-lg p-6";
-          if (isPremiumSignal && !isPremium) {
-            card.classList.add("blur-sm");
+          card.className = "card";
+
+          // Floutage si signal premium et utilisateur non premium
+          if (isSignalPremium && !isPremium) {
+            card.style.filter = "blur(4px)";
+            card.style.position = "relative";
           }
 
           card.innerHTML = `
-            <h3 class="text-2xl font-bold text-green-600 mb-4">${signal.name}</h3>
-            <p class="text-gray-700 font-medium mb-2">Prix actuel : <strong>${signal.price.toFixed(2)}€</strong></p>
-            <p class="text-gray-800 font-semibold mt-4">${signal.recommendation}</p>
-            <div class="chart-container mt-4">
-              <canvas id="chart-${i}" class="w-full h-full"></canvas>
-            </div>
+            <h3>${signal.name}</h3>
+            <p>Prix actuel : <strong>${signal.price}€</strong></p>
+            <p class="recommendation">${signal.recommendation}</p>
+            <canvas id="chart-${index}" width="280" height="120"></canvas>
           `;
 
-          if (isPremiumSignal && !isPremium) {
-            const btn = document.createElement("button");
-            btn.className = "mt-4 bg-gradient-to-r from-green-500 to-green-600 text-white font-bold py-2 px-4 rounded-full hover:from-green-600 hover:to-green-700 transition";
-            btn.textContent = "Débloquer Premium";
-            btn.onclick = () => {
-              alert("Pour accéder à ce signal, souscrivez à l’abonnement Premium.");
-              window.location.href = "pricing.html";
+          // Bouton débloquer pour signaux premium floutés
+          if (isSignalPremium && !isPremium) {
+            const unlockBtn = document.createElement("button");
+            unlockBtn.textContent = "Débloquer avec abonnement";
+            unlockBtn.className = "unlock-btn";
+            unlockBtn.onclick = () => {
+              alert("Pour débloquer ce signal, veuillez souscrire à la version Premium.");
+              window.location.href = "pricing.html"; // lien vers la page d'abonnement
             };
-            card.appendChild(btn);
-            hasPremiumBlocked = true;
+            card.appendChild(unlockBtn);
+            hasPremiumSignalsBlocked = true;
           }
 
           container.appendChild(card);
 
-          if (!(isPremiumSignal && !isPremium)) {
-            new Chart(document.getElementById(`chart-${i}`), {
-              type: 'line',
+          // Afficher le graphique uniquement si visible
+          if (!(isSignalPremium && !isPremium)) {
+            new Chart(document.getElementById(`chart-${index}`), {
+              type: "line",
               data: {
-                labels: signal.history.map((_, idx) => idx + 1),
+                labels: signal.history.map((_, i) => i + 1),
                 datasets: [{
                   label: "Évolution",
                   data: signal.history,
-                  backgroundColor: "rgba(34,197,94,0.15)",
-                  borderColor: "rgba(34,197,94,0.85)",
+                  backgroundColor: "rgba(16,185,129,0.1)",
+                  borderColor: "rgba(16,185,129,1)",
                   fill: true,
                   tension: 0.3,
-                  borderWidth: 2,
-                  pointRadius: 0
                 }]
               },
               options: {
-                responsive: true,
-                maintainAspectRatio: false,
                 scales: {
                   x: { display: false },
                   y: { display: false }
@@ -203,12 +165,14 @@
           }
         });
 
-        if (hasPremiumBlocked) {
-          premiumNotice.classList.remove("hidden");
+        // Afficher le message d'incitation au premium si nécessaire
+        if (hasPremiumSignalsBlocked) {
+          premiumNotice.style.display = "block";
+          premiumNotice.textContent = "Certains signaux sont réservés aux abonnés Premium. Passez à la version Premium pour les débloquer.";
         }
       })
       .catch(err => {
-        console.error("Erreur chargement signaux :", err);
+        console.error("Erreur chargement signaux:", err);
       });
   </script>
 </body>
