@@ -1,7 +1,8 @@
-// scripts/generate-signals.js (ESM version finale améliorée)
+// scripts/generate-signals.js (version complète avec contrôle horaires bourse)
 import fs from 'fs';
 import axios from 'axios';
 import dotenv from 'dotenv';
+import { DateTime } from 'luxon';
 
 dotenv.config();
 
@@ -45,27 +46,26 @@ const CRYPTOS = [
   { symbol: "DOGE", name: "Dogecoin", type: "crypto", premium: false }
 ];
 
-// Moyenne mobile simple
+// Fonctions calculs indicateurs inchangées (SMA, RSI, MACD, Bollinger)
+
 function calculateSMA(data, period = 5) {
   if (data.length < period) return null;
   return data.slice(-period).reduce((sum, val) => sum + val, 0) / period;
 }
 
-// RSI simplifié (basé sur 14 derniers jours)
 function calculateRSI(data, period = 14) {
-  if (data.length < period) return 50; // neutre si pas assez de données
+  if (data.length < period) return 50;
   let gains = 0, losses = 0;
   for (let i = 1; i <= period; i++) {
     const diff = data[i] - data[i - 1];
     if (diff > 0) gains += diff;
     else losses -= diff;
   }
-  if (gains + losses === 0) return 50; // éviter division par 0 ou RSI extrême
+  if (gains + losses === 0) return 50;
   const rs = gains / (losses || 1);
   return 100 - (100 / (1 + rs));
 }
 
-// MACD simplifié : différence entre SMA 12j et SMA 26j
 function calculateMACD(data) {
   const sma12 = calculateSMA(data, 12);
   const sma26 = calculateSMA(data, 26);
@@ -73,7 +73,6 @@ function calculateMACD(data) {
   return sma12 - sma26;
 }
 
-// Bollinger Bands
 function calculateBollingerBands(data, period = 20) {
   if (data.length < period) return { middle: null, upper: null, lower: null };
   const sma = calculateSMA(data, period);
@@ -85,9 +84,8 @@ function calculateBollingerBands(data, period = 20) {
   };
 }
 
-// Calcul de la recommandation finale selon indicateurs combinés
 function calculateRecommendation(history, type) {
-  if (history.length < 26) return "Conserver"; // trop peu de données
+  if (history.length < 26) return "Conserver";
 
   const latest = history[history.length - 1];
   const first = history[history.length - 26];
@@ -133,7 +131,29 @@ async function fetchStock(symbol, type) {
   return { history, price };
 }
 
+// Fonction pour vérifier si la bourse NY est ouverte
+function isMarketOpen() {
+  const now = DateTime.now().setZone('America/New_York');
+  const day = now.weekday; // 1 = lundi, 7 = dimanche
+  const hour = now.hour;
+  const minute = now.minute;
+
+  if (day >= 6) return false; // Samedi ou dimanche
+
+  // Horaires d'ouverture NYSE : 9h30 - 16h00
+  if (hour < 9 || (hour === 9 && minute < 30)) return false;
+  if (hour > 16) return false;
+
+  return true;
+}
+
 const generate = async () => {
+  if (!isMarketOpen()) {
+    console.log("La bourse est fermée (heure NY), arrêt de la génération des signaux.");
+    return;
+  }
+  console.log("La bourse est ouverte, génération des signaux...");
+
   const signals = { etfs: [], stocks: [], cryptos: [] };
 
   for (const stock of STOCKS) {
@@ -160,13 +180,12 @@ const generate = async () => {
 
   for (const etf of ETFS) {
     try {
-      // Simuler des données historiques pour l'ETF
       const history = Array.from({ length: 26 }, (_, i) => etf.price - (Math.random() * 2 - 1));
       const recommendation = calculateRecommendation(history, etf.type);
       signals.etfs.push({
         name: etf.name,
         price: etf.price,
-        history: history,
+        history,
         recommendation,
         premium: etf.premium,
         updated: new Date().toISOString()
