@@ -3,8 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Luxibre Alpha - Dashboard</title>
+  <title>Luxibre Alpha - Dashboard Moderne</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/luxon@1.25.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.0.0"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; }
@@ -13,6 +15,11 @@
       font-family: 'Inter', sans-serif;
       background: #0f172a;
       color: #f1f5f9;
+      transition: background 0.3s, color 0.3s;
+    }
+    body.light-mode {
+      background: #f1f5f9;
+      color: #0f172a;
     }
     header {
       background: #22c55e;
@@ -72,6 +79,10 @@
       position: relative;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
+    body.light-mode .card {
+      background: #ffffff;
+      color: #0f172a;
+    }
     .card:hover {
       transform: translateY(-6px);
       box-shadow: 0 10px 20px rgba(34,197,94,0.4);
@@ -86,10 +97,16 @@
       margin: 0 0 0.8rem;
       color: #86efac;
     }
+    body.light-mode .card h3 {
+      color: #22c55e;
+    }
     .card p {
       margin: 0.3rem 0;
       font-size: 1.05rem;
       color: #e2e8f0;
+    }
+    body.light-mode .card p {
+      color: #4b5563;
     }
     .recommendation {
       margin-top: 0.8rem;
@@ -101,6 +118,9 @@
       margin-top: 1rem;
       background: #0f172a;
       border-radius: 0.6rem;
+    }
+    body.light-mode .chart-container {
+      background: #f1f5f9;
     }
     .unlock-btn {
       right: 1rem;
@@ -117,6 +137,23 @@
     .unlock-btn:hover {
       background: #16a34a;
     }
+    .theme-toggle {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: #22c55e;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      z-index: 100;
+      transition: background 0.3s;
+    }
+    .theme-toggle:hover {
+      background: #16a34a;
+    }
     @media (max-width: 600px) {
       header {
         font-size: 1.3rem;
@@ -129,7 +166,8 @@
   </style>
 </head>
 <body>
-  <header>Luxibre Alpha — Tableau de bord</header>
+  <header>Luxibre Alpha — Tableau de bord Moderne</header>
+  <button class="theme-toggle" onclick="toggleTheme()">Mode Sombre</button>
   <nav>
     <button onclick="filterSignals('all')">Tous</button>
     <button onclick="filterSignals('etfs')">ETFs</button>
@@ -253,6 +291,16 @@
         card.style.display = 'none';
       }
     });
+  }
+
+  function toggleTheme() {
+    document.body.classList.toggle('light-mode');
+    const themeButton = document.querySelector('.theme-toggle');
+    if (document.body.classList.contains('light-mode')) {
+      themeButton.textContent = 'Mode Sombre';
+    } else {
+      themeButton.textContent = 'Mode Lumière';
+    }
   }
 </script>
 
