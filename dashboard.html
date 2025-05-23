@@ -2,145 +2,187 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Luxibre Alpha - Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard Luxibre Signals</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #0f172a;
-      --card: #1e293b;
-      --text: #f8fafc;
-      --accent: #38bdf8;
-      --error: #ef4444;
-      --success: #22c55e;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
-    }
-
     body {
-      background-color: var(--bg);
-      color: var(--text);
-      padding: 2rem;
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #f5f7fa;
+      color: #333;
     }
-
-    header {
-      text-align: center;
-      margin-bottom: 2rem;
-    }
-
     h1 {
-      font-size: 2rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-    }
-
-    .container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .card {
-      background-color: var(--card);
-      padding: 1.5rem;
-      border-radius: 1rem;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 32px rgba(0,0,0,0.4);
-    }
-
-    .symbol {
-      font-size: 1.25rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-    }
-
-    .price {
-      font-size: 1.5rem;
-      font-weight: bold;
-      margin-bottom: 0.25rem;
-    }
-
-    .signal {
-      font-weight: 600;
-      padding: 0.25rem 0.75rem;
-      border-radius: 999px;
-      display: inline-block;
-      font-size: 0.875rem;
-    }
-
-    .buy {
-      background: var(--success);
-      color: #fff;
-    }
-
-    .sell {
-      background: var(--error);
-      color: #fff;
-    }
-
-    footer {
       text-align: center;
-      margin-top: 3rem;
-      font-size: 0.875rem;
-      opacity: 0.7;
+      margin-bottom: 30px;
     }
-
-    @media (max-width: 600px) {
-      h1 {
-        font-size: 1.5rem;
-      }
+    .section {
+      margin-bottom: 40px;
+    }
+    .item {
+      background: white;
+      border-radius: 6px;
+      padding: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 4px rgb(0 0 0 / 0.1);
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .item-details {
+      flex: 1;
+    }
+    .item-name {
+      font-weight: bold;
+      font-size: 1.1em;
+      margin-bottom: 5px;
+    }
+    .price {
+      font-size: 1.2em;
+      margin-bottom: 5px;
+    }
+    .recommendation {
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+    .premium {
+      display: inline-block;
+      background: #ff9800;
+      color: white;
+      padding: 2px 8px;
+      font-size: 0.8em;
+      border-radius: 4px;
+      margin-left: 10px;
+    }
+    .updated {
+      font-size: 0.8em;
+      color: #666;
+    }
+    canvas {
+      max-width: 150px;
+      max-height: 80px;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Luxibre Alpha - Signaux Boursiers</h1>
-    <p>Recevez des signaux précis en temps réel sur vos actifs préférés</p>
-  </header>
 
-  <div id="dashboard" class="container">
-    <!-- Les cartes seront générées ici -->
+  <h1>Dashboard Luxibre Signals</h1>
+
+  <div class="section" id="etfs-section">
+    <h2>ETFs</h2>
+    <div id="etfs-list"></div>
   </div>
 
-  <footer>
-    © 2025 Luxibre Alpha. Tous droits réservés.
-  </footer>
+  <div class="section" id="stocks-section">
+    <h2>Actions (Stocks)</h2>
+    <div id="stocks-list"></div>
+  </div>
 
-  <script>
-    async function loadSignals() {
-      try {
-        const res = await fetch("data/signals.json");
-        const data = await res.json();
-        const dashboard = document.getElementById("dashboard");
-        data.forEach(signal => {
-          const card = document.createElement("div");
-          card.className = "card";
-          card.innerHTML = `
-            <div class="symbol">${signal.symbol}</div>
-            <div class="price">${signal.price.toFixed(2)} €</div>
-            <div class="signal ${signal.signal.toLowerCase()}">
-              ${signal.signal.toUpperCase()}
-            </div>
-          `;
-          dashboard.appendChild(card);
-        });
-      } catch (e) {
-        console.error("Erreur chargement des signaux :", e);
+<script>
+  async function loadSignals() {
+    try {
+      const response = await fetch('data/signals.json');
+      const data = await response.json();
+
+      function formatDate(dateStr) {
+        const d = new Date(dateStr);
+        return d.toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' });
       }
-    }
 
-    loadSignals();
-  </script>
+      function createItem(item, index, containerId) {
+        const container = document.getElementById(containerId);
+
+        // Créer le conteneur item
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'item';
+
+        // Détails texte
+        const detailsDiv = document.createElement('div');
+        detailsDiv.className = 'item-details';
+
+        const nameDiv = document.createElement('div');
+        nameDiv.className = 'item-name';
+        nameDiv.textContent = item.name;
+        detailsDiv.appendChild(nameDiv);
+
+        const priceDiv = document.createElement('div');
+        priceDiv.className = 'price';
+        priceDiv.textContent = `Prix actuel : ${item.price.toFixed(2)} €`;
+        detailsDiv.appendChild(priceDiv);
+
+        const recoDiv = document.createElement('div');
+        recoDiv.className = 'recommendation';
+        recoDiv.textContent = `Recommandation : ${item.recommendation}`;
+        if (item.premium) {
+          const premSpan = document.createElement('span');
+          premSpan.className = 'premium';
+          premSpan.textContent = 'Premium';
+          recoDiv.appendChild(premSpan);
+        }
+        detailsDiv.appendChild(recoDiv);
+
+        const updatedDiv = document.createElement('div');
+        updatedDiv.className = 'updated';
+        updatedDiv.textContent = `Mis à jour : ${formatDate(item.updated)}`;
+        detailsDiv.appendChild(updatedDiv);
+
+        itemDiv.appendChild(detailsDiv);
+
+        // Canvas graphique
+        const canvas = document.createElement('canvas');
+        canvas.id = `${containerId}-chart-${index}`;
+        canvas.width = 150;
+        canvas.height = 80;
+        itemDiv.appendChild(canvas);
+
+        container.appendChild(itemDiv);
+
+        // Création du graphique avec Chart.js
+        new Chart(canvas.getContext('2d'), {
+          type: 'line',
+          data: {
+            labels: item.history.map((_, i) => i + 1),
+            datasets: [{
+              label: 'Historique prix',
+              data: item.history,
+              borderColor: item.premium ? 'rgba(255, 152, 0, 0.8)' : 'rgba(54, 162, 235, 0.8)',
+              backgroundColor: 'rgba(0, 0, 0, 0)',
+              tension: 0.3,
+              pointRadius: 0,
+            }]
+          },
+          options: {
+            responsive: false,
+            plugins: {
+              legend: { display: false }
+            },
+            scales: {
+              x: { display: false },
+              y: { display: false }
+            },
+            elements: {
+              line: { borderWidth: 2 }
+            }
+          }
+        });
+      }
+
+      // Afficher ETFs
+      data.etfs.forEach((etf, i) => createItem(etf, i, 'etfs-list'));
+      // Afficher Stocks
+      data.stocks.forEach((stock, i) => createItem(stock, i, 'stocks-list'));
+
+    } catch (error) {
+      console.error('Erreur chargement signals.json:', error);
+      const etfsContainer = document.getElementById('etfs-list');
+      const stocksContainer = document.getElementById('stocks-list');
+      etfsContainer.innerHTML = '<p>Impossible de charger les données ETFs.</p>';
+      stocksContainer.innerHTML = '<p>Impossible de charger les données Actions.</p>';
+    }
+  }
+
+  loadSignals();
+</script>
+
 </body>
 </html>
