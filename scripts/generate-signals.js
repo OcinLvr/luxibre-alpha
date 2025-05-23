@@ -31,7 +31,7 @@ const STOCKS = [
 ];
 
 const ETFS = [
-  { symbol: "EXI4.DE", name: "iShares EURO STOXX Banks 30-15 UCITS ETF (DE) EUR (Acc)", type: "etf", premium: false },
+  { symbol: "EXI4", name: "iShares EURO STOXX Banks 30-15 UCITS ETF (DE) EUR (Acc)", type: "etf", premium: false },
   { symbol: "EUNL.DE", name: "iShares STOXX Europe 600 Health Care UCITS ETF (DE)", type: "etf", premium: true },
   { symbol: "EXS1.DE", name: "iShares STOXX Europe 600 UCITS ETF (DE)", type: "etf", premium: false },
   { symbol: "EXH1.DE", name: "iShares STOXX Europe 600 Financial Services UCITS ETF (DE)", type: "etf", premium: true },
