@@ -2,7 +2,7 @@ name: Générer les signaux
 
 on:
   schedule:
-    - cron: '0 7-15 * * 1-5' # 9h à 17h heure de Paris (UTC+2 => UTC 7h à 15h)
+    - cron: '0 7-15 * * 1-5' # 9h à 17h heure de Paris (UTC+2 => UTC 7h à 15h UTC)
   workflow_dispatch:
 
 permissions:
@@ -22,7 +22,7 @@ jobs:
           node-version: '18'
 
       - name: Installer les dépendances
-        run: npm install axios dotenv
+        run: npm install axios luxon
 
       - name: Exécuter le script de génération
         run: node scripts/generate-signals.js
@@ -34,5 +34,5 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add data/signals.json
-          git commit -m "Mise à jour automatique des signaux" || echo "Aucun changement à commit"
+          git diff --quiet --cached || git commit -m "Mise à jour automatique des signaux"
           git push
