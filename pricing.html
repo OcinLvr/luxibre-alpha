@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Abonnement - Luxibre Alpha</title>
+  <title>Luxibre Alpha - Abonnement</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
@@ -20,16 +20,19 @@
       <h1 class="text-3xl font-bold text-green-600">Luxibre</h1>
       <nav class="hidden md:flex space-x-6 items-center">
         <a href="index.html" class="hover:text-green-600 font-medium">Accueil</a>
+        <a href="dashboard.html" class="hover:text-green-600 font-medium">Dashboard</a>
         <a href="pricing.html" class="hover:text-green-600 font-medium">Abonnement</a>
         <button id="loginBtn" class="hover:text-green-600 font-medium">Connexion</button>
         <button id="logoutBtn" class="hover:text-green-600 font-medium hidden">Déconnexion</button>
       </nav>
+      <!-- Mobile menu -->
       <div class="md:hidden">
         <button id="menuToggle" class="text-green-600 text-2xl">&#9776;</button>
       </div>
     </div>
     <div id="mobileMenu" class="md:hidden hidden px-6 pt-4 pb-2 bg-white space-y-2">
       <a href="index.html" class="block text-gray-800 hover:text-green-600">Accueil</a>
+      <a href="dashboard.html" class="block text-gray-800 hover:text-green-600">Dashboard</a>
       <a href="pricing.html" class="block text-gray-800 hover:text-green-600">Abonnement</a>
       <button id="mobileLoginBtn" class="block text-left w-full text-gray-800 hover:text-green-600">Connexion</button>
       <button id="mobileLogoutBtn" class="block text-left w-full text-gray-800 hover:text-green-600 hidden">Déconnexion</button>
@@ -38,33 +41,41 @@
 
   <!-- Pricing Section -->
   <section class="py-20 bg-white">
-    <div class="max-w-5xl mx-auto px-6">
-      <h2 class="text-4xl font-bold text-center mb-12">Choisissez votre formule</h2>
-      <div class="grid md:grid-cols-2 gap-10">
-        <!-- Free -->
-        <div class="border border-gray-200 rounded-xl p-8 shadow-md text-center">
-          <h3 class="text-2xl font-semibold mb-4">Gratuit</h3>
-          <p class="text-gray-600 mb-6">Accédez à une sélection limitée de signaux chaque jour.</p>
-          <p class="text-3xl font-bold mb-6">0€</p>
-          <ul class="text-left mb-6 space-y-2">
-            <li>✔ 3 signaux par jour</li>
-            <li>✔ Graphiques simplifiés</li>
-            <li>✘ Données Premium</li>
-            <li>✘ Analyse automatique</li>
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-4xl font-bold text-center mb-16">Nos Abonnements</h2>
+      <div class="grid md:grid-cols-3 gap-10">
+        <div class="bg-gray-50 p-8 rounded-xl shadow-lg text-center hover:shadow-xl transition">
+          <h3 class="text-2xl font-bold mb-4">Gratuit</h3>
+          <p class="text-4xl font-bold mb-6">0€/mois</p>
+          <ul class="text-gray-600 mb-6">
+            <li class="mb-2">Accès aux signaux de base</li>
+            <li class="mb-2">Graphiques dynamiques</li>
+            <li class="mb-2">Support par email</li>
           </ul>
+          <a href="login.html" class="inline-block px-8 py-4 bg-green-600 hover:bg-green-700 text-white rounded-xl text-lg font-semibold transition transform hover:scale-105">S'inscrire</a>
         </div>
-        <!-- Premium -->
-        <div class="border-2 border-green-600 rounded-xl p-8 shadow-xl text-center bg-green-50">
-          <h3 class="text-2xl font-semibold mb-4 text-green-700">Premium</h3>
-          <p class="text-gray-700 mb-6">Débloquez tous les signaux, outils avancés et mises à jour instantanées.</p>
-          <p class="text-3xl font-bold mb-6 text-green-800">5€ / mois</p>
-          <ul class="text-left mb-6 space-y-2">
-            <li>✔ Signaux illimités</li>
-            <li>✔ Graphiques avancés</li>
-            <li>✔ Analyse automatique</li>
-            <li>✔ Accès prioritaire aux nouveautés</li>
+        <div class="bg-gray-50 p-8 rounded-xl shadow-lg text-center hover:shadow-xl transition">
+          <h3 class="text-2xl font-bold mb-4">Premium</h3>
+          <p class="text-4xl font-bold mb-6">29€/mois</p>
+          <ul class="text-gray-600 mb-6">
+            <li class="mb-2">Accès à tous les signaux</li>
+            <li class="mb-2">Graphiques dynamiques avancés</li>
+            <li class="mb-2">Support prioritaire</li>
+            <li class="mb-2">Accès aux cryptomonnaies</li>
           </ul>
-          <a href="https://buy.stripe.com/test_a1b2c3XYZ" target="_blank" class="inline-block px-6 py-3 bg-green-600 text-white rounded-xl font-semibold hover:bg-green-700 transition">S'abonner</a>
+          <a href="login.html" class="inline-block px-8 py-4 bg-green-600 hover:bg-green-700 text-white rounded-xl text-lg font-semibold transition transform hover:scale-105">S'inscrire</a>
+        </div>
+        <div class="bg-gray-50 p-8 rounded-xl shadow-lg text-center hover:shadow-xl transition">
+          <h3 class="text-2xl font-bold mb-4">Entreprise</h3>
+          <p class="text-4xl font-bold mb-6">99€/mois</p>
+          <ul class="text-gray-600 mb-6">
+            <li class="mb-2">Accès à tous les signaux</li>
+            <li class="mb-2">Graphiques dynamiques avancés</li>
+            <li class="mb-2">Support prioritaire</li>
+            <li class="mb-2">Accès aux cryptomonnaies</li>
+            <li class="mb-2">Analyses personnalisées</li>
+          </ul>
+          <a href="login.html" class="inline-block px-8 py-4 bg-green-600 hover:bg-green-700 text-white rounded-xl text-lg font-semibold transition transform hover:scale-105">S'inscrire</a>
         </div>
       </div>
     </div>
@@ -80,29 +91,55 @@
     </div>
   </footer>
 
-  <!-- Scripts -->
-  <script>
-    // Boutons de redirection vers login.html
-    document.getElementById("loginBtn").addEventListener("click", () => {
-      window.location.href = "login.html";
-    });
-    document.getElementById("mobileLoginBtn").addEventListener("click", () => {
+  <!-- Supabase et logique auth -->
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const supabase = createClient(
+      'https://jrgdwozxcilasllpvikh.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpyZ2R3b3p4Y2lsYXNsbHB2aWtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4MjQ0NTEsImV4cCI6MjA2MzQwMDQ1MX0.S2oGP2rdtq1IkW-oH5mC8omm698PdCgQJtGVLlIFj3w'
+    );
+
+    const loginBtn = document.getElementById("loginBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const mobileLoginBtn = document.getElementById("mobileLoginBtn");
+    const mobileLogoutBtn = document.getElementById("mobileLogoutBtn");
+
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (user) {
+      loginBtn.classList.add("hidden");
+      logoutBtn.classList.remove("hidden");
+      mobileLoginBtn.classList.add("hidden");
+      mobileLogoutBtn.classList.remove("hidden");
+    } else {
+      loginBtn.classList.remove("hidden");
+      logoutBtn.classList.add("hidden");
+      mobileLoginBtn.classList.remove("hidden");
+      mobileLogoutBtn.classList.add("hidden");
+    }
+
+    logoutBtn.addEventListener("click", async () => {
+      await supabase.auth.signOut();
       window.location.href = "login.html";
     });
 
-    // Menu mobile toggle
+    mobileLogoutBtn.addEventListener("click", async () => {
+      await supabase.auth.signOut();
+      window.location.href = "login.html";
+    });
+
+    loginBtn.addEventListener("click", () => {
+      window.location.href = "login.html";
+    });
+
+    mobileLoginBtn.addEventListener("click", () => {
+      window.location.href = "login.html";
+    });
+
     document.getElementById("menuToggle").addEventListener("click", () => {
       document.getElementById("mobileMenu").classList.toggle("hidden");
     });
-
-    // Placeholder pour logout futur avec Supabase
-    document.getElementById("logoutBtn").addEventListener("click", () => {
-      console.log("Déconnexion Supabase à implémenter");
-    });
-    document.getElementById("mobileLogoutBtn").addEventListener("click", () => {
-      console.log("Déconnexion Supabase à implémenter");
-    });
   </script>
-
 </body>
 </html>
