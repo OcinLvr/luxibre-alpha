@@ -120,73 +120,82 @@
     const isPremium = false; // Mets à true pour tester l’abonnement
 
     fetch("data/signals.json")
-      .then(res => {
-        if (!res.ok) throw new Error("HTTP error " + res.status);
-        return res.json();
-      })
-      .then(data => {
-        const container = document.getElementById("signalsContainer");
-        const premiumNotice = document.getElementById("premiumNotice");
-        let premiumLocked = false;
+  .then(res => {
+    if (!res.ok) throw new Error("HTTP error " + res.status);
+    return res.json();
+  })
+  .then(data => {
+    if (!data || !Array.isArray(data.signals)) {
+      throw new Error("Données invalides : 'signals' absent ou non un tableau.");
+    }
 
-        data.signals.forEach((signal, i) => {
-          const card = document.createElement("div");
-          card.className = "card";
+    const container = document.getElementById("signalsContainer");
+    const premiumNotice = document.getElementById("premiumNotice");
+    let premiumLocked = false;
 
-          const isLocked = signal.premium && !isPremium;
-          if (isLocked) {
-            card.classList.add("blur");
-            premiumLocked = true;
-          }
+    data.signals.forEach((signal, i) => {
+      const card = document.createElement("div");
+      card.className = "card";
 
-          card.innerHTML = `
-            <h3>${signal.name}</h3>
-            <p>Prix actuel : <strong>${signal.price}€</strong></p>
-            <p class="recommendation">${signal.recommendation}</p>
-            <canvas id="chart-${i}" width="320" height="140"></canvas>
-          `;
+      const isLocked = signal.premium && !isPremium;
+      if (isLocked) {
+        card.classList.add("blur");
+        premiumLocked = true;
+      }
 
-          if (isLocked) {
-            const btn = document.createElement("button");
-            btn.className = "unlock-btn";
-            btn.innerText = "Débloquer";
-            btn.onclick = () => window.location.href = "pricing.html";
-            card.appendChild(btn);
-          }
+      card.innerHTML = `
+        <h3>${signal.name}</h3>
+        <p>Prix actuel : <strong>${signal.price}€</strong></p>
+        <p class="recommendation">${signal.recommendation}</p>
+        <canvas id="chart-${i}" width="320" height="140"></canvas>
+      `;
 
-          container.appendChild(card);
+      if (isLocked) {
+        const btn = document.createElement("button");
+        btn.className = "unlock-btn";
+        btn.innerText = "Débloquer";
+        btn.onclick = () => window.location.href = "pricing.html";
+        card.appendChild(btn);
+      }
 
-          if (!isLocked) {
-            new Chart(document.getElementById(`chart-${i}`), {
-              type: "line",
-              data: {
-                labels: signal.history.map((_, i) => i + 1),
-                datasets: [{
-                  label: "Évolution",
-                  data: signal.history,
-                  borderColor: "rgba(34,197,94,0.9)",
-                  backgroundColor: "rgba(34,197,94,0.1)",
-                  fill: true,
-                  tension: 0.4,
-                  pointRadius: 0
-                }]
-              },
-              options: {
-                plugins: { legend: { display: false } },
-                scales: { x: { display: false }, y: { display: false } }
-              }
-            });
+      container.appendChild(card);
+
+      if (!isLocked) {
+        new Chart(document.getElementById(`chart-${i}`), {
+          type: "line",
+          data: {
+            labels: signal.history.map((_, i) => i + 1),
+            datasets: [{
+              label: "Évolution",
+              data: signal.history,
+              borderColor: "rgba(34,197,94,0.9)",
+              backgroundColor: "rgba(34,197,94,0.1)",
+              fill: true,
+              tension: 0.4,
+              pointRadius: 0
+            }]
+          },
+          options: {
+            plugins: { legend: { display: false } },
+            scales: { x: { display: false }, y: { display: false } }
           }
         });
+      }
+    });
 
-        if (premiumLocked) {
-          premiumNotice.style.display = "block";
-          premiumNotice.textContent = "Certains signaux sont réservés aux abonnés Premium. Abonnez-vous pour les débloquer.";
-        }
-      })
-      .catch(err => {
-        console.error("Erreur chargement des signaux :", err);
-      });
+    if (premiumLocked) {
+      premiumNotice.style.display = "block";
+      premiumNotice.textContent = "Certains signaux sont réservés aux abonnés Premium. Abonnez-vous pour les débloquer.";
+    }
+  })
+  .catch(err => {
+    console.error("Erreur chargement des signaux :", err);
+    const container = document.getElementById("signalsContainer");
+    if (container) {
+      container.innerHTML = `<p style="color: red;">Impossible de charger les signaux.<br>${err.message}</p>`;
+    }
+  });
+
   </script>
 </body>
 </html>
