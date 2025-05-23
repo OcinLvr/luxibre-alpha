@@ -4,40 +4,109 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Luxibre Alpha - Dashboard</title>
-  <script src="/scripts/auth-check.js" defer></script>
-  <script src="/scripts/load-signals.js" defer></script>
-  <script src="/scripts/user-role.js" defer></script>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
 </head>
 <body class="bg-gray-100 text-gray-900">
-  <header class="bg-white shadow p-4 flex justify-between items-center">
-    <h1 class="text-xl font-bold">Luxibre Alpha</h1>
-    <div>
-      <button id="subscribeBtn" class="bg-indigo-600 text-white px-4 py-2 rounded">Passer Premium</button>
-      <button id="logoutBtn" class="ml-2 text-gray-600">Déconnexion</button>
+
+  <!-- Header -->
+  <header class="py-4 bg-white shadow-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-green-600">Luxibre Alpha</h1>
+      <button id="logoutBtn" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md font-semibold">Déconnexion</button>
     </div>
   </header>
 
-  <main class="p-6">
-    <h2 class="text-2xl font-semibold mb-4">Signaux Boursiers</h2>
-    <div id="signalsContainer" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
+  <!-- Main Content -->
+  <main class="max-w-6xl mx-auto px-6 py-10">
+    <h2 class="text-3xl font-bold mb-8">Vos Signaux Boursiers</h2>
+    <div id="signals" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+    <div class="mt-16">
+      <h3 class="text-2xl font-semibold mb-4">Graphique interactif</h3>
+      <canvas id="chartCanvas" class="bg-white rounded-lg shadow-md p-6"></canvas>
+    </div>
   </main>
 
-  <template id="signalCard">
-    <div class="bg-white p-4 rounded-xl shadow hover:shadow-lg transition">
-      <div class="flex justify-between items-center mb-2">
-        <h3 class="font-bold text-lg" data-symbol></h3>
-        <span class="text-sm px-2 py-1rounded-full text-white text-xs" data-badge></span>
-      </div>
-      <p class="text-sm mb-2" data-description></p>
-      <div class="mt-2">
-        <p class="text-gray-600 text-sm">Tendance : <span data-trend></span></p>
-        <p class="text-gray-600 text-sm">Force : <span data-strength></span></p>
-      </div>
-      <div class="mt-4">
-        <button class="unlockBtn hidden bg-indigo-600 text-white w-full py-1 rounded text-sm">Débloquer avec Premium</button>
-      </div>
-    </div>
-  </template>
+  <!-- Footer -->
+  <footer class="py-8 bg-white text-center text-gray-500 text-sm">
+    &copy; 2025 Luxibre Alpha. Tous droits réservés.
+  </footer>
+
+  <!-- Supabase + Signaux -->
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const supabase = createClient(
+      'https://jrgdwozxcilasllpvikh.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpyZ2R3b3p4Y2lsYXNsbHB2aWtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4MjQ0NTEsImV4cCI6MjA2MzQwMDQ1MX0.S2oGP2rdtq1IkW-oH5mC8omm698PdCgQJtGVLlIFj3w'
+    );
+
+    const logoutBtn = document.getElementById("logoutBtn");
+    logoutBtn.addEventListener("click", async () => {
+      await supabase.auth.signOut();
+      window.location.href = "login.html";
+    });
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) window.location.href = "login.html";
+
+    // Charger les signaux
+    const response = await fetch("data/signals.json");
+    const signals = await response.json();
+
+    const signalContainer = document.getElementById("signals");
+    signals.forEach((signal, index) => {
+      const card = document.createElement("div");
+      card.className = "bg-white p-6 rounded-xl shadow hover:shadow-lg transition";
+      card.innerHTML = `
+        <h4 class="text-xl font-bold text-green-600 mb-2">${signal.ticker}</h4>
+        <p class="text-gray-700 mb-1">Prix actuel : <strong>${signal.price}€</strong></p>
+        <p class="text-gray-600 text-sm">Tendance : ${signal.trend}</p>
+        <button class="mt-4 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded" onclick="showChart('${signal.ticker}', ${JSON.stringify(signal.history)})">Voir Graphique</button>
+      `;
+      signalContainer.appendChild(card);
+    });
+
+    window.showChart = (ticker, history) => {
+      const ctx = document.getElementById("chartCanvas").getContext("2d");
+      if (window.chartInstance) window.chartInstance.destroy();
+
+      window.chartInstance = new Chart(ctx, {
+        type: "line",
+        data: {
+          labels: history.map(h => h.date),
+          datasets: [{
+            label: ticker,
+            data: history.map(h => h.value),
+            borderColor: "#10B981",
+            fill: false,
+            tension: 0.2
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              display: true,
+              labels: {
+                color: '#111'
+              }
+            }
+          },
+          scales: {
+            x: { ticks: { color: '#111' } },
+            y: { ticks: { color: '#111' } }
+          }
+        }
+      });
+    }
+  </script>
 </body>
 </html>
