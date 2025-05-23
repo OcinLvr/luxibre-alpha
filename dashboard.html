@@ -1,354 +1,107 @@
 <!DOCTYPE html>
-<html lang="fr" class="scroll-smooth">
+<html lang="fr" class="scroll-smooth" >
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Luxibre Alpha - Dashboard des Signaux</title>
+  <title>Luxibre Alpha - Dashboard Signaux</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
-    body {
-      font-family: 'Inter', sans-serif;
-    }
-    .fade-in {
-      animation: fadeInUp 0.6s ease forwards;
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    @keyframes fadeInUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    /* Scroll horizontal for mobile cards */
-    .cards-container {
-      overflow-x: auto;
-      display: flex;
-      gap: 1rem;
-      padding-bottom: 1rem;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-    }
-    .card {
-      scroll-snap-align: start;
-      min-width: 320px;
-      flex-shrink: 0;
-      background: white;
-      border-radius: 0.75rem;
-      box-shadow: 0 2px 15px rgb(0 0 0 / 0.1);
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-    }
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 30px rgb(0 0 0 / 0.15);
-    }
-    /* Tabs */
-    .tab-btn {
-      cursor: pointer;
-      padding: 0.5rem 1.5rem;
-      border-radius: 9999px;
-      font-weight: 600;
-      transition: background-color 0.3s ease;
-      user-select: none;
-    }
-    .tab-btn.active {
-      background-color: #4f46e5; /* indigo-600 */
-      color: white;
-    }
-    .tab-btn:not(.active):hover {
-      background-color: #e0e7ff; /* indigo-100 */
-    }
-    /* Scrollbar styling for cards container */
-    .cards-container::-webkit-scrollbar {
-      height: 8px;
-    }
-    .cards-container::-webkit-scrollbar-thumb {
-      background-color: #a5b4fc; /* indigo-300 */
-      border-radius: 10px;
-    }
-    .cards-container::-webkit-scrollbar-track {
-      background-color: #f3f4f6; /* gray-100 */
-      border-radius: 10px;
-    }
-    /* Badge indicators */
-    .badge {
-      font-size: 0.75rem;
-      font-weight: 600;
-      padding: 0.15rem 0.5rem;
-      border-radius: 9999px;
-      color: white;
-      user-select: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.25rem;
-    }
-    .badge-rsi {
-      background-color: #f59e0b; /* amber-500 */
-    }
-    .badge-macd {
-      background-color: #10b981; /* emerald-500 */
-    }
-    .badge-bollinger {
-      background-color: #3b82f6; /* blue-500 */
-    }
-    .badge-premium {
-      background-color: #fbbf24; /* yellow-400 */
-      color: #92400e;
-      font-weight: 700;
-    }
-    /* Recommendation colors */
-    .rec-acheter {
-      background-color: #22c55e; /* green-500 */
-      color: white;
-    }
-    .rec-vendre {
-      background-color: #ef4444; /* red-500 */
-      color: white;
-    }
-    .rec-conserver {
-      background-color: #6b7280; /* gray-500 */
-      color: white;
-    }
-    /* Icon styles */
-    svg {
-      width: 16px;
-      height: 16px;
-    }
-    /* Search input */
-    #searchInput {
-      width: 100%;
-      max-width: 400px;
-      padding: 0.5rem 1rem;
-      border: 1px solid #d1d5db; /* gray-300 */
-      border-radius: 9999px;
-      font-size: 1rem;
-      outline-offset: 2px;
-      transition: border-color 0.3s ease;
-    }
-    #searchInput:focus {
-      border-color: #4f46e5; /* indigo-600 */
-      box-shadow: 0 0 0 3px #c7d2fe; /* indigo-200 */
-    }
-    /* Grid on desktop */
-    @media (min-width: 1024px) {
-      .cards-container {
-        overflow-x: visible;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 1.5rem;
-      }
+    /* Sparklines styles */
+    svg.sparkline {
+      width: 100px;
+      height: 30px;
     }
   </style>
 </head>
-<body class="bg-gray-50 min-h-screen text-gray-800">
-  <header class="sticky top-0 bg-white shadow z-50">
-    <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
-      <h1 class="text-3xl font-extrabold text-indigo-700 select-none">Luxibre Alpha</h1>
-      <div class="flex items-center gap-6">
-        <input
-          id="searchInput"
-          type="search"
-          placeholder="Rechercher par nom ou symbole..."
-          aria-label="Recherche"
-          spellcheck="false"
-          autocomplete="off"
-          autocorrect="off"
-          autocapitalize="off"
-        />
-        <button
-          id="refreshBtn"
-          class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-white rounded-full font-semibold transition"
-          title="Rafraîchir les signaux"
-          aria-label="Rafraîchir"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5" viewBox="0 0 24 24">
-            <polyline points="1 4 1 10 7 10"></polyline>
-            <polyline points="23 20 23 14 17 14"></polyline>
-            <path d="M3.51 15a9 9 0 0114.85-3.36L23 14"></path>
-            <path d="M20.49 9a9 9 0 00-14.85 3.36L1 10"></path>
-          </svg>
-          Rafraîchir
-        </button>
-      </div>
-    </div>
+<body class="bg-gray-900 text-gray-100 min-h-screen p-6">
+  <header class="max-w-7xl mx-auto mb-8">
+    <h1 class="text-4xl font-extrabold mb-2">Luxibre Alpha - Signaux Premium</h1>
+    <p class="text-gray-400">Les signaux fiables d'achat, vente ou conservation, mis à jour en temps réel.</p>
   </header>
 
-  <main class="max-w-7xl mx-auto px-6 py-8">
-    <nav class="flex gap-4 justify-center mb-8">
-      <button class="tab-btn active" data-tab="stocks" aria-selected="true" role="tab" tabindex="0">Actions</button>
-      <button class="tab-btn" data-tab="etfs" aria-selected="false" role="tab" tabindex="-1">ETFs</button>
-      <button class="tab-btn" data-tab="cryptos" aria-selected="false" role="tab" tabindex="-1">Cryptomonnaies</button>
-    </nav>
-
-    <section id="stocks" role="tabpanel" aria-labelledby="tab-stocks">
-      <div class="cards-container"></div>
-    </section>
-
-    <section id="etfs" role="tabpanel" aria-labelledby="tab-etfs" hidden>
-      <div class="cards-container"></div>
-    </section>
-
-    <section id="cryptos" role="tabpanel" aria-labelledby="tab-cryptos" hidden>
-      <div class="cards-container"></div>
-    </section>
+  <main class="max-w-7xl mx-auto">
+    <section id="signals-container" class="space-y-10"></section>
   </main>
 
-  <footer class="text-center text-sm text-gray-500 py-6 select-none">
-    Dernière mise à jour : <span id="lastUpdate">Chargement...</span>
-  </footer>
-
   <script>
-    const recIcons = {
-      Acheter: `<svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" class="inline w-4 h-4"><path d="M12 19V5M5 12l7-7 7 7"/></svg>`,
-      Vendre: `<svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" class="inline w-4 h-4"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>`,
-      Conserver: `<svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" class="inline w-4 h-4"><circle cx="12" cy="12" r="10"/></svg>`
-    };
+    // Fonction pour créer le path SVG d’une sparkline à partir d’un tableau de prix
+    function createSparklinePath(prices, width=100, height=30) {
+      if (!prices || prices.length === 0) return "";
+      const max = Math.max(...prices);
+      const min = Math.min(...prices);
+      if (max === min) return `M0,${height/2} L${width},${height/2}`; // ligne plate si constant
+      const len = prices.length;
+      const points = prices.map((p, i) => {
+        const x = (i / (len - 1)) * width;
+        const y = height - ((p - min) / (max - min)) * height;
+        return [x, y];
+      });
+      return points.map((pt, i) => (i === 0 ? `M${pt[0]},${pt[1]}` : `L${pt[0]},${pt[1]}`)).join(" ");
+    }
 
+    // Mapping recommandation -> classes tailwind
     const recColors = {
-      Acheter: "rec-acheter",
-      Vendre: "rec-vendre",
-      Conserver: "rec-conserver"
+      "Acheter": "bg-green-600 text-white",
+      "Vendre": "bg-red-600 text-white",
+      "Conserver": "bg-gray-600 text-white"
     };
 
-    let signals = { stocks: [], etfs: [], cryptos: [] };
-    let filteredSignals = { stocks: [], etfs: [], cryptos: [] };
+    // Fonction pour créer une card signal
+    function createSignalCard(signal) {
+      const recClass = recColors[signal.recommendation] || "bg-gray-600";
 
-    const tabs = document.querySelectorAll('.tab-btn');
-    const sections = {
-      stocks: document.getElementById('stocks'),
-      etfs: document.getElementById('etfs'),
-      cryptos: document.getElementById('cryptos')
-    };
-
-    const searchInput = document.getElementById('searchInput');
-    const refreshBtn = document.getElementById('refreshBtn');
-    const lastUpdateEl = document.getElementById('lastUpdate');
-
-    function formatDate(dateStr) {
-      if (!dateStr) return '';
-      const d = new Date(dateStr);
-      return d.toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' });
-    }
-
-    function createBadge(text, className, icon = '') {
-      return `<span class="badge ${className}" title="${text}">${icon}${text}</span>`;
-    }
-
-    function createCard(item) {
-      const recClass = recColors[item.recommendation] || "rec-conserver";
       return `
-        <article class="card fade-in p-5 flex flex-col justify-between">
-          <header class="flex justify-between items-center mb-3">
-            <h3 class="font-semibold text-lg truncate" title="${item.name}">${item.name}</h3>
-            ${item.premium ? createBadge('Premium', 'badge-premium') : ''}
-          </header>
-
-          <div class="mb-4 flex items-center gap-3">
-            <p class="text-2xl font-extrabold">${item.price.toFixed(2)} $</p>
-            <p class="inline-flex items-center gap-1 px-3 py-1 rounded-full font-semibold ${recClass} select-none" title="Recommandation">
-              ${recIcons[item.recommendation] || ''} ${item.recommendation}
-            </p>
+        <article class="flex items-center justify-between bg-gray-800 rounded-lg p-4 shadow-lg">
+          <div class="flex items-center space-x-4 flex-1 min-w-0">
+            <div class="flex flex-col">
+              <span class="font-semibold text-lg truncate">${signal.name} <span class="text-gray-400 text-sm">(${signal.symbol})</span></span>
+              <span class="text-green-400 text-xl font-bold">${signal.price.toFixed(2)} $</span>
+              <span class="inline-block mt-1 px-3 py-1 rounded-full text-sm font-semibold ${recClass}">${signal.recommendation}</span>
+              ${signal.premium ? '<span class="ml-3 px-2 py-0.5 bg-yellow-500 text-black font-bold rounded-full text-xs">Premium</span>' : ''}
+              <time datetime="${signal.updated}" class="text-gray-400 text-xs mt-1">Mis à jour: ${new Date(signal.updated).toLocaleString()}</time>
+            </div>
+            <svg class="sparkline ml-auto" viewBox="0 0 100 30" preserveAspectRatio="none">
+              <path d="${createSparklinePath(signal.prices_7d)}" stroke="#4ade80" fill="none" stroke-width="2" />
+            </svg>
           </div>
-
-          <div class="flex flex-wrap gap-2 text-xs text-gray-600">
-            ${item.rsi ? createBadge(`RSI: ${item.rsi}`, 'badge-rsi') : ''}
-            ${item.macd ? createBadge(`MACD: ${item.macd}`, 'badge-macd') : ''}
-            ${item.bollinger ? createBadge(`Bollinger: ${item.bollinger}`, 'badge-bollinger') : ''}
-          </div>
-
-          <footer class="mt-4 text-xs text-gray-400 select-none">Dernière mise à jour : ${formatDate(item.updated)}</footer>
         </article>
       `;
     }
 
-    function renderSection(type) {
-      const container = sections[type].querySelector('.cards-container');
-      if (!filteredSignals[type]?.length) {
-        container.innerHTML = `<p class="text-gray-500 text-center py-12 select-none">Aucun signal disponible.</p>`;
-        return;
-      }
-      container.innerHTML = filteredSignals[type].map(createCard).join('');
+    // Fonction pour créer une section catégorie
+    function createCategorySection(title, signals) {
+      if (!signals || signals.length === 0) return '';
+      return `
+        <section class="mb-10">
+          <h2 class="text-2xl font-bold mb-4 border-b border-gray-700 pb-2">${title}</h2>
+          <div class="space-y-4">
+            ${signals.map(createSignalCard).join('')}
+          </div>
+        </section>
+      `;
     }
 
-    function renderAll() {
-      Object.keys(filteredSignals).forEach(renderSection);
-    }
+    // Chargement des données signals.json
+    fetch('data/signals.json')
+      .then(res => {
+        if (!res.ok) throw new Error("Impossible de charger signals.json");
+        return res.json();
+      })
+      .then(data => {
+        const container = document.getElementById('signals-container');
 
-    function filterSignals(query) {
-      if (!query) {
-        filteredSignals = { ...signals };
-        return;
-      }
-      const q = query.toLowerCase();
-      filteredSignals = {
-        stocks: signals.stocks.filter(item => item.name.toLowerCase().includes(q) || (item.symbol && item.symbol.toLowerCase().includes(q))),
-        etfs: signals.etfs.filter(item => item.name.toLowerCase().includes(q) || (item.symbol && item.symbol.toLowerCase().includes(q))),
-        cryptos: signals.cryptos.filter(item => item.name.toLowerCase().includes(q) || (item.symbol && item.symbol.toLowerCase().includes(q))),
-      };
-    }
+        // On crée les sections par catégories
+        const html =
+          createCategorySection("Actions (Stocks)", data.stocks) +
+          createCategorySection("ETF", data.etfs) +
+          createCategorySection("Cryptomonnaies", data.cryptos);
 
-    async function loadSignals() {
-      try {
-        lastUpdateEl.textContent = "Chargement...";
-        const res = await fetch('data/signals.json?' + Date.now());
-        signals = await res.json();
-
-        filteredSignals = { ...signals };
-
-        // Mise à jour date globale (la plus récente parmi toutes)
-        const allDates = [].concat(signals.stocks, signals.etfs, signals.cryptos)
-          .map(i => new Date(i.updated).getTime())
-          .filter(Boolean);
-        const maxDate = new Date(Math.max(...allDates));
-        lastUpdateEl.textContent = formatDate(maxDate);
-
-        renderAll();
-      } catch (e) {
-        console.error('Erreur chargement signaux:', e);
-        lastUpdateEl.textContent = "Erreur de chargement";
-        Object.values(sections).forEach(sec => {
-          sec.querySelector('.cards-container').innerHTML = `<p class="text-red-600 text-center py-12">Erreur lors du chargement des signaux.</p>`;
-        });
-      }
-    }
-
-    // Tabs logic
-    tabs.forEach(btn => {
-      btn.addEventListener('click', () => {
-        tabs.forEach(b => {
-          b.classList.remove('active');
-          b.setAttribute('aria-selected', 'false');
-          b.setAttribute('tabindex', '-1');
-        });
-        btn.classList.add('active');
-        btn.setAttribute('aria-selected', 'true');
-        btn.setAttribute('tabindex', '0');
-
-        // Show/hide sections
-        Object.keys(sections).forEach(key => {
-          if (key === btn.dataset.tab) {
-            sections[key].removeAttribute('hidden');
-          } else {
-            sections[key].setAttribute('hidden', '');
-          }
-        });
+        container.innerHTML = html;
+      })
+      .catch(e => {
+        document.getElementById('signals-container').innerHTML = `<p class="text-red-500">Erreur de chargement des signaux: ${e.message}</p>`;
+        console.error(e);
       });
-    });
-
-    // Search logic
-    searchInput.addEventListener('input', e => {
-      filterSignals(e.target.value);
-      renderAll();
-    });
-
-    // Refresh button
-    refreshBtn.addEventListener('click', () => {
-      loadSignals();
-    });
-
-    // Initial load
-    loadSignals();
   </script>
 </body>
 </html>
