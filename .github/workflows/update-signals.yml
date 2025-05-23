@@ -22,7 +22,7 @@ jobs:
           node-version: '18'
 
       - name: Installer les dépendances
-        run: npm install axios luxon
+        run: npm install axios luxon dotenv
 
       - name: Exécuter le script de génération
         run: node scripts/generate-signals.js
