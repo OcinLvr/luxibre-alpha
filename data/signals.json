@@ -33,7 +33,7 @@
       ],
       "recommendation": "Conserver",
       "premium": false,
-      "updated": "2025-05-23T14:25:33.413Z"
+      "updated": "2025-05-23T15:27:16.543Z"
     }
   ],
   "stocks": [
@@ -70,7 +70,7 @@
       ],
       "recommendation": "Conserver",
       "premium": false,
-      "updated": "2025-05-23T14:25:33.251Z"
+      "updated": "2025-05-23T15:27:16.125Z"
     },
     {
       "name": "Tesla Inc.",
@@ -105,7 +105,7 @@
       ],
       "recommendation": "Conserver",
       "premium": true,
-      "updated": "2025-05-23T14:25:33.330Z"
+      "updated": "2025-05-23T15:27:16.337Z"
     },
     {
       "name": "Microsoft Corp.",
@@ -140,7 +140,7 @@
       ],
       "recommendation": "Conserver",
       "premium": true,
-      "updated": "2025-05-23T14:25:33.479Z"
+      "updated": "2025-05-23T15:27:16.755Z"
     },
     {
       "name": "Amazon.com Inc.",
@@ -175,7 +175,7 @@
       ],
       "recommendation": "Conserver",
       "premium": true,
-      "updated": "2025-05-23T14:25:33.599Z"
+      "updated": "2025-05-23T15:27:16.963Z"
     },
     {
       "name": "Alphabet Inc.",
@@ -210,7 +210,7 @@
       ],
       "recommendation": "Acheter",
       "premium": false,
-      "updated": "2025-05-23T14:25:33.672Z"
+      "updated": "2025-05-23T15:27:17.179Z"
     },
     {
       "name": "Meta Platforms Inc.",
@@ -245,7 +245,7 @@
       ],
       "recommendation": "Conserver",
       "premium": true,
-      "updated": "2025-05-23T14:25:33.740Z"
+      "updated": "2025-05-23T15:27:17.386Z"
     },
     {
       "name": "NVIDIA Corp.",
@@ -280,7 +280,7 @@
       ],
       "recommendation": "Conserver",
       "premium": false,
-      "updated": "2025-05-23T14:25:33.805Z"
+      "updated": "2025-05-23T15:27:17.605Z"
     },
     {
       "name": "JPMorgan Chase & Co.",
@@ -315,7 +315,7 @@
       ],
       "recommendation": "Conserver",
       "premium": true,
-      "updated": "2025-05-23T14:25:33.880Z"
+      "updated": "2025-05-23T15:27:17.815Z"
     },
     {
       "name": "Visa Inc.",
@@ -350,7 +350,7 @@
       ],
       "recommendation": "Conserver",
       "premium": false,
-      "updated": "2025-05-23T14:25:33.979Z"
+      "updated": "2025-05-23T15:27:18.020Z"
     },
     {
       "name": "Walmart Inc.",
@@ -385,7 +385,7 @@
       ],
       "recommendation": "Conserver",
       "premium": true,
-      "updated": "2025-05-23T14:25:34.051Z"
+      "updated": "2025-05-23T15:27:18.231Z"
     },
     {
       "name": "The Walt Disney Company",
@@ -420,7 +420,7 @@
       ],
       "recommendation": "Conserver",
       "premium": false,
-      "updated": "2025-05-23T14:25:34.137Z"
+      "updated": "2025-05-23T15:27:18.449Z"
     },
     {
       "name": "Netflix Inc.",
@@ -455,7 +455,7 @@
       ],
       "recommendation": "Conserver",
       "premium": true,
-      "updated": "2025-05-23T14:25:34.216Z"
+      "updated": "2025-05-23T15:27:18.664Z"
     },
     {
       "name": "PayPal Holdings Inc.",
@@ -490,7 +490,7 @@
       ],
       "recommendation": "Conserver",
       "premium": false,
-      "updated": "2025-05-23T14:25:34.293Z"
+      "updated": "2025-05-23T15:27:18.869Z"
     },
     {
       "name": "Adobe Inc.",
@@ -525,7 +525,7 @@
       ],
       "recommendation": "Conserver",
       "premium": true,
-      "updated": "2025-05-23T14:25:34.416Z"
+      "updated": "2025-05-23T15:27:19.079Z"
     },
     {
       "name": "Salesforce.com Inc.",
@@ -560,7 +560,7 @@
       ],
       "recommendation": "Conserver",
       "premium": false,
-      "updated": "2025-05-23T14:25:34.503Z"
+      "updated": "2025-05-23T15:27:19.285Z"
     },
     {
       "name": "Intel Corp.",
@@ -595,7 +595,7 @@
       ],
       "recommendation": "Conserver",
       "premium": true,
-      "updated": "2025-05-23T14:25:34.590Z"
+      "updated": "2025-05-23T15:27:19.488Z"
     },
     {
       "name": "Comcast Corp.",
@@ -630,7 +630,7 @@
       ],
       "recommendation": "Conserver",
       "premium": false,
-      "updated": "2025-05-23T14:25:34.658Z"
+      "updated": "2025-05-23T15:27:19.692Z"
     },
     {
       "name": "PepsiCo Inc.",
@@ -665,7 +665,7 @@
       ],
       "recommendation": "Vendre",
       "premium": true,
-      "updated": "2025-05-23T14:25:34.725Z"
+      "updated": "2025-05-23T15:27:19.905Z"
     },
     {
       "name": "Cisco Systems Inc.",
@@ -700,7 +700,7 @@
       ],
       "recommendation": "Conserver",
       "premium": false,
-      "updated": "2025-05-23T14:25:34.813Z"
+      "updated": "2025-05-23T15:27:20.122Z"
     },
     {
       "name": "Broadcom Inc.",
@@ -735,7 +735,7 @@
       ],
       "recommendation": "Conserver",
       "premium": true,
-      "updated": "2025-05-23T14:25:34.886Z"
+      "updated": "2025-05-23T15:27:20.337Z"
     }
   ],
   "cryptos": [
@@ -772,7 +772,7 @@
       ],
       "recommendation": "Conserver",
       "premium": true,
-      "updated": "2025-05-23T14:25:34.960Z",
+      "updated": "2025-05-23T15:27:20.613Z",
       "indicators": {
         "rsi": 70.02773756095344,
         "macd": 4382.8807051281765
@@ -811,7 +811,7 @@
       ],
       "recommendation": "Conserver",
       "premium": true,
-      "updated": "2025-05-23T14:25:35.024Z",
+      "updated": "2025-05-23T15:27:20.881Z",
       "indicators": {
         "rsi": 85.8537540850094,
         "macd": 311.0473717948721
