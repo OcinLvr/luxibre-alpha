@@ -63,6 +63,18 @@ function calculateMACD(data) {
   return sma12 - sma26;
 }
 
+// Bollinger Bands
+function calculateBollingerBands(data, period = 20) {
+  if (data.length < period) return { middle: null, upper: null, lower: null };
+  const sma = calculateSMA(data, period);
+  const stdDev = Math.sqrt(data.slice(-period).reduce((sum, val) => sum + Math.pow(val - sma, 2), 0) / period);
+  return {
+    middle: sma,
+    upper: sma + (stdDev * 2),
+    lower: sma - (stdDev * 2)
+  };
+}
+
 // Calcul de la recommandation finale selon indicateurs combinés
 function calculateRecommendation(history, type) {
   if (history.length < 26) return "Conserver"; // trop peu de données
@@ -73,13 +85,14 @@ function calculateRecommendation(history, type) {
   const sma = calculateSMA(history, 5);
   const rsi = calculateRSI(history, 14);
   const macd = calculateMACD(history);
+  const bollinger = calculateBollingerBands(history);
 
   if (type === "crypto") {
-    if (change > 5 && rsi < 70 && macd > 0 && latest > sma) return "Acheter";
-    if (change < -5 && rsi > 30 && macd < 0 && latest < sma) return "Vendre";
+    if (change > 5 && rsi < 70 && macd > 0 && latest > sma && latest < bollinger.upper) return "Acheter";
+    if (change < -5 && rsi > 30 && macd < 0 && latest < sma && latest > bollinger.lower) return "Vendre";
   } else {
-    if (change > 2 && rsi < 70 && macd > 0 && latest > sma) return "Acheter";
-    if (change < -2 && rsi > 30 && macd < 0 && latest < sma) return "Vendre";
+    if (change > 2 && rsi < 70 && macd > 0 && latest > sma && latest < bollinger.upper) return "Acheter";
+    if (change < -2 && rsi > 30 && macd < 0 && latest < sma && latest > bollinger.lower) return "Vendre";
   }
 
   return "Conserver";
@@ -153,7 +166,8 @@ const generate = async () => {
         updated: new Date().toISOString(),
         indicators: {
           rsi: calculateRSI(data.history, 14),
-          macd: calculateMACD(data.history)
+          macd: calculateMACD(data.history),
+          bollinger: calculateBollingerBands(data.history)
         }
       });
     } catch (err) {
