@@ -4,12 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Luxibre Alpha - Dashboard Moderne</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/luxon@1.25.0"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.0.0"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js/dist/Chart.min.css">
   <style>
-    * { box-sizing: border-box; }
+    *, *::before, *::after { box-sizing: border-box; }
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
@@ -18,13 +16,12 @@
     }
     header {
       background: #22c55e;
-      padding: 1.5rem 2rem;
+      padding: 1.5rem;
       font-size: 1.6rem;
       font-weight: 700;
-      color: #fff;
       text-align: center;
+      color: #fff;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      letter-spacing: 0.05em;
     }
     nav {
       background: #1e293b;
@@ -35,17 +32,15 @@
     }
     nav button {
       background: #22c55e;
-      color: white;
+      color: #fff;
       border: none;
       padding: 0.5rem 1rem;
-      font-weight: 600;
       border-radius: 0.5rem;
+      font-weight: 600;
       cursor: pointer;
       transition: background 0.3s;
     }
-    nav button:hover {
-      background: #16a34a;
-    }
+    nav button:hover { background: #16a34a; }
     main {
       max-width: 1200px;
       margin: 2rem auto;
@@ -55,7 +50,7 @@
       background: #dcfce7;
       color: #166534;
       border-left: 5px solid #22c55e;
-      padding: 1rem 1.5rem;
+      padding: 1rem;
       border-radius: 0.75rem;
       margin-bottom: 2rem;
       font-weight: 600;
@@ -71,8 +66,8 @@
       padding: 1.5rem;
       border-radius: 1rem;
       box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      transition: transform 0.3s, box-shadow 0.3s;
       position: relative;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
     .card:hover {
       transform: translateY(-6px);
@@ -83,21 +78,9 @@
       pointer-events: none;
       user-select: none;
     }
-    .card h3 {
-      font-size: 1.4rem;
-      margin: 0 0 0.8rem;
-      color: #86efac;
-    }
-    .card p {
-      margin: 0.3rem 0;
-      font-size: 1.05rem;
-      color: #e2e8f0;
-    }
-    .recommendation {
-      margin-top: 0.8rem;
-      font-weight: 700;
-      color: #4ade80;
-    }
+    .card h3 { font-size: 1.4rem; color: #86efac; margin: 0 0 0.8rem; }
+    .card p { margin: 0.3rem 0; font-size: 1.05rem; color: #e2e8f0; }
+    .recommendation { font-weight: 700; color: #4ade80; }
     .chart-container {
       height: 200px;
       margin-top: 1rem;
@@ -105,28 +88,22 @@
       border-radius: 0.6rem;
     }
     .unlock-btn {
+      position: absolute;
       right: 1rem;
+      top: 1rem;
       background: #22c55e;
-      color: white;
+      color: #fff;
       border: none;
       padding: 0.5rem 1rem;
-      font-weight: 600;
       border-radius: 0.5rem;
+      font-weight: 600;
       cursor: pointer;
-      z-index: 2;
       transition: background 0.3s;
     }
-    .unlock-btn:hover {
-      background: #16a34a;
-    }
+    .unlock-btn:hover { background: #16a34a; }
     @media (max-width: 600px) {
-      header {
-        font-size: 1.3rem;
-        padding: 1rem;
-      }
-      .card {
-        padding: 1rem;
-      }
+      header { font-size: 1.3rem; padding: 1rem; }
+      .card { padding: 1rem; }
     }
   </style>
 </head>
@@ -143,120 +120,88 @@
     <div id="signalsContainer"></div>
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
-  const isPremium = true; // Mets à true pour tester l’abonnement
+    const isPremium = true;
+    fetch("data/signals.json")
+      .then(res => res.ok ? res.json() : Promise.reject(res.status))
+      .then(data => {
+        const container = document.getElementById("signalsContainer");
+        const premiumNotice = document.getElementById("premiumNotice");
+        let premiumLocked = false;
 
-  fetch("data/signals.json")
-    .then(res => {
-      if (!res.ok) throw new Error("HTTP error " + res.status);
-      return res.json();
-    })
-    .then(data => {
-      const container = document.getElementById("signalsContainer");
-      const premiumNotice = document.getElementById("premiumNotice");
-      let premiumLocked = false;
+        ['etfs', 'stocks', 'cryptos'].forEach(category => {
+          (data[category] || []).forEach((signal, i) => {
+            const isLocked = signal.premium && !isPremium;
+            if (isLocked) premiumLocked = true;
 
-      // On va traiter par catégories : etfs, stocks, cryptos
-      ["etfs", "stocks", "cryptos"].forEach(category => {
-        if (!data[category] || !Array.isArray(data[category])) return;
+            const card = document.createElement("div");
+            card.className = `card${isLocked ? ' blur' : ''}`;
+            card.dataset.category = category;
 
-        data[category].forEach((signal, i) => {
-          const card = document.createElement("div");
-          card.className = "card";
-          card.dataset.category = category;
+            const chartId = `chart-${category}-${i}`;
+            card.innerHTML = `
+              <h3>${signal.name}</h3>
+              <p><strong>Prix actuel :</strong> $${signal.price.toFixed(2)}</p>
+              <p><strong>Recommandation :</strong> <span class="recommendation">${signal.recommendation}</span></p>
+              <div class="chart-container">
+                <canvas id="${chartId}" width="300" height="150"></canvas>
+              </div>
+              ${isLocked ? '<button class="unlock-btn" onclick="alert(\'Abonnement premium requis\')">Débloquer</button>' : ''}
+            `;
 
-          const isLocked = signal.premium && !isPremium;
-          if (isLocked) {
-            card.classList.add("blur");
-            premiumLocked = true;
-          }
+            container.appendChild(card);
 
-          // Génération d'un id unique pour le canvas du graphique
-          const chartId = `chart-${category}-${i}`;
-
-          card.innerHTML = `
-            <h3>${signal.name}</h3>
-            <p><strong>Prix actuel :</strong> $${signal.price.toFixed(2)}</p>
-            <p><strong>Recommandation :</strong> <span class="recommendation">${signal.recommendation}</span></p>
-            <div class="chart-container">
-              <canvas id="${chartId}" width="300" height="150"></canvas>
-            </div>
-            ${isLocked ? `<button class="unlock-btn" onclick="alert('Abonnement premium requis pour accéder à ce signal.')">Débloquer</button>` : ""}
-          `;
-
-          container.appendChild(card);
-
-          // Si pas verrouillé, afficher le graphique
-          if (!isLocked) {
-            const ctx = document.getElementById(chartId).getContext("2d");
-            new Chart(ctx, {
-              type: "line",
-              data: {
-                labels: signal.history.map((_, idx) => `J-${signal.history.length - idx}`),
-                datasets: [{
-                  label: `${signal.name} - Prix de clôture`,
-                  data: signal.history,
-                  borderColor: "#22c55e",
-                  backgroundColor: "rgba(34,197,94,0.3)",
-                  fill: true,
-                  tension: 0.3,
-                  pointRadius: 0
-                }]
-              },
-              options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                  x: {
-                    display: false
-                  },
-                  y: {
-                    beginAtZero: false,
-                    ticks: {
-                      color: '#a3bffa'
-                    },
-                    grid: {
-                      color: '#334155'
-                    }
-                  }
+            if (!isLocked) {
+              const ctx = document.getElementById(chartId).getContext("2d");
+              new Chart(ctx, {
+                type: "line",
+                data: {
+                  labels: signal.history.map((_, idx) => `J-${signal.history.length - idx}`),
+                  datasets: [{
+                    label: `${signal.name} - Prix de clôture`,
+                    data: signal.history,
+                    borderColor: "#22c55e",
+                    backgroundColor: "rgba(34,197,94,0.3)",
+                    fill: true,
+                    tension: 0.3,
+                    pointRadius: 0
+                  }]
                 },
-                plugins: {
-                  legend: {
-                    labels: { color: '#d1d5db' }
+                options: {
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  scales: {
+                    x: { display: false },
+                    y: {
+                      ticks: { color: '#a3bffa' },
+                      grid: { color: '#334155' }
+                    }
                   },
-                  tooltip: {
-                    mode: 'index',
-                    intersect: false
+                  plugins: {
+                    legend: { labels: { color: '#d1d5db' } },
+                    tooltip: { mode: 'index', intersect: false }
                   }
                 }
-              }
-            });
-          }
+              });
+            }
+          });
         });
+
+        if (premiumLocked && !isPremium) {
+          premiumNotice.style.display = "block";
+          premiumNotice.textContent = "Certains signaux sont réservés aux abonnés premium.";
+        }
+      })
+      .catch(err => {
+        document.getElementById("signalsContainer").textContent = `Erreur chargement des signaux : ${err}`;
       });
 
-      // Affiche un message si des signaux premium sont bloqués
-      if (premiumLocked && !isPremium) {
-        premiumNotice.style.display = "block";
-        premiumNotice.textContent = "Certains signaux sont réservés aux abonnés premium. Abonnez-vous pour tout débloquer.";
-      }
-    })
-    .catch(err => {
-      console.error("Erreur lors du chargement des signaux:", err);
-      document.getElementById("signalsContainer").textContent = "Erreur lors du chargement des signaux.";
-    });
-
-  function filterSignals(category) {
-    const cards = document.querySelectorAll('.card');
-    cards.forEach(card => {
-      if (category === 'all' || card.dataset.category === category) {
-        card.style.display = 'block';
-      } else {
-        card.style.display = 'none';
-      }
-    });
-  }
-</script>
-
+    function filterSignals(category) {
+      document.querySelectorAll('.card').forEach(card => {
+        card.style.display = (category === 'all' || card.dataset.category === category) ? 'block' : 'none';
+      });
+    }
+  </script>
 </body>
 </html>
