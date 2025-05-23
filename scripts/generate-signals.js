@@ -6,10 +6,10 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const API_KEY = process.env.ALPHA_VANTAGE_API_KEY;
+
 const STOCKS = [
   { symbol: "AAPL", name: "Apple Inc.", type: "stock", premium: false },
   { symbol: "TSLA", name: "Tesla Inc.", type: "stock", premium: true },
-  { symbol: "EXX1.DE", name: "ETF iShares EURO STOXX Banks", type: "etf", premium: false },
   { symbol: "MSFT", name: "Microsoft Corp.", type: "stock", premium: true },
   { symbol: "AMZN", name: "Amazon.com Inc.", type: "stock", premium: true },
   { symbol: "GOOGL", name: "Alphabet Inc.", type: "stock", premium: false },
@@ -30,9 +30,23 @@ const STOCKS = [
   { symbol: "AVGO", name: "Broadcom Inc.", type: "stock", premium: true }
 ];
 
+const ETFS = [
+  { symbol: "EXI4.DE", name: "iShares EURO STOXX Banks 30-15 UCITS ETF (DE) EUR (Acc)", type: "etf", premium: false },
+  { symbol: "EUNL.DE", name: "iShares STOXX Europe 600 Health Care UCITS ETF (DE)", type: "etf", premium: true },
+  { symbol: "EXS1.DE", name: "iShares STOXX Europe 600 UCITS ETF (DE)", type: "etf", premium: false },
+  { symbol: "EXH1.DE", name: "iShares STOXX Europe 600 Financial Services UCITS ETF (DE)", type: "etf", premium: true },
+  { symbol: "EXV1.DE", name: "iShares STOXX Europe 600 Utilities UCITS ETF (DE)", type: "etf", premium: false }
+];
+
 const CRYPTOS = [
   { symbol: "BTC", name: "Bitcoin", type: "crypto", premium: true },
-  { symbol: "ETH", name: "Ethereum", type: "crypto", premium: true }
+  { symbol: "ETH", name: "Ethereum", type: "crypto", premium: true },
+  { symbol: "BNB", name: "Binance Coin", type: "crypto", premium: true },
+  { symbol: "XRP", name: "XRP", type: "crypto", premium: false },
+  { symbol: "ADA", name: "Cardano", type: "crypto", premium: true },
+  { symbol: "SOL", name: "Solana", type: "crypto", premium: false },
+  { symbol: "DOT", name: "Polkadot", type: "crypto", premium: true },
+  { symbol: "DOGE", name: "Dogecoin", type: "crypto", premium: false }
 ];
 
 // Moyenne mobile simple
@@ -145,6 +159,28 @@ const generate = async () => {
       });
     } catch (err) {
       console.error(`Erreur pour ${stock.symbol}:`, err.message);
+    }
+  }
+
+  for (const etf of ETFS) {
+    try {
+      const data = await fetchStock(etf.symbol, etf.type);
+      if (!data || data.history.length < 26) {
+        console.warn(`Données insuffisantes pour ${etf.symbol}`);
+        continue;
+      }
+
+      const recommendation = calculateRecommendation(data.history, etf.type);
+      signals.etfs.push({
+        name: etf.name,
+        price: data.price,
+        history: data.history,
+        recommendation,
+        premium: etf.premium,
+        updated: new Date().toISOString()
+      });
+    } catch (err) {
+      console.error(`Erreur pour ${etf.symbol}:`, err.message);
     }
   }
 
