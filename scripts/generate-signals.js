@@ -1,4 +1,3 @@
-// scripts/generate-signals.js (version complète avec contrôle horaires bourse)
 import fs from 'fs';
 import axios from 'axios';
 import dotenv from 'dotenv';
@@ -46,8 +45,7 @@ const CRYPTOS = [
   { symbol: "DOGE", name: "Dogecoin", type: "crypto", premium: false }
 ];
 
-// Fonctions calculs indicateurs inchangées (SMA, RSI, MACD, Bollinger)
-
+// Calculs indicateurs (inchangés)
 function calculateSMA(data, period = 5) {
   if (data.length < period) return null;
   return data.slice(-period).reduce((sum, val) => sum + val, 0) / period;
@@ -131,20 +129,25 @@ async function fetchStock(symbol, type) {
   return { history, price };
 }
 
-// Fonction pour vérifier si la bourse NY est ouverte
+// Vérifie si la bourse NY est ouverte
 function isMarketOpen() {
   const now = DateTime.now().setZone('America/New_York');
-  const day = now.weekday; // 1 = lundi, 7 = dimanche
+  const day = now.weekday; // 1=lundi ... 7=dimanche
   const hour = now.hour;
   const minute = now.minute;
 
   if (day >= 6) return false; // Samedi ou dimanche
-
-  // Horaires d'ouverture NYSE : 9h30 - 16h00
   if (hour < 9 || (hour === 9 && minute < 30)) return false;
   if (hour > 16) return false;
 
   return true;
+}
+
+// Transforme la recommandation textuelle en catégorie front-end attendue
+function mapRecommendationToCategory(rec) {
+  if (rec === "Acheter") return "achat";
+  if (rec === "Vendre") return "vente";
+  return "conservation";
 }
 
 const generate = async () => {
@@ -154,74 +157,59 @@ const generate = async () => {
   }
   console.log("La bourse est ouverte, génération des signaux...");
 
-  const signals = { etfs: [], stocks: [], cryptos: [] };
+  // On prépare des tableaux triés par catégorie (achat, vente, conservation)
+  const signals = {
+    achat: [],
+    vente: [],
+    conservation: []
+  };
 
-  for (const stock of STOCKS) {
+  const allAssets = [...STOCKS, ...ETFS, ...CRYPTOS];
+
+  for (const asset of allAssets) {
     try {
-      const data = await fetchStock(stock.symbol, stock.type);
-      if (!data || data.history.length < 26) {
-        console.warn(`Données insuffisantes pour ${stock.symbol}`);
-        continue;
+      let data;
+      if (asset.type === 'etf') {
+        // Générer fausse histoire pour ETF
+        const history = Array.from({ length: 26 }, (_, i) => asset.price - (Math.random() * 2 - 1));
+        const recommendation = calculateRecommendation(history, asset.type);
+        data = { history, price: asset.price, recommendation };
+      } else {
+        data = await fetchStock(asset.symbol, asset.type);
+        if (!data || data.history.length < 26) {
+          console.warn(`Données insuffisantes pour ${asset.symbol}`);
+          continue;
+        }
+        data.recommendation = calculateRecommendation(data.history, asset.type);
       }
 
-      const recommendation = calculateRecommendation(data.history, stock.type);
-      signals[stock.type === "etf" ? "etfs" : "stocks"].push({
-        name: stock.name,
+      const category = mapRecommendationToCategory(data.recommendation);
+
+      // Structure du signal
+      const signal = {
+        name: asset.name,
         price: data.price,
         history: data.history,
-        recommendation,
-        premium: stock.premium,
+        recommendation: data.recommendation,
+        premium: asset.premium,
         updated: new Date().toISOString()
-      });
-    } catch (err) {
-      console.error(`Erreur pour ${stock.symbol}:`, err.message);
-    }
-  }
+      };
 
-  for (const etf of ETFS) {
-    try {
-      const history = Array.from({ length: 26 }, (_, i) => etf.price - (Math.random() * 2 - 1));
-      const recommendation = calculateRecommendation(history, etf.type);
-      signals.etfs.push({
-        name: etf.name,
-        price: etf.price,
-        history,
-        recommendation,
-        premium: etf.premium,
-        updated: new Date().toISOString()
-      });
-    } catch (err) {
-      console.error(`Erreur pour ${etf.symbol}:`, err.message);
-    }
-  }
-
-  for (const crypto of CRYPTOS) {
-    try {
-      const data = await fetchStock(crypto.symbol, crypto.type);
-      if (!data || data.history.length < 26) {
-        console.warn(`Données insuffisantes pour ${crypto.symbol}`);
-        continue;
-      }
-
-      const recommendation = calculateRecommendation(data.history, crypto.type);
-      signals.cryptos.push({
-        name: crypto.name,
-        price: data.price,
-        history: data.history,
-        recommendation,
-        premium: crypto.premium,
-        updated: new Date().toISOString(),
-        indicators: {
+      if (asset.type === "crypto") {
+        signal.indicators = {
           rsi: calculateRSI(data.history, 14),
           macd: calculateMACD(data.history),
           bollinger: calculateBollingerBands(data.history)
-        }
-      });
+        };
+      }
+
+      signals[category].push(signal);
     } catch (err) {
-      console.error(`Erreur pour ${crypto.symbol}:`, err.message);
+      console.error(`Erreur pour ${asset.symbol}:`, err.message);
     }
   }
 
+  // Écrire dans le fichier signals.json
   fs.writeFileSync('data/signals.json', JSON.stringify(signals, null, 2));
   console.log("Fichier signals.json généré avec succès !");
 };
