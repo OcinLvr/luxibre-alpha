@@ -7,27 +7,32 @@ dotenv.config();
 
 const API_KEY = process.env.ALPHA_VANTAGE_API_KEY;
 const STOCKS = [
-  { symbol: "AAPL", name: "Apple Inc.", premium: false },
-  { symbol: "TSLA", name: "Tesla Inc.", premium: true },
-  { symbol: "EXX1.DE", name: "ETF iShares EURO STOXX Banks", premium: false },
-  { symbol: "MSFT", name: "Microsoft Corp.", premium: true },
-  { symbol: "AMZN", name: "Amazon.com Inc.", premium: true },
-  { symbol: "GOOGL", name: "Alphabet Inc.", premium: false },
-  { symbol: "META", name: "Meta Platforms Inc.", premium: true },
-  { symbol: "NVDA", name: "NVIDIA Corp.", premium: false },
-  { symbol: "JPM", name: "JPMorgan Chase & Co.", premium: true },
-  { symbol: "V", name: "Visa Inc.", premium: false },
-  { symbol: "WMT", name: "Walmart Inc.", premium: true },
-  { symbol: "DIS", name: "The Walt Disney Company", premium: false },
-  { symbol: "NFLX", name: "Netflix Inc.", premium: true },
-  { symbol: "PYPL", name: "PayPal Holdings Inc.", premium: false },
-  { symbol: "ADBE", name: "Adobe Inc.", premium: true },
-  { symbol: "CRM", name: "Salesforce.com Inc.", premium: false },
-  { symbol: "INTC", name: "Intel Corp.", premium: true },
-  { symbol: "CMCSA", name: "Comcast Corp.", premium: false },
-  { symbol: "PEP", name: "PepsiCo Inc.", premium: true },
-  { symbol: "CSCO", name: "Cisco Systems Inc.", premium: false },
-  { symbol: "AVGO", name: "Broadcom Inc.", premium: true }
+  { symbol: "AAPL", name: "Apple Inc.", type: "stock", premium: false },
+  { symbol: "TSLA", name: "Tesla Inc.", type: "stock", premium: true },
+  { symbol: "EXX1.DE", name: "ETF iShares EURO STOXX Banks", type: "etf", premium: false },
+  { symbol: "MSFT", name: "Microsoft Corp.", type: "stock", premium: true },
+  { symbol: "AMZN", name: "Amazon.com Inc.", type: "stock", premium: true },
+  { symbol: "GOOGL", name: "Alphabet Inc.", type: "stock", premium: false },
+  { symbol: "META", name: "Meta Platforms Inc.", type: "stock", premium: true },
+  { symbol: "NVDA", name: "NVIDIA Corp.", type: "stock", premium: false },
+  { symbol: "JPM", name: "JPMorgan Chase & Co.", type: "stock", premium: true },
+  { symbol: "V", name: "Visa Inc.", type: "stock", premium: false },
+  { symbol: "WMT", name: "Walmart Inc.", type: "stock", premium: true },
+  { symbol: "DIS", name: "The Walt Disney Company", type: "stock", premium: false },
+  { symbol: "NFLX", name: "Netflix Inc.", type: "stock", premium: true },
+  { symbol: "PYPL", name: "PayPal Holdings Inc.", type: "stock", premium: false },
+  { symbol: "ADBE", name: "Adobe Inc.", type: "stock", premium: true },
+  { symbol: "CRM", name: "Salesforce.com Inc.", type: "stock", premium: false },
+  { symbol: "INTC", name: "Intel Corp.", type: "stock", premium: true },
+  { symbol: "CMCSA", name: "Comcast Corp.", type: "stock", premium: false },
+  { symbol: "PEP", name: "PepsiCo Inc.", type: "stock", premium: true },
+  { symbol: "CSCO", name: "Cisco Systems Inc.", type: "stock", premium: false },
+  { symbol: "AVGO", name: "Broadcom Inc.", type: "stock", premium: true }
+];
+
+const CRYPTOS = [
+  { symbol: "BTC", name: "Bitcoin", type: "crypto", premium: true },
+  { symbol: "ETH", name: "Ethereum", type: "crypto", premium: true }
 ];
 
 // Moyenne mobile simple
@@ -59,7 +64,7 @@ function calculateMACD(data) {
 }
 
 // Calcul de la recommandation finale selon indicateurs combinés
-function calculateRecommendation(history) {
+function calculateRecommendation(history, type) {
   if (history.length < 26) return "Conserver"; // trop peu de données
 
   const latest = history[history.length - 1];
@@ -69,37 +74,55 @@ function calculateRecommendation(history) {
   const rsi = calculateRSI(history, 14);
   const macd = calculateMACD(history);
 
-  if (change > 2 && rsi < 70 && macd > 0 && latest > sma) return "Acheter";
-  if (change < -2 && rsi > 30 && macd < 0 && latest < sma) return "Vendre";
+  if (type === "crypto") {
+    if (change > 5 && rsi < 70 && macd > 0 && latest > sma) return "Acheter";
+    if (change < -5 && rsi > 30 && macd < 0 && latest < sma) return "Vendre";
+  } else {
+    if (change > 2 && rsi < 70 && macd > 0 && latest > sma) return "Acheter";
+    if (change < -2 && rsi > 30 && macd < 0 && latest < sma) return "Vendre";
+  }
+
   return "Conserver";
 }
 
-async function fetchStock(symbol) {
-  const url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${symbol}&apikey=${API_KEY}`;
+async function fetchStock(symbol, type) {
+  let url;
+  if (type === "crypto") {
+    url = `https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol=${symbol}&market=USD&apikey=${API_KEY}`;
+  } else {
+    url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${symbol}&apikey=${API_KEY}`;
+  }
+
   const res = await axios.get(url);
-  const daily = res.data["Time Series (Daily)"];
+  let daily;
+  if (type === "crypto") {
+    daily = res.data["Time Series (Digital Currency Daily)"];
+  } else {
+    daily = res.data["Time Series (Daily)"];
+  }
+
   if (!daily) return null;
 
   const dates = Object.keys(daily).slice(0, 26).reverse();
-  const history = dates.map(date => parseFloat(daily[date]["4. close"]));
+  const history = dates.map(date => parseFloat(daily[date]["4a. close (USD)"] || daily[date]["4. close"]));
   const price = history[history.length - 1];
 
   return { history, price };
 }
 
 const generate = async () => {
-  const signals = [];
+  const signals = { etfs: [], stocks: [], cryptos: [] };
 
   for (const stock of STOCKS) {
     try {
-      const data = await fetchStock(stock.symbol);
+      const data = await fetchStock(stock.symbol, stock.type);
       if (!data || data.history.length < 26) {
         console.warn(`Données insuffisantes pour ${stock.symbol}`);
         continue;
       }
 
-      const recommendation = calculateRecommendation(data.history);
-      signals.push({
+      const recommendation = calculateRecommendation(data.history, stock.type);
+      signals[stock.type === "etf" ? "etfs" : "stocks"].push({
         name: stock.name,
         price: data.price,
         history: data.history,
@@ -112,7 +135,33 @@ const generate = async () => {
     }
   }
 
-  fs.writeFileSync('data/signals.json', JSON.stringify({ signals }, null, 2));
+  for (const crypto of CRYPTOS) {
+    try {
+      const data = await fetchStock(crypto.symbol, crypto.type);
+      if (!data || data.history.length < 26) {
+        console.warn(`Données insuffisantes pour ${crypto.symbol}`);
+        continue;
+      }
+
+      const recommendation = calculateRecommendation(data.history, crypto.type);
+      signals.cryptos.push({
+        name: crypto.name,
+        price: data.price,
+        history: data.history,
+        recommendation,
+        premium: crypto.premium,
+        updated: new Date().toISOString(),
+        indicators: {
+          rsi: calculateRSI(data.history, 14),
+          macd: calculateMACD(data.history)
+        }
+      });
+    } catch (err) {
+      console.error(`Erreur pour ${crypto.symbol}:`, err.message);
+    }
+  }
+
+  fs.writeFileSync('data/signals.json', JSON.stringify(signals, null, 2));
   console.log("Fichier signals.json généré avec succès !");
 };
 
