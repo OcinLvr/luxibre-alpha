@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write  # <--- Ajout de la permission d’écriture sur le repo
+  contents: write
 
 jobs:
   build:
@@ -26,6 +26,8 @@ jobs:
 
       - name: Exécuter le script de génération
         run: node scripts/generate-signals.js
+        env:
+          ALPHA_VANTAGE_API_KEY: ${{ secrets.ALPHA_VANTAGE_API_KEY }}
 
       - name: Commit et push des signaux
         run: |
