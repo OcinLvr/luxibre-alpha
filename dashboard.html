@@ -1,207 +1,354 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Luxibre Alpha - Dashboard Moderne</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js/dist/Chart.min.css">
+  <title>Luxibre Alpha - Dashboard des Signaux</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; }
     body {
-      margin: 0;
       font-family: 'Inter', sans-serif;
-      background: #0f172a;
-      color: #f1f5f9;
     }
-    header {
-      background: #22c55e;
-      padding: 1.5rem;
-      font-size: 1.6rem;
-      font-weight: 700;
-      text-align: center;
-      color: #fff;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    .fade-in {
+      animation: fadeInUp 0.6s ease forwards;
+      opacity: 0;
+      transform: translateY(10px);
     }
-    nav {
-      background: #1e293b;
-      padding: 1rem;
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    /* Scroll horizontal for mobile cards */
+    .cards-container {
+      overflow-x: auto;
       display: flex;
-      justify-content: center;
       gap: 1rem;
-    }
-    nav button {
-      background: #22c55e;
-      color: #fff;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 0.5rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    nav button:hover { background: #16a34a; }
-    main {
-      max-width: 1200px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-    }
-    .notice {
-      background: #dcfce7;
-      color: #166534;
-      border-left: 5px solid #22c55e;
-      padding: 1rem;
-      border-radius: 0.75rem;
-      margin-bottom: 2rem;
-      font-weight: 600;
-      text-align: center;
-    }
-    #signalsContainer {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-      gap: 2rem;
+      padding-bottom: 1rem;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
     }
     .card {
-      background: #1e293b;
-      padding: 1.5rem;
-      border-radius: 1rem;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-      transition: transform 0.3s, box-shadow 0.3s;
-      position: relative;
+      scroll-snap-align: start;
+      min-width: 320px;
+      flex-shrink: 0;
+      background: white;
+      border-radius: 0.75rem;
+      box-shadow: 0 2px 15px rgb(0 0 0 / 0.1);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
     }
     .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 10px 20px rgba(34,197,94,0.4);
+      transform: translateY(-5px);
+      box-shadow: 0 8px 30px rgb(0 0 0 / 0.15);
     }
-    .card.blur {
-      filter: blur(4px);
-      pointer-events: none;
+    /* Tabs */
+    .tab-btn {
+      cursor: pointer;
+      padding: 0.5rem 1.5rem;
+      border-radius: 9999px;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
       user-select: none;
     }
-    .card h3 { font-size: 1.4rem; color: #86efac; margin: 0 0 0.8rem; }
-    .card p { margin: 0.3rem 0; font-size: 1.05rem; color: #e2e8f0; }
-    .recommendation { font-weight: 700; color: #4ade80; }
-    .chart-container {
-      height: 200px;
-      margin-top: 1rem;
-      background: #0f172a;
-      border-radius: 0.6rem;
+    .tab-btn.active {
+      background-color: #4f46e5; /* indigo-600 */
+      color: white;
     }
-    .unlock-btn {
-      position: absolute;
-      right: 1rem;
-      top: 1rem;
-      background: #22c55e;
-      color: #fff;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 0.5rem;
+    .tab-btn:not(.active):hover {
+      background-color: #e0e7ff; /* indigo-100 */
+    }
+    /* Scrollbar styling for cards container */
+    .cards-container::-webkit-scrollbar {
+      height: 8px;
+    }
+    .cards-container::-webkit-scrollbar-thumb {
+      background-color: #a5b4fc; /* indigo-300 */
+      border-radius: 10px;
+    }
+    .cards-container::-webkit-scrollbar-track {
+      background-color: #f3f4f6; /* gray-100 */
+      border-radius: 10px;
+    }
+    /* Badge indicators */
+    .badge {
+      font-size: 0.75rem;
       font-weight: 600;
-      cursor: pointer;
-      transition: background 0.3s;
+      padding: 0.15rem 0.5rem;
+      border-radius: 9999px;
+      color: white;
+      user-select: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
     }
-    .unlock-btn:hover { background: #16a34a; }
-    @media (max-width: 600px) {
-      header { font-size: 1.3rem; padding: 1rem; }
-      .card { padding: 1rem; }
+    .badge-rsi {
+      background-color: #f59e0b; /* amber-500 */
+    }
+    .badge-macd {
+      background-color: #10b981; /* emerald-500 */
+    }
+    .badge-bollinger {
+      background-color: #3b82f6; /* blue-500 */
+    }
+    .badge-premium {
+      background-color: #fbbf24; /* yellow-400 */
+      color: #92400e;
+      font-weight: 700;
+    }
+    /* Recommendation colors */
+    .rec-acheter {
+      background-color: #22c55e; /* green-500 */
+      color: white;
+    }
+    .rec-vendre {
+      background-color: #ef4444; /* red-500 */
+      color: white;
+    }
+    .rec-conserver {
+      background-color: #6b7280; /* gray-500 */
+      color: white;
+    }
+    /* Icon styles */
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+    /* Search input */
+    #searchInput {
+      width: 100%;
+      max-width: 400px;
+      padding: 0.5rem 1rem;
+      border: 1px solid #d1d5db; /* gray-300 */
+      border-radius: 9999px;
+      font-size: 1rem;
+      outline-offset: 2px;
+      transition: border-color 0.3s ease;
+    }
+    #searchInput:focus {
+      border-color: #4f46e5; /* indigo-600 */
+      box-shadow: 0 0 0 3px #c7d2fe; /* indigo-200 */
+    }
+    /* Grid on desktop */
+    @media (min-width: 1024px) {
+      .cards-container {
+        overflow-x: visible;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 1.5rem;
+      }
     }
   </style>
 </head>
-<body>
-  <header>Luxibre Alpha — Tableau de bord Moderne</header>
-  <nav>
-    <button onclick="filterSignals('all')">Tous</button>
-    <button onclick="filterSignals('etfs')">ETFs</button>
-    <button onclick="filterSignals('stocks')">Actions</button>
-    <button onclick="filterSignals('cryptos')">Cryptos</button>
-  </nav>
-  <main>
-    <div id="premiumNotice" class="notice" style="display: none;"></div>
-    <div id="signalsContainer"></div>
+<body class="bg-gray-50 min-h-screen text-gray-800">
+  <header class="sticky top-0 bg-white shadow z-50">
+    <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+      <h1 class="text-3xl font-extrabold text-indigo-700 select-none">Luxibre Alpha</h1>
+      <div class="flex items-center gap-6">
+        <input
+          id="searchInput"
+          type="search"
+          placeholder="Rechercher par nom ou symbole..."
+          aria-label="Recherche"
+          spellcheck="false"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="off"
+        />
+        <button
+          id="refreshBtn"
+          class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-white rounded-full font-semibold transition"
+          title="Rafraîchir les signaux"
+          aria-label="Rafraîchir"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5" viewBox="0 0 24 24">
+            <polyline points="1 4 1 10 7 10"></polyline>
+            <polyline points="23 20 23 14 17 14"></polyline>
+            <path d="M3.51 15a9 9 0 0114.85-3.36L23 14"></path>
+            <path d="M20.49 9a9 9 0 00-14.85 3.36L1 10"></path>
+          </svg>
+          Rafraîchir
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-6 py-8">
+    <nav class="flex gap-4 justify-center mb-8">
+      <button class="tab-btn active" data-tab="stocks" aria-selected="true" role="tab" tabindex="0">Actions</button>
+      <button class="tab-btn" data-tab="etfs" aria-selected="false" role="tab" tabindex="-1">ETFs</button>
+      <button class="tab-btn" data-tab="cryptos" aria-selected="false" role="tab" tabindex="-1">Cryptomonnaies</button>
+    </nav>
+
+    <section id="stocks" role="tabpanel" aria-labelledby="tab-stocks">
+      <div class="cards-container"></div>
+    </section>
+
+    <section id="etfs" role="tabpanel" aria-labelledby="tab-etfs" hidden>
+      <div class="cards-container"></div>
+    </section>
+
+    <section id="cryptos" role="tabpanel" aria-labelledby="tab-cryptos" hidden>
+      <div class="cards-container"></div>
+    </section>
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <footer class="text-center text-sm text-gray-500 py-6 select-none">
+    Dernière mise à jour : <span id="lastUpdate">Chargement...</span>
+  </footer>
+
   <script>
-    const isPremium = true;
-    fetch("data/signals.json")
-      .then(res => res.ok ? res.json() : Promise.reject(res.status))
-      .then(data => {
-        const container = document.getElementById("signalsContainer");
-        const premiumNotice = document.getElementById("premiumNotice");
-        let premiumLocked = false;
+    const recIcons = {
+      Acheter: `<svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" class="inline w-4 h-4"><path d="M12 19V5M5 12l7-7 7 7"/></svg>`,
+      Vendre: `<svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" class="inline w-4 h-4"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>`,
+      Conserver: `<svg fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" class="inline w-4 h-4"><circle cx="12" cy="12" r="10"/></svg>`
+    };
 
-        ['etfs', 'stocks', 'cryptos'].forEach(category => {
-          (data[category] || []).forEach((signal, i) => {
-            const isLocked = signal.premium && !isPremium;
-            if (isLocked) premiumLocked = true;
+    const recColors = {
+      Acheter: "rec-acheter",
+      Vendre: "rec-vendre",
+      Conserver: "rec-conserver"
+    };
 
-            const card = document.createElement("div");
-            card.className = `card${isLocked ? ' blur' : ''}`;
-            card.dataset.category = category;
+    let signals = { stocks: [], etfs: [], cryptos: [] };
+    let filteredSignals = { stocks: [], etfs: [], cryptos: [] };
 
-            const chartId = `chart-${category}-${i}`;
-            card.innerHTML = `
-              <h3>${signal.name}</h3>
-              <p><strong>Prix actuel :</strong> $${signal.price.toFixed(2)}</p>
-              <p><strong>Recommandation :</strong> <span class="recommendation">${signal.recommendation}</span></p>
-              <div class="chart-container">
-                <canvas id="${chartId}" width="300" height="150"></canvas>
-              </div>
-              ${isLocked ? '<button class="unlock-btn" onclick="alert(\'Abonnement premium requis\')">Débloquer</button>' : ''}
-            `;
+    const tabs = document.querySelectorAll('.tab-btn');
+    const sections = {
+      stocks: document.getElementById('stocks'),
+      etfs: document.getElementById('etfs'),
+      cryptos: document.getElementById('cryptos')
+    };
 
-            container.appendChild(card);
+    const searchInput = document.getElementById('searchInput');
+    const refreshBtn = document.getElementById('refreshBtn');
+    const lastUpdateEl = document.getElementById('lastUpdate');
 
-            if (!isLocked) {
-              const ctx = document.getElementById(chartId).getContext("2d");
-              new Chart(ctx, {
-                type: "line",
-                data: {
-                  labels: signal.history.map((_, idx) => `J-${signal.history.length - idx}`),
-                  datasets: [{
-                    label: `${signal.name} - Prix de clôture`,
-                    data: signal.history,
-                    borderColor: "#22c55e",
-                    backgroundColor: "rgba(34,197,94,0.3)",
-                    fill: true,
-                    tension: 0.3,
-                    pointRadius: 0
-                  }]
-                },
-                options: {
-                  responsive: true,
-                  maintainAspectRatio: false,
-                  scales: {
-                    x: { display: false },
-                    y: {
-                      ticks: { color: '#a3bffa' },
-                      grid: { color: '#334155' }
-                    }
-                  },
-                  plugins: {
-                    legend: { labels: { color: '#d1d5db' } },
-                    tooltip: { mode: 'index', intersect: false }
-                  }
-                }
-              });
-            }
-          });
-        });
-
-        if (premiumLocked && !isPremium) {
-          premiumNotice.style.display = "block";
-          premiumNotice.textContent = "Certains signaux sont réservés aux abonnés premium.";
-        }
-      })
-      .catch(err => {
-        document.getElementById("signalsContainer").textContent = `Erreur chargement des signaux : ${err}`;
-      });
-
-    function filterSignals(category) {
-      document.querySelectorAll('.card').forEach(card => {
-        card.style.display = (category === 'all' || card.dataset.category === category) ? 'block' : 'none';
-      });
+    function formatDate(dateStr) {
+      if (!dateStr) return '';
+      const d = new Date(dateStr);
+      return d.toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'short' });
     }
+
+    function createBadge(text, className, icon = '') {
+      return `<span class="badge ${className}" title="${text}">${icon}${text}</span>`;
+    }
+
+    function createCard(item) {
+      const recClass = recColors[item.recommendation] || "rec-conserver";
+      return `
+        <article class="card fade-in p-5 flex flex-col justify-between">
+          <header class="flex justify-between items-center mb-3">
+            <h3 class="font-semibold text-lg truncate" title="${item.name}">${item.name}</h3>
+            ${item.premium ? createBadge('Premium', 'badge-premium') : ''}
+          </header>
+
+          <div class="mb-4 flex items-center gap-3">
+            <p class="text-2xl font-extrabold">${item.price.toFixed(2)} $</p>
+            <p class="inline-flex items-center gap-1 px-3 py-1 rounded-full font-semibold ${recClass} select-none" title="Recommandation">
+              ${recIcons[item.recommendation] || ''} ${item.recommendation}
+            </p>
+          </div>
+
+          <div class="flex flex-wrap gap-2 text-xs text-gray-600">
+            ${item.rsi ? createBadge(`RSI: ${item.rsi}`, 'badge-rsi') : ''}
+            ${item.macd ? createBadge(`MACD: ${item.macd}`, 'badge-macd') : ''}
+            ${item.bollinger ? createBadge(`Bollinger: ${item.bollinger}`, 'badge-bollinger') : ''}
+          </div>
+
+          <footer class="mt-4 text-xs text-gray-400 select-none">Dernière mise à jour : ${formatDate(item.updated)}</footer>
+        </article>
+      `;
+    }
+
+    function renderSection(type) {
+      const container = sections[type].querySelector('.cards-container');
+      if (!filteredSignals[type]?.length) {
+        container.innerHTML = `<p class="text-gray-500 text-center py-12 select-none">Aucun signal disponible.</p>`;
+        return;
+      }
+      container.innerHTML = filteredSignals[type].map(createCard).join('');
+    }
+
+    function renderAll() {
+      Object.keys(filteredSignals).forEach(renderSection);
+    }
+
+    function filterSignals(query) {
+      if (!query) {
+        filteredSignals = { ...signals };
+        return;
+      }
+      const q = query.toLowerCase();
+      filteredSignals = {
+        stocks: signals.stocks.filter(item => item.name.toLowerCase().includes(q) || (item.symbol && item.symbol.toLowerCase().includes(q))),
+        etfs: signals.etfs.filter(item => item.name.toLowerCase().includes(q) || (item.symbol && item.symbol.toLowerCase().includes(q))),
+        cryptos: signals.cryptos.filter(item => item.name.toLowerCase().includes(q) || (item.symbol && item.symbol.toLowerCase().includes(q))),
+      };
+    }
+
+    async function loadSignals() {
+      try {
+        lastUpdateEl.textContent = "Chargement...";
+        const res = await fetch('data/signals.json?' + Date.now());
+        signals = await res.json();
+
+        filteredSignals = { ...signals };
+
+        // Mise à jour date globale (la plus récente parmi toutes)
+        const allDates = [].concat(signals.stocks, signals.etfs, signals.cryptos)
+          .map(i => new Date(i.updated).getTime())
+          .filter(Boolean);
+        const maxDate = new Date(Math.max(...allDates));
+        lastUpdateEl.textContent = formatDate(maxDate);
+
+        renderAll();
+      } catch (e) {
+        console.error('Erreur chargement signaux:', e);
+        lastUpdateEl.textContent = "Erreur de chargement";
+        Object.values(sections).forEach(sec => {
+          sec.querySelector('.cards-container').innerHTML = `<p class="text-red-600 text-center py-12">Erreur lors du chargement des signaux.</p>`;
+        });
+      }
+    }
+
+    // Tabs logic
+    tabs.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabs.forEach(b => {
+          b.classList.remove('active');
+          b.setAttribute('aria-selected', 'false');
+          b.setAttribute('tabindex', '-1');
+        });
+        btn.classList.add('active');
+        btn.setAttribute('aria-selected', 'true');
+        btn.setAttribute('tabindex', '0');
+
+        // Show/hide sections
+        Object.keys(sections).forEach(key => {
+          if (key === btn.dataset.tab) {
+            sections[key].removeAttribute('hidden');
+          } else {
+            sections[key].setAttribute('hidden', '');
+          }
+        });
+      });
+    });
+
+    // Search logic
+    searchInput.addEventListener('input', e => {
+      filterSignals(e.target.value);
+      renderAll();
+    });
+
+    // Refresh button
+    refreshBtn.addEventListener('click', () => {
+      loadSignals();
+    });
+
+    // Initial load
+    loadSignals();
   </script>
 </body>
 </html>
