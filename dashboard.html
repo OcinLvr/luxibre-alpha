@@ -1,421 +1,303 @@
 <!DOCTYPE html>
-<html lang="fr" class="dark">
+<html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Luxibre Alpha - Dashboard Premium</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Luxibre Alpha - Dashboard des Signaux</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
-    /* Base & fonts */
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #121212;
-      color: #e0e0e0;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-    /* Scrollbar */
-    ::-webkit-scrollbar {
-      width: 10px;
-      height: 10px;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #2563eb;
-      border-radius: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #1f2937;
-    }
-    /* Header */
-    header {
-      padding: 1.5rem 2rem;
-      background: #1e293b;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #334155;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    header h1 {
-      font-weight: 700;
-      font-size: 1.8rem;
-      user-select: none;
-      letter-spacing: 0.02em;
-    }
-    /* Filters */
-    .filters {
-      display: flex;
-      gap: 0.8rem;
-    }
-    .filters button {
-      background: #334155;
-      color: #cbd5e1;
-      padding: 0.6rem 1.4rem;
-      border-radius: 0.5rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
-      border: none;
-      box-shadow: inset 0 0 0 2px transparent;
-      position: relative;
-      overflow: hidden;
-    }
-    .filters button::before {
-      content: "";
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: linear-gradient(90deg, #2563eb, #3b82f6);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      border-radius: 0.5rem;
-      z-index: 0;
-    }
-    .filters button.active,
-    .filters button:hover {
-      color: white;
-      box-shadow: inset 0 0 0 2px #3b82f6;
-      transform: translateY(-2px);
-    }
-    .filters button.active::before {
-      opacity: 0.25;
-    }
-    .filters button:focus-visible {
-      outline-offset: 3px;
-      outline-color: #3b82f6;
-    }
-    /* Main */
-    main {
-      flex: 1;
-      padding: 2rem;
-      background: #121212;
-      overflow-y: auto;
-      scroll-behavior: smooth;
-    }
-    /* Grid */
-    .grid-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 1.6rem;
-    }
-    /* Card */
-    .card {
-      background: #1e293b;
-      border-radius: 1rem;
-      padding: 1.6rem 1.8rem;
-      box-shadow:
-        0 1px 3px rgba(0, 0, 0, 0.5),
-        0 10px 20px rgba(0, 0, 0, 0.2);
-      position: relative;
-      cursor: default;
-      display: flex;
-      flex-direction: column;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .card:hover {
-      transform: translateY(-8px);
-      box-shadow:
-        0 5px 15px rgba(59, 130, 246, 0.5),
-        0 20px 30px rgba(59, 130, 246, 0.3);
-    }
-    .card h2 {
-      font-weight: 700;
-      font-size: 1.25rem;
-      margin-bottom: 0.6rem;
-      color: #3b82f6;
-    }
-    .price {
-      font-size: 1.15rem;
-      font-weight: 600;
-      margin-bottom: 0.4rem;
-      color: #f0f9ff;
-    }
-    .recommendation {
-      font-weight: 600;
-      margin-bottom: 1rem;
-      display: inline-block;
-      padding: 0.3rem 0.8rem;
-      border-radius: 9999px;
-      user-select: none;
-      text-transform: uppercase;
-      font-size: 0.85rem;
-      letter-spacing: 0.05em;
-    }
-    .recommendation.acheter {
-      background: #22c55e;
-      color: #164e14;
-      box-shadow: 0 0 8px #22c55eaa;
-    }
-    .recommendation.vendre {
-      background: #ef4444;
-      color: #7f1d1d;
-      box-shadow: 0 0 8px #ef4444aa;
-    }
-    .recommendation.conserver {
-      background: #facc15;
-      color: #713f12;
-      box-shadow: 0 0 8px #facc15aa;
-    }
-    /* Indicators */
-    .indicators {
-      margin-bottom: 1rem;
-      display: flex;
-      gap: 1rem;
-      font-size: 0.9rem;
-      justify-content: flex-start;
-      flex-wrap: wrap;
-      color: #9ca3af;
-    }
-    .indicator-item {
-      background: #334155;
-      padding: 0.4rem 0.8rem;
-      border-radius: 0.5rem;
-      user-select: none;
-      box-shadow: inset 0 0 8px #00000040;
-      flex: none;
-    }
-    /* Canvas */
-    canvas {
-      border-radius: 0.75rem;
-      background: #111827;
-      box-shadow:
-        inset 0 0 8px #2563eb;
-    }
-    /* Loading skeleton */
+    body { font-family: 'Inter', sans-serif; }
+    .recommendation.achat { color: #22c55e; font-weight: 700; }
+    .recommendation.vente { color: #ef4444; font-weight: 700; }
+    .recommendation.conservation { color: #facc15; font-weight: 700; }
     .skeleton {
-      animation: shimmer 1.6s infinite linear forwards;
-      background: linear-gradient(
-        90deg,
-        #1f2937 25%,
-        #374151 50%,
-        #1f2937 75%
-      );
-      background-size: 200% 100%;
-      border-radius: 1rem;
-      height: 180px;
+      animation: pulse 1.5s ease-in-out infinite;
+      background: linear-gradient(90deg, #ddd 25%, #eee 37%, #ddd 63%);
+      background-size: 400% 100%;
+      border-radius: 0.5rem;
+      height: 140px;
+      margin-bottom: 1.5rem;
     }
-    @keyframes shimmer {
-      0% {
-        background-position: -200% 0;
-      }
-      100% {
-        background-position: 200% 0;
-      }
-    }
-    /* Footer */
-    footer {
-      padding: 1rem 2rem;
-      text-align: center;
-      font-size: 0.875rem;
-      color: #6b7280;
-      background: #1e293b;
-      border-top: 1px solid #334155;
-      user-select: none;
-    }
-    /* Responsive tweaks */
-    @media (max-width: 480px) {
-      .filters {
-        flex-wrap: wrap;
-      }
+    @keyframes pulse {
+      0%, 100% { background-position: 100% 0; }
+      50% { background-position: 0 0; }
     }
   </style>
 </head>
-<body>
+<body class="bg-gray-900 text-white min-h-screen flex flex-col">
 
-<header>
-  <h1>Luxibre Alpha - Dashboard Premium</h1>
-  <nav class="filters" aria-label="Filtres des catégories">
-    <button type="button" class="active" data-filter="stocks" aria-pressed="true">Actions</button>
-    <button type="button" data-filter="etfs" aria-pressed="false">ETF</button>
-    <button type="button" data-filter="cryptos" aria-pressed="false">Crypto</button>
-  </nav>
-</header>
+  <!-- Header identique -->
+  <header class="bg-black bg-opacity-60 shadow-lg sticky top-0 z-50 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <h1 class="text-3xl font-extrabold text-green-400">Luxibre Alpha</h1>
+      <nav class="hidden md:flex space-x-6 items-center">
+        <a href="index.html" class="hover:text-green-400 font-medium">Accueil</a>
+        <a href="dashboard.html" class="hover:text-green-400 font-medium" aria-current="page">Dashboard</a>
+        <a href="pricing.html" class="hover:text-green-400 font-medium">Abonnement</a>
+        <button id="loginBtn" class="hover:text-green-400 font-medium">Connexion</button>
+        <button id="logoutBtn" class="hover:text-green-400 font-medium hidden">Déconnexion</button>
+      </nav>
+      <div class="md:hidden">
+        <button id="menuToggle" class="text-green-400 text-2xl" aria-label="Ouvrir menu">&#9776;</button>
+      </div>
+    </div>
+    <div id="mobileMenu" class="md:hidden hidden px-4 pt-2 pb-4 bg-black bg-opacity-90 space-y-2" role="menu">
+      <a href="index.html" class="block hover:text-green-400" role="menuitem">Accueil</a>
+      <a href="dashboard.html" class="block hover:text-green-400" role="menuitem" aria-current="page">Dashboard</a>
+      <a href="pricing.html" class="block hover:text-green-400" role="menuitem">Abonnement</a>
+      <button id="mobileLoginBtn" class="block w-full hover:text-green-400" role="menuitem">Connexion</button>
+      <button id="mobileLogoutBtn" class="block w-full hover:text-green-400 hidden" role="menuitem">Déconnexion</button>
+    </div>
+  </header>
 
-<main>
-  <div id="signals-container" class="grid-container" role="list" aria-live="polite" aria-busy="false">
-    <!-- Skeletons for loading -->
-    <div class="skeleton"></div>
-    <div class="skeleton"></div>
-    <div class="skeleton"></div>
-  </div>
-</main>
+  <!-- Main dashboard content -->
+  <main class="flex-grow max-w-7xl mx-auto px-4 py-12">
 
-<footer>
-  &copy; 2025 Luxibre Alpha. Tous droits réservés.
-</footer>
+    <!-- Titre -->
+    <h2 class="text-4xl font-extrabold mb-10 text-center" data-aos="fade-down">Dashboard des Signaux Boursiers</h2>
 
-<script>
-  const filters = document.querySelectorAll('.filters button');
-  const container = document.getElementById('signals-container');
-  let currentFilter = 'stocks';
-  let chartInstances = [];
-  let signalsData = null;
+    <!-- Filtres -->
+    <nav aria-label="Filtres des signaux" class="flex justify-center space-x-4 mb-12" role="tablist">
+      <button role="tab" aria-selected="true" aria-controls="panel-achat" id="filter-achat" data-filter="achat" class="filter-btn px-5 py-2 rounded-full bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 font-semibold">Achat</button>
+      <button role="tab" aria-selected="false" aria-controls="panel-vente" id="filter-vente" data-filter="vente" class="filter-btn px-5 py-2 rounded-full bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 font-semibold">Vente</button>
+      <button role="tab" aria-selected="false" aria-controls="panel-conservation" id="filter-conservation" data-filter="conservation" class="filter-btn px-5 py-2 rounded-full bg-yellow-500 hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-400 font-semibold text-gray-900">Conservation</button>
+    </nav>
 
-  function setAriaPressed(button) {
-    filters.forEach(btn => btn.setAttribute('aria-pressed', 'false'));
-    button.setAttribute('aria-pressed', 'true');
-  }
+    <!-- Zone d'affichage des signaux -->
+    <section id="signalsContainer" role="list" aria-live="polite" aria-busy="false" aria-label="Liste des signaux boursiers">
+      <!-- Skeleton loader par défaut -->
+      <div class="skeleton"></div>
+      <div class="skeleton"></div>
+      <div class="skeleton"></div>
+    </section>
 
-  filters.forEach(btn => {
-    btn.addEventListener('click', () => {
-      if (btn.dataset.filter === currentFilter) return;
-      filters.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      setAriaPressed(btn);
-      currentFilter = btn.dataset.filter;
-      renderSignals();
-    });
-  });
+    <!-- Call to Action -->
+    <section class="mt-16 text-center bg-gradient-to-r from-blue-700 to-green-600 text-white py-12 rounded-xl shadow-lg" data-aos="fade-up">
+      <h3 class="text-3xl font-bold mb-4">Passez à la vitesse supérieure</h3>
+      <p class="mb-6 text-lg">Abonnez-vous à notre offre premium et recevez des signaux exclusifs, précis et automatisés.</p>
+      <a href="pricing.html" class="inline-block bg-white text-green-600 px-10 py-4 font-semibold rounded-xl hover:bg-gray-100 transition transform hover:scale-105">Je m’abonne</a>
+    </section>
 
-  async function fetchSignals() {
-    try {
+  </main>
+
+  <!-- Footer identique -->
+  <footer class="bg-gray-900 py-10 text-center text-sm text-gray-400 mt-16">
+    &copy; 2025 Luxibre Alpha. Tous droits réservés. |
+    <a href="legal/mentions-legales.md" class="underline">Mentions légales</a> |
+    <a href="legal/cgu.md" class="underline">CGU</a> |
+    <a href="legal/rgpd.md" class="underline">RGPD</a>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    const supabase = createClient(
+      'https://jrgdwozxcilasllpvikh.supabase.co',
+      'eyJhbGciOiJI...IFj3w' // ton clé publique ici
+    );
+
+    const loginBtn = document.getElementById("loginBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const mobileLoginBtn = document.getElementById("mobileLoginBtn");
+    const mobileLogoutBtn = document.getElementById("mobileLogoutBtn");
+
+    async function checkAuth() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        loginBtn.classList.add("hidden");
+        logoutBtn.classList.remove("hidden");
+        mobileLoginBtn.classList.add("hidden");
+        mobileLogoutBtn.classList.remove("hidden");
+      } else {
+        loginBtn.classList.remove("hidden");
+        logoutBtn.classList.add("hidden");
+        mobileLoginBtn.classList.remove("hidden");
+        mobileLogoutBtn.classList.add("hidden");
+      }
+    }
+    checkAuth();
+
+    logoutBtn.onclick = mobileLogoutBtn.onclick = async () => {
+      await supabase.auth.signOut();
+      window.location.href = "login.html";
+    };
+    loginBtn.onclick = mobileLoginBtn.onclick = () => {
+      window.location.href = "login.html";
+    };
+    document.getElementById("menuToggle").onclick = () => {
+      document.getElementById("mobileMenu").classList.toggle("hidden");
+    };
+
+    // Gestion des filtres
+    const filters = document.querySelectorAll(".filter-btn");
+    let currentFilter = 'achat';
+
+    // Suppression de la déclaration statique de signalsData
+    let signalsData = {};
+
+    function clearCharts() {
+      if(window.chartInstances) {
+        window.chartInstances.forEach(c => c.destroy());
+      }
+      window.chartInstances = [];
+    }
+
+    function createRecommendationBadge(text) {
+      return `<span class="recommendation ${text.toLowerCase()}">${text}</span>`;
+    }
+
+    function renderSignals() {
+      const container = document.getElementById('signalsContainer');
       container.setAttribute('aria-busy', 'true');
-      // Show skeleton loaders
-      container.innerHTML = Array(6).fill('<div class="skeleton"></div>').join('');
-      const res = await fetch('/data/signals.json?' + Date.now());
-      if (!res.ok) throw new Error('Erreur chargement signals');
-      signalsData = await res.json();
-      container.setAttribute('aria-busy', 'false');
-      renderSignals();
-    } catch (e) {
-      container.setAttribute('aria-busy', 'false');
-      container.innerHTML = `<p class="text-red-500 text-center">Erreur lors du chargement des signaux.</p>`;
-      console.error(e);
-    }
-  }
+      clearCharts();
 
-  function clearCharts() {
-    chartInstances.forEach(chart => chart.destroy());
-    chartInstances = [];
-  }
+      const signals = signalsData[currentFilter];
+      if (!signals || signals.length === 0) {
+        container.innerHTML = `<p class="text-gray-400 text-center" data-aos="fade-in">Aucun signal disponible.</p>`;
+        container.setAttribute('aria-busy', 'false');
+        return;
+      }
 
-  function createRecommendationBadge(text) {
-    const lc = text.toLowerCase();
-    return `<span class="recommendation ${lc}">${text}</span>`;
-  }
+      container.innerHTML = ''; 
+      signals.forEach((signal, i) => {
+        const chartId = `chart-${currentFilter}-${i}`;
 
-  function renderSignals() {
-    if (!signalsData) return;
-    clearCharts();
+        const card = document.createElement('article');
+        card.className = "bg-gray-800 rounded-xl p-6 mb-8 shadow-lg hover:shadow-2xl transition cursor-pointer";
+        card.setAttribute('tabindex', '0');
+        card.setAttribute('role', 'listitem');
+        card.setAttribute('aria-label', `${signal.name} - Prix: ${signal.price.toFixed(2)} dollars - Recommandation: ${signal.recommendation}`);
 
-    const signals = signalsData[currentFilter];
-    if (!signals || signals.length === 0) {
-      container.innerHTML = '<p class="text-gray-400 text-center">Aucun signal disponible pour cette catégorie.</p>';
-      return;
-    }
+        card.innerHTML = `
+          <h3 class="text-2xl font-bold mb-1">${signal.name}</h3>
+          <p class="text-lg mb-2">Prix actuel : <strong>${signal.price.toFixed(2)} USD</strong></p>
+          ${createRecommendationBadge(signal.recommendation)}
+          <div class="mt-2 mb-4 flex space-x-4 text-sm text-gray-400">
+            ${signal.rsi !== undefined ? `<div>RSI: ${signal.rsi.toFixed(1)}</div>` : ''}
+            ${signal.macd !== undefined ? `<div>MACD: ${signal.macd.toFixed(2)}</div>` : ''}
+            ${signal.volume !== undefined ? `<div>Volume: ${signal.volume.toLocaleString()}</div>` : ''}
+          </div>
+          <canvas id="${chartId}" height="100" aria-label="Graphique historique des prix de ${signal.name}" role="img"></canvas>
+        `;
 
-    container.innerHTML = '';
+        container.appendChild(card);
 
-    signals.forEach((signal, i) => {
-      const chartId = `chart-${currentFilter}-${i}`;
+        const ctx = document.getElementById(chartId).getContext('2d');
+        const gradient = ctx.createLinearGradient(0, 0, 0, 100);
+        gradient.addColorStop(0, 'rgba(34, 197, 94, 0.6)');
+        gradient.addColorStop(1, 'rgba(34, 197, 94, 0)');
 
-      // Card structure
-      const card = document.createElement('article');
-      card.className = 'card';
-      card.setAttribute('role', 'listitem');
-      card.setAttribute('tabindex', '0');
-      card.innerHTML = `
-        <h2>${signal.name}</h2>
-        <p class="price">Prix actuel : <strong>${signal.price.toFixed(2)} USD</strong></p>
-        ${createRecommendationBadge(signal.recommendation)}
-        <div class="indicators">
-          ${signal.rsi !== undefined ? `<span class="indicator-item">RSI: ${signal.rsi.toFixed(1)}</span>` : ''}
-          ${signal.macd !== undefined ? `<span class="indicator-item">MACD: ${signal.macd.toFixed(2)}</span>` : ''}
-          ${signal.volume !== undefined ? `<span class="indicator-item">Volume: ${signal.volume.toLocaleString()}</span>` : ''}
-        </div>
-        <canvas id="${chartId}" height="120" aria-label="Graphique historique des prix de ${signal.name}" role="img"></canvas>
-      `;
-
-      container.appendChild(card);
-
-      // Chart.js creation
-      const ctx = document.getElementById(chartId).getContext('2d');
-      const gradient = ctx.createLinearGradient(0, 0, 0, 120);
-      gradient.addColorStop(0, 'rgba(59,130,246,0.6)');
-      gradient.addColorStop(1, 'rgba(59,130,246,0)');
-
-      const chart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          labels: signal.history.map((_, idx) => idx + 1),
-          datasets: [{
-            label: 'Prix',
-            data: signal.history,
-            borderColor: '#3b82f6',
-            backgroundColor: gradient,
-            fill: true,
-            tension: 0.25,
-            pointRadius: 0,
-            borderWidth: 2,
-            hoverRadius: 4,
-            hoverBorderWidth: 3,
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          animation: { duration: 800 },
-          scales: {
-            x: {
-              display: false
-            },
-            y: {
-              beginAtZero: false,
-              ticks: {
-                color: '#9ca3af',
-                maxTicksLimit: 5,
-                maxRotation: 0,
-                minRotation: 0,
-              },
-              grid: {
-                color: '#334155',
-                borderDash: [4, 4]
+        const chart = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: signal.history.map((_, idx) => idx + 1),
+            datasets: [{
+              label: 'Prix',
+              data: signal.history,
+              borderColor: '#22c55e',
+              backgroundColor: gradient,
+              fill: true,
+              tension: 0.3,
+              pointRadius: 0,
+              borderWidth: 2,
+              hoverRadius: 4,
+              hoverBorderWidth: 3,
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              x: { display: false },
+              y: {
+                beginAtZero: false,
+                ticks: { color: '#9ca3af', maxTicksLimit: 5 },
+                grid: { color: '#334155', borderDash: [4,4] }
               }
-            }
-          },
-          plugins: {
-            legend: {
-              display: false
             },
-            tooltip: {
-              enabled: true,
-              backgroundColor: '#1e293b',
-              titleColor: '#3b82f6',
-              bodyColor: '#cbd5e1',
-              cornerRadius: 6,
-              xPadding: 10,
-              yPadding: 8,
-              displayColors: false,
-              callbacks: {
-                label: context => `Prix: ${context.parsed.y.toFixed(2)} USD`
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                backgroundColor: '#134e4a',
+                titleColor: '#a7f3d0',
+                bodyColor: '#d1fae5',
+                cornerRadius: 6,
+                padding: 8,
+                displayColors: false,
+                callbacks: {
+                  label: ctx => `Prix: $${ctx.parsed.y.toFixed(2)}`
+                }
               }
-            }
-          },
-          interaction: {
-            mode: 'nearest',
-            intersect: false
-          },
-          hover: {
-            mode: 'nearest',
-            intersect: true
+            },
+            interaction: {
+              mode: 'nearest',
+              intersect: false,
+            },
           }
-        }
+        });
+
+        window.chartInstances = window.chartInstances || [];
+        window.chartInstances.push(chart);
       });
-      chartInstances.push(chart);
+
+      container.setAttribute('aria-busy', 'false');
+      AOS.refresh();
+    }
+
+    filters.forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (btn.dataset.filter === currentFilter) return;
+        currentFilter = btn.dataset.filter;
+        filters.forEach(f => {
+          f.setAttribute('aria-selected', 'false');
+          f.classList.remove('bg-green-600', 'bg-red-600', 'bg-yellow-500', 'text-gray-900');
+          // Ajustement des classes selon filtre
+          if (f.dataset.filter === 'achat') f.classList.add('bg-green-600');
+          if (f.dataset.filter === 'vente') f.classList.add('bg-red-600');
+          if (f.dataset.filter === 'conservation') {
+            f.classList.add('bg-yellow-500');
+            f.classList.add('text-gray-900');
+          }
+        });
+        btn.setAttribute('aria-selected', 'true');
+        // Changer couleur du bouton actif
+        btn.classList.remove('bg-green-600', 'bg-red-600', 'bg-yellow-500', 'text-gray-900');
+        if (btn.dataset.filter === 'achat') btn.classList.add('bg-green-600');
+        if (btn.dataset.filter === 'vente') btn.classList.add('bg-red-600');
+        if (btn.dataset.filter === 'conservation') {
+          btn.classList.add('bg-yellow-500');
+          btn.classList.add('text-gray-900');
+        }
+
+        renderSignals();
+      });
     });
-  }
 
-  // Initial fetch
-  fetchSignals();
+    // Fonction pour charger les données du fichier signals.json
+    async function loadSignals() {
+      const container = document.getElementById('signalsContainer');
+      container.setAttribute('aria-busy', 'true');
+      try {
+        const res = await fetch('signals.json');
+        if (!res.ok) throw new Error('Erreur lors du chargement des signaux');
+        signalsData = await res.json();
+        renderSignals();
+      } catch (err) {
+        console.error(err);
+        container.innerHTML = `<p class="text-red-400 text-center mt-8">Impossible de charger les signaux.</p>`;
+      } finally {
+        container.setAttribute('aria-busy', 'false');
+      }
+    }
 
-  // Refresh toutes les 8 minutes (480000 ms)
-  setInterval(fetchSignals, 480000);
-
-</script>
+    document.addEventListener('DOMContentLoaded', () => {
+      AOS.init({ once: true });
+      loadSignals();
+    });
+  </script>
 </body>
 </html>
