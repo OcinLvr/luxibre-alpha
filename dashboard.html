@@ -1,278 +1,266 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Luxibre Alpha - Dashboard des Signaux</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    body { font-family: 'Inter', sans-serif; }
-    .recommendation.achat { color: #22c55e; font-weight: 700; }
-    .recommendation.vente { color: #ef4444; font-weight: 700; }
-    .recommendation.conservation { color: #facc15; font-weight: 700; }
-    .skeleton {
-      animation: pulse 1.5s ease-in-out infinite;
-      background: linear-gradient(90deg, #ddd 25%, #eee 37%, #ddd 63%);
-      background-size: 400% 100%;
-      border-radius: 0.5rem;
-      height: 140px;
-      margin-bottom: 1.5rem;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Dashboard Luxibre Alpha - Signaux Boursiers</title>
+<style>
+  /* Reset minimal */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    background: #121212;
+    color: #eee;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  header {
+    background: #1e1e1e;
+    padding: 1rem 2rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    border-bottom: 2px solid #4caf50;
+    text-align: center;
+  }
+  main {
+    flex: 1;
+    padding: 1rem 2rem;
+    overflow-x: auto;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  }
+  thead {
+    background-color: #333;
+  }
+  th, td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #444;
+  }
+  th {
+    color: #4caf50;
+  }
+  tr:nth-child(even) {
+    background-color: #1a1a1a;
+  }
+  .signal-name {
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+  .signal-type {
+    font-style: italic;
+    color: #a0a0a0;
+  }
+  /* Premium signal highlight */
+  .premium {
+    background-color: #263238;
+    border-left: 5px solid #ffab00;
+  }
+  /* Signal status color */
+  .signal-buy {
+    color: #4caf50;
+    font-weight: 700;
+  }
+  .signal-sell {
+    color: #f44336;
+    font-weight: 700;
+  }
+  .signal-hold {
+    color: #ffeb3b;
+    font-weight: 700;
+  }
+  /* Graph container */
+  .chart-container {
+    width: 150px;
+    height: 70px;
+  }
+  /* Responsive tweaks */
+  @media (max-width: 800px) {
+    th, td {
+      padding: 0.5rem 0.5rem;
+      font-size: 0.9rem;
     }
-    @keyframes pulse {
-      0%, 100% { background-position: 100% 0; }
-      50% { background-position: 0 0; }
+    .chart-container {
+      width: 100px;
+      height: 50px;
     }
-  </style>
+  }
+  /* Error message styling */
+  #error-message {
+    margin-top: 2rem;
+    color: #f44336;
+    font-weight: 700;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+</style>
 </head>
-<body class="bg-gray-900 text-white min-h-screen flex flex-col">
+<body>
 
-  <!-- Header -->
-  <header class="bg-black bg-opacity-60 shadow-lg sticky top-0 z-50 backdrop-blur-md">
-    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-      <h1 class="text-3xl font-extrabold text-green-400">Luxibre Alpha</h1>
-      <nav class="hidden md:flex space-x-6 items-center">
-        <a href="index.html" class="hover:text-green-400 font-medium">Accueil</a>
-        <a href="dashboard.html" class="hover:text-green-400 font-medium" aria-current="page">Dashboard</a>
-        <a href="pricing.html" class="hover:text-green-400 font-medium">Abonnement</a>
-        <button id="loginBtn" class="hover:text-green-400 font-medium">Connexion</button>
-        <button id="logoutBtn" class="hover:text-green-400 font-medium hidden">Déconnexion</button>
-      </nav>
-      <div class="md:hidden">
-        <button id="menuToggle" class="text-green-400 text-2xl" aria-label="Ouvrir menu">&#9776;</button>
-      </div>
-    </div>
-    <div id="mobileMenu" class="md:hidden hidden px-4 pt-2 pb-4 bg-black bg-opacity-90 space-y-2" role="menu">
-      <a href="index.html" class="block hover:text-green-400" role="menuitem">Accueil</a>
-      <a href="dashboard.html" class="block hover:text-green-400" role="menuitem" aria-current="page">Dashboard</a>
-      <a href="pricing.html" class="block hover:text-green-400" role="menuitem">Abonnement</a>
-      <button id="mobileLoginBtn" class="block w-full hover:text-green-400" role="menuitem">Connexion</button>
-      <button id="mobileLogoutBtn" class="block w-full hover:text-green-400 hidden" role="menuitem">Déconnexion</button>
-    </div>
-  </header>
+<header>Luxibre Alpha - Dashboard des Signaux Boursiers</header>
 
-  <!-- Contenu principal -->
-  <main class="flex-grow max-w-7xl mx-auto px-4 py-12">
+<main>
+  <div id="error-message" role="alert" aria-live="assertive" style="display:none;"></div>
 
-    <h2 class="text-4xl font-extrabold mb-10 text-center" data-aos="fade-down">Dashboard des Signaux Boursiers</h2>
+  <table aria-describedby="desc-signaux" aria-live="polite" role="table" id="signals-table">
+    <caption id="desc-signaux" style="text-align:left; font-weight:bold; margin-bottom:0.5rem;">
+      Liste des signaux boursiers avec mini-graphique de tendance
+    </caption>
+    <thead>
+      <tr>
+        <th scope="col">Actif</th>
+        <th scope="col">Type</th>
+        <th scope="col">Signal</th>
+        <th scope="col">Cours (€)</th>
+        <th scope="col">Tendance (7j)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Rempli dynamiquement -->
+    </tbody>
+  </table>
+</main>
 
-    <nav aria-label="Filtres des signaux" class="flex justify-center space-x-4 mb-12" role="tablist">
-      <button role="tab" aria-selected="true" aria-controls="panel-achat" id="filter-achat" data-filter="achat" class="filter-btn px-5 py-2 rounded-full bg-green-600 hover:bg-green-700 font-semibold">Achat</button>
-      <button role="tab" aria-selected="false" aria-controls="panel-vente" id="filter-vente" data-filter="vente" class="filter-btn px-5 py-2 rounded-full bg-red-600 hover:bg-red-700 font-semibold">Vente</button>
-      <button role="tab" aria-selected="false" aria-controls="panel-conservation" id="filter-conservation" data-filter="conservation" class="filter-btn px-5 py-2 rounded-full bg-yellow-500 hover:bg-yellow-600 font-semibold text-gray-900">Conservation</button>
-    </nav>
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
-    <section id="signalsContainer" role="list" aria-live="polite" aria-busy="false" aria-label="Liste des signaux boursiers">
-      <div class="skeleton"></div>
-      <div class="skeleton"></div>
-      <div class="skeleton"></div>
-    </section>
+<script>
+  // Fonction utilitaire pour formater les nombres avec 2 décimales
+  function formatPrice(price) {
+    return price ? price.toFixed(2) : "-";
+  }
 
-    <section class="mt-16 text-center bg-gradient-to-r from-blue-700 to-green-600 text-white py-12 rounded-xl shadow-lg" data-aos="fade-up">
-      <h3 class="text-3xl font-bold mb-4">Passez à la vitesse supérieure</h3>
-      <p class="mb-6 text-lg">Abonnez-vous à notre offre premium et recevez des signaux exclusifs, précis et automatisés.</p>
-      <a href="pricing.html" class="inline-block bg-white text-green-600 px-10 py-4 font-semibold rounded-xl hover:bg-gray-100 transition transform hover:scale-105">Je m’abonne</a>
-    </section>
-  </main>
+  // Map status à couleur / classe CSS
+  const signalClassMap = {
+    'buy': 'signal-buy',
+    'sell': 'signal-sell',
+    'hold': 'signal-hold'
+  };
 
-  <footer class="bg-gray-900 py-10 text-center text-sm text-gray-400 mt-16">
-    &copy; 2025 Luxibre Alpha. Tous droits réservés. |
-    <a href="legal/mentions-legales.md" class="underline">Mentions légales</a> |
-    <a href="legal/cgu.md" class="underline">CGU</a> |
-    <a href="legal/rgpd.md" class="underline">RGPD</a>
-  </footer>
-
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-    const supabase = createClient(
-      'https://jrgdwozxcilasllpvikh.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpyZ2R3b3p4Y2lsYXNsbHB2aWtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4MjQ0NTEsImV4cCI6MjA2MzQwMDQ1MX0.S2oGP2rdtq1IkW-oH5mC8omm698PdCgQJtGVLlIFj3w'
-    );
-
-    const loginBtn = document.getElementById("loginBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
-    const mobileLoginBtn = document.getElementById("mobileLoginBtn");
-    const mobileLogoutBtn = document.getElementById("mobileLogoutBtn");
-
-    async function checkAuth() {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-        loginBtn.classList.add("hidden");
-        logoutBtn.classList.remove("hidden");
-        mobileLoginBtn.classList.add("hidden");
-        mobileLogoutBtn.classList.remove("hidden");
-      } else {
-        loginBtn.classList.remove("hidden");
-        logoutBtn.classList.add("hidden");
-        mobileLoginBtn.classList.remove("hidden");
-        mobileLogoutBtn.classList.add("hidden");
+  // Fonction pour créer un mini-graph avec Chart.js dans un canvas donné
+  function createMiniChart(canvas, dataPoints) {
+    if (!dataPoints || dataPoints.length === 0) {
+      // Rien à afficher
+      return;
+    }
+    new Chart(canvas, {
+      type: 'line',
+      data: {
+        labels: dataPoints.map((_, i) => i + 1),
+        datasets: [{
+          data: dataPoints,
+          borderColor: '#4caf50',
+          backgroundColor: 'rgba(76,175,80,0.2)',
+          tension: 0.3,
+          fill: true,
+          pointRadius: 0
+        }]
+      },
+      options: {
+        animation: false,
+        responsive: false,
+        maintainAspectRatio: false,
+        scales: {
+          x: { display: false },
+          y: { display: false }
+        },
+        plugins: {
+          legend: { display: false },
+          tooltip: { enabled: true }
+        },
+        elements: {
+          line: { borderWidth: 2 }
+        }
       }
-    }
-    checkAuth();
+    });
+  }
 
-    logoutBtn.onclick = mobileLogoutBtn.onclick = async () => {
-      await supabase.auth.signOut();
-      window.location.href = "login.html";
-    };
-    loginBtn.onclick = mobileLoginBtn.onclick = () => {
-      window.location.href = "login.html";
-    };
-    document.getElementById("menuToggle").onclick = () => {
-      document.getElementById("mobileMenu").classList.toggle("hidden");
-    };
+  async function loadSignals() {
+    const tbody = document.querySelector("#signals-table tbody");
+    const errorDiv = document.getElementById("error-message");
 
-    const filters = document.querySelectorAll(".filter-btn");
-    let currentFilter = 'achat';
-    let signalsData = { achat: [], vente: [], conservation: [] };
+    try {
+      const response = await fetch("data/signals.json", {cache: "no-store"});
+      if (!response.ok) throw new Error(`HTTP error ${response.status}`);
+      const signals = await response.json();
 
-    function clearCharts() {
-      if (window.chartInstances) {
-        window.chartInstances.forEach(c => c.destroy());
-      }
-      window.chartInstances = [];
-    }
+      // Vider le tableau si déjà rempli
+      tbody.innerHTML = "";
 
-    function createRecommendationBadge(text) {
-      return `<span class="recommendation ${text.toLowerCase()}">${text}</span>`;
-    }
-
-    function renderSignals() {
-      const container = document.getElementById('signalsContainer');
-      container.setAttribute('aria-busy', 'true');
-      clearCharts();
-
-      const signals = signalsData[currentFilter];
-      if (!signals || signals.length === 0) {
-        container.innerHTML = `<p class="text-gray-400 text-center" data-aos="fade-in">Aucun signal disponible.</p>`;
-        container.setAttribute('aria-busy', 'false');
+      if (!Array.isArray(signals) || signals.length === 0) {
+        errorDiv.textContent = "Aucun signal disponible pour le moment.";
+        errorDiv.style.display = "block";
         return;
+      } else {
+        errorDiv.style.display = "none";
       }
 
-      container.innerHTML = '';
-      signals.forEach((signal, i) => {
-        const chartId = `chart-${currentFilter}-${i}`;
-        const card = document.createElement('article');
-        card.className = "bg-gray-800 rounded-xl p-6 mb-8 shadow-lg hover:shadow-2xl transition cursor-pointer";
-        card.setAttribute('tabindex', '0');
-        card.setAttribute('role', 'listitem');
-        card.setAttribute('aria-label', `${signal.name} - Prix: ${signal.price.toFixed(2)} dollars - Recommandation: ${signal.recommendation}`);
+      // Boucle sur chaque signal pour créer une ligne
+      signals.forEach((signal, index) => {
+        const tr = document.createElement("tr");
+        if (signal.isPremium) tr.classList.add("premium");
 
-        card.innerHTML = `
-          <h3 class="text-2xl font-bold mb-1">${signal.name}</h3>
-          <p class="text-lg mb-2">Prix actuel : <strong>${signal.price.toFixed(2)} USD</strong></p>
-          ${createRecommendationBadge(signal.recommendation)}
-          <div class="mt-2 mb-4 flex space-x-4 text-sm text-gray-400">
-            ${signal.rsi !== undefined ? `<div>RSI: ${signal.rsi.toFixed(1)}</div>` : ''}
-            ${signal.macd !== undefined ? `<div>MACD: ${signal.macd.toFixed(2)}</div>` : ''}
-            ${signal.volume !== undefined ? `<div>Volume: ${signal.volume.toLocaleString()}</div>` : ''}
-          </div>
-          <canvas id="${chartId}" height="100" aria-label="Graphique historique des prix de ${signal.name}" role="img"></canvas>
-        `;
-        container.appendChild(card);
+        // Col 1: Nom actif
+        const tdName = document.createElement("td");
+        tdName.textContent = signal.name || "-";
+        tdName.classList.add("signal-name");
+        tr.appendChild(tdName);
 
-        const ctx = document.getElementById(chartId).getContext('2d');
-        const gradient = ctx.createLinearGradient(0, 0, 0, 100);
-        gradient.addColorStop(0, 'rgba(34, 197, 94, 0.6)');
-        gradient.addColorStop(1, 'rgba(34, 197, 94, 0)');
+        // Col 2: Type d'actif
+        const tdType = document.createElement("td");
+        tdType.textContent = signal.type || "-";
+        tdType.classList.add("signal-type");
+        tr.appendChild(tdType);
 
-        const chart = new Chart(ctx, {
-          type: 'line',
-          data: {
-            labels: signal.history.map((_, idx) => idx + 1),
-            datasets: [{
-              label: 'Prix',
-              data: signal.history,
-              borderColor: '#22c55e',
-              backgroundColor: gradient,
-              fill: true,
-              tension: 0.3,
-              pointRadius: 0,
-              borderWidth: 2,
-              hoverRadius: 4,
-              hoverBorderWidth: 3,
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-              x: { display: false },
-              y: {
-                beginAtZero: false,
-                ticks: { color: '#9ca3af', maxTicksLimit: 5 },
-                grid: { color: '#334155', borderDash: [4,4] }
-              }
-            },
-            plugins: {
-              legend: { display: false },
-              tooltip: {
-                backgroundColor: '#134e4a',
-                titleColor: '#a7f3d0',
-                bodyColor: '#d1fae5',
-                cornerRadius: 6,
-                padding: 8,
-                displayColors: false,
-                callbacks: {
-                  label: ctx => `Prix: $${ctx.parsed.y.toFixed(2)}`
-                }
-              }
-            },
-            interaction: {
-              mode: 'nearest',
-              intersect: false,
-            },
-          }
-        });
+        // Col 3: Signal (Buy / Sell / Hold)
+        const tdSignal = document.createElement("td");
+        const signalStatus = (signal.signal || "").toLowerCase();
+        tdSignal.textContent = signal.signal || "-";
+        if (signalClassMap[signalStatus]) tdSignal.classList.add(signalClassMap[signalStatus]);
+        tr.appendChild(tdSignal);
 
-        window.chartInstances.push(chart);
+        // Col 4: Cours actuel
+        const tdPrice = document.createElement("td");
+        tdPrice.textContent = formatPrice(signal.price);
+        tr.appendChild(tdPrice);
+
+        // Col 5: Mini-graph tendance 7 jours
+        const tdChart = document.createElement("td");
+        const chartContainer = document.createElement("div");
+        chartContainer.classList.add("chart-container");
+        const canvas = document.createElement("canvas");
+        canvas.width = 150;
+        canvas.height = 70;
+        chartContainer.appendChild(canvas);
+        tdChart.appendChild(chartContainer);
+        tr.appendChild(tdChart);
+
+        tbody.appendChild(tr);
+
+        // Créer le mini-graph
+        createMiniChart(canvas, signal.trend7d);
       });
 
-      container.setAttribute('aria-busy', 'false');
-      AOS.refresh();
+    } catch (error) {
+      errorDiv.textContent = "Erreur lors du chargement des signaux : " + error.message;
+      errorDiv.style.display = "block";
+      tbody.innerHTML = "";
+      console.error(error);
     }
+  }
 
-    filters.forEach(btn => {
-      btn.addEventListener('click', () => {
-        if (btn.dataset.filter === currentFilter) return;
-        currentFilter = btn.dataset.filter;
-        filters.forEach(f => f.setAttribute('aria-selected', 'false'));
-        btn.setAttribute('aria-selected', 'true');
-        renderSignals();
-      });
-    });
+  // Lancement au chargement de la page
+  window.addEventListener("DOMContentLoaded", () => {
+    loadSignals();
+  });
+</script>
 
-    async function loadSignals() {
-      const container = document.getElementById('signalsContainer');
-      container.setAttribute('aria-busy', 'true');
-      try {
-        const res = await fetch('data/signals.json');
-        if (!res.ok) throw new Error('Erreur lors du chargement des signaux');
-        const flatData = await res.json();
-
-        signalsData = { achat: [], vente: [], conservation: [] };
-        flatData.forEach(signal => {
-          const cat = signal.recommendation.toLowerCase();
-          if (signalsData[cat]) {
-            signalsData[cat].push(signal);
-          }
-        });
-
-        renderSignals();
-      } catch (err) {
-        console.error(err);
-        container.innerHTML = `<p class="text-red-400 text-center mt-8">Impossible de charger les signaux.</p>`;
-      } finally {
-        container.setAttribute('aria-busy', 'false');
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      AOS.init({ once: true });
-      loadSignals();
-    });
-  </script>
 </body>
 </html>
