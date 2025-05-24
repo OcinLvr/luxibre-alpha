@@ -3,21 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Dashboard moderne pour Luxibre Alpha">
   <title>Luxibre Alpha - Dashboard Moderne</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/luxon@1.25.0"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.0.0"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"></noscript>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" async></script>
+  <script src="https://cdn.jsdelivr.net/npm/luxon@1.25.0" async></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.0.0" async></script>
   <style>
+    :root {
+      --primary-color: #22c55e;
+      --secondary-color: #1e293b;
+      --text-color: #f1f5f9;
+      --accent-color: #86efac;
+    }
     * { box-sizing: border-box; }
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
       background: #0f172a;
-      color: #f1f5f9;
+      color: var(--text-color);
     }
     header {
-      background: #22c55e;
+      background: var(--primary-color);
       padding: 1.5rem 2rem;
       font-size: 1.6rem;
       font-weight: 700;
@@ -27,14 +35,14 @@
       letter-spacing: 0.05em;
     }
     nav {
-      background: #1e293b;
+      background: var(--secondary-color);
       padding: 1rem;
       display: flex;
       justify-content: center;
       gap: 1rem;
     }
     nav button {
-      background: #22c55e;
+      background: var(--primary-color);
       color: white;
       border: none;
       padding: 0.5rem 1rem;
@@ -54,7 +62,7 @@
     .notice {
       background: #dcfce7;
       color: #166534;
-      border-left: 5px solid #22c55e;
+      border-left: 5px solid var(--primary-color);
       padding: 1rem 1.5rem;
       border-radius: 0.75rem;
       margin-bottom: 2rem;
@@ -67,7 +75,7 @@
       gap: 2rem;
     }
     .card {
-      background: #1e293b;
+      background: var(--secondary-color);
       padding: 1.5rem;
       border-radius: 1rem;
       box-shadow: 0 4px 15px rgba(0,0,0,0.15);
@@ -86,7 +94,7 @@
     .card h3 {
       font-size: 1.4rem;
       margin: 0 0 0.8rem;
-      color: #86efac;
+      color: var(--accent-color);
     }
     .card p {
       margin: 0.3rem 0;
@@ -106,7 +114,7 @@
     }
     .unlock-btn {
       right: 1rem;
-      background: #22c55e;
+      background: var(--primary-color);
       color: white;
       border: none;
       padding: 0.5rem 1rem;
@@ -146,105 +154,107 @@
   <script>
   const isPremium = false; // Mets à true pour tester l’abonnement
 
-  fetch("data/signals.json")
-    .then(res => {
+  async function fetchSignals() {
+    try {
+      const res = await fetch("data/signals.json");
       if (!res.ok) throw new Error("HTTP error " + res.status);
-      return res.json();
-    })
-    .then(data => {
-      const container = document.getElementById("signalsContainer");
-      const premiumNotice = document.getElementById("premiumNotice");
-      let premiumLocked = false;
-
-      // On va traiter par catégories : etfs, stocks, cryptos
-      ["etfs", "stocks", "cryptos"].forEach(category => {
-        if (!data[category] || !Array.isArray(data[category])) return;
-
-        data[category].forEach((signal, i) => {
-          const card = document.createElement("div");
-          card.className = "card";
-          card.dataset.category = category;
-
-          const isLocked = signal.premium && !isPremium;
-          if (isLocked) {
-            card.classList.add("blur");
-            premiumLocked = true;
-          }
-
-          // Génération d'un id unique pour le canvas du graphique
-          const chartId = `chart-${category}-${i}`;
-
-          card.innerHTML = `
-            <h3>${signal.name}</h3>
-            <p><strong>Prix actuel :</strong> $${signal.price.toFixed(2)}</p>
-            <p><strong>Recommandation :</strong> <span class="recommendation">${signal.recommendation}</span></p>
-            <div class="chart-container">
-              <canvas id="${chartId}" width="300" height="150"></canvas>
-            </div>
-            ${isLocked ? `<button class="unlock-btn" onclick="alert('Abonnement premium requis pour accéder à ce signal.')">Débloquer</button>` : ""}
-          `;
-
-          container.appendChild(card);
-
-          // Si pas verrouillé, afficher le graphique
-          if (!isLocked) {
-            const ctx = document.getElementById(chartId).getContext("2d");
-            new Chart(ctx, {
-              type: "line",
-              data: {
-                labels: signal.history.map((_, idx) => `J-${signal.history.length - idx}`),
-                datasets: [{
-                  label: `${signal.name} - Prix de clôture`,
-                  data: signal.history,
-                  borderColor: "#22c55e",
-                  backgroundColor: "rgba(34,197,94,0.3)",
-                  fill: true,
-                  tension: 0.3,
-                  pointRadius: 0
-                }]
-              },
-              options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                  x: {
-                    display: false
-                  },
-                  y: {
-                    beginAtZero: false,
-                    ticks: {
-                      color: '#a3bffa'
-                    },
-                    grid: {
-                      color: '#334155'
-                    }
-                  }
-                },
-                plugins: {
-                  legend: {
-                    labels: { color: '#d1d5db' }
-                  },
-                  tooltip: {
-                    mode: 'index',
-                    intersect: false
-                  }
-                }
-              }
-            });
-          }
-        });
-      });
-
-      // Affiche un message si des signaux premium sont bloqués
-      if (premiumLocked && !isPremium) {
-        premiumNotice.style.display = "block";
-        premiumNotice.textContent = "Certains signaux sont réservés aux abonnés premium. Abonnez-vous pour tout débloquer.";
-      }
-    })
-    .catch(err => {
+      return await res.json();
+    } catch (err) {
       console.error("Erreur lors du chargement des signaux:", err);
       document.getElementById("signalsContainer").textContent = "Erreur lors du chargement des signaux.";
+      return null;
+    }
+  }
+
+  async function renderSignals() {
+    const data = await fetchSignals();
+    if (!data) return;
+
+    const container = document.getElementById("signalsContainer");
+    const premiumNotice = document.getElementById("premiumNotice");
+    let premiumLocked = false;
+
+    ["etfs", "stocks", "cryptos"].forEach(category => {
+      if (!data[category] || !Array.isArray(data[category])) return;
+
+      data[category].forEach((signal, i) => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.dataset.category = category;
+
+        const isLocked = signal.premium && !isPremium;
+        if (isLocked) {
+          card.classList.add("blur");
+          premiumLocked = true;
+        }
+
+        const chartId = `chart-${category}-${i}`;
+
+        card.innerHTML = `
+          <h3>${signal.name}</h3>
+          <p><strong>Prix actuel :</strong> $${signal.price.toFixed(2)}</p>
+          <p><strong>Recommandation :</strong> <span class="recommendation">${signal.recommendation}</span></p>
+          <div class="chart-container">
+            <canvas id="${chartId}" width="300" height="150"></canvas>
+          </div>
+          ${isLocked ? `<button class="unlock-btn" onclick="alert('Abonnement premium requis pour accéder à ce signal.')">Débloquer</button>` : ""}
+        `;
+
+        container.appendChild(card);
+
+        if (!isLocked) {
+          const ctx = document.getElementById(chartId).getContext("2d");
+          new Chart(ctx, {
+            type: "line",
+            data: {
+              labels: signal.history.map((_, idx) => `J-${signal.history.length - idx}`),
+              datasets: [{
+                label: `${signal.name} - Prix de clôture`,
+                data: signal.history,
+                borderColor: "#22c55e",
+                backgroundColor: "rgba(34,197,94,0.3)",
+                fill: true,
+                tension: 0.3,
+                pointRadius: 0
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                x: {
+                  display: false
+                },
+                y: {
+                  beginAtZero: false,
+                  ticks: {
+                    color: '#a3bffa'
+                  },
+                  grid: {
+                    color: '#334155'
+                  }
+                }
+              },
+              plugins: {
+                legend: {
+                  labels: { color: '#d1d5db' }
+                },
+                tooltip: {
+                  mode: 'index',
+                  intersect: false
+                }
+              }
+            }
+          });
+        }
+      });
     });
+
+    if (premiumLocked && !isPremium) {
+      premiumNotice.style.display = "block";
+      premiumNotice.textContent = "Certains signaux sont réservés aux abonnés premium. Abonnez-vous pour tout débloquer.";
+    }
+  }
 
   function filterSignals(category) {
     const cards = document.querySelectorAll('.card');
@@ -256,7 +266,8 @@
       }
     });
   }
-</script>
 
+  document.addEventListener('DOMContentLoaded', renderSignals);
+  </script>
 </body>
 </html>
