@@ -3,102 +3,105 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Luxibre Alpha - Révolution Boursière</title>
+  <title>Luxibre Alpha - Signaux Boursiers</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
   <style>
-    body { font-family: 'Inter', sans-serif; }
+    body {
+      font-family: 'Inter', sans-serif;
+    }
   </style>
 </head>
-<body class="bg-gray-900 text-white">
+<body class="bg-gray-50 text-gray-900">
 
   <!-- Header -->
-  <header class="bg-black bg-opacity-60 shadow-lg sticky top-0 z-50 backdrop-blur-md">
-    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-      <h1 class="text-3xl font-extrabold text-green-400">Luxibre Alpha</h1>
+  <header class="py-4 bg-white shadow-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
+      <h1 class="text-3xl font-bold text-green-600">Luxibre</h1>
       <nav class="hidden md:flex space-x-6 items-center">
-        <a href="index.html" class="hover:text-green-400 font-medium">Accueil</a>
-        <a href="dashboard.html" class="hover:text-green-400 font-medium">Dashboard</a>
-        <a href="pricing.html" class="hover:text-green-400 font-medium">Abonnement</a>
-        <button id="loginBtn" class="hover:text-green-400 font-medium">Connexion</button>
-        <button id="logoutBtn" class="hover:text-green-400 font-medium hidden">Déconnexion</button>
+        <a href="index.html" class="hover:text-green-600 font-medium">Accueil</a>
+        <a href="dashboard.html" class="hover:text-green-600 font-medium">Dashboard</a>
+        <a href="pricing.html" class="hover:text-green-600 font-medium">Abonnement</a>
+        <button id="loginBtn" class="hover:text-green-600 font-medium">Connexion</button>
+        <button id="logoutBtn" class="hover:text-green-600 font-medium hidden">Déconnexion</button>
       </nav>
+      <!-- Mobile menu -->
       <div class="md:hidden">
-        <button id="menuToggle" class="text-green-400 text-2xl">&#9776;</button>
+        <button id="menuToggle" class="text-green-600 text-2xl">&#9776;</button>
       </div>
     </div>
-    <div id="mobileMenu" class="md:hidden hidden px-4 pt-2 pb-4 bg-black bg-opacity-90 space-y-2">
-      <a href="index.html" class="block hover:text-green-400">Accueil</a>
-      <a href="dashboard.html" class="block hover:text-green-400">Dashboard</a>
-      <a href="pricing.html" class="block hover:text-green-400">Abonnement</a>
-      <button id="mobileLoginBtn" class="block w-full hover:text-green-400">Connexion</button>
-      <button id="mobileLogoutBtn" class="block w-full hover:text-green-400 hidden">Déconnexion</button>
+    <div id="mobileMenu" class="md:hidden hidden px-6 pt-4 pb-2 bg-white space-y-2">
+      <a href="index.html" class="block text-gray-800 hover:text-green-600">Accueil</a>
+      <a href="dashboard.html" class="block text-gray-800 hover:text-green-600">Dashboard</a>
+      <a href="pricing.html" class="block text-gray-800 hover:text-green-600">Abonnement</a>
+      <button id="mobileLoginBtn" class="block text-left w-full text-gray-800 hover:text-green-600">Connexion</button>
+      <button id="mobileLogoutBtn" class="block text-left w-full text-gray-800 hover:text-green-600 hidden">Déconnexion</button>
     </div>
   </header>
 
-  <!-- Hero Section -->
-  <section class="relative overflow-hidden text-center py-32 px-6" style="background: linear-gradient(to right, #0f172a, #0f766e);">
-    <div data-aos="fade-up" class="max-w-4xl mx-auto">
-      <h2 class="text-5xl md:text-6xl font-extrabold mb-6">La Révolution des Signaux Boursiers</h2>
-      <p class="text-xl text-gray-200 mb-10">Des signaux en temps réel propulsés par l'IA, pour investir avec une longueur d'avance.</p>
-      <a href="pricing.html" class="px-8 py-4 bg-green-500 hover:bg-green-600 text-white rounded-xl text-lg font-semibold transition-transform transform hover:scale-105">Je découvre l'offre premium</a>
+  <!-- Hero Section with Lottie -->
+  <section class="bg-gray-900 text-white py-20 relative text-center">
+    <div class="max-w-3xl mx-auto px-6 z-10 relative">
+      <h2 class="text-5xl font-extrabold mb-6">Des Signaux Qui Parlent Argent</h2>
+      <p class="text-xl text-gray-300 mb-8">Recevez chaque jour des opportunités concrètes pour investir avec confiance.</p>
+      <a href="pricing.html" class="inline-block px-8 py-4 bg-green-600 hover:bg-green-700 text-white rounded-xl text-lg font-semibold transition transform hover:scale-105">Accéder aux signaux premium</a>
+    </div>
+    <div class="absolute inset-0 flex items-center justify-center opacity-30 pointer-events-none">
+      <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_zrqthn6o.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></lottie-player>
     </div>
   </section>
 
-  <!-- Countdown (exemple d'urgence perçue) -->
-  <section class="bg-gray-800 text-center py-6 text-sm">
-    <span class="text-green-400 font-semibold">Prochain signal en :</span> <span id="countdown" class="font-mono">00:59</span>
-  </section>
-
   <!-- Features Section -->
-  <section class="py-20 bg-white text-gray-900">
+  <section class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-6">
-      <h3 class="text-4xl font-bold text-center mb-16">Pourquoi Luxibre Alpha ?</h3>
+      <h3 class="text-4xl font-bold text-center mb-16">Pourquoi Luxibre ?</h3>
       <div class="grid md:grid-cols-3 gap-10">
-        <div class="bg-gray-100 p-8 rounded-xl shadow-lg text-center hover:shadow-2xl transition" data-aos="zoom-in">
-          <div class="text-5xl mb-4">⚡</div>
-          <h4 class="text-2xl font-semibold mb-2">Vitesse & Précision</h4>
-          <p>Signaux générés par des algorithmes IA de dernière génération.</p>
+        <div class="bg-gray-50 p-8 rounded-xl shadow-lg text-center hover:shadow-xl transition">
+          <div class="text-5xl mb-4">📈</div>
+          <h4 class="text-2xl font-semibold mb-2">Signaux Quotidiens</h4>
+          <p class="text-gray-600">Des opportunités concrètes chaque matin pour ne plus rater le bon moment.</p>
         </div>
-        <div class="bg-gray-100 p-8 rounded-xl shadow-lg text-center hover:shadow-2xl transition" data-aos="zoom-in" data-aos-delay="100">
+        <div class="bg-gray-50 p-8 rounded-xl shadow-lg text-center hover:shadow-xl transition">
           <div class="text-5xl mb-4">📊</div>
-          <h4 class="text-2xl font-semibold mb-2">Données en Temps Réel</h4>
-          <p>Graphiques dynamiques et tendances actualisées sans arrêt.</p>
+          <h4 class="text-2xl font-semibold mb-2">Graphiques Dynamiques</h4>
+          <p class="text-gray-600">Visualisez les tendances en un clin d’œil grâce à nos outils premium.</p>
         </div>
-        <div class="bg-gray-100 p-8 rounded-xl shadow-lg text-center hover:shadow-2xl transition" data-aos="zoom-in" data-aos-delay="200">
+        <div class="bg-gray-50 p-8 rounded-xl shadow-lg text-center hover:shadow-xl transition">
           <div class="text-5xl mb-4">🔒</div>
-          <h4 class="text-2xl font-semibold mb-2">Sécurité Totale</h4>
-          <p>Espace membre protégé et infrastructure cloud chiffrée.</p>
+          <h4 class="text-2xl font-semibold mb-2">Espace Premium</h4>
+          <p class="text-gray-600">Accès réservé, données exclusives, pour ceux qui veulent vraiment performer.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Call to Action -->
-  <section class="bg-gradient-to-r from-blue-700 to-green-600 text-white py-20">
-    <div class="max-w-4xl mx-auto px-4 text-center">
-      <h3 class="text-4xl md:text-5xl font-bold mb-6">Rejoignez les investisseurs nouvelle génération</h3>
-      <p class="text-xl mb-8">Découvrez des signaux exclusifs, précis et automatisés dès maintenant.</p>
-      <a href="pricing.html" class="inline-block bg-white text-green-600 px-8 py-4 font-semibold rounded-xl hover:bg-gray-100 transition transform hover:scale-105">Je m’abonne</a>
+  <!-- CTA Section -->
+  <section class="py-20 bg-gradient-to-r from-red-500 to-orange-500 text-white">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <h3 class="text-4xl md:text-5xl font-bold mb-6">Faites le choix de l'efficacité</h3>
+      <p class="text-xl md:text-2xl mb-8">Votre avenir financier commence maintenant. Ne laissez pas passer les meilleures opportunités.</p>
+      <a href="pricing.html" class="inline-block px-8 py-4 bg-white text-red-600 font-semibold rounded-xl hover:bg-gray-100 transition transform hover:scale-105">Je passe à l’action</a>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="bg-gray-900 py-10 text-center text-sm text-gray-400">
-    &copy; 2025 Luxibre Alpha. Tous droits réservés. |
-    <a href="legal/mentions-legales.md" class="underline">Mentions légales</a> |
-    <a href="legal/cgu.md" class="underline">CGU</a> |
-    <a href="legal/rgpd.md" class="underline">RGPD</a>
+  <footer class="py-10 bg-gray-100">
+    <div class="max-w-7xl mx-auto px-6 text-center text-sm text-gray-600">
+      &copy; 2025 Luxibre. Tous droits réservés. |
+      <a href="legal/mentions-legales.md" class="underline">Mentions légales</a> |
+      <a href="legal/cgu.md" class="underline">CGU</a> |
+      <a href="legal/rgpd.md" class="underline">RGPD</a>
+    </div>
   </footer>
 
-  <!-- Supabase Auth Logic & Countdown -->
+  <!-- Supabase et logique auth -->
   <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
     const supabase = createClient(
       'https://jrgdwozxcilasllpvikh.supabase.co',
-      'eyJhbGciOiJI...IFj3w' // Raccourci pour sécurité visuelle ici
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpyZ2R3b3p4Y2lsYXNsbHB2aWtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4MjQ0NTEsImV4cCI6MjA2MzQwMDQ1MX0.S2oGP2rdtq1IkW-oH5mC8omm698PdCgQJtGVLlIFj3w'
     );
 
     const loginBtn = document.getElementById("loginBtn");
@@ -107,6 +110,7 @@
     const mobileLogoutBtn = document.getElementById("mobileLogoutBtn");
 
     const { data: { user } } = await supabase.auth.getUser();
+
     if (user) {
       loginBtn.classList.add("hidden");
       logoutBtn.classList.remove("hidden");
@@ -119,26 +123,27 @@
       mobileLogoutBtn.classList.add("hidden");
     }
 
-    logoutBtn.onclick = mobileLogoutBtn.onclick = async () => {
+    logoutBtn.addEventListener("click", async () => {
       await supabase.auth.signOut();
       window.location.href = "login.html";
-    };
-    loginBtn.onclick = mobileLoginBtn.onclick = () => {
-      window.location.href = "login.html";
-    };
-    document.getElementById("menuToggle").onclick = () => {
-      document.getElementById("mobileMenu").classList.toggle("hidden");
-    };
-  </script>
+    });
 
-  <script>
-    AOS.init();
-    let seconds = 59;
-    const countdown = document.getElementById('countdown');
-    setInterval(() => {
-      seconds = seconds > 0 ? seconds - 1 : 59;
-      countdown.textContent = `00:${seconds < 10 ? '0' + seconds : seconds}`;
-    }, 1000);
+    mobileLogoutBtn.addEventListener("click", async () => {
+      await supabase.auth.signOut();
+      window.location.href = "login.html";
+    });
+
+    loginBtn.addEventListener("click", () => {
+      window.location.href = "login.html";
+    });
+
+    mobileLoginBtn.addEventListener("click", () => {
+      window.location.href = "login.html";
+    });
+
+    document.getElementById("menuToggle").addEventListener("click", () => {
+      document.getElementById("mobileMenu").classList.toggle("hidden");
+    });
   </script>
 
 </body>
