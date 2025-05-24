@@ -282,7 +282,7 @@
       const container = document.getElementById('signalsContainer');
       container.setAttribute('aria-busy', 'true');
       try {
-        const res = await fetch('signals.json');
+        const res = await fetch('data/signals.json');
         if (!res.ok) throw new Error('Erreur lors du chargement des signaux');
         signalsData = await res.json();
         renderSignals();
