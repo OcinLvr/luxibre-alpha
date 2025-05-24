@@ -41,7 +41,7 @@
       justify-content: center;
       gap: 1rem;
     }
-    nav button, nav a {
+    nav button {
       background: var(--primary-color);
       color: white;
       border: none;
@@ -50,9 +50,8 @@
       border-radius: 0.5rem;
       cursor: pointer;
       transition: background 0.3s;
-      text-decoration: none;
     }
-    nav button:hover, nav a:hover {
+    nav button:hover {
       background: #16a34a;
     }
     main {
@@ -113,7 +112,7 @@
       background: #0f172a;
       border-radius: 0.6rem;
     }
-    .unlock-btn {
+    .unlock-btn, .export-btn {
       right: 1rem;
       background: var(--primary-color);
       color: white;
@@ -125,8 +124,19 @@
       z-index: 2;
       transition: background 0.3s;
     }
-    .unlock-btn:hover {
+    .unlock-btn:hover, .export-btn:hover {
       background: #16a34a;
+    }
+    footer {
+      background: var(--secondary-color);
+      padding: 1rem;
+      text-align: center;
+      margin-top: 2rem;
+    }
+    footer a {
+      color: var(--primary-color);
+      margin: 0 1rem;
+      text-decoration: none;
     }
     @media (max-width: 600px) {
       header {
@@ -146,8 +156,6 @@
     <button onclick="filterSignals('etfs')">ETFs</button>
     <button onclick="filterSignals('stocks')">Actions</button>
     <button onclick="filterSignals('cryptos')">Cryptos</button>
-    <a href="/docs">Documentation</a>
-    <a href="/support">Support</a>
   </nav>
   <main>
     <div id="premiumNotice" class="notice" style="display: none;"></div>
@@ -161,6 +169,10 @@
       <!-- Contenu des témoignages -->
     </section>
   </main>
+  <footer>
+    <a href="/docs">Documentation</a>
+    <a href="/support">Support</a>
+  </footer>
 
   <script>
   const isPremium = false; // Remplacez par une vérification réelle de l'utilisateur
@@ -251,7 +263,7 @@
           <div class="chart-container">
             <canvas id="${chartId}" width="300" height="150"></canvas>
           </div>
-          ${isLocked ? `<button class="unlock-btn" onclick="alert('Abonnement premium requis pour accéder à ce signal.')">Débloquer</button>` : `<button onclick="exportChart('${chartId}')">Exporter le Graphique</button>`}
+          ${isLocked ? `<button class="unlock-btn" onclick="alert('Abonnement premium requis pour accéder à ce signal.')">Débloquer</button>` : `<button class="export-btn" onclick="exportChart('${chartId}')">Exporter le Graphique</button>`}
         `;
 
         container.appendChild(card);
