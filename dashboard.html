@@ -3,260 +3,319 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Luxibre Alpha - Dashboard Moderne</title>
+  <title>Luxibre Alpha - Dashboard des Signaux</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+  <!-- Heroicons CDN -->
+  <script src="https://unpkg.com/heroicons@1.0.6/dist/heroicons.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/luxon@1.25.0"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.0.0"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: #0f172a;
-      color: #f1f5f9;
-    }
-    header {
-      background: #22c55e;
-      padding: 1.5rem 2rem;
-      font-size: 1.6rem;
-      font-weight: 700;
-      color: #fff;
-      text-align: center;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      letter-spacing: 0.05em;
-    }
-    nav {
-      background: #1e293b;
-      padding: 1rem;
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-    }
-    nav button {
-      background: #22c55e;
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      font-weight: 600;
+    body { font-family: 'Inter', sans-serif; }
+    .recommendation.achat { color: #22c55e; font-weight: 700; }
+    .recommendation.vente { color: #ef4444; font-weight: 700; }
+    .recommendation.conservation { color: #facc15; font-weight: 700; }
+    .skeleton {
+      animation: pulse 1.5s ease-in-out infinite;
+      background: linear-gradient(90deg, #ddd 25%, #eee 37%, #ddd 63%);
+      background-size: 400% 100%;
       border-radius: 0.5rem;
-      cursor: pointer;
-      transition: background 0.3s;
+      height: 140px;
+      margin-bottom: 1.5rem;
     }
-    nav button:hover {
-      background: #16a34a;
+    @keyframes pulse {
+      0%, 100% { background-position: 100% 0; }
+      50% { background-position: 0 0; }
     }
-    main {
-      max-width: 1200px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-    }
-    .notice {
-      background: #dcfce7;
-      color: #166534;
-      border-left: 5px solid #22c55e;
-      padding: 1rem 1.5rem;
-      border-radius: 0.75rem;
-      margin-bottom: 2rem;
-      font-weight: 600;
-      text-align: center;
-    }
-    #signalsContainer {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-      gap: 2rem;
-    }
-    .card {
-      background: #1e293b;
-      padding: 1.5rem;
-      border-radius: 1rem;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-      position: relative;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 10px 20px rgba(34,197,94,0.4);
-    }
-    .card.blur {
-      filter: blur(4px);
-      pointer-events: none;
-      user-select: none;
-    }
-    .card h3 {
-      font-size: 1.4rem;
-      margin: 0 0 0.8rem;
-      color: #86efac;
-    }
-    .card p {
-      margin: 0.3rem 0;
-      font-size: 1.05rem;
-      color: #e2e8f0;
-    }
-    .recommendation {
-      margin-top: 0.8rem;
-      font-weight: 700;
-      color: #4ade80;
-    }
-    .chart-container {
-      height: 200px;
-      margin-top: 1rem;
-      background: #0f172a;
-      border-radius: 0.6rem;
-    }
-    .unlock-btn {
-      right: 1rem;
-      background: #22c55e;
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      font-weight: 600;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      z-index: 2;
-      transition: background 0.3s;
-    }
-    .unlock-btn:hover {
-      background: #16a34a;
-    }
-    @media (max-width: 600px) {
-      header {
-        font-size: 1.3rem;
-        padding: 1rem;
-      }
-      .card {
-        padding: 1rem;
-      }
+    :focus-visible {
+      outline: 2px solid #22c55e;
+      outline-offset: 2px;
     }
   </style>
 </head>
-<body>
-  <header>Luxibre Alpha — Tableau de bord Moderne</header>
-  <nav>
-    <button onclick="filterSignals('all')">Tous</button>
-    <button onclick="filterSignals('etfs')">ETFs</button>
-    <button onclick="filterSignals('stocks')">Actions</button>
-    <button onclick="filterSignals('cryptos')">Cryptos</button>
-  </nav>
-  <main>
-    <div id="premiumNotice" class="notice" style="display: none;"></div>
-    <div id="signalsContainer"></div>
+<body class="bg-gray-900 text-white min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-black bg-opacity-60 shadow-lg sticky top-0 z-50 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <h1 class="text-3xl font-extrabold text-green-400 flex items-center space-x-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 17v-6h13v6m-6 4h6m-6 0v-4m-3 4h.01M3 13h.01M3 17h.01M3 9h.01M3 5h.01"/>
+        </svg>
+        <span>Luxibre Alpha</span>
+      </h1>
+      <nav class="hidden md:flex space-x-6 items-center" role="navigation" aria-label="Menu principal">
+        <a href="index.html" class="hover:text-green-400 font-medium flex items-center space-x-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400" tabindex="0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l9-9 9 9M9 21v-6h6v6"/></svg>
+          <span>Accueil</span>
+        </a>
+        <a href="dashboard.html" class="hover:text-green-400 font-medium flex items-center space-x-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400" aria-current="page" tabindex="0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h7"/></svg>
+          <span>Dashboard</span>
+        </a>
+        <a href="pricing.html" class="hover:text-green-400 font-medium flex items-center space-x-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400" tabindex="0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-3.866 0-7 3.134-7 7h14c0-3.866-3.134-7-7-7z"/></svg>
+          <span>Abonnement</span>
+        </a>
+        <button id="loginBtn" class="hover:text-green-400 font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400">Connexion</button>
+        <button id="logoutBtn" class="hover:text-green-400 font-medium hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400">Déconnexion</button>
+        <span id="userEmail" class="text-sm text-gray-400 ml-4 hidden"></span>
+      </nav>
+      <div class="md:hidden">
+        <button id="menuToggle" class="text-green-400 text-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400" aria-label="Ouvrir menu">&#9776;</button>
+      </div>
+    </div>
+    <div id="mobileMenu" class="md:hidden hidden px-4 pt-2 pb-4 bg-black bg-opacity-90 space-y-2" role="menu" aria-expanded="false" aria-label="Menu mobile">
+      <a href="index.html" class="block hover:text-green-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400" role="menuitem" tabindex="0">Accueil</a>
+      <a href="dashboard.html" class="block hover:text-green-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400" role="menuitem" aria-current="page" tabindex="0">Dashboard</a>
+      <a href="pricing.html" class="block hover:text-green-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400" role="menuitem" tabindex="0">Abonnement</a>
+      <button id="mobileLoginBtn" class="block w-full hover:text-green-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400" role="menuitem" tabindex="0">Connexion</button>
+      <button id="mobileLogoutBtn" class="block w-full hover:text-green-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400 hidden" role="menuitem" tabindex="0">Déconnexion</button>
+    </div>
+  </header>
+
+  <!-- Contenu principal -->
+  <main class="flex-grow max-w-7xl mx-auto px-4 py-12">
+
+    <h2 class="text-4xl font-extrabold mb-10 text-center" data-aos="fade-down">Dashboard des Signaux Boursiers</h2>
+
+    <nav aria-label="Filtres des signaux" class="flex justify-center space-x-4 mb-12" role="tablist">
+      <button role="tab" aria-selected="true" aria-controls="panel-achat" id="filter-achat" data-filter="achat" class="filter-btn px-5 py-2 rounded-full bg-green-600 hover:bg-green-700 font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400">Achat</button>
+      <button role="tab" aria-selected="false" aria-controls="panel-vente" id="filter-vente" data-filter="vente" class="filter-btn px-5 py-2 rounded-full bg-red-600 hover:bg-red-700 font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-red-500">Vente</button>
+      <button role="tab" aria-selected="false" aria-controls="panel-conservation" id="filter-conservation" data-filter="conservation" class="filter-btn px-5 py-2 rounded-full bg-yellow-500 hover:bg-yellow-600 font-semibold text-gray-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400">Conservation</button>
+    </nav>
+
+    <section id="signalsContainer" role="list" aria-live="polite" aria-busy="false" aria-label="Liste des signaux boursiers">
+      <div class="skeleton"></div>
+      <div class="skeleton"></div>
+      <div class="skeleton"></div>
+    </section>
+
+    <div class="flex justify-center">
+      <button id="loadMoreBtn" class="mt-4 px-6 py-2 bg-gray-700 hover:bg-gray-600 rounded text-sm font-semibold focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400 hidden">Charger plus</button>
+    </div>
+
+    <section class="mt-16 text-center bg-gradient-to-r from-blue-700 to-green-600 text-white py-12 rounded-xl shadow-lg" data-aos="fade-up">
+      <h3 class="text-3xl font-bold mb-4">Passez à la vitesse supérieure</h3>
+      <p class="mb-6 text-lg">Abonnez-vous à notre offre premium et recevez des signaux exclusifs, précis et automatisés.</p>
+      <a href="pricing.html" class="inline-block bg-white text-green-600 px-10 py-4 font-semibold rounded-xl hover:bg-gray-100 transition transform hover:scale-105 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-400">Je m’abonne</a>
+    </section>
   </main>
 
-  <script>
-  const isPremium = false; // Mets à true pour tester l’abonnement
+  <footer class="bg-gray-900 py-10 text-center text-sm text-gray-400 mt-16">
+    &copy; 2025 Luxibre Alpha. Tous droits réservés. |
+    <a href="legal/mentions-legales.md" class="underline">Mentions légales</a> |
+    <a href="legal/cgu.md" class="underline">CGU</a> |
+    <a href="legal/rgpd.md" class="underline">RGPD</a>
+  </footer>
 
-  fetch("data/signals.json")
-    .then(res => {
-      if (!res.ok) throw new Error("HTTP error " + res.status);
-      return res.json();
-    })
-    .then(data => {
-      const container = document.getElementById("signalsContainer");
-      const premiumNotice = document.getElementById("premiumNotice");
-      let premiumLocked = false;
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    const supabase = createClient(
+      'https://jrgdwozxcilasllpvikh.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpyZ2R3b3p4Y2lsYXNsbHB2aWtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4MjQ0NTEsImV4cCI6MjA2MzQwMDQ1MX0.S2oGP2rdtq1IkW-oH5mC8omm698PdCgkvya8YmArQ2s'
+    );
 
-      // On va traiter par catégories : etfs, stocks, cryptos
-      ["etfs", "stocks", "cryptos"].forEach(category => {
-        if (!data[category] || !Array.isArray(data[category])) return;
+    let user = null;
 
-        data[category].forEach((signal, i) => {
-          const card = document.createElement("div");
-          card.className = "card";
-          card.dataset.category = category;
+    const loginBtn = document.getElementById("loginBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const userEmailSpan = document.getElementById("userEmail");
 
-          const isLocked = signal.premium && !isPremium;
-          if (isLocked) {
-            card.classList.add("blur");
-            premiumLocked = true;
-          }
+    const mobileLoginBtn = document.getElementById("mobileLoginBtn");
+    const mobileLogoutBtn = document.getElementById("mobileLogoutBtn");
+    const mobileMenu = document.getElementById("mobileMenu");
+    const menuToggle = document.getElementById("menuToggle");
 
-          // Génération d'un id unique pour le canvas du graphique
-          const chartId = `chart-${category}-${i}`;
+    menuToggle.addEventListener('click', () => {
+      const expanded = mobileMenu.getAttribute('aria-expanded') === 'true';
+      mobileMenu.classList.toggle('hidden');
+      mobileMenu.setAttribute('aria-expanded', String(!expanded));
+    });
 
-          card.innerHTML = `
-            <h3>${signal.name}</h3>
-            <p><strong>Prix actuel :</strong> $${signal.price.toFixed(2)}</p>
-            <p><strong>Recommandation :</strong> <span class="recommendation">${signal.recommendation}</span></p>
-            <div class="chart-container">
-              <canvas id="${chartId}" width="300" height="150"></canvas>
-            </div>
-            ${isLocked ? `<button class="unlock-btn" onclick="alert('Abonnement premium requis pour accéder à ce signal.')">Débloquer</button>` : ""}
-          `;
+    async function checkUser() {
+      const { data, error } = await supabase.auth.getUser();
+      if (error) {
+        console.error(error);
+        return;
+      }
+      user = data.user;
+      updateUIForUser();
+    }
 
-          container.appendChild(card);
+    function updateUIForUser() {
+      if (user) {
+        loginBtn.classList.add("hidden");
+        logoutBtn.classList.remove("hidden");
+        mobileLoginBtn.classList.add("hidden");
+        mobileLogoutBtn.classList.remove("hidden");
+        userEmailSpan.textContent = user.email;
+        userEmailSpan.classList.remove("hidden");
+      } else {
+        loginBtn.classList.remove("hidden");
+        logoutBtn.classList.add("hidden");
+        mobileLoginBtn.classList.remove("hidden");
+        mobileLogoutBtn.classList.add("hidden");
+        userEmailSpan.classList.add("hidden");
+        userEmailSpan.textContent = '';
+      }
+    }
 
-          // Si pas verrouillé, afficher le graphique
-          if (!isLocked) {
-            const ctx = document.getElementById(chartId).getContext("2d");
-            new Chart(ctx, {
-              type: "line",
-              data: {
-                labels: signal.history.map((_, idx) => `J-${signal.history.length - idx}`),
-                datasets: [{
-                  label: `${signal.name} - Prix de clôture`,
-                  data: signal.history,
-                  borderColor: "#22c55e",
-                  backgroundColor: "rgba(34,197,94,0.3)",
-                  fill: true,
-                  tension: 0.3,
-                  pointRadius: 0
-                }]
-              },
-              options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                  x: {
-                    display: false
-                  },
-                  y: {
-                    beginAtZero: false,
-                    ticks: {
-                      color: '#a3bffa'
-                    },
-                    grid: {
-                      color: '#334155'
-                    }
-                  }
-                },
-                plugins: {
-                  legend: {
-                    labels: { color: '#d1d5db' }
-                  },
-                  tooltip: {
-                    mode: 'index',
-                    intersect: false
-                  }
-                }
-              }
-            });
-          }
+    loginBtn.onclick = () => {
+      window.location.href = 'login.html';
+    };
+    mobileLoginBtn.onclick = loginBtn.onclick;
+
+    logoutBtn.onclick = async () => {
+      const { error } = await supabase.auth.signOut();
+      if (error) alert('Erreur lors de la déconnexion');
+      else {
+        user = null;
+        updateUIForUser();
+      }
+    };
+    mobileLogoutBtn.onclick = logoutBtn.onclick;
+
+    checkUser();
+
+    // Gestion filtre
+    const filters = document.querySelectorAll(".filter-btn");
+    let currentFilter = "achat";
+
+    filters.forEach(btn => {
+      btn.addEventListener("click", () => {
+        if (btn.dataset.filter === currentFilter) return;
+        currentFilter = btn.dataset.filter;
+        filters.forEach(b => {
+          b.setAttribute("aria-selected", "false");
+          b.classList.remove("ring-2", "ring-green-400");
+          if(b.dataset.filter === "achat") b.classList.replace("bg-green-700", "bg-green-600");
+          if(b.dataset.filter === "vente") b.classList.replace("bg-red-700", "bg-red-600");
+          if(b.dataset.filter === "conservation") b.classList.replace("bg-yellow-600", "bg-yellow-500");
         });
+        btn.setAttribute("aria-selected", "true");
+        btn.classList.add("ring-2", "ring-green-400");
+        if(btn.dataset.filter === "achat") btn.classList.replace("bg-green-600", "bg-green-700");
+        if(btn.dataset.filter === "vente") btn.classList.replace("bg-red-600", "bg-red-700");
+        if(btn.dataset.filter === "conservation") btn.classList.replace("bg-yellow-500", "bg-yellow-600");
+
+        renderedCount = 0;
+        renderSignalsChunk();
+      });
+    });
+
+    // Chargement des données JSON
+    let signalsData = {};
+    let renderedCount = 0;
+    const chunkSize = 6;
+
+    async function fetchSignals() {
+      const res = await fetch("data/signals.json");
+      signalsData = await res.json();
+      document.getElementById("signalsContainer").innerHTML = "";
+      renderedCount = 0;
+      renderSignalsChunk();
+    }
+
+    // Crée une carte signal avec graphique
+    function createSignalCard(signal) {
+      const card = document.createElement("article");
+      card.setAttribute("role", "listitem");
+      card.className = "bg-gray-800 bg-opacity-80 rounded-xl p-4 mb-8 shadow-md focus-within:ring-2 focus-within:ring-green-400";
+
+      // Titre
+      const h3 = document.createElement("h3");
+      h3.className = "text-2xl font-bold mb-2";
+      h3.textContent = signal.ticker + " - " + signal.nom;
+
+      // Recommandation avec icône
+      const recSpan = document.createElement("span");
+      recSpan.className = "recommendation " + signal.recommandation.toLowerCase();
+      recSpan.setAttribute("aria-label", "Recommandation: " + signal.recommandation);
+      recSpan.innerHTML = {
+        "Achat": '<svg xmlns="http://www.w3.org/2000/svg" class="inline h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linejoin="round" stroke-linecap="round" d="M5 15l7-7 7 7"/></svg>',
+        "Vente": '<svg xmlns="http://www.w3.org/2000/svg" class="inline h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linejoin="round" stroke-linecap="round" d="M19 9l-7 7-7-7"/></svg>',
+        "Conservation": '<svg xmlns="http://www.w3.org/2000/svg" class="inline h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" stroke-width="2"/></svg>'
+      }[signal.recommandation] || "";
+      recSpan.innerHTML += signal.recommandation;
+
+      // Détails techniques RSI, MACD, Volume
+      const detailsDiv = document.createElement("div");
+      detailsDiv.className = "mt-2 text-sm text-gray-300 flex space-x-4";
+      detailsDiv.innerHTML = `
+        <span aria-label="RSI: ${signal.rsi}" title="RSI">${signal.rsi}</span>
+        <span aria-label="MACD: ${signal.macd}" title="MACD">${signal.macd}</span>
+        <span aria-label="Volume: ${signal.volume}" title="Volume">${signal.volume}</span>
+      `;
+
+      // Canvas Chart.js
+      const canvas = document.createElement("canvas");
+      canvas.className = "mt-4 rounded-lg bg-gray-900";
+      canvas.setAttribute("aria-label", `Graphique des prix pour ${signal.ticker}`);
+      canvas.setAttribute("role", "img");
+
+      card.append(h3, recSpan, detailsDiv, canvas);
+
+      // Création du graphique
+      new Chart(canvas.getContext('2d'), {
+        type: 'line',
+        data: {
+          labels: signal.prices.dates,
+          datasets: [{
+            label: signal.ticker,
+            data: signal.prices.values,
+            borderColor: {
+              "Achat": '#22c55e',
+              "Vente": '#ef4444',
+              "Conservation": '#facc15'
+            }[signal.recommandation],
+            backgroundColor: 'transparent',
+            tension: 0.3,
+            pointRadius: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: { x: { display: false }, y: { display: true, ticks: {color: 'white'} } },
+          animation: { duration: 1000 }
+        }
       });
 
-      // Affiche un message si des signaux premium sont bloqués
-      if (premiumLocked && !isPremium) {
-        premiumNotice.style.display = "block";
-        premiumNotice.textContent = "Certains signaux sont réservés aux abonnés premium. Abonnez-vous pour tout débloquer.";
-      }
-    })
-    .catch(err => {
-      console.error("Erreur lors du chargement des signaux:", err);
-      document.getElementById("signalsContainer").textContent = "Erreur lors du chargement des signaux.";
-    });
+      return card;
+    }
 
-  function filterSignals(category) {
-    const cards = document.querySelectorAll('.card');
-    cards.forEach(card => {
-      if (category === 'all' || card.dataset.category === category) {
-        card.style.display = 'block';
+    // Rend un chunk de signaux
+    function renderSignalsChunk() {
+      const container = document.getElementById("signalsContainer");
+      container.setAttribute("aria-busy", "true");
+      if (!signalsData[currentFilter]) {
+        container.innerHTML = "<p>Aucun signal disponible.</p>";
+        return;
+      }
+      const slice = signalsData[currentFilter].slice(renderedCount, renderedCount + chunkSize);
+      slice.forEach(signal => {
+        const card = createSignalCard(signal);
+        container.appendChild(card);
+      });
+      renderedCount += slice.length;
+      // Afficher ou non le bouton "Charger plus"
+      if (renderedCount < signalsData[currentFilter].length) {
+        document.getElementById("loadMoreBtn").classList.remove("hidden");
       } else {
-        card.style.display = 'none';
+        document.getElementById("loadMoreBtn").classList.add("hidden");
       }
-    });
-  }
-</script>
+      container.setAttribute("aria-busy", "false");
+    }
 
+    document.getElementById("loadMoreBtn").addEventListener("click", renderSignalsChunk);
+
+    // Initial fetch
+    fetchSignals();
+
+    // AOS animation init
+    AOS.init({ once: true });
+  </script>
 </body>
 </html>
