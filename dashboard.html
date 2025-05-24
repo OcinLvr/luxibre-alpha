@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Dashboard moderne pour Luxibre Alpha">
   <title>Luxibre Alpha - Dashboard Moderne</title>
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"></noscript>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js" async></script>
-  <script src="https://cdn.jsdelivr.net/npm/luxon@1.25.0" async></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.0.0" async></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/luxon@1.25.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.0.0"></script>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --primary-color: #22c55e;
@@ -41,7 +41,7 @@
       justify-content: center;
       gap: 1rem;
     }
-    nav button {
+    nav button, nav a {
       background: var(--primary-color);
       color: white;
       border: none;
@@ -50,8 +50,9 @@
       border-radius: 0.5rem;
       cursor: pointer;
       transition: background 0.3s;
+      text-decoration: none;
     }
-    nav button:hover {
+    nav button:hover, nav a:hover {
       background: #16a34a;
     }
     main {
@@ -145,14 +146,67 @@
     <button onclick="filterSignals('etfs')">ETFs</button>
     <button onclick="filterSignals('stocks')">Actions</button>
     <button onclick="filterSignals('cryptos')">Cryptos</button>
+    <a href="/docs">Documentation</a>
+    <a href="/support">Support</a>
   </nav>
   <main>
     <div id="premiumNotice" class="notice" style="display: none;"></div>
     <div id="signalsContainer"></div>
+    <section id="performanceReports">
+      <h2>Rapports de Performance</h2>
+      <!-- Contenu des rapports de performance -->
+    </section>
+    <section id="testimonials">
+      <h2>Témoignages</h2>
+      <!-- Contenu des témoignages -->
+    </section>
   </main>
 
   <script>
-  const isPremium = false; // Mets à true pour tester l’abonnement
+  const isPremium = false; // Remplacez par une vérification réelle de l'utilisateur
+
+  function isPremiumUser() {
+    return isPremium;
+  }
+
+  function showPremiumFeatures() {
+    if (isPremiumUser()) {
+      document.getElementById("premiumFeatures").style.display = "block";
+    } else {
+      document.getElementById("premiumFeatures").style.display = "none";
+    }
+  }
+
+  function setupAlerts() {
+    if (isPremiumUser()) {
+      console.log("Alertes configurées pour l'utilisateur premium");
+    } else {
+      console.log("Alertes limitées pour l'utilisateur gratuit");
+    }
+  }
+
+  function exportChart(chartId) {
+    if (isPremiumUser()) {
+      html2canvas(document.getElementById(chartId)).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'chart.png';
+        link.href = canvas.toDataURL();
+        link.click();
+      });
+    } else {
+      alert("Cette fonctionnalité est réservée aux utilisateurs premium.");
+    }
+  }
+
+  function customizeChart() {
+    if (isPremiumUser()) {
+      const chartOptions = {
+        backgroundColor: "#f8fafc",
+        borderColor: "#22c55e",
+      };
+      console.log("Graphiques personnalisés pour l'utilisateur premium");
+    }
+  }
 
   async function fetchSignals() {
     try {
@@ -182,7 +236,7 @@
         card.className = "card";
         card.dataset.category = category;
 
-        const isLocked = signal.premium && !isPremium;
+        const isLocked = signal.premium && !isPremiumUser();
         if (isLocked) {
           card.classList.add("blur");
           premiumLocked = true;
@@ -197,7 +251,7 @@
           <div class="chart-container">
             <canvas id="${chartId}" width="300" height="150"></canvas>
           </div>
-          ${isLocked ? `<button class="unlock-btn" onclick="alert('Abonnement premium requis pour accéder à ce signal.')">Débloquer</button>` : ""}
+          ${isLocked ? `<button class="unlock-btn" onclick="alert('Abonnement premium requis pour accéder à ce signal.')">Débloquer</button>` : `<button onclick="exportChart('${chartId}')">Exporter le Graphique</button>`}
         `;
 
         container.appendChild(card);
@@ -250,7 +304,7 @@
       });
     });
 
-    if (premiumLocked && !isPremium) {
+    if (premiumLocked && !isPremiumUser()) {
       premiumNotice.style.display = "block";
       premiumNotice.textContent = "Certains signaux sont réservés aux abonnés premium. Abonnez-vous pour tout débloquer.";
     }
