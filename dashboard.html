@@ -1,265 +1,261 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Dashboard Luxibre Alpha - Signaux Boursiers</title>
-<style>
-  /* Reset minimal */
-  * {
-    box-sizing: border-box;
-  }
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    background: #121212;
-    color: #eee;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-  }
-  header {
-    background: #1e1e1e;
-    padding: 1rem 2rem;
-    font-size: 1.5rem;
-    font-weight: 700;
-    border-bottom: 2px solid #4caf50;
-    text-align: center;
-  }
-  main {
-    flex: 1;
-    padding: 1rem 2rem;
-    overflow-x: auto;
-  }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1rem;
-  }
-  thead {
-    background-color: #333;
-  }
-  th, td {
-    padding: 0.75rem 1rem;
-    text-align: left;
-    border-bottom: 1px solid #444;
-  }
-  th {
-    color: #4caf50;
-  }
-  tr:nth-child(even) {
-    background-color: #1a1a1a;
-  }
-  .signal-name {
-    font-weight: 700;
-    font-size: 1.1rem;
-  }
-  .signal-type {
-    font-style: italic;
-    color: #a0a0a0;
-  }
-  /* Premium signal highlight */
-  .premium {
-    background-color: #263238;
-    border-left: 5px solid #ffab00;
-  }
-  /* Signal status color */
-  .signal-buy {
-    color: #4caf50;
-    font-weight: 700;
-  }
-  .signal-sell {
-    color: #f44336;
-    font-weight: 700;
-  }
-  .signal-hold {
-    color: #ffeb3b;
-    font-weight: 700;
-  }
-  /* Graph container */
-  .chart-container {
-    width: 150px;
-    height: 70px;
-  }
-  /* Responsive tweaks */
-  @media (max-width: 800px) {
-    th, td {
-      padding: 0.5rem 0.5rem;
-      font-size: 0.9rem;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Luxibre Alpha - Dashboard Moderne</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/luxon@1.25.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.0.0"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #0f172a;
+      color: #f1f5f9;
+    }
+    header {
+      background: #22c55e;
+      padding: 1.5rem 2rem;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #fff;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      letter-spacing: 0.05em;
+    }
+    nav {
+      background: #1e293b;
+      padding: 1rem;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+    nav button {
+      background: #22c55e;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    nav button:hover {
+      background: #16a34a;
+    }
+    main {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    .notice {
+      background: #dcfce7;
+      color: #166534;
+      border-left: 5px solid #22c55e;
+      padding: 1rem 1.5rem;
+      border-radius: 0.75rem;
+      margin-bottom: 2rem;
+      font-weight: 600;
+      text-align: center;
+    }
+    #signalsContainer {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 2rem;
+    }
+    .card {
+      background: #1e293b;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      position: relative;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 20px rgba(34,197,94,0.4);
+    }
+    .card.blur {
+      filter: blur(4px);
+      pointer-events: none;
+      user-select: none;
+    }
+    .card h3 {
+      font-size: 1.4rem;
+      margin: 0 0 0.8rem;
+      color: #86efac;
+    }
+    .card p {
+      margin: 0.3rem 0;
+      font-size: 1.05rem;
+      color: #e2e8f0;
+    }
+    .recommendation {
+      margin-top: 0.8rem;
+      font-weight: 700;
+      color: #4ade80;
     }
     .chart-container {
-      width: 100px;
-      height: 50px;
+      height: 200px;
+      margin-top: 1rem;
+      background: #0f172a;
+      border-radius: 0.6rem;
     }
-  }
-  /* Error message styling */
-  #error-message {
-    margin-top: 2rem;
-    color: #f44336;
-    font-weight: 700;
-    font-size: 1.2rem;
-    text-align: center;
-  }
-</style>
+    .unlock-btn {
+      right: 1rem;
+      background: #22c55e;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      z-index: 2;
+      transition: background 0.3s;
+    }
+    .unlock-btn:hover {
+      background: #16a34a;
+    }
+    @media (max-width: 600px) {
+      header {
+        font-size: 1.3rem;
+        padding: 1rem;
+      }
+      .card {
+        padding: 1rem;
+      }
+    }
+  </style>
 </head>
 <body>
+  <header>Luxibre Alpha — Tableau de bord Moderne</header>
+  <nav>
+    <button onclick="filterSignals('all')">Tous</button>
+    <button onclick="filterSignals('etfs')">ETFs</button>
+    <button onclick="filterSignals('stocks')">Actions</button>
+    <button onclick="filterSignals('cryptos')">Cryptos</button>
+  </nav>
+  <main>
+    <div id="premiumNotice" class="notice" style="display: none;"></div>
+    <div id="signalsContainer"></div>
+  </main>
 
-<header>Luxibre Alpha - Dashboard des Signaux Boursiers</header>
+  <script>
+  const isPremium = true; // Mets à true pour tester l’abonnement
 
-<main>
-  <div id="error-message" role="alert" aria-live="assertive" style="display:none;"></div>
+  fetch("data/signals.json")
+    .then(res => {
+      if (!res.ok) throw new Error("HTTP error " + res.status);
+      return res.json();
+    })
+    .then(data => {
+      const container = document.getElementById("signalsContainer");
+      const premiumNotice = document.getElementById("premiumNotice");
+      let premiumLocked = false;
 
-  <table aria-describedby="desc-signaux" aria-live="polite" role="table" id="signals-table">
-    <caption id="desc-signaux" style="text-align:left; font-weight:bold; margin-bottom:0.5rem;">
-      Liste des signaux boursiers avec mini-graphique de tendance
-    </caption>
-    <thead>
-      <tr>
-        <th scope="col">Actif</th>
-        <th scope="col">Type</th>
-        <th scope="col">Signal</th>
-        <th scope="col">Cours (€)</th>
-        <th scope="col">Tendance (7j)</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Rempli dynamiquement -->
-    </tbody>
-  </table>
-</main>
+      // On va traiter par catégories : etfs, stocks, cryptos
+      ["etfs", "stocks", "cryptos"].forEach(category => {
+        if (!data[category] || !Array.isArray(data[category])) return;
 
-<!-- Chart.js CDN -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+        data[category].forEach((signal, i) => {
+          const card = document.createElement("div");
+          card.className = "card";
+          card.dataset.category = category;
 
-<script>
-  // Fonction utilitaire pour formater les nombres avec 2 décimales
-  function formatPrice(price) {
-    return price ? price.toFixed(2) : "-";
-  }
+          const isLocked = signal.premium && !isPremium;
+          if (isLocked) {
+            card.classList.add("blur");
+            premiumLocked = true;
+          }
 
-  // Map status à couleur / classe CSS
-  const signalClassMap = {
-    'buy': 'signal-buy',
-    'sell': 'signal-sell',
-    'hold': 'signal-hold'
-  };
+          // Génération d'un id unique pour le canvas du graphique
+          const chartId = `chart-${category}-${i}`;
 
-  // Fonction pour créer un mini-graph avec Chart.js dans un canvas donné
-  function createMiniChart(canvas, dataPoints) {
-    if (!dataPoints || dataPoints.length === 0) {
-      // Rien à afficher
-      return;
-    }
-    new Chart(canvas, {
-      type: 'line',
-      data: {
-        labels: dataPoints.map((_, i) => i + 1),
-        datasets: [{
-          data: dataPoints,
-          borderColor: '#4caf50',
-          backgroundColor: 'rgba(76,175,80,0.2)',
-          tension: 0.3,
-          fill: true,
-          pointRadius: 0
-        }]
-      },
-      options: {
-        animation: false,
-        responsive: false,
-        maintainAspectRatio: false,
-        scales: {
-          x: { display: false },
-          y: { display: false }
-        },
-        plugins: {
-          legend: { display: false },
-          tooltip: { enabled: true }
-        },
-        elements: {
-          line: { borderWidth: 2 }
-        }
+          card.innerHTML = `
+            <h3>${signal.name}</h3>
+            <p><strong>Prix actuel :</strong> $${signal.price.toFixed(2)}</p>
+            <p><strong>Recommandation :</strong> <span class="recommendation">${signal.recommendation}</span></p>
+            <div class="chart-container">
+              <canvas id="${chartId}" width="300" height="150"></canvas>
+            </div>
+            ${isLocked ? `<button class="unlock-btn" onclick="alert('Abonnement premium requis pour accéder à ce signal.')">Débloquer</button>` : ""}
+          `;
+
+          container.appendChild(card);
+
+          // Si pas verrouillé, afficher le graphique
+          if (!isLocked) {
+            const ctx = document.getElementById(chartId).getContext("2d");
+            new Chart(ctx, {
+              type: "line",
+              data: {
+                labels: signal.history.map((_, idx) => `J-${signal.history.length - idx}`),
+                datasets: [{
+                  label: `${signal.name} - Prix de clôture`,
+                  data: signal.history,
+                  borderColor: "#22c55e",
+                  backgroundColor: "rgba(34,197,94,0.3)",
+                  fill: true,
+                  tension: 0.3,
+                  pointRadius: 0
+                }]
+              },
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                  x: {
+                    display: false
+                  },
+                  y: {
+                    beginAtZero: false,
+                    ticks: {
+                      color: '#a3bffa'
+                    },
+                    grid: {
+                      color: '#334155'
+                    }
+                  }
+                },
+                plugins: {
+                  legend: {
+                    labels: { color: '#d1d5db' }
+                  },
+                  tooltip: {
+                    mode: 'index',
+                    intersect: false
+                  }
+                }
+              }
+            });
+          }
+        });
+      });
+
+      // Affiche un message si des signaux premium sont bloqués
+      if (premiumLocked && !isPremium) {
+        premiumNotice.style.display = "block";
+        premiumNotice.textContent = "Certains signaux sont réservés aux abonnés premium. Abonnez-vous pour tout débloquer.";
+      }
+    })
+    .catch(err => {
+      console.error("Erreur lors du chargement des signaux:", err);
+      document.getElementById("signalsContainer").textContent = "Erreur lors du chargement des signaux.";
+    });
+
+  function filterSignals(category) {
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+      if (category === 'all' || card.dataset.category === category) {
+        card.style.display = 'block';
+      } else {
+        card.style.display = 'none';
       }
     });
   }
-
-  async function loadSignals() {
-    const tbody = document.querySelector("#signals-table tbody");
-    const errorDiv = document.getElementById("error-message");
-
-    try {
-      const response = await fetch("data/signals.json", {cache: "no-store"});
-      if (!response.ok) throw new Error(`HTTP error ${response.status}`);
-      const signals = await response.json();
-
-      // Vider le tableau si déjà rempli
-      tbody.innerHTML = "";
-
-      if (!Array.isArray(signals) || signals.length === 0) {
-        errorDiv.textContent = "Aucun signal disponible pour le moment.";
-        errorDiv.style.display = "block";
-        return;
-      } else {
-        errorDiv.style.display = "none";
-      }
-
-      // Boucle sur chaque signal pour créer une ligne
-      signals.forEach((signal, index) => {
-        const tr = document.createElement("tr");
-        if (signal.isPremium) tr.classList.add("premium");
-
-        // Col 1: Nom actif
-        const tdName = document.createElement("td");
-        tdName.textContent = signal.name || "-";
-        tdName.classList.add("signal-name");
-        tr.appendChild(tdName);
-
-        // Col 2: Type d'actif
-        const tdType = document.createElement("td");
-        tdType.textContent = signal.type || "-";
-        tdType.classList.add("signal-type");
-        tr.appendChild(tdType);
-
-        // Col 3: Signal (Buy / Sell / Hold)
-        const tdSignal = document.createElement("td");
-        const signalStatus = (signal.signal || "").toLowerCase();
-        tdSignal.textContent = signal.signal || "-";
-        if (signalClassMap[signalStatus]) tdSignal.classList.add(signalClassMap[signalStatus]);
-        tr.appendChild(tdSignal);
-
-        // Col 4: Cours actuel
-        const tdPrice = document.createElement("td");
-        tdPrice.textContent = formatPrice(signal.price);
-        tr.appendChild(tdPrice);
-
-        // Col 5: Mini-graph tendance 7 jours
-        const tdChart = document.createElement("td");
-        const chartContainer = document.createElement("div");
-        chartContainer.classList.add("chart-container");
-        const canvas = document.createElement("canvas");
-        canvas.width = 150;
-        canvas.height = 70;
-        chartContainer.appendChild(canvas);
-        tdChart.appendChild(chartContainer);
-        tr.appendChild(tdChart);
-
-        tbody.appendChild(tr);
-
-        // Créer le mini-graph
-        createMiniChart(canvas, signal.trend7d);
-      });
-
-    } catch (error) {
-      errorDiv.textContent = "Erreur lors du chargement des signaux : " + error.message;
-      errorDiv.style.display = "block";
-      tbody.innerHTML = "";
-      console.error(error);
-    }
-  }
-
-  // Lancement au chargement de la page
-  window.addEventListener("DOMContentLoaded", () => {
-    loadSignals();
-  });
 </script>
 
 </body>
