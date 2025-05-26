@@ -1,17 +1,39 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   fetch('header.html')
     .then(response => response.text())
     .then(data => {
       document.body.insertAdjacentHTML('afterbegin', data);
 
-      // Ajoutez ici le code pour gérer la logique d'authentification et le menu mobile
+      // Corriger les couleurs si le fond est sombre (ex: dashboard)
+      const isDark = getComputedStyle(document.body).backgroundColor === 'rgb(15, 23, 42)'; // #0f172a
+      if (isDark) {
+        const style = document.createElement('style');
+        style.textContent = `
+          header nav a,
+          #mobileMenu a,
+          #loginBtn, #logoutBtn,
+          #mobileLoginBtn, #mobileLogoutBtn {
+            color: #f8fafc !important; /* texte clair */
+          }
+
+          header {
+            background-color: #0f172a !important;
+          }
+
+          #menuToggle {
+            color: #22c55e !important; /* vert Luxibre */
+          }
+        `;
+        document.head.appendChild(style);
+      }
+
+      // Gestion de l'authentification
       const loginBtn = document.getElementById("loginBtn");
       const logoutBtn = document.getElementById("logoutBtn");
       const mobileLoginBtn = document.getElementById("mobileLoginBtn");
       const mobileLogoutBtn = document.getElementById("mobileLogoutBtn");
 
-      // Exemple de logique d'authentification
-      const user = false; // Remplacez par votre logique d'authentification réelle
+      const user = false; // à remplacer par votre vraie logique
 
       if (user) {
         loginBtn.classList.add("hidden");
@@ -26,12 +48,10 @@ document.addEventListener('DOMContentLoaded', function() {
       }
 
       logoutBtn.addEventListener("click", async () => {
-        // Ajoutez ici votre logique de déconnexion
         window.location.href = "login.html";
       });
 
       mobileLogoutBtn.addEventListener("click", async () => {
-        // Ajoutez ici votre logique de déconnexion
         window.location.href = "login.html";
       });
 
