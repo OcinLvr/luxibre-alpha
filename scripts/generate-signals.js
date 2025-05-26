@@ -33,7 +33,7 @@ const STOCKS = [
 ];
 
 const ETFS = [
-  { symbol: "EXA1.DE", name: "iShares EURO STOXX Banks 30-15 UCITS ETF (DE)", type: "etf", premium: false }
+  { symbol: "EXA1.AS", name: "iShares EURO STOXX Banks 30-15 UCITS ETF (DE)", type: "etf", premium: false }
 ];
 
 const CRYPTOS = [
