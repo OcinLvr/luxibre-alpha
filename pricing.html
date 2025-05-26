@@ -3,71 +3,75 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Luxibre Alpha - Abonnements</title>
+  <title>Luxibre Alpha - Tarifs</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      min-height: 100vh;
-      background: linear-gradient(145deg, #f0f4f8, #ffffff);
-      overflow-y: auto;
+    body { font-family: 'Inter', sans-serif; }
+    .card-gradient {
+      background: linear-gradient(145deg, #22c55e, #3b82f6);
     }
-    .wave {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      height: 100px;
-      background: url('https://svgshare.com/i/uZf.svg') repeat-x;
-      animation: wave 10s linear infinite;
-    }
-    @keyframes wave {
-      0% { background-position-x: 0; }
-      100% { background-position-x: 1000px; }
+    .card-free {
+      background: linear-gradient(145deg, #94a3b8, #cbd5e1);
     }
   </style>
 </head>
-<body class="text-gray-900 relative">
+<body class="bg-gray-50 text-gray-900">
 
   <script type="module" src="JS/loadHeader.js"></script>
 
-  <section class="flex flex-col items-center justify-center min-h-screen px-4 py-20">
-    <h1 class="text-3xl md:text-5xl font-bold text-center mb-8">Choisissez votre formule</h1>
-    <p class="text-gray-600 text-center mb-12 max-w-xl">Comparez nos offres et accédez aux signaux boursiers les plus pertinents mis à jour toutes les heures.</p>
-
-    <div class="flex flex-col md:flex-row gap-10 w-full max-w-5xl justify-center">
-      <!-- Plan Gratuit -->
-      <div class="bg-white shadow-lg rounded-3xl p-8 w-full md:w-1/2 border border-gray-200 relative">
-        <h2 class="text-2xl font-bold mb-2">Gratuit</h2>
-        <p class="text-gray-500 mb-6">Découverte avec fonctionnalités limitées</p>
-        <ul class="space-y-3 mb-6">
-          <li class="flex items-center"><span class="text-green-500 font-bold mr-2">✓</span> Accès partiel aux signaux</li>
-          <li class="flex items-center"><span class="text-green-500 font-bold mr-2">✓</span> Mises à jour quotidiennes</li>
-          <li class="flex items-center"><span class="text-gray-400 font-bold mr-2">✗</span> Support prioritaire</li>
-          <li class="flex items-center"><span class="text-gray-400 font-bold mr-2">✗</span> Visualisations avancées</li>
-        </ul>
-        <a href="register.html" class="block w-full text-center bg-gray-100 text-gray-700 py-3 rounded-xl font-semibold hover:bg-gray-200 transition">Créer un compte gratuit</a>
-      </div>
-
-      <!-- Plan Premium -->
-      <div class="bg-gradient-to-br from-green-500 to-blue-600 text-white shadow-2xl rounded-3xl p-8 w-full md:w-1/2 relative overflow-hidden">
-        <div class="absolute top-0 right-0 mt-4 mr-4 bg-yellow-300 text-yellow-900 text-xs font-semibold px-3 py-1 rounded-full shadow">Recommandé</div>
-        <h2 class="text-2xl font-bold mb-2">Premium</h2>
-        <p class="mb-6">5€ / 30 jours</p>
-        <ul class="space-y-3 mb-6">
-          <li class="flex items-center"><span class="text-white font-bold mr-2">✓</span> Accès complet aux signaux</li>
-          <li class="flex items-center"><span class="text-white font-bold mr-2">✓</span> Actualisation horaire</li>
-          <li class="flex items-center"><span class="text-white font-bold mr-2">✓</span> Visualisations avancées</li>
-          <li class="flex items-center"><span class="text-white font-bold mr-2">✓</span> Support prioritaire</li>
-        </ul>
-        <a href="checkout.html" class="block w-full text-center bg-white text-green-600 py-3 rounded-xl font-semibold hover:bg-gray-100 transition">Passer au Premium</a>
-      </div>
+  <!-- Hero -->
+  <section class="text-center py-20 bg-gradient-to-r from-green-500 to-blue-600 text-white">
+    <div class="max-w-4xl mx-auto px-4">
+      <h2 class="text-4xl md:text-5xl font-bold mb-4">Comparez les offres Luxibre Alpha</h2>
+      <p class="text-lg md:text-xl mb-6">Découvrez ce que vous débloquez avec le Premium.</p>
     </div>
   </section>
 
-  <div class="wave"></div>
+  <!-- Cartes Tarifaires -->
+  <section class="py-16">
+    <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-8 px-4">
 
-  <footer class="bg-gray-100 py-10 text-center text-sm text-gray-600 mt-20">
+      <!-- Offre Gratuite -->
+      <div class="rounded-3xl card-free p-8 shadow-lg text-white transform hover:scale-105 transition">
+        <h3 class="text-2xl font-bold mb-4">Gratuit</h3>
+        <p class="mb-6">Idéal pour découvrir Luxibre Alpha</p>
+        <ul class="space-y-3 text-sm">
+          <li>- Accès partiel aux signaux</li>
+          <li>- Données mises à jour quotidiennement</li>
+          <li>- Pas de support prioritaire</li>
+          <li>- Accès limité aux analyses graphiques</li>
+        </ul>
+        <div class="mt-6">
+          <span class="text-xl font-semibold">0€</span>
+        </div>
+      </div>
+
+      <!-- Offre Premium -->
+      <div class="rounded-3xl card-gradient p-8 shadow-2xl text-white transform hover:scale-105 transition border-4 border-white">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-2xl font-bold">Premium</h3>
+          <span class="bg-white text-green-600 text-sm font-semibold px-3 py-1 rounded-full">Populaire</span>
+        </div>
+        <p class="mb-6">L'expérience complète, actualisée chaque heure</p>
+        <ul class="space-y-3 text-sm">
+          <li>- Accès complet à tous les signaux</li>
+          <li>- Mises à jour horaires</li>
+          <li>- Analyses visuelles premium</li>
+          <li>- Support prioritaire</li>
+          <li>- Accès sécurisé et personnalisé</li>
+        </ul>
+        <div class="mt-6">
+          <p class="text-xl font-semibold mb-4">5€ / 30 jours</p>
+          <a href="checkout.html" class="bg-white text-green-600 px-6 py-2 rounded-xl font-semibold hover:bg-gray-100 transition">S'abonner maintenant</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-100 py-10 text-center text-sm text-gray-600">
     &copy; 2025 Luxibre Alpha. Tous droits réservés. |
     <a href="legal/mentions-legales.md" class="underline">Mentions légales</a> |
     <a href="legal/cgu.md" class="underline">CGU</a> |
