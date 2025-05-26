@@ -5,55 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Dashboard moderne pour Luxibre Alpha">
   <title>Luxibre Alpha - Dashboard Moderne</title>
+
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/luxon@1.25.0"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.0.0"></script>
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
   <style>
-    :root {
-      --primary-color: #22c55e;
-      --secondary-color: #1e293b;
-      --text-color: #f1f5f9;
-      --accent-color: #86efac;
-    }
-    * { box-sizing: border-box; }
     body {
-      margin: 0;
       font-family: 'Inter', sans-serif;
       background: #0f172a;
-      color: var(--text-color);
+      color: #f1f5f9;
+      margin: 0;
     }
+    /* Header specific */
     header {
-      background: var(--primary-color);
-      padding: 1.5rem 2rem;
-      font-size: 1.6rem;
       font-weight: 700;
-      color: #fff;
-      text-align: center;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      letter-spacing: 0.05em;
+      font-size: 1.875rem; /* text-3xl */
+      color: #22c55e; /* green-600 */
     }
-    nav {
-      background: var(--secondary-color);
-      padding: 1rem;
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-    }
-    nav button {
-      background: var(--primary-color);
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      font-weight: 600;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    nav button:hover {
-      background: #16a34a;
-    }
+    /* Additional styling for your dashboard content */
     main {
       max-width: 1200px;
       margin: 2rem auto;
@@ -62,7 +36,7 @@
     .notice {
       background: #dcfce7;
       color: #166534;
-      border-left: 5px solid var(--primary-color);
+      border-left: 5px solid #22c55e;
       padding: 1rem 1.5rem;
       border-radius: 0.75rem;
       margin-bottom: 2rem;
@@ -75,7 +49,7 @@
       gap: 2rem;
     }
     .card {
-      background: var(--secondary-color);
+      background: #1e293b; /* secondary color */
       padding: 1.5rem;
       border-radius: 1rem;
       box-shadow: 0 4px 15px rgba(0,0,0,0.15);
@@ -94,7 +68,7 @@
     .card h3 {
       font-size: 1.4rem;
       margin: 0 0 0.8rem;
-      color: var(--accent-color);
+      color: #86efac; /* accent color */
     }
     .card p {
       margin: 0.3rem 0;
@@ -113,8 +87,10 @@
       border-radius: 0.6rem;
     }
     .unlock-btn, .export-btn {
+      position: absolute;
+      top: 1rem;
       right: 1rem;
-      background: var(--primary-color);
+      background: #22c55e;
       color: white;
       border: none;
       padding: 0.5rem 1rem;
@@ -128,13 +104,14 @@
       background: #16a34a;
     }
     footer {
-      background: var(--secondary-color);
+      background: #1e293b;
       padding: 1rem;
       text-align: center;
       margin-top: 2rem;
+      color: #9ca3af;
     }
     footer a {
-      color: var(--primary-color);
+      color: #22c55e;
       margin: 0 1rem;
       text-decoration: none;
     }
@@ -149,8 +126,9 @@
     }
   </style>
 </head>
-<body>
-  <!-- Header -->
+<body class="bg-gray-50 text-gray-900">
+
+  <!-- Header identique à index.html -->
   <header class="py-4 bg-white shadow-md sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
       <h1 class="text-3xl font-bold text-green-600">Luxibre</h1>
@@ -175,12 +153,14 @@
     </div>
   </header>
 
-  <nav>
-    <button onclick="filterSignals('all')">Tous</button>
-    <button onclick="filterSignals('achat')">Achat</button>
-    <button onclick="filterSignals('vente')">Vente</button>
-    <button onclick="filterSignals('conservation')">Conservation</button>
+  <!-- Navigation boutons filtres -->
+  <nav class="bg-gray-800 py-4 flex justify-center gap-4 sticky top-[72px] z-40">
+    <button onclick="filterSignals('all')" class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded">Tous</button>
+    <button onclick="filterSignals('achat')" class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded">Achat</button>
+    <button onclick="filterSignals('vente')" class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded">Vente</button>
+    <button onclick="filterSignals('conservation')" class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded">Conservation</button>
   </nav>
+
   <main>
     <div id="premiumNotice" class="notice" style="display: none;"></div>
     <div id="signalsContainer"></div>
@@ -193,176 +173,13 @@
       <!-- Contenu des témoignages -->
     </section>
   </main>
+
   <footer>
     <a href="/docs">Documentation</a>
     <a href="/support">Support</a>
   </footer>
 
-  <script>
-  const isPremium = false; // Remplacez par une vérification réelle de l'utilisateur
-
-  function isPremiumUser() {
-    return isPremium;
-  }
-
-  function showPremiumFeatures() {
-    if (isPremiumUser()) {
-      document.getElementById("premiumFeatures").style.display = "block";
-    } else {
-      document.getElementById("premiumFeatures").style.display = "none";
-    }
-  }
-
-  function setupAlerts() {
-    if (isPremiumUser()) {
-      console.log("Alertes configurées pour l'utilisateur premium");
-    } else {
-      console.log("Alertes limitées pour l'utilisateur gratuit");
-    }
-  }
-
-  function exportChart(chartId) {
-    if (isPremiumUser()) {
-      html2canvas(document.getElementById(chartId)).then(canvas => {
-        const link = document.createElement('a');
-        link.download = 'chart.png';
-        link.href = canvas.toDataURL();
-        link.click();
-      });
-    } else {
-      alert("Cette fonctionnalité est réservée aux utilisateurs premium.");
-    }
-  }
-
-  function customizeChart() {
-    if (isPremiumUser()) {
-      const chartOptions = {
-        backgroundColor: "#f8fafc",
-        borderColor: "#22c55e",
-      };
-      console.log("Graphiques personnalisés pour l'utilisateur premium");
-    }
-  }
-
-  async function fetchSignals() {
-    try {
-      const res = await fetch("data/signals.json");
-      if (!res.ok) throw new Error("HTTP error " + res.status);
-      return await res.json();
-    } catch (err) {
-      console.error("Erreur lors du chargement des signaux:", err);
-      document.getElementById("signalsContainer").textContent = "Erreur lors du chargement des signaux.";
-      return null;
-    }
-  }
-
-  async function renderSignals() {
-    const data = await fetchSignals();
-    if (!data) return;
-
-    console.log("Données chargées:", data); // Log pour vérifier les données
-
-    const container = document.getElementById("signalsContainer");
-    const premiumNotice = document.getElementById("premiumNotice");
-    let premiumLocked = false;
-
-    ["achat", "vente", "conservation"].forEach(category => {
-      if (!data[category] || !Array.isArray(data[category])) return;
-
-      data[category].forEach((signal, i) => {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.dataset.category = category;
-
-        const isLocked = signal.premium && !isPremiumUser();
-        if (isLocked) {
-          card.classList.add("blur");
-          premiumLocked = true;
-        }
-
-        const chartId = `chart-${category}-${i}`;
-
-        card.innerHTML = `
-          <h3>${signal.name}</h3>
-          <p><strong>Prix actuel :</strong> $${signal.price.toFixed(2)}</p>
-          <p><strong>Recommandation :</strong> <span class="recommendation">${signal.recommendation}</span></p>
-          <div class="chart-container">
-            <canvas id="${chartId}" width="300" height="150"></canvas>
-          </div>
-          ${isLocked ? `<button class="unlock-btn" onclick="alert('Abonnement premium requis pour accéder à ce signal.')">Débloquer</button>` : `<button class="export-btn" onclick="exportChart('${chartId}')">Exporter le Graphique</button>`}
-        `;
-
-        container.appendChild(card);
-
-        if (!isLocked) {
-          const ctx = document.getElementById(chartId).getContext("2d");
-          new Chart(ctx, {
-            type: "line",
-            data: {
-              labels: signal.history.map((_, idx) => `J-${signal.history.length - idx}`),
-              datasets: [{
-                label: `${signal.name} - Prix de clôture`,
-                data: signal.history,
-                borderColor: "#22c55e",
-                backgroundColor: "rgba(34,197,94,0.3)",
-                fill: true,
-                tension: 0.3,
-                pointRadius: 0
-              }]
-            },
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              scales: {
-                x: {
-                  display: false
-                },
-                y: {
-                  beginAtZero: false,
-                  ticks: {
-                    color: '#a3bffa'
-                  },
-                  grid: {
-                    color: '#334155'
-                  }
-                }
-              },
-              plugins: {
-                legend: {
-                  labels: { color: '#d1d5db' }
-                },
-                tooltip: {
-                  mode: 'index',
-                  intersect: false
-                }
-              }
-            }
-          });
-        }
-      });
-    });
-
-    if (premiumLocked && !isPremiumUser()) {
-      premiumNotice.style.display = "block";
-      premiumNotice.textContent = "Certains signaux sont réservés aux abonnés premium. Abonnez-vous pour tout débloquer.";
-    }
-  }
-
-  function filterSignals(category) {
-    const cards = document.querySelectorAll('.card');
-    cards.forEach(card => {
-      if (category === 'all' || card.dataset.category === category) {
-        card.style.display = 'block';
-      } else {
-        card.style.display = 'none';
-      }
-    });
-  }
-
-  document.addEventListener('DOMContentLoaded', renderSignals);
-  </script>
-
-  <!-- Supabase et logique auth -->
+  <!-- Supabase et logique auth + toggle mobile menu -->
   <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
@@ -376,6 +193,7 @@
     const mobileLoginBtn = document.getElementById("mobileLoginBtn");
     const mobileLogoutBtn = document.getElementById("mobileLogoutBtn");
 
+    // Vérifie utilisateur connecté
     const { data: { user } } = await supabase.auth.getUser();
 
     if (user) {
@@ -411,6 +229,64 @@
     document.getElementById("menuToggle").addEventListener("click", () => {
       document.getElementById("mobileMenu").classList.toggle("hidden");
     });
+
+    // Gestion des signaux (exemple minimal, adapte selon ton generate-signals.js)
+    let signals = [];
+
+    async function loadSignals() {
+      try {
+        const response = await fetch('data/signals.json');
+        signals = await response.json();
+        renderSignals(signals);
+      } catch (err) {
+        console.error("Erreur chargement signaux :", err);
+      }
+    }
+
+    function renderSignals(list) {
+      const container = document.getElementById('signalsContainer');
+      container.innerHTML = '';
+
+      list.forEach(signal => {
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        // Si signal premium et utilisateur non connecté, floute la carte
+        if(signal.premium && !user) {
+          card.classList.add('blur');
+          const unlockBtn = document.createElement('button');
+          unlockBtn.textContent = "Débloquer";
+          unlockBtn.className = 'unlock-btn';
+          unlockBtn.onclick = () => window.location.href = 'pricing.html';
+          card.appendChild(unlockBtn);
+        }
+
+        const title = document.createElement('h3');
+        title.textContent = signal.symbol + " - " + signal.name;
+        card.appendChild(title);
+
+        const details = document.createElement('p');
+        details.textContent = `Prix actuel : ${signal.price} €`;
+        card.appendChild(details);
+
+        const recom = document.createElement('p');
+        recom.className = 'recommendation';
+        recom.textContent = `Recommandation : ${signal.recommendation.toUpperCase()}`;
+        card.appendChild(recom);
+
+        container.appendChild(card);
+      });
+    }
+
+    function filterSignals(type) {
+      if(type === 'all') {
+        renderSignals(signals);
+      } else {
+        renderSignals(signals.filter(s => s.recommendation === type));
+      }
+    }
+
+    loadSignals();
   </script>
 </body>
 </html>
