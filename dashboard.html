@@ -150,7 +150,31 @@
   </style>
 </head>
 <body>
-  <header>Luxibre Alpha — Tableau de bord Moderne</header>
+  <!-- Header -->
+  <header class="py-4 bg-white shadow-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
+      <h1 class="text-3xl font-bold text-green-600">Luxibre</h1>
+      <nav class="hidden md:flex space-x-6 items-center">
+        <a href="index.html" class="hover:text-green-600 font-medium">Accueil</a>
+        <a href="dashboard.html" class="hover:text-green-600 font-medium">Dashboard</a>
+        <a href="pricing.html" class="hover:text-green-600 font-medium">Abonnement</a>
+        <button id="loginBtn" class="hover:text-green-600 font-medium">Connexion</button>
+        <button id="logoutBtn" class="hover:text-green-600 font-medium hidden">Déconnexion</button>
+      </nav>
+      <!-- Mobile menu -->
+      <div class="md:hidden">
+        <button id="menuToggle" class="text-green-600 text-2xl">&#9776;</button>
+      </div>
+    </div>
+    <div id="mobileMenu" class="md:hidden hidden px-6 pt-4 pb-2 bg-white space-y-2">
+      <a href="index.html" class="block text-gray-800 hover:text-green-600">Accueil</a>
+      <a href="dashboard.html" class="block text-gray-800 hover:text-green-600">Dashboard</a>
+      <a href="pricing.html" class="block text-gray-800 hover:text-green-600">Abonnement</a>
+      <button id="mobileLoginBtn" class="block text-left w-full text-gray-800 hover:text-green-600">Connexion</button>
+      <button id="mobileLogoutBtn" class="block text-left w-full text-gray-800 hover:text-green-600 hidden">Déconnexion</button>
+    </div>
+  </header>
+
   <nav>
     <button onclick="filterSignals('all')">Tous</button>
     <button onclick="filterSignals('achat')">Achat</button>
@@ -336,6 +360,57 @@
   }
 
   document.addEventListener('DOMContentLoaded', renderSignals);
+  </script>
+
+  <!-- Supabase et logique auth -->
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const supabase = createClient(
+      'https://jrgdwozxcilasllpvikh.supabase.co',
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpyZ2R3b3p4Y2lsYXNsbHB2aWtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4MjQ0NTEsImV4cCI6MjA2MzQwMDQ1MX0.S2oGP2rdtq1IkW-oH5mC8omm698PdCgQJtGVLlIFj3w'
+    );
+
+    const loginBtn = document.getElementById("loginBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const mobileLoginBtn = document.getElementById("mobileLoginBtn");
+    const mobileLogoutBtn = document.getElementById("mobileLogoutBtn");
+
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (user) {
+      loginBtn.classList.add("hidden");
+      logoutBtn.classList.remove("hidden");
+      mobileLoginBtn.classList.add("hidden");
+      mobileLogoutBtn.classList.remove("hidden");
+    } else {
+      loginBtn.classList.remove("hidden");
+      logoutBtn.classList.add("hidden");
+      mobileLoginBtn.classList.remove("hidden");
+      mobileLogoutBtn.classList.add("hidden");
+    }
+
+    logoutBtn.addEventListener("click", async () => {
+      await supabase.auth.signOut();
+      window.location.href = "login.html";
+    });
+
+    mobileLogoutBtn.addEventListener("click", async () => {
+      await supabase.auth.signOut();
+      window.location.href = "login.html";
+    });
+
+    loginBtn.addEventListener("click", () => {
+      window.location.href = "login.html";
+    });
+
+    mobileLoginBtn.addEventListener("click", () => {
+      window.location.href = "login.html";
+    });
+
+    document.getElementById("menuToggle").addEventListener("click", () => {
+      document.getElementById("mobileMenu").classList.toggle("hidden");
+    });
   </script>
 </body>
 </html>
