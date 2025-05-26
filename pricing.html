@@ -12,70 +12,74 @@
 </head>
 <body class="bg-gray-50 text-gray-900">
 
-
   <script type="module" src="JS/loadHeader.js"></script>
 
-  <!-- Hero -->
-  <section class="text-center py-20 bg-gradient-to-r from-green-500 to-blue-600 text-white">
-    <div class="max-w-4xl mx-auto px-4">
-      <h2 class="text-4xl md:text-5xl font-bold mb-4">Passez au niveau supérieur pour 5€</h2>
-      <p class="text-lg md:text-xl mb-6">30 jours d'accès premium à des signaux puissants et fiables. Sans engagement.</p>
-      <a href="#subscribe" class="inline-block bg-white text-green-600 px-8 py-4 font-semibold rounded-xl hover:bg-gray-100 transition transform hover:scale-105">Je m'abonne maintenant</a>
+  <!-- Hero Section -->
+  <section class="text-center py-24 bg-gradient-to-r from-green-500 to-blue-600 text-white relative overflow-hidden">
+    <div class="max-w-5xl mx-auto px-6">
+      <h1 class="text-5xl font-extrabold mb-4 drop-shadow-md">Passez au niveau supérieur</h1>
+      <p class="text-xl mb-8">Accès exclusif pour seulement 5€ - 30 jours de signaux premium, sans engagement.</p>
+      <a href="#subscribe" class="inline-block bg-white text-green-600 px-8 py-4 text-lg font-semibold rounded-xl hover:bg-gray-100 transition transform hover:scale-105">Je m'abonne maintenant</a>
     </div>
   </section>
 
   <!-- Avantages -->
-  <section class="py-20 bg-white">
-    <div class="max-w-6xl mx-auto px-4">
-      <h3 class="text-3xl font-bold text-center mb-12">Ce que vous obtenez avec le Premium</h3>
-      <div class="grid md:grid-cols-3 gap-10 text-center">
-        <div class="p-8 bg-gray-50 rounded-xl shadow hover:shadow-xl">
-          <div class="text-4xl mb-3">\u2728</div>
-          <h4 class="text-xl font-semibold mb-2">Signaux en temps réel</h4>
-          <p class="text-gray-600">Des décisions d'achat, vente ou conservation instantanées et fiables.</p>
+  <section class="py-24 bg-white">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-4xl font-bold text-center mb-16">Pourquoi choisir Premium ?</h2>
+      <div class="grid md:grid-cols-3 gap-12">
+        <div class="p-8 bg-gray-50 rounded-2xl shadow hover:shadow-xl transition">
+          <div class="text-5xl mb-4">\u2728</div>
+          <h3 class="text-xl font-semibold mb-2">Signaux instantanés et fiables</h3>
+          <p class="text-gray-600">Recevez des recommandations claires basées sur des analyses avancées.</p>
         </div>
-        <div class="p-8 bg-gray-50 rounded-xl shadow hover:shadow-xl">
-          <div class="text-4xl mb-3">\ud83d\udcca</div>
-          <h4 class="text-xl font-semibold mb-2">Accès aux analyses visuelles</h4>
-          <p class="text-gray-600">Visualisez les tendances avec nos outils exclusifs.</p>
+        <div class="p-8 bg-gray-50 rounded-2xl shadow hover:shadow-xl transition">
+          <div class="text-5xl mb-4">\ud83d\udcca</div>
+          <h3 class="text-xl font-semibold mb-2">Visualisations prédictives</h3>
+          <p class="text-gray-600">Explorez les tendances avec des graphiques interactifs puissants.</p>
         </div>
-        <div class="p-8 bg-gray-50 rounded-xl shadow hover:shadow-xl">
-          <div class="text-4xl mb-3">\ud83d\udd10</div>
-          <h4 class="text-xl font-semibold mb-2">Espace sécurisé</h4>
-          <p class="text-gray-600">Un accès personnel protégé et fluide.</p>
+        <div class="p-8 bg-gray-50 rounded-2xl shadow hover:shadow-xl transition">
+          <div class="text-5xl mb-4">\ud83d\udd10</div>
+          <h3 class="text-xl font-semibold mb-2">Espace ultra-sécurisé</h3>
+          <p class="text-gray-600">Connexion cryptée, données personnelles protégées, zéro publicité.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Comparatif -->
-  <section class="bg-gray-100 py-20">
-    <div class="max-w-5xl mx-auto px-4">
-      <h3 class="text-3xl font-bold text-center mb-10">Gratuit vs Premium</h3>
+  <section class="bg-gray-100 py-24">
+    <div class="max-w-5xl mx-auto px-6">
+      <h2 class="text-4xl font-bold text-center mb-12">Comparez Gratuit vs Premium</h2>
       <div class="overflow-x-auto">
-        <table class="w-full table-auto text-left">
+        <table class="w-full table-auto border rounded-xl overflow-hidden shadow">
           <thead>
-            <tr class="text-gray-700">
-              <th class="py-3 px-4"></th>
-              <th class="py-3 px-4">Gratuit</th>
-              <th class="py-3 px-4 text-green-600">Premium</th>
+            <tr class="bg-white text-left text-gray-700">
+              <th class="py-4 px-6 font-semibold">Fonctionnalité</th>
+              <th class="py-4 px-6">Gratuit</th>
+              <th class="py-4 px-6 text-green-600 font-semibold">Premium</th>
             </tr>
           </thead>
-          <tbody class="bg-white">
+          <tbody class="bg-white divide-y divide-gray-200">
             <tr>
-              <td class="py-3 px-4 font-medium">Accès aux signaux</td>
-              <td class="py-3 px-4">Partiel</td>
-              <td class="py-3 px-4 text-green-600 font-semibold">Complet</td>
-            </tr>
-            <tr class="bg-gray-50">
-              <td class="py-3 px-4 font-medium">Mise à jour en temps réel</td>
-              <td class="py-3 px-4">Retardé</td>
-              <td class="py-3 px-4 text-green-600 font-semibold">Instantané</td>
+              <td class="py-4 px-6 font-medium">Accès aux signaux</td>
+              <td class="px-6">Partiel</td>
+              <td class="px-6 text-green-600 font-bold">Complet</td>
             </tr>
             <tr>
-              <td class="py-3 px-4 font-medium">Support prioritaire</td>
-              <td class="py-3 px-4">Non</td>
-              <td class="py-3 px-4 text-green-600 font-semibold">Oui</td>
+              <td class="py-4 px-6 font-medium">Mise à jour</td>
+              <td class="px-6">Retardée</td>
+              <td class="px-6 text-green-600 font-bold">Temps réel</td>
+            </tr>
+            <tr>
+              <td class="py-4 px-6 font-medium">Support prioritaire</td>
+              <td class="px-6">Non</td>
+              <td class="px-6 text-green-600 font-bold">Oui</td>
+            </tr>
+            <tr>
+              <td class="py-4 px-6 font-medium">Analyses visuelles</td>
+              <td class="px-6">Limitées</td>
+              <td class="px-6 text-green-600 font-bold">Avancées</td>
             </tr>
           </tbody>
         </table>
@@ -83,12 +87,12 @@
     </div>
   </section>
 
-  <!-- Call to Action final -->
-  <section id="subscribe" class="bg-green-600 text-white py-20">
-    <div class="text-center max-w-2xl mx-auto px-4">
-      <h3 class="text-3xl font-bold mb-4">Prêt à rejoindre Luxibre Alpha Premium ?</h3>
-      <p class="mb-8">Pour seulement 5€, accédez à la puissance de notre intelligence de marché pendant 30 jours.</p>
-      <a href="checkout.html" class="bg-white text-green-600 px-6 py-3 rounded-xl font-semibold hover:bg-gray-100 transition transform hover:scale-105">S'abonner maintenant</a>
+  <!-- Call to Action -->
+  <section id="subscribe" class="bg-green-600 text-white py-24">
+    <div class="max-w-3xl mx-auto text-center px-6">
+      <h2 class="text-4xl font-bold mb-4">Rejoignez Luxibre Alpha Premium</h2>
+      <p class="text-lg mb-8">5€ pour 30 jours d'accès à des signaux de trading élaborés. Améliorez vos décisions, augmentez votre rentabilité.</p>
+      <a href="checkout.html" class="bg-white text-green-600 px-8 py-4 text-lg font-semibold rounded-xl hover:bg-gray-100 transition transform hover:scale-105">S'abonner maintenant</a>
     </div>
   </section>
 
@@ -100,30 +104,5 @@
     <a href="legal/rgpd.md" class="underline">RGPD</a>
   </footer>
 
-  <!-- Supabase logic (identique à index) -->
-  <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-    const supabase = createClient(
-      'https://jrgdwozxcilasllpvikh.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpyZ2R3b3p4Y2lsYXNsbHB2aWtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4MjQ0NTEsImV4cCI6MjA2MzQwMDQ1MX0.S2oGP2rdtq1IkW-oH5mC8omm698PdCgQJtGVLlIFj3w'
-    );
-    const loginBtn = document.getElementById("loginBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
-    const { data: { user } } = await supabase.auth.getUser();
-    if (user) {
-      loginBtn.classList.add("hidden");
-      logoutBtn.classList.remove("hidden");
-    } else {
-      loginBtn.classList.remove("hidden");
-      logoutBtn.classList.add("hidden");
-    }
-    logoutBtn.addEventListener("click", async () => {
-      await supabase.auth.signOut();
-      window.location.href = "login.html";
-    });
-    loginBtn.addEventListener("click", () => {
-      window.location.href = "login.html";
-    });
-  </script>
 </body>
 </html>
