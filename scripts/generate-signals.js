@@ -45,7 +45,7 @@ const CRYPTOS = [
   { symbol: "DOGE", name: "Dogecoin", type: "crypto", premium: false }
 ];
 
-// Calculs indicateurs (inchangés)
+// Calculs indicateurs
 function calculateSMA(data, period = 5) {
   if (data.length < period) return null;
   return data.slice(-period).reduce((sum, val) => sum + val, 0) / period;
@@ -94,11 +94,11 @@ function calculateRecommendation(history, type) {
   const bollinger = calculateBollingerBands(history);
 
   if (type === "crypto") {
+    if (change > 10 && rsi < 70 && macd > 0 && latest > sma && latest < bollinger.upper) return "Acheter";
+    if (change < -10 && rsi > 30 && macd < 0 && latest < sma && latest > bollinger.lower) return "Vendre";
+  } else {
     if (change > 5 && rsi < 70 && macd > 0 && latest > sma && latest < bollinger.upper) return "Acheter";
     if (change < -5 && rsi > 30 && macd < 0 && latest < sma && latest > bollinger.lower) return "Vendre";
-  } else {
-    if (change > 2 && rsi < 70 && macd > 0 && latest > sma && latest < bollinger.upper) return "Acheter";
-    if (change < -2 && rsi > 30 && macd < 0 && latest < sma && latest > bollinger.lower) return "Vendre";
   }
 
   return "Conserver";
