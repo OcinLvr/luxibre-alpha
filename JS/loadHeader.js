@@ -46,12 +46,21 @@ document.addEventListener('DOMContentLoaded', async function () {
     const logoutBtn = document.getElementById("logoutBtn");
     const mobileLoginBtn = document.getElementById("mobileLoginBtn");
     const mobileLogoutBtn = document.getElementById("mobileLogoutBtn");
+    const userIcon = document.querySelector('.fa-user');
+    const closeModal = document.getElementById('closeModal');
+    const userModal = document.getElementById('userModal');
+    const userName = document.getElementById('userName');
+    const userEmail = document.getElementById('userEmail');
 
     if (user) {
       loginBtn?.classList.add("hidden");
       logoutBtn?.classList.remove("hidden");
       mobileLoginBtn?.classList.add("hidden");
       mobileLogoutBtn?.classList.remove("hidden");
+
+      // Afficher les informations de l'utilisateur dans la modale
+      userName.textContent = user.user_metadata.full_name || 'Non spécifié';
+      userEmail.textContent = user.email || 'Non spécifié';
     } else {
       loginBtn?.classList.remove("hidden");
       logoutBtn?.classList.add("hidden");
@@ -80,6 +89,23 @@ document.addEventListener('DOMContentLoaded', async function () {
     // Menu mobile
     document.getElementById("menuToggle")?.addEventListener("click", () => {
       document.getElementById("mobileMenu")?.classList.toggle("hidden");
+    });
+
+    // Ouvrir la modale lorsque l'icône utilisateur est cliquée
+    userIcon?.addEventListener('click', function () {
+      userModal.classList.add('show');
+    });
+
+    // Fermer la modale lorsque le bouton de fermeture est cliqué
+    closeModal?.addEventListener('click', function () {
+      userModal.classList.remove('show');
+    });
+
+    // Fermer la modale lorsque l'utilisateur clique en dehors de la modale
+    userModal?.addEventListener('click', function (event) {
+      if (event.target === userModal) {
+        userModal.classList.remove('show');
+      }
     });
 
   } catch (err) {
