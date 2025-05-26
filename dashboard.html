@@ -144,13 +144,9 @@
     <a href="/support">Support</a>
   </footer>
 
-  <script>
-    // Chargement dynamique du header.html
-    fetch('JS/header.html')
-      .then(response => response.text())
-      .then(html => {
-        document.getElementById('headerContainer').innerHTML = html;
-      });
+
+
+  <script src="JS/loadHeader.js" defer></script>
 
   <script>
   const isPremium = false; // Remplacez par une vérification réelle de l'utilisateur
