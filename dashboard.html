@@ -10,6 +10,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.0.0"></script>
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
     :root {
       --primary-color: #22c55e;
@@ -17,31 +18,15 @@
       --text-color: #f1f5f9;
       --accent-color: #86efac;
     }
-    * { box-sizing: border-box; }
+
     body {
-      margin: 0;
       font-family: 'Inter', sans-serif;
       background: #0f172a;
       color: var(--text-color);
+      margin: 0;
     }
-    header {
-      background: var(--primary-color);
-      padding: 1.5rem 2rem;
-      font-size: 1.6rem;
-      font-weight: 700;
-      color: #fff;
-      text-align: center;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      letter-spacing: 0.05em;
-    }
-    nav {
-      background: var(--secondary-color);
-      padding: 1rem;
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-    }
-    nav button {
+
+    nav.dashboard-nav button {
       background: var(--primary-color);
       color: white;
       border: none;
@@ -51,14 +36,11 @@
       cursor: pointer;
       transition: background 0.3s;
     }
-    nav button:hover {
+
+    nav.dashboard-nav button:hover {
       background: #16a34a;
     }
-    main {
-      max-width: 1200px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-    }
+
     .notice {
       background: #dcfce7;
       color: #166534;
@@ -69,11 +51,7 @@
       font-weight: 600;
       text-align: center;
     }
-    #signalsContainer {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-      gap: 2rem;
-    }
+
     .card {
       background: var(--secondary-color);
       padding: 1.5rem;
@@ -82,36 +60,31 @@
       position: relative;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
+
     .card:hover {
       transform: translateY(-6px);
       box-shadow: 0 10px 20px rgba(34,197,94,0.4);
     }
+
     .card.blur {
       filter: blur(4px);
       pointer-events: none;
       user-select: none;
     }
-    .card h3 {
-      font-size: 1.4rem;
-      margin: 0 0 0.8rem;
-      color: var(--accent-color);
-    }
-    .card p {
-      margin: 0.3rem 0;
-      font-size: 1.05rem;
-      color: #e2e8f0;
-    }
+
     .recommendation {
       margin-top: 0.8rem;
       font-weight: 700;
       color: #4ade80;
     }
+
     .chart-container {
       height: 200px;
       margin-top: 1rem;
       background: #0f172a;
       border-radius: 0.6rem;
     }
+
     .unlock-btn, .export-btn {
       right: 1rem;
       background: var(--primary-color);
@@ -124,34 +97,31 @@
       z-index: 2;
       transition: background 0.3s;
     }
+
     .unlock-btn:hover, .export-btn:hover {
       background: #16a34a;
     }
+
     footer {
       background: var(--secondary-color);
       padding: 1rem;
       text-align: center;
       margin-top: 2rem;
     }
+
     footer a {
       color: var(--primary-color);
       margin: 0 1rem;
       text-decoration: none;
     }
-    @media (max-width: 600px) {
-      header {
-        font-size: 1.3rem;
-        padding: 1rem;
-      }
-      .card {
-        padding: 1rem;
-      }
-    }
   </style>
 </head>
 <body>
-  <script src="JS/loadHeader.js" defer></script>
-  <nav>
+  <!-- Header partagé -->
+  <div id="headerContainer"></div>
+
+  <!-- Navigation spécifique au dashboard -->
+  <nav class="dashboard-nav flex justify-center gap-4 p-4 bg-gray-800">
     <button onclick="filterSignals('all')">Tous</button>
     <button onclick="filterSignals('achat')">Achat</button>
     <button onclick="filterSignals('vente')">Vente</button>
@@ -173,6 +143,14 @@
     <a href="/docs">Documentation</a>
     <a href="/support">Support</a>
   </footer>
+
+  <script>
+    // Chargement dynamique du header.html
+    fetch('JS/header.html')
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById('headerContainer').innerHTML = html;
+      });
 
   <script>
   const isPremium = false; // Remplacez par une vérification réelle de l'utilisateur
