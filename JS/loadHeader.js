@@ -93,6 +93,7 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     // Ouvrir la modale lorsque l'icône utilisateur est cliquée
     userIcon?.addEventListener('click', function () {
+      console.log("User icon clicked"); // Ajoutez ceci pour vérifier si l'événement est déclenché
       userModal.classList.add('show');
     });
 
