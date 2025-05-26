@@ -10,41 +10,153 @@
   <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.0.0"></script>
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
   <style>
+    :root {
+      --primary-color: #22c55e;
+      --secondary-color: #1e293b;
+      --text-color: #f1f5f9;
+      --accent-color: #86efac;
+    }
+    * { box-sizing: border-box; }
     body {
+      margin: 0;
       font-family: 'Inter', sans-serif;
+      background: #0f172a;
+      color: var(--text-color);
+    }
+    header {
+      background: var(--primary-color);
+      padding: 1.5rem 2rem;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #fff;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      letter-spacing: 0.05em;
+    }
+    nav {
+      background: var(--secondary-color);
+      padding: 1rem;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+    nav button {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    nav button:hover {
+      background: #16a34a;
+    }
+    main {
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+    }
+    .notice {
+      background: #dcfce7;
+      color: #166534;
+      border-left: 5px solid var(--primary-color);
+      padding: 1rem 1.5rem;
+      border-radius: 0.75rem;
+      margin-bottom: 2rem;
+      font-weight: 600;
+      text-align: center;
+    }
+    #signalsContainer {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 2rem;
+    }
+    .card {
+      background: var(--secondary-color);
+      padding: 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      position: relative;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 20px rgba(34,197,94,0.4);
+    }
+    .card.blur {
+      filter: blur(4px);
+      pointer-events: none;
+      user-select: none;
+    }
+    .card h3 {
+      font-size: 1.4rem;
+      margin: 0 0 0.8rem;
+      color: var(--accent-color);
+    }
+    .card p {
+      margin: 0.3rem 0;
+      font-size: 1.05rem;
+      color: #e2e8f0;
+    }
+    .recommendation {
+      margin-top: 0.8rem;
+      font-weight: 700;
+      color: #4ade80;
+    }
+    .chart-container {
+      height: 200px;
+      margin-top: 1rem;
+      background: #0f172a;
+      border-radius: 0.6rem;
+    }
+    .unlock-btn, .export-btn {
+      right: 1rem;
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      z-index: 2;
+      transition: background 0.3s;
+    }
+    .unlock-btn:hover, .export-btn:hover {
+      background: #16a34a;
+    }
+    footer {
+      background: var(--secondary-color);
+      padding: 1rem;
+      text-align: center;
+      margin-top: 2rem;
+    }
+    footer a {
+      color: var(--primary-color);
+      margin: 0 1rem;
+      text-decoration: none;
+    }
+    @media (max-width: 600px) {
+      header {
+        font-size: 1.3rem;
+        padding: 1rem;
+      }
+      .card {
+        padding: 1rem;
+      }
     }
   </style>
 </head>
-<body class="bg-gray-50 text-gray-900">
-
-  <!-- Header -->
-  <header class="py-4 bg-white shadow-md sticky top-0 z-50">
-    <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
-      <h1 class="text-3xl font-bold text-green-600">Luxibre</h1>
-      <nav class="hidden md:flex space-x-6 items-center">
-        <a href="index.html" class="hover:text-green-600 font-medium">Accueil</a>
-        <a href="dashboard.html" class="hover:text-green-600 font-medium">Dashboard</a>
-        <a href="pricing.html" class="hover:text-green-600 font-medium">Abonnement</a>
-        <button id="loginBtn" class="hover:text-green-600 font-medium">Connexion</button>
-        <button id="logoutBtn" class="hover:text-green-600 font-medium hidden">Déconnexion</button>
-      </nav>
-      <!-- Mobile menu -->
-      <div class="md:hidden">
-        <button id="menuToggle" class="text-green-600 text-2xl">&#9776;</button>
-      </div>
-    </div>
-    <div id="mobileMenu" class="md:hidden hidden px-6 pt-4 pb-2 bg-white space-y-2">
-      <a href="index.html" class="block text-gray-800 hover:text-green-600">Accueil</a>
-      <a href="dashboard.html" class="block text-gray-800 hover:text-green-600">Dashboard</a>
-      <a href="pricing.html" class="block text-gray-800 hover:text-green-600">Abonnement</a>
-      <button id="mobileLoginBtn" class="block text-left w-full text-gray-800 hover:text-green-600">Connexion</button>
-      <button id="mobileLogoutBtn" class="block text-left w-full text-gray-800 hover:text-green-600 hidden">Déconnexion</button>
-    </div>
-  </header>
-
+<body>
+  <header>Luxibre Alpha — Tableau de bord Moderne</header>
+  <nav>
+    <button onclick="filterSignals('all')">Tous</button>
+    <button onclick="filterSignals('achat')">Achat</button>
+    <button onclick="filterSignals('vente')">Vente</button>
+    <button onclick="filterSignals('conservation')">Conservation</button>
+  </nav>
   <main>
     <div id="premiumNotice" class="notice" style="display: none;"></div>
     <div id="signalsContainer"></div>
@@ -224,57 +336,6 @@
   }
 
   document.addEventListener('DOMContentLoaded', renderSignals);
-
-  // Supabase et logique auth
-  <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-
-    const supabase = createClient(
-      'https://jrgdwozxcilasllpvikh.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpyZ2R3b3p4Y2lsYXNsbHB2aWtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4MjQ0NTEsImV4cCI6MjA2MzQwMDQ1MX0.S2oGP2rdtq1IkW-oH5mC8omm698PdCgQJtGVLlIFj3w'
-    );
-
-    const loginBtn = document.getElementById("loginBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
-    const mobileLoginBtn = document.getElementById("mobileLoginBtn");
-    const mobileLogoutBtn = document.getElementById("mobileLogoutBtn");
-
-    const { data: { user } } = await supabase.auth.getUser();
-
-    if (user) {
-      loginBtn.classList.add("hidden");
-      logoutBtn.classList.remove("hidden");
-      mobileLoginBtn.classList.add("hidden");
-      mobileLogoutBtn.classList.remove("hidden");
-    } else {
-      loginBtn.classList.remove("hidden");
-      logoutBtn.classList.add("hidden");
-      mobileLoginBtn.classList.remove("hidden");
-      mobileLogoutBtn.classList.add("hidden");
-    }
-
-    logoutBtn.addEventListener("click", async () => {
-      await supabase.auth.signOut();
-      window.location.href = "login.html";
-    });
-
-    mobileLogoutBtn.addEventListener("click", async () => {
-      await supabase.auth.signOut();
-      window.location.href = "login.html";
-    });
-
-    loginBtn.addEventListener("click", () => {
-      window.location.href = "login.html";
-    });
-
-    mobileLoginBtn.addEventListener("click", () => {
-      window.location.href = "login.html";
-    });
-
-    document.getElementById("menuToggle").addEventListener("click", () => {
-      document.getElementById("mobileMenu").classList.toggle("hidden");
-    });
-  </script>
   </script>
 </body>
 </html>
