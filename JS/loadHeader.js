@@ -7,25 +7,29 @@ document.addEventListener('DOMContentLoaded', function () {
       // Corriger les couleurs si le fond est sombre (ex: dashboard)
       const isDark = getComputedStyle(document.body).backgroundColor === 'rgb(15, 23, 42)'; // #0f172a
       if (isDark) {
-        const style = document.createElement('style');
-        style.textContent = `
-          header nav a,
-          #mobileMenu a,
-          #loginBtn, #logoutBtn,
-          #mobileLoginBtn, #mobileLogoutBtn {
-            color: #f8fafc !important; /* texte clair */
-          }
+  const style = document.createElement('style');
+  style.textContent = `
+    header nav a,
+    #mobileMenu a,
+    #loginBtn, #logoutBtn,
+    #mobileLoginBtn, #mobileLogoutBtn {
+      color: #f8fafc !important; /* texte clair */
+    }
 
-          header {
-            background-color: #0f172a !important;
-          }
+    header {
+      background-color: #0f172a !important;
+    }
 
-          #menuToggle {
-            color: #22c55e !important; /* vert Luxibre */
-          }
-        `;
-        document.head.appendChild(style);
-      }
+    #menuToggle {
+      color: #22c55e !important;
+    }
+
+    #mobileMenu {
+      background-color: #0f172a !important;
+    }
+  `;
+  document.head.appendChild(style);
+}
 
       // Gestion de l'authentification
       const loginBtn = document.getElementById("loginBtn");
