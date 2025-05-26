@@ -1,3 +1,4 @@
+// generate-signals.js
 import fs from 'fs';
 import axios from 'axios';
 import dotenv from 'dotenv';
@@ -31,7 +32,7 @@ const STOCKS = [
 ];
 
 const ETFS = [
-  { symbol: "EXI4.DE", name: "iShares EURO STOXX Banks 30-15 UCITS ETF (DE) EUR (Acc)", type: "etf", premium: false, price: 12.6910 }
+  { symbol: "EXI4.DE", name: "iShares EURO STOXX Banks 30-15 UCITS ETF (DE)", type: "etf", premium: false, price: 12.6910 }
 ];
 
 const CRYPTOS = [
@@ -45,30 +46,28 @@ const CRYPTOS = [
   { symbol: "DOGE", name: "Dogecoin", type: "crypto", premium: false }
 ];
 
-// Calculs indicateurs
-function calculateSMA(data, period = 5) {
+function calculateSMA(data, period) {
   if (data.length < period) return null;
   return data.slice(-period).reduce((sum, val) => sum + val, 0) / period;
 }
 
 function calculateRSI(data, period = 14) {
-  if (data.length < period) return 50;
+  if (data.length < period + 1) return 50;
   let gains = 0, losses = 0;
   for (let i = 1; i <= period; i++) {
-    const diff = data[i] - data[i - 1];
+    const diff = data[data.length - i] - data[data.length - i - 1];
     if (diff > 0) gains += diff;
     else losses -= diff;
   }
-  if (gains + losses === 0) return 50;
   const rs = gains / (losses || 1);
   return 100 - (100 / (1 + rs));
 }
 
 function calculateMACD(data) {
-  const sma12 = calculateSMA(data, 12);
-  const sma26 = calculateSMA(data, 26);
-  if (sma12 === null || sma26 === null) return 0;
-  return sma12 - sma26;
+  const ema12 = calculateSMA(data, 12);
+  const ema26 = calculateSMA(data, 26);
+  if (ema12 === null || ema26 === null) return 0;
+  return ema12 - ema26;
 }
 
 function calculateBollingerBands(data, period = 20) {
@@ -77,30 +76,34 @@ function calculateBollingerBands(data, period = 20) {
   const stdDev = Math.sqrt(data.slice(-period).reduce((sum, val) => sum + Math.pow(val - sma, 2), 0) / period);
   return {
     middle: sma,
-    upper: sma + (stdDev * 2),
-    lower: sma - (stdDev * 2)
+    upper: sma + 2 * stdDev,
+    lower: sma - 2 * stdDev
   };
 }
 
-function calculateRecommendation(history, type) {
-  if (history.length < 26) return "Conserver";
-
+function calculateScore(history) {
   const latest = history[history.length - 1];
-  const first = history[history.length - 26];
-  const change = ((latest - first) / first) * 100;
-  const sma = calculateSMA(history, 5);
-  const rsi = calculateRSI(history, 14);
+  const sma50 = calculateSMA(history, 50);
+  const sma200 = calculateSMA(history, 200);
+  const rsi = calculateRSI(history);
   const macd = calculateMACD(history);
   const bollinger = calculateBollingerBands(history);
+  let score = 50;
 
-  if (type === "crypto") {
-    if (change > 10 && rsi < 70 && macd > 0 && latest > sma && latest < bollinger.upper) return "Acheter";
-    if (change < -10 && rsi > 30 && macd < 0 && latest < sma && latest > bollinger.lower) return "Vendre";
-  } else {
-    if (change > 5 && rsi < 70 && macd > 0 && latest > sma && latest < bollinger.upper) return "Acheter";
-    if (change < -5 && rsi > 30 && macd < 0 && latest < sma && latest > bollinger.lower) return "Vendre";
-  }
+  if (sma50 && sma200 && sma50 > sma200) score += 15;
+  if (rsi < 30) score += 10;
+  if (rsi > 70) score -= 10;
+  if (macd > 0) score += 10;
+  if (macd < 0) score -= 10;
+  if (bollinger.upper && latest > bollinger.upper) score -= 5;
+  if (bollinger.lower && latest < bollinger.lower) score += 5;
 
+  return Math.max(0, Math.min(100, score));
+}
+
+function determineRecommendation(score) {
+  if (score >= 70) return "Acheter";
+  if (score <= 40) return "Vendre";
   return "Conserver";
 }
 
@@ -111,39 +114,24 @@ async function fetchStock(symbol, type) {
   } else {
     url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${symbol}&apikey=${API_KEY}`;
   }
-
   const res = await axios.get(url);
-  let daily;
-  if (type === "crypto") {
-    daily = res.data["Time Series (Digital Currency Daily)"];
-  } else {
-    daily = res.data["Time Series (Daily)"];
-  }
-
+  let daily = type === "crypto" ? res.data["Time Series (Digital Currency Daily)"] : res.data["Time Series (Daily)"];
   if (!daily) return null;
-
-  const dates = Object.keys(daily).slice(0, 26).reverse();
+  const dates = Object.keys(daily).slice(0, 200).reverse();
   const history = dates.map(date => parseFloat(daily[date]["4a. close (USD)"] || daily[date]["4. close"]));
   const price = history[history.length - 1];
-
   return { history, price };
 }
 
-// Vérifie si la bourse NY est ouverte
 function isMarketOpen() {
   const now = DateTime.now().setZone('America/New_York');
-  const day = now.weekday; // 1=lundi ... 7=dimanche
+  const day = now.weekday;
   const hour = now.hour;
   const minute = now.minute;
-
-  if (day >= 6) return false; // Samedi ou dimanche
-  if (hour < 9 || (hour === 9 && minute < 30)) return false;
-  if (hour > 16) return false;
-
+  if (day >= 6 || hour < 9 || (hour === 9 && minute < 30) || hour > 16) return false;
   return true;
 }
 
-// Transforme la recommandation textuelle en catégorie front-end attendue
 function mapRecommendationToCategory(rec) {
   if (rec === "Acheter") return "achat";
   if (rec === "Vendre") return "vente";
@@ -157,7 +145,6 @@ const generate = async () => {
   }
   console.log("La bourse est ouverte, génération des signaux...");
 
-  // On prépare des tableaux triés par catégorie (achat, vente, conservation)
   const signals = {
     achat: [],
     vente: [],
@@ -170,38 +157,38 @@ const generate = async () => {
     try {
       let data;
       if (asset.type === 'etf') {
-        // Générer fausse histoire pour ETF
-        const history = Array.from({ length: 26 }, (_, i) => asset.price - (Math.random() * 2 - 1));
-        const recommendation = calculateRecommendation(history, asset.type);
-        data = { history, price: asset.price, recommendation };
+        const history = Array.from({ length: 200 }, () => asset.price - (Math.random() * 2 - 1));
+        const score = calculateScore(history);
+        const recommendation = determineRecommendation(score);
+        data = { history, price: asset.price, score, recommendation };
       } else {
         data = await fetchStock(asset.symbol, asset.type);
-        if (!data || data.history.length < 26) {
+        if (!data || data.history.length < 50) {
           console.warn(`Données insuffisantes pour ${asset.symbol}`);
           continue;
         }
-        data.recommendation = calculateRecommendation(data.history, asset.type);
+        data.score = calculateScore(data.history);
+        data.recommendation = determineRecommendation(data.score);
       }
 
       const category = mapRecommendationToCategory(data.recommendation);
-
-      // Structure du signal
       const signal = {
         name: asset.name,
         price: data.price,
         history: data.history,
         recommendation: data.recommendation,
+        score: data.score,
         premium: asset.premium,
         updated: new Date().toISOString()
       };
 
-      if (asset.type === "crypto") {
-        signal.indicators = {
-          rsi: calculateRSI(data.history, 14),
-          macd: calculateMACD(data.history),
-          bollinger: calculateBollingerBands(data.history)
-        };
-      }
+      signal.indicators = {
+        rsi: calculateRSI(data.history),
+        macd: calculateMACD(data.history),
+        bollinger: calculateBollingerBands(data.history),
+        sma50: calculateSMA(data.history, 50),
+        sma200: calculateSMA(data.history, 200)
+      };
 
       signals[category].push(signal);
     } catch (err) {
@@ -209,7 +196,6 @@ const generate = async () => {
     }
   }
 
-  // Écrire dans le fichier signals.json
   fs.writeFileSync('data/signals.json', JSON.stringify(signals, null, 2));
   console.log("Fichier signals.json généré avec succès !");
 };
