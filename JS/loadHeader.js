@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   try {
     const response = await fetch('header.html');
     const headerHTML = await response.text();
-    document.getElementById('header-container').innerHTML = headerHTML;
+    document.body.insertAdjacentHTML('afterbegin', headerHTML);
 
     // Thème sombre : ajustements des couleurs
     const isDark = getComputedStyle(document.body).backgroundColor === 'rgb(15, 23, 42)';
@@ -92,8 +92,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     });
 
     // Ouvrir la modale lorsque l'icône utilisateur est cliquée
-    userIcon?.addEventListener('click', function (event) {
-      event.preventDefault(); // Empêche le comportement par défaut du lien
+    userIcon?.addEventListener('click', function () {
       console.log("User icon clicked"); // Ajoutez ceci pour vérifier si l'événement est déclenché
       userModal.classList.add('show');
     });
