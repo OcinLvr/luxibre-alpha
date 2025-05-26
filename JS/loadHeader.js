@@ -1,74 +1,88 @@
-document.addEventListener('DOMContentLoaded', function () {
-  fetch('header.html')
-    .then(response => response.text())
-    .then(data => {
-      document.body.insertAdjacentHTML('afterbegin', data);
+// loadHeader.js
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-      // Corriger les couleurs si le fond est sombre (ex: dashboard)
-      const isDark = getComputedStyle(document.body).backgroundColor === 'rgb(15, 23, 42)'; // #0f172a
-      if (isDark) {
-  const style = document.createElement('style');
-  style.textContent = `
-    header nav a,
-    #mobileMenu a,
-    #loginBtn, #logoutBtn,
-    #mobileLoginBtn, #mobileLogoutBtn {
-      color: #f8fafc !important; /* texte clair */
+const supabase = createClient(
+  'https://jrgdwozxcilasllpvikh.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpyZ2R3b3p4Y2lsYXNsbHB2aWtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4MjQ0NTEsImV4cCI6MjA2MzQwMDQ1MX0.S2oGP2rdtq1IkW-oH5mC8omm698PdCgQJtGVLlIFj3w'
+);
+
+document.addEventListener('DOMContentLoaded', async function () {
+  try {
+    const response = await fetch('header.html');
+    const headerHTML = await response.text();
+    document.body.insertAdjacentHTML('afterbegin', headerHTML);
+
+    // Thème sombre : ajustements des couleurs
+    const isDark = getComputedStyle(document.body).backgroundColor === 'rgb(15, 23, 42)';
+    if (isDark) {
+      const style = document.createElement('style');
+      style.textContent = `
+        header nav a,
+        #mobileMenu a,
+        #loginBtn, #logoutBtn,
+        #mobileLoginBtn, #mobileLogoutBtn {
+          color: #f8fafc !important;
+        }
+
+        header {
+          background-color: #0f172a !important;
+        }
+
+        #menuToggle {
+          color: #22c55e !important;
+        }
+
+        #mobileMenu {
+          background-color: #0f172a !important;
+        }
+      `;
+      document.head.appendChild(style);
     }
 
-    header {
-      background-color: #0f172a !important;
+    // Supabase Auth : gestion de l'état de connexion
+    const { data: { user } } = await supabase.auth.getUser();
+
+    const loginBtn = document.getElementById("loginBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const mobileLoginBtn = document.getElementById("mobileLoginBtn");
+    const mobileLogoutBtn = document.getElementById("mobileLogoutBtn");
+
+    if (user) {
+      loginBtn?.classList.add("hidden");
+      logoutBtn?.classList.remove("hidden");
+      mobileLoginBtn?.classList.add("hidden");
+      mobileLogoutBtn?.classList.remove("hidden");
+    } else {
+      loginBtn?.classList.remove("hidden");
+      logoutBtn?.classList.add("hidden");
+      mobileLoginBtn?.classList.remove("hidden");
+      mobileLogoutBtn?.classList.add("hidden");
     }
 
-    #menuToggle {
-      color: #22c55e !important;
-    }
-
-    #mobileMenu {
-      background-color: #0f172a !important;
-    }
-  `;
-  document.head.appendChild(style);
-}
-
-      // Gestion de l'authentification
-      const loginBtn = document.getElementById("loginBtn");
-      const logoutBtn = document.getElementById("logoutBtn");
-      const mobileLoginBtn = document.getElementById("mobileLoginBtn");
-      const mobileLogoutBtn = document.getElementById("mobileLogoutBtn");
-
-      const user = false; // à remplacer par votre vraie logique
-
-      if (user) {
-        loginBtn.classList.add("hidden");
-        logoutBtn.classList.remove("hidden");
-        mobileLoginBtn.classList.add("hidden");
-        mobileLogoutBtn.classList.remove("hidden");
-      } else {
-        loginBtn.classList.remove("hidden");
-        logoutBtn.classList.add("hidden");
-        mobileLoginBtn.classList.remove("hidden");
-        mobileLogoutBtn.classList.add("hidden");
-      }
-
-      logoutBtn.addEventListener("click", async () => {
-        window.location.href = "login.html";
-      });
-
-      mobileLogoutBtn.addEventListener("click", async () => {
-        window.location.href = "login.html";
-      });
-
-      loginBtn.addEventListener("click", () => {
-        window.location.href = "login.html";
-      });
-
-      mobileLoginBtn.addEventListener("click", () => {
-        window.location.href = "login.html";
-      });
-
-      document.getElementById("menuToggle").addEventListener("click", () => {
-        document.getElementById("mobileMenu").classList.toggle("hidden");
-      });
+    logoutBtn?.addEventListener("click", async () => {
+      await supabase.auth.signOut();
+      window.location.href = "login.html";
     });
+
+    mobileLogoutBtn?.addEventListener("click", async () => {
+      await supabase.auth.signOut();
+      window.location.href = "login.html";
+    });
+
+    loginBtn?.addEventListener("click", () => {
+      window.location.href = "login.html";
+    });
+
+    mobileLoginBtn?.addEventListener("click", () => {
+      window.location.href = "login.html";
+    });
+
+    // Menu mobile
+    document.getElementById("menuToggle")?.addEventListener("click", () => {
+      document.getElementById("mobileMenu")?.classList.toggle("hidden");
+    });
+
+  } catch (err) {
+    console.error("Erreur lors du chargement du header :", err);
+  }
 });
