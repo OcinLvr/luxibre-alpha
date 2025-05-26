@@ -121,12 +121,12 @@
   <div id="headerContainer"></div>
 
   <!-- Navigation spécifique au dashboard -->
-  <nav class="dashboard-nav flex justify-center gap-4 p-4 bg-gray-800">
-    <button onclick="filterSignals('all')">Tous</button>
-    <button onclick="filterSignals('achat')">Achat</button>
-    <button onclick="filterSignals('vente')">Vente</button>
-    <button onclick="filterSignals('conservation')">Conservation</button>
-  </nav>
+  <nav class="dashboard-nav overflow-x-auto whitespace-nowrap flex gap-2 sm:justify-center p-4 bg-gray-800">
+  <button onclick="filterSignals('all')" class="px-4 py-2 bg-green-500 text-white font-semibold rounded-full whitespace-nowrap">Tous</button>
+  <button onclick="filterSignals('achat')" class="px-4 py-2 bg-green-500 text-white font-semibold rounded-full whitespace-nowrap">Achat</button>
+  <button onclick="filterSignals('vente')" class="px-4 py-2 bg-green-500 text-white font-semibold rounded-full whitespace-nowrap">Vente</button>
+  <button onclick="filterSignals('conservation')" class="px-4 py-2 bg-green-500 text-white font-semibold rounded-full whitespace-nowrap">Conservation</button>
+</nav>
   <main>
     <div id="premiumNotice" class="notice" style="display: none;"></div>
     <div id="signalsContainer"></div>
