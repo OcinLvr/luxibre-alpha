@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async function () {
   try {
     const response = await fetch('header.html');
     const headerHTML = await response.text();
-    document.body.insertAdjacentHTML('afterbegin', headerHTML);
+    document.getElementById('header-container').innerHTML = headerHTML;
 
     // Thème sombre : ajustements des couleurs
     const isDark = getComputedStyle(document.body).backgroundColor === 'rgb(15, 23, 42)';
@@ -47,6 +47,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     const mobileLoginBtn = document.getElementById("mobileLoginBtn");
     const mobileLogoutBtn = document.getElementById("mobileLogoutBtn");
     const userIcon = document.querySelector('.fa-user');
+    const mobileUserIcon = document.querySelector('.md\\:hidden .fa-user'); // Sélecteur pour l'icône utilisateur mobile
     const closeModal = document.getElementById('closeModal');
     const userModal = document.getElementById('userModal');
     const userName = document.getElementById('userName');
@@ -92,8 +93,16 @@ document.addEventListener('DOMContentLoaded', async function () {
     });
 
     // Ouvrir la modale lorsque l'icône utilisateur est cliquée
-    userIcon?.addEventListener('click', function () {
+    userIcon?.addEventListener('click', function (event) {
+      event.preventDefault(); // Empêche le comportement par défaut du lien
       console.log("User icon clicked"); // Ajoutez ceci pour vérifier si l'événement est déclenché
+      userModal.classList.add('show');
+    });
+
+    // Ouvrir la modale lorsque l'icône utilisateur mobile est cliquée
+    mobileUserIcon?.addEventListener('click', function (event) {
+      event.preventDefault(); // Empêche le comportement par défaut du lien
+      console.log("Mobile user icon clicked"); // Ajoutez ceci pour vérifier si l'événement est déclenché
       userModal.classList.add('show');
     });
 
