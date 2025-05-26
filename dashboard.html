@@ -153,9 +153,9 @@
   <header>Luxibre Alpha — Tableau de bord Moderne</header>
   <nav>
     <button onclick="filterSignals('all')">Tous</button>
-    <button onclick="filterSignals('etfs')">ETFs</button>
-    <button onclick="filterSignals('stocks')">Actions</button>
-    <button onclick="filterSignals('cryptos')">Cryptos</button>
+    <button onclick="filterSignals('achat')">Achat</button>
+    <button onclick="filterSignals('vente')">Vente</button>
+    <button onclick="filterSignals('conservation')">Conservation</button>
   </nav>
   <main>
     <div id="premiumNotice" class="notice" style="display: none;"></div>
@@ -236,11 +236,13 @@
     const data = await fetchSignals();
     if (!data) return;
 
+    console.log("Données chargées:", data); // Log pour vérifier les données
+
     const container = document.getElementById("signalsContainer");
     const premiumNotice = document.getElementById("premiumNotice");
     let premiumLocked = false;
 
-    ["etfs", "stocks", "cryptos"].forEach(category => {
+    ["achat", "vente", "conservation"].forEach(category => {
       if (!data[category] || !Array.isArray(data[category])) return;
 
       data[category].forEach((signal, i) => {
