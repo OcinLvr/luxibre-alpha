@@ -82,22 +82,90 @@ function calculateBollingerBands(data, period = 20) {
   };
 }
 
-function calculateScore(history) {
+function calculateMomentum(data, period = 10) {
+  if (data.length < period) return 0;
+  return data[data.length - 1] - data[data.length - period];
+}
+
+function calculateStochasticRSI(data, period = 14) {
+  if (data.length < period + 1) return 0.5;
+  const rsiValues = [];
+  for (let i = period; i < data.length; i++) {
+    const slice = data.slice(i - period, i + 1);
+    rsiValues.push(calculateRSI(slice));
+  }
+  const currentRSI = rsiValues[rsiValues.length - 1];
+  const minRSI = Math.min(...rsiValues);
+  const maxRSI = Math.max(...rsiValues);
+  if (maxRSI - minRSI === 0) return 0.5;
+  return (currentRSI - minRSI) / (maxRSI - minRSI);
+}
+
+function calculateADX(data, period = 14) {
+  if (data.length < period + 1) return 20;
+  let plusDM = 0, minusDM = 0, tr = 0;
+  for (let i = 1; i <= period; i++) {
+    const upMove = data[data.length - i] - data[data.length - i - 1];
+    const downMove = data[data.length - i - 1] - data[data.length - i];
+    plusDM += upMove > downMove && upMove > 0 ? upMove : 0;
+    minusDM += downMove > upMove && downMove > 0 ? downMove : 0;
+    tr += Math.abs(data[data.length - i] - data[data.length - i - 1]);
+  }
+  const plusDI = (plusDM / tr) * 100;
+  const minusDI = (minusDM / tr) * 100;
+  const dx = Math.abs(plusDI - minusDI) / (plusDI + minusDI) * 100;
+  return dx;
+}
+
+function detectVolumeSpike(volumeHistory) {
+  const recentVolumes = volumeHistory.slice(-20);
+  const avg = recentVolumes.reduce((a, b) => a + b, 0) / recentVolumes.length;
+  const last = recentVolumes[recentVolumes.length - 1];
+  return last > avg * 1.5;
+}
+
+function calculateLinearRegressionSlope(data, period = 20) {
+  if (data.length < period) return 0;
+  const x = [...Array(period).keys()];
+  const y = data.slice(-period);
+  const xAvg = x.reduce((a, b) => a + b, 0) / period;
+  const yAvg = y.reduce((a, b) => a + b, 0) / period;
+  const numerator = x.reduce((sum, xi, i) => sum + (xi - xAvg) * (y[i] - yAvg), 0);
+  const denominator = x.reduce((sum, xi) => sum + Math.pow(xi - xAvg, 2), 0);
+  return numerator / denominator;
+}
+
+function calculateScore(history, volumeHistory = []) {
   const latest = history[history.length - 1];
-  const sma50 = calculateSMA(history, 50);
-  const sma200 = calculateSMA(history, 200);
-  const rsi = calculateRSI(history);
-  const macd = calculateMACD(history);
-  const bollinger = calculateBollingerBands(history);
+  const indicators = {
+    sma50: calculateSMA(history, 50),
+    sma200: calculateSMA(history, 200),
+    rsi: calculateRSI(history),
+    macd: calculateMACD(history),
+    bollinger: calculateBollingerBands(history),
+    momentum: calculateMomentum(history),
+    stochasticRSI: calculateStochasticRSI(history),
+    adx: calculateADX(history),
+    slope: calculateLinearRegressionSlope(history),
+    volumeSpike: detectVolumeSpike(volumeHistory)
+  };
+
   let score = 50;
 
-  if (sma50 && sma200 && sma50 > sma200) score += 15;
-  if (rsi < 30) score += 10;
-  if (rsi > 70) score -= 10;
-  if (macd > 0) score += 10;
-  if (macd < 0) score -= 10;
-  if (bollinger.upper && latest > bollinger.upper) score -= 5;
-  if (bollinger.lower && latest < bollinger.lower) score += 5;
+  // Pondérations intelligentes
+  if (indicators.sma50 && indicators.sma200 && indicators.sma50 > indicators.sma200) score += 10;
+  if (indicators.rsi < 30) score += 10;
+  else if (indicators.rsi > 70) score -= 10;
+  if (indicators.macd > 0) score += 7;
+  else if (indicators.macd < 0) score -= 7;
+  if (indicators.stochasticRSI > 0.8) score -= 5;
+  else if (indicators.stochasticRSI < 0.2) score += 5;
+  if (indicators.adx > 25) score += 5;
+  if (indicators.momentum > 0) score += 5;
+  if (indicators.bollinger.upper && latest > indicators.bollinger.upper) score -= 5;
+  if (indicators.bollinger.lower && latest < indicators.bollinger.lower) score += 5;
+  if (indicators.slope > 0) score += 5;
+  if (indicators.volumeSpike) score += 3;
 
   return Math.max(0, Math.min(100, score));
 }
@@ -200,6 +268,12 @@ const generate = async () => {
         sma50: calculateSMA(data.history, 50),
         sma200: calculateSMA(data.history, 200)
       };
+      
+      // Backtesting du signal
+      signal.backtest = backtestSignal(data.history, (hist) => {
+        const score = calculateScore(hist);
+        return determineRecommendation(score);
+      });
 
       signals[category].push(signal);
     } catch (err) {
@@ -210,5 +284,40 @@ const generate = async () => {
   fs.writeFileSync('data/signals.json', JSON.stringify(signals, null, 2));
   console.log("Fichier signals.json généré avec succès !");
 };
+
+function backtestSignal(history, recommendationFn) {
+  const lookbackPeriod = 30; // 30 jours
+  const results = [];
+
+  for (let i = 200; i > 50; i -= 1) {
+    const slice = history.slice(0, i);
+    const priceAtSignal = slice[slice.length - 1];
+    const futurePrices = history.slice(i, i + lookbackPeriod);
+    if (futurePrices.length < lookbackPeriod) continue;
+
+    const rec = recommendationFn(slice);
+    const futurePrice = futurePrices[futurePrices.length - 1];
+    const variation = ((futurePrice - priceAtSignal) / priceAtSignal) * 100;
+
+    let success = false;
+    if (rec === "Acheter" && variation > 2) success = true;
+    else if (rec === "Vendre" && variation < -2) success = true;
+    else if (rec === "Conserver" && Math.abs(variation) < 2) success = true;
+
+    results.push({ rec, variation, success });
+  }
+
+  const total = results.length;
+  const successes = results.filter(r => r.success).length;
+  const avgGain = results.reduce((acc, r) => acc + r.variation, 0) / total;
+
+  return {
+    totalTests: total,
+    successful: successes,
+    successRate: (successes / total) * 100,
+    averageGain: avgGain,
+    details: results.slice(-10)
+  };
+}
 
 generate();
