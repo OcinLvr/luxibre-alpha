@@ -1,12 +1,36 @@
 {
   "achat": [
     {
+      "symbol": "MSFT",
+      "name": "Microsoft Corp.",
+      "score": 72,
+      "recommendation": "Acheter",
+      "premium": true,
+      "price": "450.18"
+    },
+    {
+      "symbol": "JPM",
+      "name": "JPMorgan Chase & Co.",
+      "score": 72,
+      "recommendation": "Acheter",
+      "premium": true,
+      "price": "260.71"
+    },
+    {
+      "symbol": "NFLX",
+      "name": "Netflix Inc.",
+      "score": 72,
+      "recommendation": "Acheter",
+      "premium": true,
+      "price": "1185.39"
+    },
+    {
       "symbol": "EXA1.AS",
       "name": "iShares EURO STOXX Banks 30-15 UCITS ETF (DE)",
       "score": 72,
       "recommendation": "Acheter",
       "premium": false,
-      "price": "12.86"
+      "price": "12.89"
     },
     {
       "symbol": "BTC",
@@ -15,26 +39,146 @@
       "recommendation": "Acheter",
       "premium": true,
       "price": "109355.55"
-    },
-    {
-      "symbol": "XRP",
-      "name": "XRP",
-      "score": 77,
-      "recommendation": "Acheter",
-      "premium": false,
-      "price": "2.31"
-    },
-    {
-      "symbol": "DOT",
-      "name": "Polkadot",
-      "score": 77,
-      "recommendation": "Acheter",
-      "premium": true,
-      "price": "4.46"
     }
   ],
   "vente": [],
   "conservation": [
+    {
+      "symbol": "AAPL",
+      "name": "Apple Inc.",
+      "score": 57,
+      "recommendation": "Conserver",
+      "premium": false,
+      "price": "195.27"
+    },
+    {
+      "symbol": "TSLA",
+      "name": "Tesla Inc.",
+      "score": 57,
+      "recommendation": "Conserver",
+      "premium": true,
+      "price": "339.34"
+    },
+    {
+      "symbol": "AMZN",
+      "name": "Amazon.com Inc.",
+      "score": 67,
+      "recommendation": "Conserver",
+      "premium": true,
+      "price": "200.99"
+    },
+    {
+      "symbol": "GOOGL",
+      "name": "Alphabet Inc.",
+      "score": 67,
+      "recommendation": "Conserver",
+      "premium": false,
+      "price": "168.47"
+    },
+    {
+      "symbol": "META",
+      "name": "Meta Platforms Inc.",
+      "score": 62,
+      "recommendation": "Conserver",
+      "premium": true,
+      "price": "627.06"
+    },
+    {
+      "symbol": "NVDA",
+      "name": "NVIDIA Corp.",
+      "score": 62,
+      "recommendation": "Conserver",
+      "premium": false,
+      "price": "131.29"
+    },
+    {
+      "symbol": "V",
+      "name": "Visa Inc.",
+      "score": 62,
+      "recommendation": "Conserver",
+      "premium": false,
+      "price": "353.54"
+    },
+    {
+      "symbol": "WMT",
+      "name": "Walmart Inc.",
+      "score": 67,
+      "recommendation": "Conserver",
+      "premium": true,
+      "price": "96.34"
+    },
+    {
+      "symbol": "DIS",
+      "name": "The Walt Disney Company",
+      "score": 52,
+      "recommendation": "Conserver",
+      "premium": false,
+      "price": "109.72"
+    },
+    {
+      "symbol": "PYPL",
+      "name": "PayPal Holdings Inc.",
+      "score": 62,
+      "recommendation": "Conserver",
+      "premium": false,
+      "price": "69.85"
+    },
+    {
+      "symbol": "ADBE",
+      "name": "Adobe Inc.",
+      "score": 62,
+      "recommendation": "Conserver",
+      "premium": true,
+      "price": "407.69"
+    },
+    {
+      "symbol": "CRM",
+      "name": "Salesforce.com Inc.",
+      "score": 62,
+      "recommendation": "Conserver",
+      "premium": false,
+      "price": "273.13"
+    },
+    {
+      "symbol": "INTC",
+      "name": "Intel Corp.",
+      "score": 62,
+      "recommendation": "Conserver",
+      "premium": true,
+      "price": "20.05"
+    },
+    {
+      "symbol": "CMCSA",
+      "name": "Comcast Corp.",
+      "score": 62,
+      "recommendation": "Conserver",
+      "premium": false,
+      "price": "34.52"
+    },
+    {
+      "symbol": "PEP",
+      "name": "PepsiCo Inc.",
+      "score": 43,
+      "recommendation": "Conserver",
+      "premium": true,
+      "price": "129.34"
+    },
+    {
+      "symbol": "CSCO",
+      "name": "Cisco Systems Inc.",
+      "score": 62,
+      "recommendation": "Conserver",
+      "premium": false,
+      "price": "63.11"
+    },
+    {
+      "symbol": "AVGO",
+      "name": "Broadcom Inc.",
+      "score": 57,
+      "recommendation": "Conserver",
+      "premium": true,
+      "price": "228.72"
+    },
     {
       "symbol": "ETH",
       "name": "Ethereum",
@@ -42,30 +186,6 @@
       "recommendation": "Conserver",
       "premium": true,
       "price": "2557.83"
-    },
-    {
-      "symbol": "ADA",
-      "name": "Cardano",
-      "score": 62,
-      "recommendation": "Conserver",
-      "premium": true,
-      "price": "0.76"
-    },
-    {
-      "symbol": "SOL",
-      "name": "Solana",
-      "score": 67,
-      "recommendation": "Conserver",
-      "premium": false,
-      "price": "174.56"
-    },
-    {
-      "symbol": "DOGE",
-      "name": "Dogecoin",
-      "score": 62,
-      "recommendation": "Conserver",
-      "premium": false,
-      "price": "0.22"
     }
   ]
 }
