@@ -46,7 +46,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     const logoutBtn = document.getElementById("logoutBtn");
     const mobileLoginBtn = document.getElementById("mobileLoginBtn");
     const mobileLogoutBtn = document.getElementById("mobileLogoutBtn");
-    const userIcon = document.querySelector('.fa-user');
+    const userIcon = document.getElementById("userIcon");
+    const mobileUserIcon = document.getElementById("mobileUserIcon");
     const closeModal = document.getElementById('closeModal');
     const userModal = document.getElementById('userModal');
     const userName = document.getElementById('userName');
@@ -103,6 +104,11 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     // Ouvrir la modale lorsque l'icône utilisateur est cliquée
     userIcon?.addEventListener('click', function () {
+      userModal.classList.add('show');
+    });
+
+    // Ouvrir la modale lorsque l'icône utilisateur mobile est cliquée
+    mobileUserIcon?.addEventListener('click', function () {
       userModal.classList.add('show');
     });
 
