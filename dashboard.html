@@ -133,31 +133,33 @@
     }
     
     #bigChartModal {
-      position: fixed;
-      inset: 0;
-      background-color: rgba(15,23,42,0.9);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.9);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  overflow-y: auto; /* Permettre le défilement dans la modal */
+}
 
-    #bigChartModal.active {
-      display: flex;
-    }
+#bigChartModal.active {
+  display: flex;
+}
 
-    #bigChartContent {
-      background-color: var(--secondary-color);
-      border-radius: 1rem;
-      padding: 1.5rem;
-      width: 90%;
-      max-width: 900px;
-      max-height: 90vh;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 0 20px var(--primary-color);
-      position: relative;
-    }
+#bigChartContent {
+  background-color: var(--secondary-color);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  width: 90%;
+  max-width: 900px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 20px var(--primary-color);
+  position: relative;
+  overflow-y: auto; /* Permettre le défilement du contenu de la modal */
+}
 
     #bigChartHeader {
       display: flex;
@@ -401,6 +403,18 @@
   document.body.classList.add('modal-open');
 
   bigChartModal.classList.add("active");
+}
+
+function closeBigChart() {
+  if (bigChartInstance) {
+    bigChartInstance.destroy();
+    bigChartInstance = null;
+  }
+
+  // Supprimer la classe modal-open du corps de la page
+  document.body.classList.remove('modal-open');
+
+  bigChartModal.classList.remove("active");
 }
 
     // Fermer modal grand graphique
