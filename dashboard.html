@@ -5,13 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Dashboard moderne pour Luxibre Alpha">
   <title>Luxibre Alpha - Dashboard Moderne</title>
+
+  <!-- Chart.js + Luxon adapter + zoom plugin -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/luxon@1.25.0"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.0.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@1.2.1/dist/chartjs-plugin-zoom.min.js"></script>
+
+  <!-- html2canvas for export -->
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
   <style>
     :root {
       --primary-color: #22c55e;
@@ -84,9 +91,13 @@
       margin-top: 1rem;
       background: #0f172a;
       border-radius: 0.6rem;
+      cursor: pointer;
+      position: relative;
     }
 
     .unlock-btn, .export-btn {
+      position: absolute;
+      top: 1rem;
       right: 1rem;
       background: var(--primary-color);
       color: white;
@@ -115,6 +126,89 @@
       margin: 0 1rem;
       text-decoration: none;
     }
+
+    /* Modal style for big chart */
+    #bigChartModal {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(15,23,42,0.9);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    #bigChartModal.active {
+      display: flex;
+    }
+
+    #bigChartContent {
+      background-color: var(--secondary-color);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      width: 90%;
+      max-width: 900px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 0 20px var(--primary-color);
+      position: relative;
+    }
+
+    #bigChartHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    #bigChartHeader h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent-color);
+    }
+
+    #closeBigChartBtn {
+      background: transparent;
+      border: none;
+      color: var(--accent-color);
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    #closeBigChartBtn:hover {
+      color: var(--primary-color);
+    }
+
+    #bigChartCanvas {
+      flex-grow: 1;
+      max-height: 70vh;
+      background: #0f172a;
+      border-radius: 0.6rem;
+    }
+
+    #bigChartActions {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+    }
+
+    #bigChartActions button {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    #bigChartActions button:hover {
+      background: #16a34a;
+    }
   </style>
 </head>
 <body>
@@ -123,11 +217,12 @@
 
   <!-- Navigation spécifique au dashboard -->
   <nav class="dashboard-nav overflow-x-auto whitespace-nowrap flex gap-2 sm:justify-center p-4 bg-gray-800">
-  <button onclick="filterSignals('all')" class="text-sm sm:text-base px-3 py-1.5 bg-green-500 text-white font-medium rounded-full whitespace-nowrap">Tous</button>
-  <button onclick="filterSignals('achat')" class="text-sm sm:text-base px-3 py-1.5 bg-green-500 text-white font-medium rounded-full whitespace-nowrap">Achat</button>
-  <button onclick="filterSignals('vente')" class="text-sm sm:text-base px-3 py-1.5 bg-green-500 text-white font-medium rounded-full whitespace-nowrap">Vente</button>
-  <button onclick="filterSignals('conservation')" class="text-sm sm:text-base px-3 py-1.5 bg-green-500 text-white font-medium rounded-full whitespace-nowrap">Conservation</button>
-</nav>
+    <button onclick="filterSignals('all')" class="text-sm sm:text-base px-3 py-1.5 bg-green-500 text-white font-medium rounded-full whitespace-nowrap">Tous</button>
+    <button onclick="filterSignals('achat')" class="text-sm sm:text-base px-3 py-1.5 bg-green-500 text-white font-medium rounded-full whitespace-nowrap">Achat</button>
+    <button onclick="filterSignals('vente')" class="text-sm sm:text-base px-3 py-1.5 bg-green-500 text-white font-medium rounded-full whitespace-nowrap">Vente</button>
+    <button onclick="filterSignals('conservation')" class="text-sm sm:text-base px-3 py-1.5 bg-green-500 text-white font-medium rounded-full whitespace-nowrap">Conservation</button>
+  </nav>
+
   <main>
     <div id="premiumNotice" class="notice" style="display: none;"></div>
     <div id="signalsContainer"></div>
@@ -141,120 +236,221 @@
     </section>
   </main>
 
-  <!-- Modal -->
-<div id="userModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden justify-center items-center">
-  <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-    <div class="flex justify-between items-center mb-4">
-      <h2 class="text-xl font-bold">Informations Utilisateur</h2>
-      <button id="closeModal" class="text-gray-500 hover:text-gray-700">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
-    <div id="userInfo">
-      <!-- Les informations de l'utilisateur seront affichées ici -->
-      <p><strong>Nom:</strong> <span id="userName">Non spécifié</span></p>
-      <p><strong>Email:</strong> <span id="userEmail">Non spécifié</span></p>
-      <!-- Ajoutez d'autres informations utilisateur ici -->
+  <!-- Modal utilisateur -->
+  <div id="userModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden justify-center items-center">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold">Informations Utilisateur</h2>
+        <button id="closeModal" class="text-gray-500 hover:text-gray-700">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div id="userInfo">
+        <p><strong>Nom:</strong> <span id="userName">Non spécifié</span></p>
+        <p><strong>Email:</strong> <span id="userEmail">Non spécifié</span></p>
+      </div>
     </div>
   </div>
-</div>
-  
 
-  
+  <!-- Modal grand graphique -->
+  <div id="bigChartModal" role="dialog" aria-modal="true" aria-labelledby="bigChartTitle">
+    <div id="bigChartContent">
+      <div id="bigChartHeader">
+        <h3 id="bigChartTitle">Graphique</h3>
+        <button id="closeBigChartBtn" aria-label="Fermer le graphique"><i class="fas fa-times"></i></button>
+      </div>
+      <canvas id="bigChartCanvas"></canvas>
+      <div id="bigChartActions">
+        <button id="resetZoomBtn">Réinitialiser Zoom</button>
+        <button id="exportBigChartBtn">Exporter le Graphique</button>
+      </div>
+    </div>
+  </div>
+
   <footer>
     <a href="/docs">Documentation</a>
     <a href="/support">Support</a>
   </footer>
 
-
-
   <script type="module" src="JS/loadHeader.js"></script>
 
   <script>
-  const isPremium = true; // Remplacez par une vérification réelle de l'utilisateur
+    // Simuler statut premium (à remplacer par vrai contrôle utilisateur)
+    const isPremium = true;
+    function isPremiumUser() { return isPremium; }
 
-  function isPremiumUser() {
-    return isPremium;
-  }
-
-  function showPremiumFeatures() {
-    if (isPremiumUser()) {
-      document.getElementById("premiumFeatures").style.display = "block";
-    } else {
-      document.getElementById("premiumFeatures").style.display = "none";
-    }
-  }
-
-  function setupAlerts() {
-    if (isPremiumUser()) {
-      console.log("Alertes configurées pour l'utilisateur premium");
-    } else {
-      console.log("Alertes limitées pour l'utilisateur gratuit");
-    }
-  }
-
-  function exportChart(chartId) {
-    if (isPremiumUser()) {
-      html2canvas(document.getElementById(chartId)).then(canvas => {
+    // Fonction d'export pour petits graphiques
+    function exportChart(chartId) {
+      if (!isPremiumUser()) {
+        alert("Cette fonctionnalité est réservée aux utilisateurs premium.");
+        return;
+      }
+      const element = document.getElementById(chartId);
+      html2canvas(element).then(canvas => {
         const link = document.createElement('a');
         link.download = 'chart.png';
         link.href = canvas.toDataURL();
         link.click();
       });
-    } else {
-      alert("Cette fonctionnalité est réservée aux utilisateurs premium.");
     }
-  }
 
-  function customizeChart() {
-    if (isPremiumUser()) {
-      const chartOptions = {
-        backgroundColor: "#f8fafc",
-        borderColor: "#22c55e",
-      };
-      console.log("Graphiques personnalisés pour l'utilisateur premium");
-    }
-  }
+    // Variables globales pour modal graphique
+    let bigChartInstance = null;
+    const bigChartModal = document.getElementById("bigChartModal");
+    const bigChartCanvas = document.getElementById("bigChartCanvas").getContext('2d');
+    const bigChartTitle = document.getElementById("bigChartTitle");
+    const closeBigChartBtn = document.getElementById("closeBigChartBtn");
+    const resetZoomBtn = document.getElementById("resetZoomBtn");
+    const exportBigChartBtn = document.getElementById("exportBigChartBtn");
 
-  async function fetchSignals() {
-    try {
-      const res = await fetch("data/signals.json");
-      if (!res.ok) throw new Error("HTTP error " + res.status);
-      return await res.json();
-    } catch (err) {
-      console.error("Erreur lors du chargement des signaux:", err);
-      document.getElementById("signalsContainer").textContent = "Erreur lors du chargement des signaux.";
-      return null;
-    }
-  }
+    // Fonction pour ouvrir modal grand graphique
+    function openBigChart(signal) {
+      if (signal.premium && !isPremiumUser()) {
+        alert("Ce signal est réservé aux abonnés premium.");
+        return;
+      }
+      bigChartTitle.textContent = signal.name + " - Prix Historique";
 
-  async function renderSignals() {
-    const data = await fetchSignals();
-    if (!data) return;
+      // Détruire l'ancien graphique si existe
+      if (bigChartInstance) {
+        bigChartInstance.destroy();
+      }
 
-    console.log("Données chargées:", data); // Log pour vérifier les données
-
-    const container = document.getElementById("signalsContainer");
-    const premiumNotice = document.getElementById("premiumNotice");
-    let premiumLocked = false;
-
-    ["achat", "vente", "conservation"].forEach(category => {
-      if (!data[category] || !Array.isArray(data[category])) return;
-
-      data[category].forEach((signal, i) => {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.dataset.category = category;
-
-        const isLocked = signal.premium && !isPremiumUser();
-        if (isLocked) {
-          card.classList.add("blur");
-          premiumLocked = true;
+      bigChartInstance = new Chart(bigChartCanvas, {
+        type: "line",
+        data: {
+          labels: signal.history.map((_, idx) => `J-${signal.history.length - idx}`),
+          datasets: [{
+            label: `${signal.name} - Prix de clôture`,
+            data: signal.history,
+            borderColor: "#22c55e",
+            backgroundColor: "rgba(34,197,94,0.3)",
+            fill: true,
+            tension: 0.3,
+            pointRadius: 3,
+            pointHoverRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              labels: { color: '#d1d5db' }
+            },
+            tooltip: {
+              mode: 'index',
+              intersect: false
+            },
+            zoom: {
+              pan: {
+                enabled: true,
+                mode: 'x',
+                modifierKey: 'ctrl',
+              },
+              zoom: {
+                wheel: {
+                  enabled: true,
+                },
+                pinch: {
+                  enabled: true
+                },
+                mode: 'x',
+              }
+            }
+          },
+          scales: {
+            x: {
+              display: true,
+              ticks: { color: '#a3bffa' },
+              grid: { color: '#334155' }
+            },
+            y: {
+              beginAtZero: false,
+              ticks: { color: '#a3bffa' },
+              grid: { color: '#334155' }
+            }
+          }
         }
+      });
 
-        const chartId = `chart-${category}-${i}`;
+      bigChartModal.classList.add("active");
+    }
 
-        card.innerHTML = `
+    // Fermer modal grand graphique
+    function closeBigChart() {
+      if (bigChartInstance) {
+        bigChartInstance.destroy();
+        bigChartInstance = null;
+      }
+      bigChartModal.classList.remove("active");
+    }
+
+    // Réinitialiser zoom du grand graphique
+    resetZoomBtn.addEventListener("click", () => {
+      if (bigChartInstance) bigChartInstance.resetZoom();
+    });
+
+    // Exporter grand graphique
+    exportBigChartBtn.addEventListener("click", () => {
+      if (!isPremiumUser()) {
+        alert("Cette fonctionnalité est réservée aux utilisateurs premium.");
+        return;
+      }
+      html2canvas(bigChartCanvas.canvas).then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'big-chart.png';
+        link.href = canvas.toDataURL();
+        link.click();
+      });
+    });
+
+    closeBigChartBtn.addEventListener("click", closeBigChart);
+
+    // Fermer modal au clic hors contenu
+    bigChartModal.addEventListener("click", e => {
+      if (e.target === bigChartModal) closeBigChart();
+    });
+
+    // Chargement des signaux et affichage
+    async function fetchSignals() {
+      try {
+        const res = await fetch("data/signals.json");
+        if (!res.ok) throw new Error("HTTP error " + res.status);
+        return await res.json();
+      } catch (err) {
+        console.error("Erreur lors du chargement des signaux:", err);
+        document.getElementById("signalsContainer").textContent = "Erreur lors du chargement des signaux.";
+        return null;
+      }
+    }
+
+    async function renderSignals() {
+      const data = await fetchSignals();
+      if (!data) return;
+
+      const container = document.getElementById("signalsContainer");
+      const premiumNotice = document.getElementById("premiumNotice");
+      let premiumLocked = false;
+      container.innerHTML = "";
+
+      ["achat", "vente", "conservation"].forEach(category => {
+        if (!data[category] || !Array.isArray(data[category])) return;
+
+        data[category].forEach((signal, i) => {
+          const card = document.createElement("div");
+          card.className = "card";
+          card.dataset.category = category;
+
+          const isLocked = signal.premium && !isPremiumUser();
+          if (isLocked) {
+            card.classList.add("blur");
+            premiumLocked = true;
+          }
+
+          const chartId = `chart-${category}-${i}`;
+
+          card.innerHTML = `
           <h3>${signal.name}</h3>
           <p><strong>Prix actuel :</strong> $${signal.price.toFixed(2)}</p>
           <p><strong>Recommandation :</strong> <span class="recommendation">${signal.recommendation}</span></p>
