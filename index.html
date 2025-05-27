@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Luxibre Alpha - Signaux Boursiers</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
@@ -17,33 +18,7 @@
     #header-container {
       min-height: 80px;
       background-color: white;
-    }
-
-    #userModal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-#userModal.show {
-  display: flex;
-}
-
-#userModal .bg-white {
-  background-color: white;
-  border-radius: 0.5rem;
-  padding: 1.5rem;
-  width: 100%;
-  max-width: 400px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
+    } 
   </style>
 </head>
 <body class="bg-gray-50 text-gray-900">
@@ -96,22 +71,6 @@
       <a href="pricing.html" class="inline-block px-8 py-4 bg-white text-red-600 font-semibold rounded-xl hover:bg-gray-100 transition transform hover:scale-105">Je passe à l’action</a>
     </div>
   </section>
-
-  <!-- Modal -->
-  <div id="userModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden justify-center items-center">
-    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-      <div class="flex justify-between items-center mb-4">
-        <h2 class="text-xl font-bold">Informations Utilisateur</h2>
-        <button id="closeModal" class="text-gray-500 hover:text-gray-700">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
-      <div id="userInfo">
-        <p><strong>Nom:</strong> <span id="userName">Non spécifié</span></p>
-        <p><strong>Email:</strong> <span id="userEmail">Non spécifié</span></p>
-      </div>
-    </div>
-  </div>
 
 
   <!-- Footer -->
