@@ -171,158 +171,99 @@ function calculateScore(history, volumeHistory = []) {
 }
 
 function determineRecommendation(score) {
-  if (score >= 70) return "Acheter";
-  if (score <= 40) return "Vendre";
-  return "Conserver";
+  if (score >= 70) return "Achat";
+  if (score >= 40) return "Conserver";
+  return "Vente";
 }
 
-async function fetchStock(symbol, type) {
-  let url;
-  if (type === "crypto") {
-    url = `https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol=${symbol}&market=USD&apikey=${API_KEY}`;
-  } else {
-    url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${symbol}&apikey=${API_KEY}`;
+// --- Gestion des horaires des marchés ---
+
+function isMarketOpenUS() {
+  const now = DateTime.now().setZone('America/New_York');
+  const day = now.weekday;
+  const hour = now.hour;
+  const minute = now.minute;
+
+  const isWeekday = day >= 1 && day <= 5;
+  const afterOpen = hour > 9 || (hour === 9 && minute >= 30);
+  const beforeClose = hour < 17 || (hour === 17 && minute <= 30);
+
+  return isWeekday && afterOpen && beforeClose;
+}
+
+function isMarketOpenEU() {
+  const now = DateTime.now().setZone('Europe/Paris');
+  const day = now.weekday;
+  const hour = now.hour;
+  const minute = now.minute;
+
+  const isWeekday = day >= 1 && day <= 5;
+  const afterOpen = hour > 9 || (hour === 9 && minute >= 0);
+  const beforeClose = hour < 17 || (hour === 17 && minute <= 30);
+
+  return isWeekday && afterOpen && beforeClose;
+}
+
+function isMarketOpen(type) {
+  if (type === 'etf') {
+    return isMarketOpenEU();
+  } else if (type === 'stock' || type === 'crypto') {
+    return isMarketOpenUS();
   }
-  const res = await axios.get(url);
-  let daily = type === "crypto" ? res.data["Time Series (Digital Currency Daily)"] : res.data["Time Series (Daily)"];
-  if (!daily) return null;
-  const dates = Object.keys(daily).slice(0, 200).reverse();
-  const history = dates.map(date => parseFloat(daily[date]["4a. close (USD)"] || daily[date]["4. close"]));
-  const price = history[history.length - 1];
-  return { history, price };
+  return isMarketOpenUS();
 }
 
-async function fetchETF(symbol) {
+// --- Fonction principale ---
+
+async function fetchHistoricalData(symbol, period = '6mo', interval = '1d') {
   try {
-    const queryOptions = { period1: '2023-01-01', interval: '1d' };
-    const result = await yahooFinance.historical(symbol, queryOptions);
-    const history = result.map(entry => entry.close);
-    const price = history[history.length - 1];
-    return { history, price };
+    return await yahooFinance.historical(symbol, { period1: `6mo`, interval });
   } catch (error) {
-    console.error(`Erreur lors de la récupération des données pour ${symbol}:`, error.message);
+    console.error(`Erreur récupération historique pour ${symbol}:`, error.message);
     return null;
   }
 }
 
-function isMarketOpen() {
-  const now = DateTime.now().setZone('America/New_York');
-  const day = now.weekday;
-  const hour = now.hour;
-  const minute = now.minute;
-
-  const isWeekday = day >= 1 && day <= 5;
-  const afterOpen = hour > 9 || (hour === 9 && minute >= 30);
-  const beforeClose = hour < 16 || (hour === 16 && minute === 0);
-
-  return isWeekday && afterOpen && beforeClose;
-}
-
-
-function mapRecommendationToCategory(rec) {
-  if (rec === "Acheter") return "achat";
-  if (rec === "Vendre") return "vente";
-  return "conservation";
-}
-
-const generate = async () => {
-  if (!isMarketOpen()) {
-    console.log("La bourse est fermée (heure NY), arrêt de la génération des signaux.");
-    return;
-  }
-  console.log("La bourse est ouverte, génération des signaux...");
-
-  const signals = {
-    achat: [],
-    vente: [],
-    conservation: []
-  };
-
+async function generateSignals() {
   const allAssets = [...STOCKS, ...ETFS, ...CRYPTOS];
+  const signals = [];
 
   for (const asset of allAssets) {
-    try {
-      let data;
-      if (asset.type === 'etf') {
-        data = await fetchETF(asset.symbol);
-      } else {
-        data = await fetchStock(asset.symbol, asset.type);
-      }
-      if (!data || data.history.length < 50) {
-        console.warn(`Données insuffisantes pour ${asset.symbol}`);
-        continue;
-      }
-      data.score = calculateScore(data.history);
-      data.recommendation = determineRecommendation(data.score);
-
-      const category = mapRecommendationToCategory(data.recommendation);
-      const signal = {
-        name: asset.name,
-        price: data.price,
-        history: data.history,
-        recommendation: data.recommendation,
-        score: data.score,
-        premium: asset.premium,
-        updated: new Date().toISOString()
-      };
-
-      signal.indicators = {
-        rsi: calculateRSI(data.history),
-        macd: calculateMACD(data.history),
-        bollinger: calculateBollingerBands(data.history),
-        sma50: calculateSMA(data.history, 50),
-        sma200: calculateSMA(data.history, 200)
-      };
-      
-      // Backtesting du signal
-      signal.backtest = backtestSignal(data.history, (hist) => {
-        const score = calculateScore(hist);
-        return determineRecommendation(score);
-      });
-
-      signals[category].push(signal);
-    } catch (err) {
-      console.error(`Erreur pour ${asset.symbol}:`, err.message);
+    if (!isMarketOpen(asset.type)) {
+      console.log(`Marché fermé pour ${asset.name} (${asset.symbol}) [${asset.type}], signal non généré.`);
+      continue;
     }
+
+    const data = await fetchHistoricalData(asset.symbol);
+    if (!data || data.length === 0) {
+      console.log(`Pas de données pour ${asset.name} (${asset.symbol}), signal non généré.`);
+      continue;
+    }
+
+    // Extraire les prix de clôture et volumes
+    const closes = data.map(d => d.close);
+    const volumes = data.map(d => d.volume);
+
+    const score = calculateScore(closes, volumes);
+    const recommendation = determineRecommendation(score);
+
+    signals.push({
+      symbol: asset.symbol,
+      name: asset.name,
+      type: asset.type,
+      premium: asset.premium,
+      score: Math.round(score),
+      recommendation,
+      date: new Date().toISOString()
+    });
+
+    console.log(`Signal généré pour ${asset.symbol} : ${recommendation} (score: ${Math.round(score)})`);
   }
 
-  fs.writeFileSync('data/signals.json', JSON.stringify(signals, null, 2));
-  console.log("Fichier signals.json généré avec succès !");
-};
-
-function backtestSignal(history, recommendationFn) {
-  const lookbackPeriod = 30; // 30 jours
-  const results = [];
-
-  for (let i = 200; i > 50; i -= 1) {
-    const slice = history.slice(0, i);
-    const priceAtSignal = slice[slice.length - 1];
-    const futurePrices = history.slice(i, i + lookbackPeriod);
-    if (futurePrices.length < lookbackPeriod) continue;
-
-    const rec = recommendationFn(slice);
-    const futurePrice = futurePrices[futurePrices.length - 1];
-    const variation = ((futurePrice - priceAtSignal) / priceAtSignal) * 100;
-
-    let success = false;
-    if (rec === "Acheter" && variation > 2) success = true;
-    else if (rec === "Vendre" && variation < -2) success = true;
-    else if (rec === "Conserver" && Math.abs(variation) < 2) success = true;
-
-    results.push({ rec, variation, success });
-  }
-
-  const total = results.length;
-  const successes = results.filter(r => r.success).length;
-  const avgGain = results.reduce((acc, r) => acc + r.variation, 0) / total;
-
-  return {
-    totalTests: total,
-    successful: successes,
-    successRate: (successes / total) * 100,
-    averageGain: avgGain,
-    details: results.slice(-10)
-  };
+  // Sauvegarde dans JSON
+  fs.writeFileSync('./data/signals.json', JSON.stringify(signals, null, 2));
+  console.log('Génération des signaux terminée.');
 }
 
-generate();
+// Lancer la génération
+generateSignals();
