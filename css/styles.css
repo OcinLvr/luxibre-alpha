@@ -1,0 +1,74 @@
+/* Style pour la modale utilisateur */
+#userModal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(15, 23, 42, 0.8); /* Fond sombre avec transparence */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+#userModal.show {
+  display: flex;
+}
+
+#userModal .modal-content {
+  background-color: #1e293b; /* Couleur de fond similaire au thème du site */
+  border-radius: 1rem;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  color: #f1f5f9; /* Couleur de texte claire pour contraste */
+}
+
+#userModal h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #22c55e; /* Couleur d'accentuation */
+  margin-bottom: 1rem;
+}
+
+#userModal p {
+  margin-bottom: 0.5rem;
+}
+
+#userModal #closeModal {
+  background: none;
+  border: none;
+  color: #f1f5f9;
+  font-size: 1.5rem;
+  cursor: pointer;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+#userModal #closeModal:hover {
+  color: #22c55e;
+}
+
+#userModal #watchlist {
+  margin-top: 1rem;
+}
+
+#userModal #watchlist h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #22c55e;
+  margin-bottom: 0.5rem;
+}
+
+#userModal #watchlist ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+#userModal #watchlist li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #334155;
+}
