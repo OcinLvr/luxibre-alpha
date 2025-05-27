@@ -298,7 +298,8 @@ const generate = async () => {
         score,
         recommendation,
         premium: isPremiumContent,
-        price: data.price.toFixed(2)
+        price: data.price.toFixed(2),
+        history: data.history.map(h => h.close)
       };
 
       signals[mapRecommendationToCategory(recommendation)].push(signalEntry);
