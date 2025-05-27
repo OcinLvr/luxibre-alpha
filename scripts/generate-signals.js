@@ -46,12 +46,22 @@ const CRYPTOS = [
   { symbol: "DOGE", name: "Dogecoin", type: "crypto", premium: false }
 ];
 
-function calculateSMA(data, period) {
+function SMA(data, period) {
   if (data.length < period) return null;
   return data.slice(-period).reduce((sum, val) => sum + val, 0) / period;
 }
 
-function calculateRSI(data, period = 14) {
+function EMA(data, period) {
+  if (data.length < period) return null;
+  const k = 2 / (period + 1);
+  let ema = SMA(data.slice(0, period), period);
+  for (let i = period; i < data.length; i++) {
+    ema = data[i] * k + ema * (1 - k);
+  }
+  return ema;
+}
+
+function RSI(data, period = 14) {
   if (data.length < period + 1) return 50;
   let gains = 0, losses = 0;
   for (let i = 1; i <= period; i++) {
@@ -63,16 +73,15 @@ function calculateRSI(data, period = 14) {
   return 100 - (100 / (1 + rs));
 }
 
-function calculateMACD(data) {
-  const ema12 = calculateSMA(data, 12);
-  const ema26 = calculateSMA(data, 26);
-  if (ema12 === null || ema26 === null) return 0;
-  return ema12 - ema26;
+function MACD(data) {
+  const ema12 = EMA(data, 12);
+  const ema26 = EMA(data, 26);
+  return ema12 !== null && ema26 !== null ? ema12 - ema26 : 0;
 }
 
-function calculateBollingerBands(data, period = 20) {
+function BollingerBands(data, period = 20) {
   if (data.length < period) return { middle: null, upper: null, lower: null };
-  const sma = calculateSMA(data, period);
+  const sma = SMA(data, period);
   const stdDev = Math.sqrt(data.slice(-period).reduce((sum, val) => sum + Math.pow(val - sma, 2), 0) / period);
   return {
     middle: sma,
@@ -81,43 +90,64 @@ function calculateBollingerBands(data, period = 20) {
   };
 }
 
+function ADX(data, period = 14) {
+  if (data.length < period + 1) return 20;
+  let upMoves = [], downMoves = [], tr = [];
+  for (let i = 1; i < data.length; i++) {
+    const diff = data[i] - data[i - 1];
+    upMoves.push(diff > 0 ? diff : 0);
+    downMoves.push(diff < 0 ? -diff : 0);
+    tr.push(Math.abs(diff));
+  }
+  const plusDI = 100 * SMA(upMoves.slice(-period), period) / SMA(tr.slice(-period), period);
+  const minusDI = 100 * SMA(downMoves.slice(-period), period) / SMA(tr.slice(-period), period);
+  const dx = 100 * Math.abs(plusDI - minusDI) / (plusDI + minusDI);
+  return dx;
+}
+
 function calculateScore(history) {
   const latest = history[history.length - 1];
-  const sma50 = calculateSMA(history, 50);
-  const sma200 = calculateSMA(history, 200);
-  const rsi = calculateRSI(history);
-  const macd = calculateMACD(history);
-  const bollinger = calculateBollingerBands(history);
+  const sma50 = SMA(history, 50);
+  const sma200 = SMA(history, 200);
+  const rsi = RSI(history);
+  const macd = MACD(history);
+  const bollinger = BollingerBands(history);
+  const adx = ADX(history);
+
   let score = 50;
 
   if (sma50 && sma200 && sma50 > sma200) score += 15;
   if (rsi < 30) score += 10;
-  if (rsi > 70) score -= 10;
+  else if (rsi > 70) score -= 10;
+
   if (macd > 0) score += 10;
-  if (macd < 0) score -= 10;
+  else if (macd < 0) score -= 10;
+
   if (bollinger.upper && latest > bollinger.upper) score -= 5;
   if (bollinger.lower && latest < bollinger.lower) score += 5;
+
+  if (adx > 25) score += 5; // strong trend
+  else score -= 5;
 
   return Math.max(0, Math.min(100, score));
 }
 
 function determineRecommendation(score) {
-  if (score >= 70) return "Acheter";
-  if (score <= 40) return "Vendre";
+  if (score >= 75) return "Acheter fort";
+  if (score >= 65) return "Acheter";
+  if (score <= 35) return "Vendre";
+  if (score <= 25) return "Vendre fort";
   return "Conserver";
 }
 
 async function fetchStock(symbol, type) {
-  let url;
-  if (type === "crypto") {
-    url = `https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol=${symbol}&market=USD&apikey=${API_KEY}`;
-  } else {
-    url = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${symbol}&apikey=${API_KEY}`;
-  }
+  let url = type === "crypto"
+    ? `https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol=${symbol}&market=USD&apikey=${API_KEY}`
+    : `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${symbol}&apikey=${API_KEY}`;
   const res = await axios.get(url);
-  let daily = type === "crypto" ? res.data["Time Series (Digital Currency Daily)"] : res.data["Time Series (Daily)"];
+  const daily = type === "crypto" ? res.data["Time Series (Digital Currency Daily)"] : res.data["Time Series (Daily)"];
   if (!daily) return null;
-  const dates = Object.keys(daily).slice(0, 200).reverse();
+  const dates = Object.keys(daily).slice(0, 250).reverse();
   const history = dates.map(date => parseFloat(daily[date]["4a. close (USD)"] || daily[date]["4. close"]));
   const price = history[history.length - 1];
   return { history, price };
@@ -125,65 +155,55 @@ async function fetchStock(symbol, type) {
 
 async function fetchETF(symbol) {
   try {
-    const queryOptions = { period1: '2023-01-01', interval: '1d' };
-    const result = await yahooFinance.historical(symbol, queryOptions);
+    const result = await yahooFinance.historical(symbol, { period1: '2023-01-01', interval: '1d' });
     const history = result.map(entry => entry.close);
     const price = history[history.length - 1];
     return { history, price };
-  } catch (error) {
-    console.error(`Erreur lors de la récupération des données pour ${symbol}:`, error.message);
+  } catch (err) {
+    console.error(`Erreur données ETF ${symbol}:`, err.message);
     return null;
   }
 }
 
 function mapRecommendationToCategory(rec) {
-  if (rec === "Acheter") return "achat";
-  if (rec === "Vendre") return "vente";
+  if (rec.includes("Acheter")) return "achat";
+  if (rec.includes("Vendre")) return "vente";
   return "conservation";
 }
 
 const generate = async () => {
-  
-  const signals = {
-    achat: [],
-    vente: [],
-    conservation: []
-  };
-
+  const signals = { achat: [], vente: [], conservation: [] };
   const allAssets = [...STOCKS, ...ETFS, ...CRYPTOS];
 
   for (const asset of allAssets) {
     try {
-      let data;
-      if (asset.type === 'etf') {
-        data = await fetchETF(asset.symbol);
-      } else {
-        data = await fetchStock(asset.symbol, asset.type);
-      }
-      if (!data || data.history.length < 50) {
-        console.warn(`Données insuffisantes pour ${asset.symbol}`);
-        continue;
-      }
-      data.score = calculateScore(data.history);
-      data.recommendation = determineRecommendation(data.score);
+      const data = asset.type === 'etf'
+        ? await fetchETF(asset.symbol)
+        : await fetchStock(asset.symbol, asset.type);
+      if (!data || data.history.length < 50) continue;
 
-      const category = mapRecommendationToCategory(data.recommendation);
+      const score = calculateScore(data.history);
+      const recommendation = determineRecommendation(score);
+      const category = mapRecommendationToCategory(recommendation);
+
       const signal = {
         name: asset.name,
+        symbol: asset.symbol,
         price: data.price,
         history: data.history,
-        recommendation: data.recommendation,
-        score: data.score,
+        recommendation,
+        score,
         premium: asset.premium,
-        updated: new Date().toISOString()
-      };
-
-      signal.indicators = {
-        rsi: calculateRSI(data.history),
-        macd: calculateMACD(data.history),
-        bollinger: calculateBollingerBands(data.history),
-        sma50: calculateSMA(data.history, 50),
-        sma200: calculateSMA(data.history, 200)
+        updated: new Date().toISOString(),
+        indicators: {
+          rsi: RSI(data.history),
+          macd: MACD(data.history),
+          bollinger: BollingerBands(data.history),
+          sma50: SMA(data.history, 50),
+          sma200: SMA(data.history, 200),
+          ema20: EMA(data.history, 20),
+          adx: ADX(data.history)
+        }
       };
 
       signals[category].push(signal);
