@@ -2,7 +2,6 @@
 import fs from 'fs';
 import axios from 'axios';
 import dotenv from 'dotenv';
-import { DateTime } from 'luxon';
 import yahooFinance from 'yahoo-finance2';
 
 dotenv.config();
@@ -137,15 +136,6 @@ async function fetchETF(symbol) {
   }
 }
 
-function isMarketOpen() {
-  const now = DateTime.now().setZone('America/New_York');
-  const day = now.weekday;
-  const hour = now.hour;
-  const minute = now.minute;
-  if (day >= 6 || hour < 9 || (hour === 9 && minute < 30) || hour > 16) return false;
-  return true;
-}
-
 function mapRecommendationToCategory(rec) {
   if (rec === "Acheter") return "achat";
   if (rec === "Vendre") return "vente";
@@ -153,12 +143,7 @@ function mapRecommendationToCategory(rec) {
 }
 
 const generate = async () => {
-  if (!isMarketOpen()) {
-    console.log("La bourse est fermée (heure NY), arrêt de la génération des signaux.");
-    return;
-  }
-  console.log("La bourse est ouverte, génération des signaux...");
-
+  
   const signals = {
     achat: [],
     vente: [],
