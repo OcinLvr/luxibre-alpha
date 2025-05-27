@@ -30,7 +30,7 @@
       "score": 72,
       "recommendation": "Acheter",
       "premium": false,
-      "price": "12.89"
+      "price": "12.90"
     },
     {
       "symbol": "BTC",
@@ -39,6 +39,14 @@
       "recommendation": "Acheter",
       "premium": true,
       "price": "109355.55"
+    },
+    {
+      "symbol": "XRP",
+      "name": "XRP",
+      "score": 77,
+      "recommendation": "Acheter",
+      "premium": false,
+      "price": "2.31"
     }
   ],
   "vente": [],
@@ -186,6 +194,14 @@
       "recommendation": "Conserver",
       "premium": true,
       "price": "2557.83"
+    },
+    {
+      "symbol": "ADA",
+      "name": "Cardano",
+      "score": 62,
+      "recommendation": "Conserver",
+      "premium": true,
+      "price": "0.76"
     }
   ]
 }
