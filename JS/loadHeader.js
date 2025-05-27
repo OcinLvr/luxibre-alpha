@@ -51,6 +51,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     const userModal = document.getElementById('userModal');
     const userName = document.getElementById('userName');
     const userEmail = document.getElementById('userEmail');
+    const userVersion = document.getElementById('userVersion');
+    const watchlistItems = document.getElementById('watchlistItems');
 
     if (user) {
       loginBtn?.classList.add("hidden");
@@ -61,6 +63,14 @@ document.addEventListener('DOMContentLoaded', async function () {
       // Afficher les informations de l'utilisateur dans la modale
       userName.textContent = user.user_metadata.full_name || 'Non spécifié';
       userEmail.textContent = user.email || 'Non spécifié';
+
+      // Vérifier si l'utilisateur est premium (à adapter selon votre logique)
+      const isPremium = user.user_metadata.isPremium || false;
+      userVersion.textContent = isPremium ? 'Premium' : 'Gratuit';
+
+      // Charger la liste de surveillance (à adapter selon votre logique)
+      const watchlist = user.user_metadata.watchlist || [];
+      watchlistItems.innerHTML = watchlist.map(item => `<li>${item}</li>`).join('');
     } else {
       loginBtn?.classList.remove("hidden");
       logoutBtn?.classList.add("hidden");
@@ -93,7 +103,6 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     // Ouvrir la modale lorsque l'icône utilisateur est cliquée
     userIcon?.addEventListener('click', function () {
-      console.log("User icon clicked"); // Ajoutez ceci pour vérifier si l'événement est déclenché
       userModal.classList.add('show');
     });
 
