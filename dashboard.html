@@ -188,6 +188,13 @@
       border-radius: 0.6rem;
     }
 
+    #predictionsContainer {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: #0f172a;
+      border-radius: 0.6rem;
+    }
+
     #bigChartActions {
       margin-top: 1rem;
       display: flex;
@@ -260,6 +267,7 @@
         <button id="closeBigChartBtn" aria-label="Fermer le graphique"><i class="fas fa-times"></i></button>
       </div>
       <canvas id="bigChartCanvas"></canvas>
+      <div id="predictionsContainer"></div>
       <div id="bigChartActions">
         <button id="resetZoomBtn">Réinitialiser Zoom</button>
         <button id="exportBigChartBtn">Exporter le Graphique</button>
@@ -373,6 +381,17 @@
           }
         }
       });
+
+      // Afficher les prédictions de prix pour les utilisateurs premium
+      if (signal.premium && isPremiumUser() && signal.predictions) {
+        const predictionsDiv = document.getElementById('predictionsContainer');
+        predictionsDiv.innerHTML = `
+          <h4>Prédictions de prix</h4>
+          <p>Jour 1: $${signal.predictions.day1}</p>
+          <p>Jour 3: $${signal.predictions.day3}</p>
+          <p>Jour 7: $${signal.predictions.day7}</p>
+        `;
+      }
 
       bigChartModal.classList.add("active");
     }
@@ -505,6 +524,11 @@
                 }
               }
             }
+          });
+
+          // Ajouter un gestionnaire d'événements pour le clic sur le graphique
+          card.querySelector('.chart-container').addEventListener('click', () => {
+            openBigChart(signal);
           });
         }
       });
