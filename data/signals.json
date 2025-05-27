@@ -1,1 +1,71 @@
-[]
+{
+  "achat": [
+    {
+      "symbol": "EXA1.AS",
+      "name": "iShares EURO STOXX Banks 30-15 UCITS ETF (DE)",
+      "score": 72,
+      "recommendation": "Acheter",
+      "premium": false,
+      "price": "12.86"
+    },
+    {
+      "symbol": "BTC",
+      "name": "Bitcoin",
+      "score": 82,
+      "recommendation": "Acheter",
+      "premium": true,
+      "price": "109355.55"
+    },
+    {
+      "symbol": "XRP",
+      "name": "XRP",
+      "score": 77,
+      "recommendation": "Acheter",
+      "premium": false,
+      "price": "2.31"
+    },
+    {
+      "symbol": "DOT",
+      "name": "Polkadot",
+      "score": 77,
+      "recommendation": "Acheter",
+      "premium": true,
+      "price": "4.46"
+    }
+  ],
+  "vente": [],
+  "conservation": [
+    {
+      "symbol": "ETH",
+      "name": "Ethereum",
+      "score": 67,
+      "recommendation": "Conserver",
+      "premium": true,
+      "price": "2557.83"
+    },
+    {
+      "symbol": "ADA",
+      "name": "Cardano",
+      "score": 62,
+      "recommendation": "Conserver",
+      "premium": true,
+      "price": "0.76"
+    },
+    {
+      "symbol": "SOL",
+      "name": "Solana",
+      "score": 67,
+      "recommendation": "Conserver",
+      "premium": false,
+      "price": "174.56"
+    },
+    {
+      "symbol": "DOGE",
+      "name": "Dogecoin",
+      "score": 62,
+      "recommendation": "Conserver",
+      "premium": false,
+      "price": "0.22"
+    }
+  ]
+}
