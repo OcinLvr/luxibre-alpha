@@ -126,10 +126,20 @@ function calculateScore(history) {
   if (bollinger.upper && latest > bollinger.upper) score -= 5;
   if (bollinger.lower && latest < bollinger.lower) score += 5;
 
-  if (adx > 25) score += 5; // strong trend
+  if (adx > 25) score += 5;
   else score -= 5;
 
   return Math.max(0, Math.min(100, score));
+}
+
+function predictFuturePrices(history) {
+  const last = history[history.length - 1];
+  const slope = (last - history[history.length - 8]) / 7;
+  return {
+    day1: +(last + slope).toFixed(2),
+    day3: +(last + 3 * slope).toFixed(2),
+    day7: +(last + 7 * slope).toFixed(2)
+  };
 }
 
 function determineRecommendation(score) {
@@ -205,6 +215,10 @@ const generate = async () => {
           adx: ADX(data.history)
         }
       };
+
+      if (asset.premium) {
+        signal.predictions = predictFuturePrices(data.history);
+      }
 
       signals[category].push(signal);
     } catch (err) {
