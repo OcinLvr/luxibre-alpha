@@ -206,13 +206,18 @@ async function fetchETF(symbol) {
 }
 
 function isMarketOpen() {
-  const now = DateTime.now().setZone('America/New_York');
-  const day = now.weekday;
-  const hour = now.hour;
-  const minute = now.minute;
-  if (day >= 6 || hour < 9 || (hour === 9 && minute < 30) || hour > 16) return false;
-  return true;
+  const now = DateTime.now().setZone('America/New_York');
+  const day = now.weekday;
+  const hour = now.hour;
+  const minute = now.minute;
+
+  const isWeekday = day >= 1 && day <= 5;
+  const afterOpen = hour > 9 || (hour === 9 && minute >= 30);
+  const beforeClose = hour < 16 || (hour === 16 && minute === 0);
+
+  return isWeekday && afterOpen && beforeClose;
 }
+
 
 function mapRecommendationToCategory(rec) {
   if (rec === "Acheter") return "achat";
