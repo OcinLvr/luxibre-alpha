@@ -54,6 +54,13 @@ document.addEventListener('DOMContentLoaded', async function () {
     const userEmail = document.getElementById('userEmail');
     const userVersion = document.getElementById('userVersion');
     const watchlistItems = document.getElementById('watchlistItems');
+    const notificationIcon = document.getElementById("notificationIcon");
+    const mobileNotificationIcon = document.getElementById("mobileNotificationIcon");
+    const closeNotificationModal = document.getElementById('closeNotificationModal');
+    const notificationModal = document.getElementById('notificationModal');
+    const notificationList = document.getElementById('notificationList');
+    const notificationCount = document.getElementById('notificationCount');
+    const mobileNotificationCount = document.getElementById('mobileNotificationCount');
 
     if (user) {
       loginBtn?.classList.add("hidden");
@@ -72,6 +79,17 @@ document.addEventListener('DOMContentLoaded', async function () {
       // Charger la liste de surveillance (à adapter selon votre logique)
       const watchlist = user.user_metadata.watchlist || [];
       watchlistItems.innerHTML = watchlist.map(item => `<li>${item}</li>`).join('');
+
+      // Écouter les changements sur les actifs favoris
+      supabase
+        .channel('asset_updates')
+        .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'assets' }, payload => {
+          checkForNotifications(payload.new);
+        })
+        .subscribe();
+
+      // Charger les notifications initiales
+      loadNotifications(user.id);
     } else {
       loginBtn?.classList.remove("hidden");
       logoutBtn?.classList.add("hidden");
@@ -123,6 +141,99 @@ document.addEventListener('DOMContentLoaded', async function () {
         userModal.classList.remove('show');
       }
     });
+
+    // Ouvrir la modale de notification lorsque l'icône de notification est cliquée
+    notificationIcon?.addEventListener('click', function () {
+      notificationModal.classList.add('show');
+    });
+
+    // Ouvrir la modale de notification lorsque l'icône de notification mobile est cliquée
+    mobileNotificationIcon?.addEventListener('click', function () {
+      notificationModal.classList.add('show');
+    });
+
+    // Fermer la modale de notification lorsque le bouton de fermeture est cliqué
+    closeNotificationModal?.addEventListener('click', function () {
+      notificationModal.classList.remove('show');
+    });
+
+    // Fermer la modale de notification lorsque l'utilisateur clique en dehors de la modale
+    notificationModal?.addEventListener('click', function (event) {
+      if (event.target === notificationModal) {
+        notificationModal.classList.remove('show');
+      }
+    });
+
+    // Fonction pour ajouter aux favoris
+    window.addToFavorites = async function(userId, assetId) {
+      const { data, error } = await supabase
+        .from('favorites')
+        .insert([{ user_id: userId, asset_id: assetId }]);
+
+      if (error) {
+        console.error('Error adding to favorites:', error);
+      } else {
+        console.log('Added to favorites:', data);
+      }
+    };
+
+    // Fonction pour vérifier les notifications
+    async function checkForNotifications(updatedAsset) {
+      const { data: favorites, error } = await supabase
+        .from('favorites')
+        .select('*')
+        .eq('asset_id', updatedAsset.id);
+
+      if (error) {
+        console.error('Error fetching favorites:', error);
+        return;
+      }
+
+      favorites.forEach(favorite => {
+        sendNotification(favorite.user_id, `Le signal de ${updatedAsset.name} a changé.`);
+      });
+    }
+
+    // Fonction pour envoyer une notification
+    async function sendNotification(userId, message) {
+      const { data, error } = await supabase
+        .from('notifications')
+        .insert([{ user_id: userId, message: message, read: false }]);
+
+      if (error) {
+        console.error('Error sending notification:', error);
+      } else {
+        console.log('Notification sent:', data);
+        updateNotificationIcon(userId);
+      }
+    }
+
+    // Fonction pour charger les notifications
+    async function loadNotifications(userId) {
+      const { data: notifications, error } = await supabase
+        .from('notifications')
+        .select('*')
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error loading notifications:', error);
+        return;
+      }
+
+      notificationList.innerHTML = notifications.map(notification => `
+        <li class="p-2 border-b">${notification.message}</li>
+      `).join('');
+
+      const unreadCount = notifications.filter(notification => !notification.read).length;
+      notificationCount.textContent = unreadCount;
+      mobileNotificationCount.textContent = unreadCount;
+    }
+
+    // Fonction pour mettre à jour l'icône de notification
+    function updateNotificationIcon(userId) {
+      loadNotifications(userId);
+    }
 
   } catch (err) {
     console.error("Erreur lors du chargement du header :", err);
