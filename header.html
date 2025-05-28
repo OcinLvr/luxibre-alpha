@@ -9,12 +9,18 @@
       <button id="loginBtn" class="hover:text-green-600 font-medium">Connexion</button>
       <button id="logoutBtn" class="hover:text-green-600 font-medium hidden">Déconnexion</button>
       <a href="#" id="userIcon" class="hover:text-green-600 font-medium"><i class="fas fa-user"></i></a>
-      <a href="#" class="hover:text-green-600 font-medium"><i class="fas fa-bell"></i></a>
+      <div class="relative">
+        <a href="#" id="notificationIcon" class="hover:text-green-600 font-medium"><i class="fas fa-bell"></i></a>
+        <span id="notificationCount" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+      </div>
     </nav>
     <!-- Mobile menu -->
     <div class="md:hidden flex items-center space-x-4">
       <a href="#" id="mobileUserIcon" class="hover:text-green-600 font-medium"><i class="fas fa-user"></i></a>
-      <a href="#" class="hover:text-green-600 font-medium"><i class="fas fa-bell"></i></a>
+      <div class="relative">
+        <a href="#" id="mobileNotificationIcon" class="hover:text-green-600 font-medium"><i class="fas fa-bell"></i></a>
+        <span id="mobileNotificationCount" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+      </div>
       <button id="menuToggle" class="text-green-600 text-2xl">&#9776;</button>
     </div>
   </div>
@@ -29,7 +35,7 @@
 
 <!-- Modal utilisateur -->
 <div id="userModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden justify-center items-center">
-  <div class="modal-content">
+  <div class="modal-content bg-white p-6 rounded-lg shadow-lg w-11/12 max-w-md">
     <div class="flex justify-between items-center mb-4">
       <h2 class="text-xl font-bold">Informations Utilisateur</h2>
       <button id="closeModal" class="text-gray-500 hover:text-gray-700">
@@ -47,5 +53,20 @@
         <!-- Les éléments de la liste de surveillance seront ajoutés ici dynamiquement -->
       </ul>
     </div>
+  </div>
+</div>
+
+<!-- Modal de notification -->
+<div id="notificationModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden justify-center items-center">
+  <div class="modal-content bg-white p-6 rounded-lg shadow-lg w-11/12 max-w-md">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-xl font-bold">Notifications</h2>
+      <button id="closeNotificationModal" class="text-gray-500 hover:text-gray-700">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <ul id="notificationList" class="space-y-2">
+      <!-- Les notifications seront ajoutées ici dynamiquement -->
+    </ul>
   </div>
 </div>
