@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', async function () {
     const headerHTML = await response.text();
     document.body.insertAdjacentHTML('afterbegin', headerHTML);
 
-    // Thème sombre : ajustements des couleurs
     const isDark = getComputedStyle(document.body).backgroundColor === 'rgb(15, 23, 42)';
     if (isDark) {
       const style = document.createElement('style');
@@ -23,15 +22,12 @@ document.addEventListener('DOMContentLoaded', async function () {
         #mobileLoginBtn, #mobileLogoutBtn {
           color: #f8fafc !important;
         }
-
         header {
           background-color: #0f172a !important;
         }
-
         #menuToggle {
           color: #22c55e !important;
         }
-
         #mobileMenu {
           background-color: #0f172a !important;
         }
@@ -39,7 +35,6 @@ document.addEventListener('DOMContentLoaded', async function () {
       document.head.appendChild(style);
     }
 
-    // Supabase Auth : gestion de l'état de connexion
     const { data: { user } } = await supabase.auth.getUser();
 
     const loginBtn = document.getElementById("loginBtn");
@@ -53,6 +48,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     const userName = document.getElementById('userName');
     const userEmail = document.getElementById('userEmail');
     const userVersion = document.getElementById('userVersion');
+    const premiumUntil = document.getElementById('premiumUntil');
+    const manageAccountBtn = document.getElementById('manageAccountBtn');
     const watchlistItems = document.getElementById('watchlistItems');
     const notificationIcon = document.getElementById("notificationIcon");
     const mobileNotificationIcon = document.getElementById("mobileNotificationIcon");
@@ -68,19 +65,31 @@ document.addEventListener('DOMContentLoaded', async function () {
       mobileLoginBtn?.classList.add("hidden");
       mobileLogoutBtn?.classList.remove("hidden");
 
-      // Afficher les informations de l'utilisateur dans la modale
       userName.textContent = user.user_metadata.full_name || 'Non spécifié';
       userEmail.textContent = user.email || 'Non spécifié';
 
-      // Vérifier si l'utilisateur est premium (à adapter selon votre logique)
-      const isPremium = user.user_metadata.isPremium || false;
-      userVersion.textContent = isPremium ? 'Premium' : 'Gratuit';
+      const { data: userDetails, error: userDetailsError } = await supabase
+        .from('users')
+        .select('isPremium, plan, premium_until')
+        .eq('id', user.id)
+        .single();
 
-      // Charger la liste de surveillance (à adapter selon votre logique)
+      if (userDetailsError) {
+        console.error("Erreur lors de la récupération des infos utilisateur :", userDetailsError);
+        userVersion.textContent = 'Gratuit';
+        premiumUntil.textContent = '-';
+      } else {
+        const isPremium = userDetails.isPremium;
+        userVersion.textContent = isPremium ? 'Premium' : 'Gratuit';
+        premiumUntil.textContent = userDetails.premium_until ? new Date(userDetails.premium_until).toLocaleDateString() : '-';
+        manageAccountBtn.addEventListener('click', () => {
+          window.location.href = isPremium ? 'manage-subscription.html' : 'pricing.html';
+        });
+      }
+
       const watchlist = user.user_metadata.watchlist || [];
       watchlistItems.innerHTML = watchlist.map(item => `<li>${item}</li>`).join('');
 
-      // Écouter les changements sur les actifs favoris
       supabase
         .channel('asset_updates')
         .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'assets' }, payload => {
@@ -88,7 +97,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         })
         .subscribe();
 
-      // Charger les notifications initiales
       loadNotifications(user.id);
     } else {
       loginBtn?.classList.remove("hidden");
@@ -115,56 +123,46 @@ document.addEventListener('DOMContentLoaded', async function () {
       window.location.href = "login.html";
     });
 
-    // Menu mobile
     document.getElementById("menuToggle")?.addEventListener("click", () => {
       document.getElementById("mobileMenu")?.classList.toggle("hidden");
     });
 
-    // Ouvrir la modale lorsque l'icône utilisateur est cliquée
     userIcon?.addEventListener('click', function () {
       userModal.classList.add('show');
     });
 
-    // Ouvrir la modale lorsque l'icône utilisateur mobile est cliquée
     mobileUserIcon?.addEventListener('click', function () {
       userModal.classList.add('show');
     });
 
-    // Fermer la modale lorsque le bouton de fermeture est cliqué
     closeModal?.addEventListener('click', function () {
       userModal.classList.remove('show');
     });
 
-    // Fermer la modale lorsque l'utilisateur clique en dehors de la modale
     userModal?.addEventListener('click', function (event) {
       if (event.target === userModal) {
         userModal.classList.remove('show');
       }
     });
 
-    // Ouvrir la modale de notification lorsque l'icône de notification est cliquée
     notificationIcon?.addEventListener('click', function () {
       notificationModal.classList.add('show');
     });
 
-    // Ouvrir la modale de notification lorsque l'icône de notification mobile est cliquée
     mobileNotificationIcon?.addEventListener('click', function () {
       notificationModal.classList.add('show');
     });
 
-    // Fermer la modale de notification lorsque le bouton de fermeture est cliqué
     closeNotificationModal?.addEventListener('click', function () {
       notificationModal.classList.remove('show');
     });
 
-    // Fermer la modale de notification lorsque l'utilisateur clique en dehors de la modale
     notificationModal?.addEventListener('click', function (event) {
       if (event.target === notificationModal) {
         notificationModal.classList.remove('show');
       }
     });
 
-    // Fonction pour ajouter aux favoris
     window.addToFavorites = async function(userId, assetId) {
       const { data, error } = await supabase
         .from('favorites')
@@ -177,7 +175,6 @@ document.addEventListener('DOMContentLoaded', async function () {
       }
     };
 
-    // Fonction pour vérifier les notifications
     async function checkForNotifications(updatedAsset) {
       const { data: favorites, error } = await supabase
         .from('favorites')
@@ -194,7 +191,6 @@ document.addEventListener('DOMContentLoaded', async function () {
       });
     }
 
-    // Fonction pour envoyer une notification
     async function sendNotification(userId, message) {
       const { data, error } = await supabase
         .from('notifications')
@@ -208,7 +204,6 @@ document.addEventListener('DOMContentLoaded', async function () {
       }
     }
 
-    // Fonction pour charger les notifications
     async function loadNotifications(userId) {
       const { data: notifications, error } = await supabase
         .from('notifications')
@@ -230,7 +225,6 @@ document.addEventListener('DOMContentLoaded', async function () {
       mobileNotificationCount.textContent = unreadCount;
     }
 
-    // Fonction pour mettre à jour l'icône de notification
     function updateNotificationIcon(userId) {
       loadNotifications(userId);
     }
