@@ -54,6 +54,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     const userEmail = document.getElementById('userEmail');
     const userVersion = document.getElementById('userVersion');
     const watchlistItems = document.getElementById('watchlistItems');
+    const freeAccountBtn = document.getElementById("freeAccountBtn");
 
     if (user) {
       loginBtn?.classList.add("hidden");
@@ -72,6 +73,12 @@ document.addEventListener('DOMContentLoaded', async function () {
       // Charger la liste de surveillance (à adapter selon votre logique)
       const watchlist = user.user_metadata.watchlist || [];
       watchlistItems.innerHTML = watchlist.map(item => `<li>${item}</li>`).join('');
+
+      // Mettre à jour le texte du bouton si l'utilisateur est connecté
+      if (freeAccountBtn) {
+        freeAccountBtn.textContent = "Accéder à mon compte";
+        freeAccountBtn.href = "dashboard.html"; // Rediriger vers le tableau de bord ou une autre page appropriée
+      }
     } else {
       loginBtn?.classList.remove("hidden");
       logoutBtn?.classList.add("hidden");
