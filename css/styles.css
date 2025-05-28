@@ -1,5 +1,5 @@
 /* Style pour la modale utilisateur */
-#userModal {
+#userModal, #notificationModal {
   display: none;
   position: fixed;
   top: 0;
@@ -12,11 +12,11 @@
   z-index: 1000;
 }
 
-#userModal.show {
+#userModal.show, #notificationModal.show {
   display: flex;
 }
 
-#userModal .modal-content {
+#userModal .modal-content, #notificationModal .modal-content {
   background-color: #1e293b; /* Couleur de fond similaire au thème du site */
   border-radius: 1rem;
   padding: 1.5rem;
@@ -26,18 +26,18 @@
   color: #f1f5f9; /* Couleur de texte claire pour contraste */
 }
 
-#userModal h2 {
+#userModal h2, #notificationModal h2 {
   font-size: 1.5rem;
   font-weight: 700;
   color: #22c55e; /* Couleur d'accentuation */
   margin-bottom: 1rem;
 }
 
-#userModal p {
+#userModal p, #notificationModal p {
   margin-bottom: 0.5rem;
 }
 
-#userModal #closeModal {
+#userModal #closeModal, #notificationModal #closeNotificationModal {
   background: none;
   border: none;
   color: #f1f5f9;
@@ -48,27 +48,44 @@
   right: 1rem;
 }
 
-#userModal #closeModal:hover {
+#userModal #closeModal:hover, #notificationModal #closeNotificationModal:hover {
   color: #22c55e;
 }
 
-#userModal #watchlist {
+#userModal #watchlist, #notificationModal #notificationList {
   margin-top: 1rem;
 }
 
-#userModal #watchlist h3 {
+#userModal #watchlist h3, #notificationModal #notificationList h3 {
   font-size: 1.25rem;
   font-weight: 600;
   color: #22c55e;
   margin-bottom: 0.5rem;
 }
 
-#userModal #watchlist ul {
+#userModal #watchlist ul, #notificationModal #notificationList ul {
   list-style-type: none;
   padding: 0;
 }
 
-#userModal #watchlist li {
+#userModal #watchlist li, #notificationModal #notificationList li {
   padding: 0.5rem 0;
   border-bottom: 1px solid #334155;
+}
+
+/* Style pour le compteur de notifications */
+.notification-count {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background-color: #ef4444; /* Rouge pour attirer l'attention */
+  color: white;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: bold;
 }
