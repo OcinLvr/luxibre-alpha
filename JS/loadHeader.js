@@ -68,15 +68,25 @@ document.addEventListener('DOMContentLoaded', async function () {
       mobileLoginBtn?.classList.add("hidden");
       mobileLogoutBtn?.classList.remove("hidden");
 
-      // Afficher les informations de l'utilisateur dans la modale
-      userName.textContent = user.user_metadata.full_name || 'Non spécifié';
-      userEmail.textContent = user.email || 'Non spécifié';
+      // Récupérer les informations utilisateur depuis la table 'users'
+      const { data: userData, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', user.id)
+        .single();
 
-      // Vérifier si l'utilisateur est premium (à adapter selon votre logique)
-      const isPremium = user.user_metadata.isPremium || false;
-      userVersion.textContent = isPremium ? 'Premium' : 'Gratuit';
+      if (error) {
+        console.error('Error fetching user data:', error);
+      } else {
+        // Afficher les informations de l'utilisateur dans la modale
+        userName.textContent = userData.name || 'Non spécifié';
+        userEmail.textContent = userData.email || 'Non spécifié';
 
-      // Charger la liste de surveillance (à adapter selon votre logique)
+        // Mettre à jour la version de l'utilisateur
+        userVersion.textContent = userData.ispremium ? 'Premium' : 'Gratuit';
+      }
+
+      // Charger la liste de surveillance
       const watchlist = user.user_metadata.watchlist || [];
       watchlistItems.innerHTML = watchlist.map(item => `<li>${item}</li>`).join('');
 
