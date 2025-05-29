@@ -216,9 +216,7 @@ const generate = async () => {
         }
       };
 
-      if (asset.premium) {
-        signal.predictions = predictFuturePrices(data.history);
-      }
+      signal.predictions = predictFuturePrices(data.history);
 
       signals[category].push(signal);
     } catch (err) {
