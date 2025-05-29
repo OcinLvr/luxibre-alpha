@@ -109,7 +109,7 @@
       "recommendation": "Acheter",
       "score": 65,
       "premium": true,
-      "updated": "2025-05-29T08:34:23.467Z",
+      "updated": "2025-05-29T08:39:47.410Z",
       "indicators": {
         "rsi": 67.66718163760758,
         "macd": 4.28926934202596,
@@ -238,7 +238,7 @@
       "recommendation": "Acheter",
       "score": 65,
       "premium": true,
-      "updated": "2025-05-29T08:34:23.605Z",
+      "updated": "2025-05-29T08:39:47.557Z",
       "indicators": {
         "rsi": 68.74849675298647,
         "macd": 19.605407447190828,
@@ -367,7 +367,7 @@
       "recommendation": "Acheter",
       "score": 65,
       "premium": false,
-      "updated": "2025-05-29T08:34:23.904Z",
+      "updated": "2025-05-29T08:39:47.826Z",
       "indicators": {
         "rsi": 62.79792746113993,
         "macd": 5.359395068361607,
@@ -380,6 +380,11 @@
         "sma200": null,
         "ema20": 354.5443482556891,
         "adx": 25.59585492227983
+      },
+      "predictions": {
+        "day1": 358.96,
+        "day3": 357.42,
+        "day7": 354.34
       }
     },
     {
@@ -491,7 +496,7 @@
       "recommendation": "Acheter",
       "score": 65,
       "premium": true,
-      "updated": "2025-05-29T08:34:24.146Z",
+      "updated": "2025-05-29T08:39:48.048Z",
       "indicators": {
         "rsi": 65.77041785375116,
         "macd": 43.815987404512725,
@@ -1134,7 +1139,7 @@
       "recommendation": "Acheter",
       "score": 70,
       "premium": false,
-      "updated": "2025-05-29T08:34:24.818Z",
+      "updated": "2025-05-29T08:39:48.764Z",
       "indicators": {
         "rsi": 71.46087977550732,
         "macd": 0.36104529473027647,
@@ -1147,6 +1152,11 @@
         "sma200": 9.966705527305603,
         "ema20": 12.525245223037363,
         "adx": 42.92175955101465
+      },
+      "predictions": {
+        "day1": 12.9,
+        "day3": 12.88,
+        "day7": 12.83
       }
     },
     {
@@ -1408,7 +1418,7 @@
       "recommendation": "Acheter",
       "score": 70,
       "premium": true,
-      "updated": "2025-05-29T08:34:24.865Z",
+      "updated": "2025-05-29T08:39:48.821Z",
       "indicators": {
         "rsi": 61.045443762217666,
         "macd": 3205.0854356508353,
@@ -1687,7 +1697,7 @@
       "recommendation": "Acheter",
       "score": 65,
       "premium": true,
-      "updated": "2025-05-29T08:34:24.913Z",
+      "updated": "2025-05-29T08:39:48.880Z",
       "indicators": {
         "rsi": 62.78376598620595,
         "macd": 154.19894356632722,
@@ -1818,7 +1828,7 @@
       "recommendation": "Vendre",
       "score": 35,
       "premium": false,
-      "updated": "2025-05-29T08:34:23.248Z",
+      "updated": "2025-05-29T08:39:47.155Z",
       "indicators": {
         "rsi": 55.27981767536083,
         "macd": -1.5256320622599446,
@@ -1831,6 +1841,11 @@
         "sma200": null,
         "ema20": 204.00172589699432,
         "adx": 10.55963535072167
+      },
+      "predictions": {
+        "day1": 198.87,
+        "day3": 195.77,
+        "day7": 189.58
       }
     },
     {
@@ -1942,7 +1957,7 @@
       "recommendation": "Vendre",
       "score": 35,
       "premium": true,
-      "updated": "2025-05-29T08:34:24.432Z",
+      "updated": "2025-05-29T08:39:48.334Z",
       "indicators": {
         "rsi": 50.52447552447555,
         "macd": -0.0832113367852223,
@@ -2071,7 +2086,7 @@
       "recommendation": "Vendre",
       "score": 35,
       "premium": true,
-      "updated": "2025-05-29T08:34:24.546Z",
+      "updated": "2025-05-29T08:39:48.479Z",
       "indicators": {
         "rsi": 45.812310797174575,
         "macd": -2.4077393184049924,
@@ -2202,7 +2217,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-05-29T08:34:23.309Z",
+      "updated": "2025-05-29T08:39:47.232Z",
       "indicators": {
         "rsi": 78.82252072020572,
         "macd": 21.63470817497307,
@@ -2331,7 +2346,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-05-29T08:34:23.407Z",
+      "updated": "2025-05-29T08:39:47.337Z",
       "indicators": {
         "rsi": 72.70663892566671,
         "macd": 15.62647433473444,
@@ -2460,7 +2475,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-05-29T08:34:23.536Z",
+      "updated": "2025-05-29T08:39:47.482Z",
       "indicators": {
         "rsi": 77.70734284204967,
         "macd": 3.2930291292677794,
@@ -2473,6 +2488,11 @@
         "sma200": null,
         "ema20": 164.714071243848,
         "adx": 55.41468568409934
+      },
+      "predictions": {
+        "day1": 173.24,
+        "day3": 175,
+        "day7": 178.53
       }
     },
     {
@@ -2584,7 +2604,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-05-29T08:34:23.731Z",
+      "updated": "2025-05-29T08:39:47.632Z",
       "indicators": {
         "rsi": 77.55355479664702,
         "macd": 6.249277759556719,
@@ -2597,6 +2617,11 @@
         "sma200": null,
         "ema20": 126.7315999483523,
         "adx": 55.10710959329404
+      },
+      "predictions": {
+        "day1": 134.73,
+        "day3": 134.56,
+        "day7": 134.22
       }
     },
     {
@@ -2708,7 +2733,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-05-29T08:34:23.844Z",
+      "updated": "2025-05-29T08:39:47.716Z",
       "indicators": {
         "rsi": 70.82102776137037,
         "macd": 5.605413438657109,
@@ -2837,7 +2862,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-05-29T08:34:24.014Z",
+      "updated": "2025-05-29T08:39:47.896Z",
       "indicators": {
         "rsi": 42.52116650987769,
         "macd": 0.8904814046286305,
@@ -2966,7 +2991,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-05-29T08:34:24.084Z",
+      "updated": "2025-05-29T08:39:47.975Z",
       "indicators": {
         "rsi": 72.14654767496475,
         "macd": 4.887424559016239,
@@ -2979,6 +3004,11 @@
         "sma200": null,
         "ema20": 106.35620385048456,
         "adx": 44.29309534992951
+      },
+      "predictions": {
+        "day1": 111.25,
+        "day3": 110.71,
+        "day7": 109.62
       }
     },
     {
@@ -3090,7 +3120,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-05-29T08:34:24.216Z",
+      "updated": "2025-05-29T08:39:48.123Z",
       "indicators": {
         "rsi": 62.443438914027105,
         "macd": 1.4525451020129765,
@@ -3103,6 +3133,11 @@
         "sma200": null,
         "ema20": 70.07040255574351,
         "adx": 24.886877828054203
+      },
+      "predictions": {
+        "day1": 71.33,
+        "day3": 71.12,
+        "day7": 70.7
       }
     },
     {
@@ -3214,7 +3249,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-05-29T08:34:24.283Z",
+      "updated": "2025-05-29T08:39:48.189Z",
       "indicators": {
         "rsi": 73.11736770691988,
         "macd": 10.529040704297472,
@@ -3343,7 +3378,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-05-29T08:34:24.368Z",
+      "updated": "2025-05-29T08:39:48.265Z",
       "indicators": {
         "rsi": 47.705465164789274,
         "macd": 2.9296302121026656,
@@ -3356,6 +3391,11 @@
         "sma200": null,
         "ema20": 278.53719171512074,
         "adx": 4.589069670421445
+      },
+      "predictions": {
+        "day1": 273.87,
+        "day3": 269.55,
+        "day7": 260.91
       }
     },
     {
@@ -3467,7 +3507,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-05-29T08:34:24.492Z",
+      "updated": "2025-05-29T08:39:48.408Z",
       "indicators": {
         "rsi": 53.0769230769231,
         "macd": 0.07873093196086245,
@@ -3480,6 +3520,11 @@
         "sma200": null,
         "ema20": 34.753741737604194,
         "adx": 6.153846153846217
+      },
+      "predictions": {
+        "day1": 34.51,
+        "day3": 34.27,
+        "day7": 33.78
       }
     },
     {
@@ -3591,7 +3636,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-05-29T08:34:24.601Z",
+      "updated": "2025-05-29T08:39:48.548Z",
       "indicators": {
         "rsi": 71.44482366325369,
         "macd": 1.404754334623071,
@@ -3604,6 +3649,11 @@
         "sma200": null,
         "ema20": 61.72776073522198,
         "adx": 42.889647326507365
+      },
+      "predictions": {
+        "day1": 63.3,
+        "day3": 63.22,
+        "day7": 63.06
       }
     },
     {
@@ -3715,7 +3765,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-05-29T08:34:24.663Z",
+      "updated": "2025-05-29T08:39:48.618Z",
       "indicators": {
         "rsi": 84.07480314960634,
         "macd": 12.37794193901098,
@@ -3994,7 +4044,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-05-29T08:34:25.006Z",
+      "updated": "2025-05-29T08:39:48.989Z",
       "indicators": {
         "rsi": 39.69936403931389,
         "macd": 0.0059107581067094905,
@@ -4007,6 +4057,11 @@
         "sma200": 2.2860500000000004,
         "ema20": 2.332130396336868,
         "adx": 20.601271921372195
+      },
+      "predictions": {
+        "day1": 2.26,
+        "day3": 2.21,
+        "day7": 2.13
       }
     },
     {
@@ -4268,7 +4323,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-05-29T08:34:25.051Z",
+      "updated": "2025-05-29T08:39:49.046Z",
       "indicators": {
         "rsi": 47.002854424357764,
         "macd": 0.008468402305500278,
