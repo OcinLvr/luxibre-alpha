@@ -109,7 +109,7 @@
       "recommendation": "Acheter",
       "score": 65,
       "premium": true,
-      "updated": "2025-05-30T07:25:08.638Z",
+      "updated": "2025-05-30T08:33:39.968Z",
       "indicators": {
         "rsi": 65.86672879776324,
         "macd": 4.239401486549241,
@@ -238,7 +238,7 @@
       "recommendation": "Acheter",
       "score": 65,
       "premium": true,
-      "updated": "2025-05-30T07:25:08.997Z",
+      "updated": "2025-05-30T08:33:40.584Z",
       "indicators": {
         "rsi": 68.81599999999999,
         "macd": 19.26018686166742,
@@ -367,7 +367,7 @@
       "recommendation": "Acheter",
       "score": 65,
       "premium": true,
-      "updated": "2025-05-30T07:25:09.372Z",
+      "updated": "2025-05-30T08:33:41.063Z",
       "indicators": {
         "rsi": 67.77560339204176,
         "macd": 5.4270292517435905,
@@ -496,7 +496,7 @@
       "recommendation": "Acheter",
       "score": 65,
       "premium": false,
-      "updated": "2025-05-30T07:25:09.589Z",
+      "updated": "2025-05-30T08:33:41.384Z",
       "indicators": {
         "rsi": 63.96486825595988,
         "macd": 5.334071846044139,
@@ -625,7 +625,7 @@
       "recommendation": "Acheter",
       "score": 65,
       "premium": false,
-      "updated": "2025-05-30T07:25:09.952Z",
+      "updated": "2025-05-30T08:33:41.737Z",
       "indicators": {
         "rsi": 68.39019189765456,
         "macd": 4.727959613661071,
@@ -754,7 +754,7 @@
       "recommendation": "Acheter",
       "score": 65,
       "premium": false,
-      "updated": "2025-05-30T07:25:11.409Z",
+      "updated": "2025-05-30T08:33:43.717Z",
       "indicators": {
         "rsi": 68.68008948545855,
         "macd": 1.332507316854965,
@@ -777,7 +777,7 @@
     {
       "name": "iShares EURO STOXX Banks 30-15 UCITS ETF (DE)",
       "symbol": "EXA1.AS",
-      "price": 12.850500106811523,
+      "price": 12.85789966583252,
       "history": [
         5.373300075531006,
         5.471399784088135,
@@ -1393,29 +1393,29 @@
         12.918299674987793,
         12.812100410461426,
         12.861000061035156,
-        12.850500106811523
+        12.85789966583252
       ],
       "recommendation": "Acheter fort",
       "score": 80,
       "premium": false,
-      "updated": "2025-05-30T07:25:11.717Z",
+      "updated": "2025-05-30T08:33:44.038Z",
       "indicators": {
-        "rsi": 62.55781574740656,
-        "macd": 0.3400569135671798,
+        "rsi": 62.9226777155709,
+        "macd": 0.3406471917796807,
         "bollinger": {
-          "middle": 12.600050020217896,
-          "upper": 13.319323577036357,
-          "lower": 11.880776463399435
+          "middle": 12.600419998168945,
+          "upper": 13.320215900336573,
+          "lower": 11.880624096001318
         },
-        "sma50": 11.829958038330078,
-        "sma200": 9.988977527618408,
-        "ema20": 12.551965160892468,
-        "adx": 25.115631494813123
+        "sma50": 11.830106029510498,
+        "sma200": 9.989014525413513,
+        "ema20": 12.552669880799229,
+        "adx": 25.845355431141808
       },
       "predictions": {
         "day1": 12.83,
-        "day3": 12.78,
-        "day7": 12.68
+        "day3": 12.79,
+        "day7": 12.7
       }
     },
     {
@@ -1677,7 +1677,7 @@
       "recommendation": "Acheter",
       "score": 70,
       "premium": true,
-      "updated": "2025-05-30T07:25:11.945Z",
+      "updated": "2025-05-30T08:33:44.270Z",
       "indicators": {
         "rsi": 55.953188444849154,
         "macd": 2696.8601166422595,
@@ -1808,7 +1808,7 @@
       "recommendation": "Vendre",
       "score": 35,
       "premium": false,
-      "updated": "2025-05-30T07:25:08.092Z",
+      "updated": "2025-05-30T08:33:39.179Z",
       "indicators": {
         "rsi": 53.176652892561954,
         "macd": -1.663577270540742,
@@ -1937,7 +1937,7 @@
       "recommendation": "Vendre",
       "score": 35,
       "premium": true,
-      "updated": "2025-05-30T07:25:10.857Z",
+      "updated": "2025-05-30T08:33:43.154Z",
       "indicators": {
         "rsi": 42.71844660194174,
         "macd": -0.12028571633208074,
@@ -2066,7 +2066,7 @@
       "recommendation": "Vendre",
       "score": 35,
       "premium": true,
-      "updated": "2025-05-30T07:25:11.221Z",
+      "updated": "2025-05-30T08:33:43.534Z",
       "indicators": {
         "rsi": 51.56749840051177,
         "macd": -2.1650456027530254,
@@ -2197,7 +2197,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-05-30T07:25:08.278Z",
+      "updated": "2025-05-30T08:33:39.481Z",
       "indicators": {
         "rsi": 77.69583866355629,
         "macd": 21.691800741467603,
@@ -2326,7 +2326,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-05-30T07:25:08.457Z",
+      "updated": "2025-05-30T08:33:39.783Z",
       "indicators": {
         "rsi": 70.7717237188576,
         "macd": 15.117331482505449,
@@ -2455,7 +2455,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-05-30T07:25:08.818Z",
+      "updated": "2025-05-30T08:33:40.279Z",
       "indicators": {
         "rsi": 74.78849407783419,
         "macd": 3.4299315996408097,
@@ -2584,7 +2584,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-05-30T07:25:09.193Z",
+      "updated": "2025-05-30T08:33:40.761Z",
       "indicators": {
         "rsi": 80.07166482910696,
         "macd": 6.459644130321351,
@@ -2713,7 +2713,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-05-30T07:25:09.774Z",
+      "updated": "2025-05-30T08:33:41.564Z",
       "indicators": {
         "rsi": 48.239060832443904,
         "macd": 0.8345155338988803,
@@ -2842,7 +2842,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-05-30T07:25:10.130Z",
+      "updated": "2025-05-30T08:33:41.918Z",
       "indicators": {
         "rsi": 61.15679673271146,
         "macd": 40.931231690515006,
@@ -2971,7 +2971,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-05-30T07:25:10.323Z",
+      "updated": "2025-05-30T08:33:42.224Z",
       "indicators": {
         "rsi": 52.30296827021495,
         "macd": 1.3386957777969144,
@@ -3100,7 +3100,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-05-30T07:25:10.493Z",
+      "updated": "2025-05-30T08:33:42.533Z",
       "indicators": {
         "rsi": 74.84351209609198,
         "macd": 10.273258283569703,
@@ -3229,7 +3229,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-05-30T07:25:10.676Z",
+      "updated": "2025-05-30T08:33:42.837Z",
       "indicators": {
         "rsi": 38.45876845516746,
         "macd": 1.6430658787542711,
@@ -3358,7 +3358,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-05-30T07:25:11.040Z",
+      "updated": "2025-05-30T08:33:43.350Z",
       "indicators": {
         "rsi": 50.73529411764709,
         "macd": 0.02973925210346806,
@@ -3487,7 +3487,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-05-30T07:25:11.591Z",
+      "updated": "2025-05-30T08:33:43.896Z",
       "indicators": {
         "rsi": 83.94204049225885,
         "macd": 12.588383154099603,
@@ -3766,7 +3766,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-05-30T07:25:12.176Z",
+      "updated": "2025-05-30T08:33:44.626Z",
       "indicators": {
         "rsi": 57.738114985237075,
         "macd": 142.72610518082138,
@@ -4045,7 +4045,7 @@
       "recommendation": "Conserver",
       "score": 45,
       "premium": false,
-      "updated": "2025-05-30T07:25:12.497Z",
+      "updated": "2025-05-30T08:33:45.075Z",
       "indicators": {
         "rsi": 36.463789055445176,
         "macd": -0.004561973551036047,
@@ -4324,7 +4324,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-05-30T07:25:12.718Z",
+      "updated": "2025-05-30T08:33:45.439Z",
       "indicators": {
         "rsi": 42.56233877901978,
         "macd": 0.0035157879735235875,
