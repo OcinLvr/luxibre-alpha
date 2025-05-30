@@ -115,17 +115,13 @@ function calculateScore(history) {
   const adx = ADX(history);
 
   let score = 50;
-
   if (sma50 && sma200 && sma50 > sma200) score += 15;
   if (rsi < 30) score += 10;
   else if (rsi > 70) score -= 10;
-
   if (macd > 0) score += 10;
   else if (macd < 0) score -= 10;
-
   if (bollinger.upper && latest > bollinger.upper) score -= 5;
   if (bollinger.lower && latest < bollinger.lower) score += 5;
-
   if (adx > 25) score += 5;
   else score -= 5;
 
@@ -142,11 +138,18 @@ function predictFuturePrices(history) {
   };
 }
 
+function performance30Jours(history) {
+  if (history.length < 30) return null;
+  const old = history[history.length - 30];
+  const last = history[history.length - 1];
+  return +(((last - old) / old) * 100).toFixed(2);
+}
+
 function determineRecommendation(score) {
   if (score >= 75) return "Acheter fort";
   if (score >= 65) return "Acheter";
-  if (score <= 35) return "Vendre";
   if (score <= 25) return "Vendre fort";
+  if (score <= 35) return "Vendre";
   return "Conserver";
 }
 
@@ -213,10 +216,10 @@ const generate = async () => {
           sma200: SMA(data.history, 200),
           ema20: EMA(data.history, 20),
           adx: ADX(data.history)
-        }
+        },
+        predictions: asset.premium ? predictFuturePrices(data.history) : null,
+        performance30j: performance30Jours(data.history)
       };
-
-      signal.predictions = predictFuturePrices(data.history);
 
       signals[category].push(signal);
     } catch (err) {
