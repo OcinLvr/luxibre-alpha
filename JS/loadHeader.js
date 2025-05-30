@@ -84,6 +84,8 @@ document.addEventListener('DOMContentLoaded', async function () {
 
         // Mettre à jour la version de l'utilisateur
         userVersion.textContent = userData.ispremium ? 'Premium' : 'Gratuit';
+        window.isPremium = userData.ispremium === true;
+console.log("Premium actif :", window.isPremium);
       }
 
       // Charger la liste de surveillance
