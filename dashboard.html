@@ -275,9 +275,11 @@
   </footer>
 
   <script>
-    const isPremium = false;
+    // Simuler statut premium (à remplacer par vrai contrôle utilisateur)
+    const isPremium = true;
     function isPremiumUser() { return isPremium; }
 
+    // Fonction d'export pour petits graphiques
     function exportChart(chartId) {
       if (!isPremiumUser()) {
         alert("Cette fonctionnalité est réservée aux utilisateurs premium.");
@@ -292,6 +294,7 @@
       });
     }
 
+    // Variables globales pour modal graphique
     let bigChartInstance = null;
     const bigChartModal = document.getElementById("bigChartModal");
     const bigChartCanvas = document.getElementById("bigChartCanvas").getContext('2d');
@@ -300,73 +303,125 @@
     const resetZoomBtn = document.getElementById("resetZoomBtn");
     const exportBigChartBtn = document.getElementById("exportBigChartBtn");
 
+    // Fonction pour ouvrir modal grand graphique
     function openBigChart(signal) {
-      if (signal.premium && !isPremiumUser()) {
-        alert("Ce signal est réservé aux abonnés premium.");
-        return;
-      }
-      bigChartTitle.textContent = signal.name + " - Prix Historique";
-      if (bigChartInstance) bigChartInstance.destroy();
+  if (signal.premium && !isPremiumUser()) {
+    alert("Ce signal est réservé aux abonnés premium.");
+    return;
+  }
+  bigChartTitle.textContent = signal.name + " - Prix Historique";
 
-      bigChartInstance = new Chart(bigChartCanvas, {
-        type: "line",
-        data: {
-          labels: signal.history.map((_, idx) => `J-${signal.history.length - idx}`),
-          datasets: [{
-            label: `${signal.name} - Prix de clôture`,
-            data: signal.history,
-            borderColor: "#22c55e",
-            backgroundColor: "rgba(34,197,94,0.3)",
-            fill: true,
-            tension: 0.3,
-            pointRadius: 3,
-            pointHoverRadius: 6
-          }]
+  // Détruire l'ancien graphique si existe
+  if (bigChartInstance) {
+    bigChartInstance.destroy();
+  }
+
+  bigChartInstance = new Chart(bigChartCanvas, {
+    type: "line",
+    data: {
+      labels: signal.history.map((_, idx) => `J-${signal.history.length - idx}`),
+      datasets: [{
+        label: `${signal.name} - Prix de clôture`,
+        data: signal.history,
+        borderColor: "#22c55e",
+        backgroundColor: "rgba(34,197,94,0.3)",
+        fill: true,
+        tension: 0.3,
+        pointRadius: 3,
+        pointHoverRadius: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          labels: { color: '#d1d5db' }
         },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: { labels: { color: '#d1d5db' } },
-            tooltip: { mode: 'index', intersect: false },
-            zoom: {
-              pan: { enabled: true, mode: 'x', modifierKey: 'ctrl' },
-              zoom: {
-                wheel: { enabled: true },
-                pinch: { enabled: true },
-                mode: 'x',
-              }
-            }
+        tooltip: {
+          mode: 'index',
+          intersect: false
+        },
+        zoom: {
+          pan: {
+            enabled: true,
+            mode: 'x',
+            modifierKey: 'ctrl',
           },
-          scales: {
-            x: { display: true, ticks: { color: '#a3bffa' }, grid: { color: '#334155' } },
-            y: { beginAtZero: false, ticks: { color: '#a3bffa' }, grid: { color: '#334155' } }
+          zoom: {
+            wheel: {
+              enabled: true,
+            },
+            pinch: {
+              enabled: true
+            },
+            mode: 'x',
           }
         }
-      });
-
-      const predictionsDiv = document.getElementById('predictionsContainer');
-      if (signal.predictions) {
-        predictionsDiv.innerHTML = isPremiumUser() ? `
-          <h4>Prédictions de prix</h4>
-          <p>Jour 1: $${signal.predictions.day1}</p>
-          <p>Jour 3: $${signal.predictions.day3}</p>
-          <p>Jour 7: $${signal.predictions.day7}</p>
-        ` : `
-          <div class="notice">Les prédictions de prix sont réservées aux abonnés premium.</div>
-        `;
-      } else {
-        predictionsDiv.innerHTML = "";
+      },
+      scales: {
+        x: {
+          display: true,
+          ticks: { color: '#a3bffa' },
+          grid: { color: '#334155' }
+        },
+        y: {
+          beginAtZero: false,
+          ticks: { color: '#a3bffa' },
+          grid: { color: '#334155' }
+        }
       }
-
-      document.body.classList.add('modal-open');
-      bigChartModal.classList.add("active");
     }
+  });
 
-    closeBigChartBtn.addEventListener("click", closeBigChart);
-    bigChartModal.addEventListener("click", e => { if (e.target === bigChartModal) closeBigChart(); });
+  // Afficher les prédictions de prix pour les utilisateurs premium
+  if (signal.premium && isPremiumUser() && signal.predictions) {
+    const predictionsDiv = document.getElementById('predictionsContainer');
+    predictionsDiv.innerHTML = `
+      <h4>Prédictions de prix</h4>
+      <p>Jour 1: $${signal.predictions.day1}</p>
+      <p>Jour 3: $${signal.predictions.day3}</p>
+      <p>Jour 7: $${signal.predictions.day7}</p>
+    `;
+  }
 
-    resetZoomBtn.addEventListener("click", () => { if (bigChartInstance) bigChartInstance.resetZoom(); });
+  // Ajouter la classe modal-open au corps de la page
+  document.body.classList.add('modal-open');
+
+  bigChartModal.classList.add("active");
+}
+
+function closeBigChart() {
+  if (bigChartInstance) {
+    bigChartInstance.destroy();
+    bigChartInstance = null;
+  }
+
+  // Supprimer la classe modal-open du corps de la page
+  document.body.classList.remove('modal-open');
+
+  bigChartModal.classList.remove("active");
+}
+
+    // Fermer modal grand graphique
+    function closeBigChart() {
+  if (bigChartInstance) {
+    bigChartInstance.destroy();
+    bigChartInstance = null;
+  }
+
+  // Supprimer la classe modal-open du corps de la page
+  document.body.classList.remove('modal-open');
+
+  bigChartModal.classList.remove("active");
+}
+
+    // Réinitialiser zoom du grand graphique
+    resetZoomBtn.addEventListener("click", () => {
+      if (bigChartInstance) bigChartInstance.resetZoom();
+    });
+
+    // Exporter grand graphique
     exportBigChartBtn.addEventListener("click", () => {
       if (!isPremiumUser()) {
         alert("Cette fonctionnalité est réservée aux utilisateurs premium.");
@@ -380,6 +435,14 @@
       });
     });
 
+    closeBigChartBtn.addEventListener("click", closeBigChart);
+
+    // Fermer modal au clic hors contenu
+    bigChartModal.addEventListener("click", e => {
+      if (e.target === bigChartModal) closeBigChart();
+    });
+
+    // Chargement des signaux et affichage
     async function fetchSignals() {
       try {
         const res = await fetch("data/signals.json");
@@ -397,37 +460,110 @@
       if (!data) return;
 
       const container = document.getElementById("signalsContainer");
+      const premiumNotice = document.getElementById("premiumNotice");
+      let premiumLocked = false;
       container.innerHTML = "";
 
       ["achat", "vente", "conservation"].forEach(category => {
-        if (!data[category]) return;
+        if (!data[category] || !Array.isArray(data[category])) return;
 
-        data[category].forEach(signal => {
+        data[category].forEach((signal, i) => {
           const card = document.createElement("div");
           card.className = "card";
           card.dataset.category = category;
 
-          const title = document.createElement("h3");
-          title.textContent = signal.name;
-          card.appendChild(title);
+          const isLocked = signal.premium && !isPremiumUser();
+          if (isLocked) {
+            card.classList.add("blur");
+            premiumLocked = true;
+          }
 
-          const rec = document.createElement("div");
-          rec.className = "recommendation";
-          rec.textContent = `Recommandation: ${signal.recommendation}`;
-          card.appendChild(rec);
+          const chartId = `chart-${category}-${i}`;
 
-          const chart = document.createElement("div");
-          chart.className = "chart-container";
-          chart.id = `chart-${signal.name}`;
-          chart.addEventListener("click", () => openBigChart(signal));
-          card.appendChild(chart);
+          card.innerHTML = `
+          <h3>${signal.name}</h3>
+          <p><strong>Prix actuel :</strong> $${signal.price.toFixed(2)}</p>
+          <p><strong>Recommandation :</strong> <span class="recommendation">${signal.recommendation}</span></p>
+          <div class="chart-container">
+          <canvas id="${chartId}" width="300" height="150"></canvas>
+          </div>
+          ${isLocked ? `<button class="unlock-btn" onclick="alert('Abonnement premium requis pour accéder à ce signal.')">Débloquer</button>` : ''}
+          `;
 
-          container.appendChild(card);
-        });
+
+        container.appendChild(card);
+
+        if (!isLocked) {
+          const ctx = document.getElementById(chartId).getContext("2d");
+          new Chart(ctx, {
+            type: "line",
+            data: {
+              labels: signal.history.map((_, idx) => `J-${signal.history.length - idx}`),
+              datasets: [{
+                label: `${signal.name} - Prix de clôture`,
+                data: signal.history,
+                borderColor: "#22c55e",
+                backgroundColor: "rgba(34,197,94,0.3)",
+                fill: true,
+                tension: 0.3,
+                pointRadius: 0
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                x: {
+                  display: false
+                },
+                y: {
+                  beginAtZero: false,
+                  ticks: {
+                    color: '#a3bffa'
+                  },
+                  grid: {
+                    color: '#334155'
+                  }
+                }
+              },
+              plugins: {
+                legend: {
+                  labels: { color: '#d1d5db' }
+                },
+                tooltip: {
+                  mode: 'index',
+                  intersect: false
+                }
+              }
+            }
+          });
+
+          // Ajouter un gestionnaire d'événements pour le clic sur le graphique
+          card.querySelector('.chart-container').addEventListener('click', () => {
+            openBigChart(signal);
+          });
+        }
       });
-    }
+    });
 
-    renderSignals();
+    if (premiumLocked && !isPremiumUser()) {
+      premiumNotice.style.display = "block";
+      premiumNotice.textContent = "Certains signaux sont réservés aux abonnés premium. Abonnez-vous pour tout débloquer.";
+    }
+  }
+
+  function filterSignals(category) {
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => {
+      if (category === 'all' || card.dataset.category === category) {
+        card.style.display = 'block';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', renderSignals);
   </script>
 </body>
 </html>
