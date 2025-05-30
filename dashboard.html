@@ -468,14 +468,15 @@
           const chartId = `chart-${category}-${i}`;
 
           card.innerHTML = `
-            <h3>${signal.name}</h3>
-            <p><strong>Prix actuel :</strong> $${signal.price.toFixed(2)}</p>
-            <p><strong>Recommandation :</strong> <span class="recommendation">${signal.recommendation}</span></p>
-            <div class="chart-container">
-              <canvas id="${chartId}" width="300" height="150"></canvas>
-            </div>
-            ${isLocked ? `<button class="unlock-btn" onclick="alert('Abonnement premium requis pour accéder à ce signal.')">Débloquer</button>` : ''}
-          `;
+  <h3>${signal.name}</h3>
+  <p><strong>Prix actuel :</strong> $${signal.price.toFixed(2)}</p>
+  <p><strong>Performance (30j) :</strong> ${signal.performance30j}%</p>
+  <p><strong>Recommandation :</strong> <span class="recommendation">${signal.recommendation}</span></p>
+  <div class="chart-container">
+    <canvas id="${chartId}" width="300" height="150"></canvas>
+  </div>
+  ${isLocked ? `<button class="unlock-btn" onclick="alert('Abonnement premium requis pour accéder à ce signal.')">Débloquer</button>` : ''}
+`;
 
           container.appendChild(card);
 
