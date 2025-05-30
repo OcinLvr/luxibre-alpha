@@ -68,6 +68,8 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.15);
       position: relative;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
     }
 
     .card:hover {
@@ -77,6 +79,23 @@
 
     .card.blur {
       filter: blur(4px);
+      pointer-events: none;
+      user-select: none;
+      position: relative;
+    }
+
+    /* Message promotion sur les cartes floutées */
+    .card.blur::after {
+      content: "Abonnement Premium requis pour accéder à ce signal";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: var(--primary-color);
+      font-weight: 700;
+      font-size: 1.1rem;
+      text-align: center;
+      width: 80%;
       pointer-events: none;
       user-select: none;
     }
@@ -115,6 +134,12 @@
       background: #16a34a;
     }
 
+    /* Position export bouton dans carte */
+    .export-btn {
+      top: auto;
+      bottom: 1rem;
+    }
+
     footer {
       background: var(--secondary-color);
       padding: 1rem;
@@ -134,33 +159,33 @@
     }
     
     #bigChartModal {
-  position: fixed;
-  inset: 0;
-  background-color: rgba(15, 23, 42, 0.9);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-  overflow-y: auto; /* Permettre le défilement dans la modal */
-}
+      position: fixed;
+      inset: 0;
+      background-color: rgba(15, 23, 42, 0.9);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      overflow-y: auto; /* Permettre le défilement dans la modal */
+    }
 
-#bigChartModal.active {
-  display: flex;
-}
+    #bigChartModal.active {
+      display: flex;
+    }
 
-#bigChartContent {
-  background-color: var(--secondary-color);
-  border-radius: 1rem;
-  padding: 1.5rem;
-  width: 90%;
-  max-width: 900px;
-  max-height: 90vh;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 0 20px var(--primary-color);
-  position: relative;
-  overflow-y: auto; /* Permettre le défilement du contenu de la modal */
-}
+    #bigChartContent {
+      background-color: var(--secondary-color);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      width: 90%;
+      max-width: 900px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 0 20px var(--primary-color);
+      position: relative;
+      overflow-y: auto; /* Permettre le défilement du contenu de la modal */
+    }
 
     #bigChartHeader {
       display: flex;
@@ -200,6 +225,7 @@
       padding: 1rem;
       background: #0f172a;
       border-radius: 0.6rem;
+      color: var(--accent-color);
     }
 
     #bigChartActions {
@@ -223,6 +249,32 @@
     #bigChartActions button:hover {
       background: #16a34a;
     }
+
+    /* Style performance 30 jours */
+    .performance-30d {
+      margin-top: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+
+    .performance-30d.positive {
+      color: #4ade80; /* vert */
+    }
+
+    .performance-30d.negative {
+      color: #ef4444; /* rouge */
+    }
+
+    /* Style prédictions dans carte */
+    .predictions-small {
+      margin-top: 0.8rem;
+      font-size: 0.875rem;
+      background: rgba(34,197,94,0.15);
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      color: var(--accent-color);
+    }
+
   </style>
 </head>
 <body>
@@ -234,336 +286,370 @@
 
   <!-- Navigation spécifique au dashboard -->
   <nav class="dashboard-nav overflow-x-auto whitespace-nowrap flex gap-2 sm:justify-center p-4 bg-gray-800">
-    <button onclick="filterSignals('all')" class="text-sm sm:text-base px-3 py-1.5 bg-green-500 text-white font-medium rounded-full whitespace-nowrap">Tous</button>
-    <button onclick="filterSignals('achat')" class="text-sm sm:text-base px-3 py-1.5 bg-green-500 text-white font-medium rounded-full whitespace-nowrap">Achat</button>
-    <button onclick="filterSignals('vente')" class="text-sm sm:text-base px-3 py-1.5 bg-green-500 text-white font-medium rounded-full whitespace-nowrap">Vente</button>
-    <button onclick="filterSignals('conservation')" class="text-sm sm:text-base px-3 py-1.5 bg-green-500 text-white font-medium rounded-full whitespace-nowrap">Conservation</button>
+    <button onclick="filterSignals('all')" class="filter-btn px-4 py-2 rounded-md hover:bg-green-600 transition">Tous</button>
+    <button onclick="filterSignals('buy')" class="filter-btn px-4 py-2 rounded-md hover:bg-green-600 transition">Acheter</button>
+    <button onclick="filterSignals('hold')" class="filter-btn px-4 py-2 rounded-md hover:bg-green-600 transition">Conserver</button>
+    <button onclick="filterSignals('sell')" class="filter-btn px-4 py-2 rounded-md hover:bg-green-600 transition">Vendre</button>
   </nav>
 
-  <main>
-    <div id="premiumNotice" class="notice" style="display: none;"></div>
-    <div id="signalsContainer"></div>
-    <section id="performanceReports">
-      <h2>Rapports de Performance</h2>
-      <!-- Contenu des rapports de performance -->
-    </section>
-    <section id="testimonials">
-      <h2>Témoignages</h2>
-      <!-- Contenu des témoignages -->
-    </section>
+  <!-- Message info -->
+  <div class="notice" role="alert" aria-live="polite" aria-atomic="true">
+    Ce dashboard vous donne un aperçu rapide des signaux boursiers, avec des prévisions de prix réservées aux abonnés Premium.
+  </div>
+
+  <main id="signalsContainer" class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4 pb-20" aria-live="polite" aria-label="Liste des signaux boursiers">
+    <!-- Cartes dynamiques ici -->
   </main>
 
   <!-- Modal grand graphique -->
-  <div id="bigChartModal" role="dialog" aria-modal="true" aria-labelledby="bigChartTitle">
+  <div id="bigChartModal" role="dialog" aria-modal="true" aria-labelledby="bigChartTitle" tabindex="-1">
     <div id="bigChartContent">
       <div id="bigChartHeader">
-        <h3 id="bigChartTitle">Graphique</h3>
-        <button id="closeBigChartBtn" aria-label="Fermer le graphique"><i class="fas fa-times"></i></button>
+        <h3 id="bigChartTitle"></h3>
+        <button id="closeBigChartBtn" aria-label="Fermer la vue détaillée"><i class="fas fa-times"></i></button>
       </div>
-      <canvas id="bigChartCanvas"></canvas>
-      <div id="predictionsContainer"></div>
+      <canvas id="bigChartCanvas" aria-describedby="predictionsContainer"></canvas>
+      <div id="predictionsContainer" aria-live="polite"></div>
       <div id="bigChartActions">
-        <button id="resetZoomBtn">Réinitialiser Zoom</button>
-        <button id="exportBigChartBtn">Exporter le Graphique</button>
+        <button id="exportBigChartBtn" aria-label="Exporter le graphique détaillé">Exporter</button>
       </div>
     </div>
   </div>
 
   <footer>
-    <a href="/docs">Documentation</a>
-    <a href="/support">Support</a>
+    <p>&copy; 2025 Luxibre Alpha. Tous droits réservés.</p>
+    <a href="pricing.html" aria-label="Page d'abonnement premium">Abonnez-vous au Premium</a>
   </footer>
 
   <script>
-    // Simuler statut premium (à remplacer par vrai contrôle utilisateur)
-    const isPremium = true;
-    function isPremiumUser() { return isPremium; }
+    // Simule état utilisateur Premium (true = abonné)
+    const isPremium = false; // à remplacer par vraie vérification d'auth
 
-    // Fonction d'export pour petits graphiques
-    function exportChart(chartId) {
-      if (!isPremiumUser()) {
-        alert("Cette fonctionnalité est réservée aux utilisateurs premium.");
-        return;
-      }
-      const element = document.getElementById(chartId);
-      html2canvas(element).then(canvas => {
-        const link = document.createElement('a');
-        link.download = 'chart.png';
-        link.href = canvas.toDataURL();
-        link.click();
-      });
-    }
-
-    // Variables globales pour modal graphique
+    // Stockage des charts pour mise à jour/désactivation zoom
+    const smallCharts = new Map();
     let bigChartInstance = null;
-    const bigChartModal = document.getElementById("bigChartModal");
-    const bigChartCanvas = document.getElementById("bigChartCanvas").getContext('2d');
-    const bigChartTitle = document.getElementById("bigChartTitle");
-    const closeBigChartBtn = document.getElementById("closeBigChartBtn");
-    const resetZoomBtn = document.getElementById("resetZoomBtn");
-    const exportBigChartBtn = document.getElementById("exportBigChartBtn");
 
-    // Fonction pour ouvrir modal grand graphique
-    function openBigChart(signal) {
-  if (signal.premium && !isPremiumUser()) {
-    alert("Ce signal est réservé aux abonnés premium.");
-    return;
-  }
-  bigChartTitle.textContent = signal.name + " - Prix Historique";
-
-  // Détruire l'ancien graphique si existe
-  if (bigChartInstance) {
-    bigChartInstance.destroy();
-  }
-
-  bigChartInstance = new Chart(bigChartCanvas, {
-    type: "line",
-    data: {
-      labels: signal.history.map((_, idx) => `J-${signal.history.length - idx}`),
-      datasets: [{
-        label: `${signal.name} - Prix de clôture`,
-        data: signal.history,
-        borderColor: "#22c55e",
-        backgroundColor: "rgba(34,197,94,0.3)",
-        fill: true,
-        tension: 0.3,
-        pointRadius: 3,
-        pointHoverRadius: 6
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          labels: { color: '#d1d5db' }
-        },
-        tooltip: {
-          mode: 'index',
-          intersect: false
-        },
-        zoom: {
-          pan: {
-            enabled: true,
-            mode: 'x',
-            modifierKey: 'ctrl',
-          },
-          zoom: {
-            wheel: {
-              enabled: true,
-            },
-            pinch: {
-              enabled: true
-            },
-            mode: 'x',
-          }
-        }
-      },
-      scales: {
-        x: {
-          display: true,
-          ticks: { color: '#a3bffa' },
-          grid: { color: '#334155' }
-        },
-        y: {
-          beginAtZero: false,
-          ticks: { color: '#a3bffa' },
-          grid: { color: '#334155' }
-        }
+    // Chargement des signaux JSON (dossier data/signals.json)
+    async function loadSignals() {
+      try {
+        const res = await fetch('data/signals.json');
+        if (!res.ok) throw new Error('Erreur chargement signaux');
+        const data = await res.json();
+        return data.signals || [];
+      } catch (error) {
+        console.error(error);
+        return [];
       }
     }
-  });
 
-  // Afficher les prédictions de prix pour les utilisateurs premium
-  if (signal.premium && isPremiumUser() && signal.predictions) {
-    const predictionsDiv = document.getElementById('predictionsContainer');
-    predictionsDiv.innerHTML = `
-      <h4>Prédictions de prix</h4>
-      <p>Jour 1: $${signal.predictions.day1}</p>
-      <p>Jour 3: $${signal.predictions.day3}</p>
-      <p>Jour 7: $${signal.predictions.day7}</p>
-    `;
-  }
+    // Créer une carte signal
+    function createSignalCard(signal) {
+      const { symbol, recommendation, price, price30dChange, chartData, pricePredictions } = signal;
 
-  // Ajouter la classe modal-open au corps de la page
-  document.body.classList.add('modal-open');
+      // Wrapper carte
+      const card = document.createElement('article');
+      card.className = 'card';
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('role', 'region');
+      card.setAttribute('aria-label', `Signal pour ${symbol}, recommandation ${recommendation}`);
 
-  bigChartModal.classList.add("active");
-}
-
-function closeBigChart() {
-  if (bigChartInstance) {
-    bigChartInstance.destroy();
-    bigChartInstance = null;
-  }
-
-  // Supprimer la classe modal-open du corps de la page
-  document.body.classList.remove('modal-open');
-
-  bigChartModal.classList.remove("active");
-}
-
-    // Fermer modal grand graphique
-    function closeBigChart() {
-  if (bigChartInstance) {
-    bigChartInstance.destroy();
-    bigChartInstance = null;
-  }
-
-  // Supprimer la classe modal-open du corps de la page
-  document.body.classList.remove('modal-open');
-
-  bigChartModal.classList.remove("active");
-}
-
-    // Réinitialiser zoom du grand graphique
-    resetZoomBtn.addEventListener("click", () => {
-      if (bigChartInstance) bigChartInstance.resetZoom();
-    });
-
-    // Exporter grand graphique
-    exportBigChartBtn.addEventListener("click", () => {
-      if (!isPremiumUser()) {
-        alert("Cette fonctionnalité est réservée aux utilisateurs premium.");
-        return;
+      // Ajout flouté si non premium et prédictions présentes
+      const mustBlur = !isPremium && pricePredictions && Object.keys(pricePredictions).length > 0;
+      if (mustBlur) {
+        card.classList.add('blur');
       }
-      html2canvas(bigChartCanvas.canvas).then(canvas => {
+
+      // Titre + symbole
+      const title = document.createElement('h2');
+      title.className = 'text-xl font-semibold';
+      title.textContent = symbol;
+      card.appendChild(title);
+
+      // Recommandation
+      const rec = document.createElement('div');
+      rec.className = 'recommendation';
+      rec.textContent = `Recommandation : ${recommendation.toUpperCase()}`;
+      card.appendChild(rec);
+
+      // Prix actuel
+      const priceDiv = document.createElement('div');
+      priceDiv.className = 'mt-1 text-lg font-semibold';
+      priceDiv.textContent = `Prix actuel : ${price.toFixed(2)} €`;
+      card.appendChild(priceDiv);
+
+      // Performance 30 jours
+      const perf = document.createElement('div');
+      perf.className = 'performance-30d ' + (price30dChange >= 0 ? 'positive' : 'negative');
+      const sign = price30dChange >= 0 ? '+' : '';
+      perf.textContent = `Performance 30j : ${sign}${price30dChange.toFixed(2)} %`;
+      card.appendChild(perf);
+
+      // Petit graphique
+      const chartWrapper = document.createElement('div');
+      chartWrapper.className = 'chart-container';
+      chartWrapper.setAttribute('tabindex', '0');
+      chartWrapper.setAttribute('role', 'img');
+      chartWrapper.setAttribute('aria-label', `Graphique des prix pour ${symbol}`);
+      card.appendChild(chartWrapper);
+
+      // Canvas pour chart.js
+      const canvas = document.createElement('canvas');
+      chartWrapper.appendChild(canvas);
+
+      // Création graphique Chart.js petit
+      const smallChart = new Chart(canvas.getContext('2d'), {
+        type: 'line',
+        data: {
+          labels: chartData.dates,
+          datasets: [{
+            label: symbol,
+            data: chartData.prices,
+            borderColor: 'rgba(34,197,94,0.8)',
+            backgroundColor: 'rgba(34,197,94,0.2)',
+            pointRadius: 0,
+            borderWidth: 2,
+            fill: true,
+            tension: 0.2,
+          }]
+        },
+        options: {
+          responsive: true,
+          animation: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              mode: 'nearest',
+              intersect: false,
+            },
+            zoom: {
+              zoom: { enabled: false },
+              pan: { enabled: false }
+            }
+          },
+          scales: {
+            x: {
+              type: 'time',
+              time: { unit: 'day', tooltipFormat: 'dd LLL yyyy' },
+              ticks: { display: false },
+              grid: { display: false }
+            },
+            y: {
+              ticks: { display: false },
+              grid: { display: false }
+            }
+          },
+          interaction: { mode: 'nearest', intersect: false }
+        }
+      });
+      smallCharts.set(symbol, smallChart);
+
+      // Prédictions prix (petit résumé) (uniquement premium)
+      if (isPremium && pricePredictions && Object.keys(pricePredictions).length > 0) {
+        const predDiv = document.createElement('div');
+        predDiv.className = 'predictions-small';
+        predDiv.innerHTML = `
+          <strong>Prévisions prix:</strong><br/>
+          J+1: ${pricePredictions.day1 ? pricePredictions.day1.toFixed(2) + ' €' : 'N/A'}, 
+          J+3: ${pricePredictions.day3 ? pricePredictions.day3.toFixed(2) + ' €' : 'N/A'}, 
+          J+7: ${pricePredictions.day7 ? pricePredictions.day7.toFixed(2) + ' €' : 'N/A'}
+        `;
+        card.appendChild(predDiv);
+      }
+
+      // Bouton export (uniquement premium)
+      if (isPremium) {
+        const exportBtn = document.createElement('button');
+        exportBtn.className = 'export-btn';
+        exportBtn.setAttribute('aria-label', `Exporter graphique ${symbol}`);
+        exportBtn.innerHTML = '<i class="fas fa-download"></i>';
+        exportBtn.title = 'Exporter ce graphique';
+        exportBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          exportChartAsImage(canvas, symbol);
+        });
+        chartWrapper.appendChild(exportBtn);
+      }
+
+      // Ouvrir modal grand graphique au clic sur petit graphique, sauf si carte floutée
+      if (!mustBlur) {
+        chartWrapper.addEventListener('click', () => openBigChartModal(signal));
+        chartWrapper.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openBigChartModal(signal);
+          }
+        });
+      }
+
+      return card;
+    }
+
+    // Exporter graphique petit au format image PNG
+    function exportChartAsImage(canvas, symbol) {
+      const link = document.createElement('a');
+      link.download = `${symbol}_chart.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    // Exporter graphique grand au format image PNG
+    function exportBigChart() {
+      const bigChartContent = document.getElementById('bigChartContent');
+      html2canvas(bigChartContent, { backgroundColor: null }).then(canvas => {
         const link = document.createElement('a');
-        link.download = 'big-chart.png';
-        link.href = canvas.toDataURL();
+        link.download = 'chart_detail.png';
+        link.href = canvas.toDataURL('image/png');
         link.click();
       });
-    });
-
-    closeBigChartBtn.addEventListener("click", closeBigChart);
-
-    // Fermer modal au clic hors contenu
-    bigChartModal.addEventListener("click", e => {
-      if (e.target === bigChartModal) closeBigChart();
-    });
-
-    // Chargement des signaux et affichage
-    async function fetchSignals() {
-      try {
-        const res = await fetch("data/signals.json");
-        if (!res.ok) throw new Error("HTTP error " + res.status);
-        return await res.json();
-      } catch (err) {
-        console.error("Erreur lors du chargement des signaux:", err);
-        document.getElementById("signalsContainer").textContent = "Erreur lors du chargement des signaux.";
-        return null;
-      }
     }
 
-    async function renderSignals() {
-      const data = await fetchSignals();
-      if (!data) return;
+    // Ouvrir modal grand graphique
+    function openBigChartModal(signal) {
+      const modal = document.getElementById('bigChartModal');
+      const title = document.getElementById('bigChartTitle');
+      const predictionsContainer = document.getElementById('predictionsContainer');
 
-      const container = document.getElementById("signalsContainer");
-      const premiumNotice = document.getElementById("premiumNotice");
-      let premiumLocked = false;
-      container.innerHTML = "";
+      title.textContent = signal.symbol + ' - Graphique détaillé';
 
-      ["achat", "vente", "conservation"].forEach(category => {
-        if (!data[category] || !Array.isArray(data[category])) return;
+      // Nettoyer contenu prédictions
+      predictionsContainer.innerHTML = '';
 
-        data[category].forEach((signal, i) => {
-          const card = document.createElement("div");
-          card.className = "card";
-          card.dataset.category = category;
+      // Préparer données chart détaillé
+      const data = {
+        labels: signal.chartData.dates,
+        datasets: [{
+          label: signal.symbol,
+          data: signal.chartData.prices,
+          borderColor: 'rgba(34,197,94,0.9)',
+          backgroundColor: 'rgba(34,197,94,0.25)',
+          pointRadius: 0,
+          borderWidth: 2,
+          fill: true,
+          tension: 0.3,
+        }]
+      };
 
-          const isLocked = signal.premium && !isPremiumUser();
-          if (isLocked) {
-            card.classList.add("blur");
-            premiumLocked = true;
-          }
-
-          const chartId = `chart-${category}-${i}`;
-
-          card.innerHTML = `
-          <h3>${signal.name}</h3>
-          <p><strong>Prix actuel :</strong> $${signal.price.toFixed(2)}</p>
-          <p><strong>Recommandation :</strong> <span class="recommendation">${signal.recommendation}</span></p>
-          <div class="chart-container">
-          <canvas id="${chartId}" width="300" height="150"></canvas>
-          </div>
-          ${isLocked ? `<button class="unlock-btn" onclick="alert('Abonnement premium requis pour accéder à ce signal.')">Débloquer</button>` : ''}
-          `;
-
-
-        container.appendChild(card);
-
-        if (!isLocked) {
-          const ctx = document.getElementById(chartId).getContext("2d");
-          new Chart(ctx, {
-            type: "line",
-            data: {
-              labels: signal.history.map((_, idx) => `J-${signal.history.length - idx}`),
-              datasets: [{
-                label: `${signal.name} - Prix de clôture`,
-                data: signal.history,
-                borderColor: "#22c55e",
-                backgroundColor: "rgba(34,197,94,0.3)",
-                fill: true,
-                tension: 0.3,
-                pointRadius: 0
-              }]
-            },
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              scales: {
-                x: {
-                  display: false
-                },
-                y: {
-                  beginAtZero: false,
-                  ticks: {
-                    color: '#a3bffa'
-                  },
-                  grid: {
-                    color: '#334155'
-                  }
-                }
+      // Création ou mise à jour chart grand
+      const ctx = document.getElementById('bigChartCanvas').getContext('2d');
+      if (bigChartInstance) bigChartInstance.destroy();
+      bigChartInstance = new Chart(ctx, {
+        type: 'line',
+        data: data,
+        options: {
+          responsive: true,
+          animation: false,
+          plugins: {
+            legend: { display: true },
+            tooltip: { mode: 'index', intersect: false },
+            zoom: {
+              zoom: {
+                wheel: { enabled: true },
+                pinch: { enabled: true },
+                mode: 'x',
               },
-              plugins: {
-                legend: {
-                  labels: { color: '#d1d5db' }
-                },
-                tooltip: {
-                  mode: 'index',
-                  intersect: false
-                }
+              pan: {
+                enabled: true,
+                mode: 'x',
               }
             }
-          });
-
-          // Ajouter un gestionnaire d'événements pour le clic sur le graphique
-          card.querySelector('.chart-container').addEventListener('click', () => {
-            openBigChart(signal);
-          });
+          },
+          scales: {
+            x: {
+              type: 'time',
+              time: { tooltipFormat: 'dd LLL yyyy' },
+              title: { display: true, text: 'Date' }
+            },
+            y: {
+              title: { display: true, text: 'Prix (€)' },
+              beginAtZero: false
+            }
+          },
+          interaction: { mode: 'nearest', intersect: false }
         }
       });
+
+      // Affichage prédictions dans modal (uniquement premium)
+      if (isPremium && signal.pricePredictions) {
+        const preds = signal.pricePredictions;
+        predictionsContainer.innerHTML = `
+          <strong>Prévisions de prix :</strong><br/>
+          J+1 : ${preds.day1 ? preds.day1.toFixed(2) + ' €' : 'N/A'}<br/>
+          J+3 : ${preds.day3 ? preds.day3.toFixed(2) + ' €' : 'N/A'}<br/>
+          J+7 : ${preds.day7 ? preds.day7.toFixed(2) + ' €' : 'N/A'}
+        `;
+      }
+
+      modal.classList.add('active');
+      document.body.classList.add('modal-open');
+
+      // Focus sur bouton fermer
+      document.getElementById('closeBigChartBtn').focus();
+    }
+
+    // Fermer modal grand graphique
+    function closeBigChartModal() {
+      const modal = document.getElementById('bigChartModal');
+      modal.classList.remove('active');
+      document.body.classList.remove('modal-open');
+      if (bigChartInstance) {
+        bigChartInstance.destroy();
+        bigChartInstance = null;
+      }
+      // Retour au focus sur filtre ou autre élément logique
+      document.querySelector('.filter-btn')?.focus();
+    }
+
+    // Gestion filtre signaux
+    function filterSignals(type) {
+      const container = document.getElementById('signalsContainer');
+      Array.from(container.children).forEach(card => {
+        const recText = card.querySelector('.recommendation').textContent.toLowerCase();
+        if (type === 'all') {
+          card.style.display = '';
+        } else if (recText.includes(type)) {
+          card.style.display = '';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Initialisation principale
+    async function init() {
+      const signals = await loadSignals();
+      const container = document.getElementById('signalsContainer');
+      container.innerHTML = '';
+
+      if (signals.length === 0) {
+        container.innerHTML = '<p class="text-center text-gray-400">Aucun signal disponible pour le moment.</p>';
+        return;
+      }
+
+      for (const signal of signals) {
+        const card = createSignalCard(signal);
+        container.appendChild(card);
+      }
+    }
+
+    // Évènements fermeture modal
+    document.getElementById('closeBigChartBtn').addEventListener('click', closeBigChartModal);
+    document.getElementById('bigChartModal').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) closeBigChartModal();
     });
 
-    if (premiumLocked && !isPremiumUser()) {
-      premiumNotice.style.display = "block";
-      premiumNotice.textContent = "Certains signaux sont réservés aux abonnés premium. Abonnez-vous pour tout débloquer.";
-    }
-  }
-
-  function filterSignals(category) {
-    const cards = document.querySelectorAll('.card');
-    cards.forEach(card => {
-      if (category === 'all' || card.dataset.category === category) {
-        card.style.display = 'block';
-      } else {
-        card.style.display = 'none';
+    // Fermeture modal sur ESC
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && document.getElementById('bigChartModal').classList.contains('active')) {
+        closeBigChartModal();
       }
     });
-  }
 
-  document.addEventListener('DOMContentLoaded', renderSignals);
+    // Export graphique grand
+    document.getElementById('exportBigChartBtn').addEventListener('click', exportBigChart);
+
+    // Lancer initialisation
+    init();
+
   </script>
 </body>
 </html>
