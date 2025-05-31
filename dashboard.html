@@ -440,101 +440,96 @@
     }
 
     async function renderSignals() {
-      const data = await fetchSignals();
-      if (!data) return;
+  const data = await fetchSignals();
+  if (!data) return;
 
-      const container = document.getElementById("signalsContainer");
-      const premiumNotice = document.getElementById("premiumNotice");
-      let premiumLocked = false;
-      container.innerHTML = "";
+  const isPremiumUser = await window.isPremiumPromise;
 
-      ["achat", "vente", "conservation"].forEach(category => {
-        if (!data[category] || !Array.isArray(data[category])) return;
+  const container = document.getElementById("signalsContainer");
+  const premiumNotice = document.getElementById("premiumNotice");
+  let premiumLocked = false;
+  container.innerHTML = "";
 
-        data[category].forEach((signal, i) => {
-          const card = document.createElement("div");
-          card.className = "card";
-          card.dataset.category = category;
+  ["achat", "vente", "conservation"].forEach(category => {
+    if (!data[category] || !Array.isArray(data[category])) return;
 
-          const isLocked = signal.premium && !isPremiumUser();
-          if (isLocked) {
-            card.classList.add("blur");
-            premiumLocked = true;
-          }
+    data[category].forEach((signal, i) => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.dataset.category = category;
 
-          const chartId = `chart-${category}-${i}`;
+      const isLocked = signal.premium && !isPremiumUser;
+      if (isLocked) {
+        card.classList.add("blur");
+        premiumLocked = true;
+      }
 
-          card.innerHTML = `
-  <h3>${signal.name}</h3>
-  <p><strong>Prix actuel :</strong> $${signal.price.toFixed(2)}</p>
-  <p><strong>Performance (30j) :</strong> ${signal.performance30j}%</p>
-  <p><strong>Recommandation :</strong> <span class="recommendation">${signal.recommendation}</span></p>
-  <div class="chart-container">
-    <canvas id="${chartId}" width="300" height="150"></canvas>
-  </div>
-  ${isLocked ? `<button class="unlock-btn" onclick="alert('Abonnement premium requis pour accéder à ce signal.')">Débloquer</button>` : ''}
-`;
+      const chartId = `chart-${category}-${i}`;
 
-          container.appendChild(card);
+      card.innerHTML = `
+        <h3>${signal.name}</h3>
+        <p><strong>Prix actuel :</strong> $${signal.price.toFixed(2)}</p>
+        <p><strong>Performance (30j) :</strong> ${signal.performance30j}%</p>
+        <p><strong>Recommandation :</strong> <span class="recommendation">${signal.recommendation}</span></p>
+        <div class="chart-container">
+          <canvas id="${chartId}" width="300" height="150"></canvas>
+        </div>
+        ${isLocked ? `<button class="unlock-btn" onclick="alert('Abonnement premium requis pour accéder à ce signal.')">Débloquer</button>` : ''}
+      `;
 
-          if (!isLocked) {
-            const ctx = document.getElementById(chartId).getContext("2d");
-            new Chart(ctx, {
-              type: "line",
-              data: {
-                labels: signal.history.map((_, idx) => `J-${signal.history.length - idx}`),
-                datasets: [{
-                  label: `${signal.name} - Prix de clôture`,
-                  data: signal.history,
-                  borderColor: "#22c55e",
-                  backgroundColor: "rgba(34,197,94,0.3)",
-                  fill: true,
-                  tension: 0.3,
-                  pointRadius: 0
-                }]
-              },
-              options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                  x: {
-                    display: false
-                  },
-                  y: {
-                    beginAtZero: false,
-                    ticks: {
-                      color: '#a3bffa'
-                    },
-                    grid: {
-                      color: '#334155'
-                    }
-                  }
-                },
-                plugins: {
-                  legend: {
-                    labels: { color: '#d1d5db' }
-                  },
-                  tooltip: {
-                    mode: 'index',
-                    intersect: false
-                  }
-                }
+      container.appendChild(card);
+
+      if (!isLocked) {
+        const ctx = document.getElementById(chartId).getContext("2d");
+        new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: signal.history.map((_, idx) => `J-${signal.history.length - idx}`),
+            datasets: [{
+              label: `${signal.name} - Prix de clôture`,
+              data: signal.history,
+              borderColor: "#22c55e",
+              backgroundColor: "rgba(34,197,94,0.3)",
+              fill: true,
+              tension: 0.3,
+              pointRadius: 0
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              x: { display: false },
+              y: {
+                beginAtZero: false,
+                ticks: { color: '#a3bffa' },
+                grid: { color: '#334155' }
               }
-            });
-
-            // Ajouter un gestionnaire d'événements pour le clic sur le graphique
-            card.querySelector('.chart-container').addEventListener('click', () => {
-              openBigChart(signal);
-            });
+            },
+            plugins: {
+              legend: {
+                labels: { color: '#d1d5db' }
+              },
+              tooltip: {
+                mode: 'index',
+                intersect: false
+              }
+            }
           }
         });
-      });
 
-      if (premiumLocked && !isPremiumUser()) {
-        premiumNotice.style.display = "block";
-        premiumNotice.textContent = "Certains signaux sont réservés aux abonnés premium. Abonnez-vous pour tout débloquer.";
+        card.querySelector('.chart-container').addEventListener('click', () => {
+          openBigChart(signal);
+        });
       }
-    }
+    });
+  });
+
+  if (premiumLocked && !isPremiumUser) {
+    premiumNotice.style.display = "block";
+    premiumNotice.textContent = "Certains signaux sont réservés aux abonnés premium. Abonnez-vous pour tout débloquer.";
+  }
+}
 
     function filterSignals(category) {
       const cards = document.querySelectorAll('.card');
