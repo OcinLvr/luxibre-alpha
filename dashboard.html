@@ -128,6 +128,38 @@
       text-decoration: none;
     }
 
+    .premium-badge {
+      background-color: gold;
+      color: black;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: bold;
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+    }
+
+    .cta-button {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-weight: bold;
+      display: inline-block;
+      margin-top: 1rem;
+    }
+
+    .promo-block {
+      background-color: rgba(34, 197, 94, 0.1);
+      border-left: 4px solid var(--primary-color);
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin: 1rem 0;
+    }
+
     /* Modal style for big chart */
     body.modal-open {
       overflow: hidden;
@@ -226,7 +258,6 @@
   </style>
 </head>
 <body>
-
   <script type="module" src="JS/loadHeader.js"></script>
 
   <!-- Header partagé -->
@@ -269,15 +300,22 @@
     </div>
   </div>
 
-  <!-- Footer -->
-<footer class="py-10 bg-gray-100 mt-16">
-  <div class="max-w-7xl mx-auto px-6 text-center text-sm text-gray-600">
-    &copy; 2025 <span class="font-semibold text-green-600">Luxibre Alpha</span>. Tous droits réservés. |
-    <a href="/legal/mentions-legales.html" class="underline hover:text-green-600 transition">Mentions légales</a> |
-    <a href="/legal/cgu.html" class="underline hover:text-green-600 transition">CGU</a> |
-    <a href="/legal/rgpd.html" class="underline hover:text-green-600 transition">RGPD</a>
+  <!-- Bloc promotionnel pour les fonctionnalités verrouillées -->
+  <div class="promo-block">
+    <h3>Passez Premium</h3>
+    <p>Débloquez des fonctionnalités exclusives et obtenez des insights plus approfondis avec un abonnement Premium.</p>
+    <button class="cta-button" onclick="window.location.href='pricing.html'">Voir les offres</button>
   </div>
-</footer>
+
+  <!-- Footer -->
+  <footer class="py-10 bg-gray-100 mt-16">
+    <div class="max-w-7xl mx-auto px-6 text-center text-sm text-gray-600">
+      &copy; 2025 <span class="font-semibold text-green-600">Luxibre Alpha</span>. Tous droits réservés. |
+      <a href="/legal/mentions-legales.html" class="underline hover:text-green-600 transition">Mentions légales</a> |
+      <a href="/legal/cgu.html" class="underline hover:text-green-600 transition">CGU</a> |
+      <a href="/legal/rgpd.html" class="underline hover:text-green-600 transition">RGPD</a>
+    </div>
+  </footer>
 
   <script>
     // Fonction pour vérifier si l'utilisateur est premium
@@ -482,7 +520,7 @@
           const chartId = `chart-${category}-${i}`;
 
           card.innerHTML = `
-            <h3>${signal.name}</h3>
+            <h3>${signal.name} ${signal.premium ? '<span class="premium-badge">Premium</span>' : ''}</h3>
             <p><strong>Prix actuel :</strong> $${signal.price.toFixed(2)}</p>
             <p><strong>Performance (30j) :</strong> ${signal.performance30j}%</p>
             <p><strong>Recommandation :</strong> <span class="recommendation">${signal.recommendation}</span></p>
@@ -496,7 +534,7 @@
             <div class="chart-container">
               <canvas id="${chartId}" width="300" height="150"></canvas>
             </div>
-            ${isLocked ? `<button class="unlock-btn" onclick="alert('Abonnement premium requis pour accéder à ce signal.')">Débloquer</button>` : ''}
+            ${isLocked ? `<button class="unlock-btn" onclick="window.location.href='pricing.html'">Débloquer</button>` : ''}
           `;
 
           container.appendChild(card);
@@ -549,7 +587,10 @@
 
       if (premiumLocked && !isPremium) {
         premiumNotice.style.display = "block";
-        premiumNotice.textContent = "Certains signaux sont réservés aux abonnés premium. Abonnez-vous pour tout débloquer.";
+        premiumNotice.innerHTML = `
+          Certains signaux sont réservés aux abonnés premium.
+          <button class="cta-button" onclick="window.location.href='pricing.html'">Passer Premium</button>
+        `;
       }
     }
 
