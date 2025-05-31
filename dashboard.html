@@ -1,556 +1,101 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Dashboard moderne pour Luxibre Alpha">
-  <title>Luxibre Alpha - Dashboard Moderne</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Luxibre Alpha - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+  </head>
+  <body class="bg-gray-100 text-gray-900">
+    <div class="container mx-auto p-4">
+      <h1 class="text-3xl font-bold mb-6 text-center">📊 Signaux de Marché - Luxibre Alpha</h1>
 
-  <!-- Chart.js + Luxon adapter + zoom plugin -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/luxon@1.25.0"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.0.0"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@1.2.1/dist/chartjs-plugin-zoom.min.js"></script>
-
-  <!-- html2canvas for export -->
-  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-
-  <style>
-    :root {
-      --primary-color: #22c55e;
-      --secondary-color: #1e293b;
-      --text-color: #f1f5f9;
-      --accent-color: #86efac;
-    }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #0f172a;
-      color: var(--text-color);
-      margin: 0;
-    }
-
-    nav.dashboard-nav button {
-      background: var(--primary-color);
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      font-weight: 600;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    nav.dashboard-nav button:hover {
-      background: #16a34a;
-    }
-
-    .notice {
-      background: #dcfce7;
-      color: #166534;
-      border-left: 5px solid var(--primary-color);
-      padding: 1rem 1.5rem;
-      border-radius: 0.75rem;
-      margin-bottom: 2rem;
-      font-weight: 600;
-      text-align: center;
-    }
-
-    .card {
-      background: var(--secondary-color);
-      padding: 1.5rem;
-      border-radius: 1rem;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-      position: relative;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 10px 20px rgba(34,197,94,0.4);
-    }
-
-    .card.blur {
-      filter: blur(4px);
-      pointer-events: none;
-      user-select: none;
-    }
-
-    .recommendation {
-      margin-top: 0.8rem;
-      font-weight: 700;
-      color: #4ade80;
-    }
-
-    .chart-container {
-      height: 200px;
-      margin-top: 1rem;
-      background: #0f172a;
-      border-radius: 0.6rem;
-      cursor: pointer;
-      position: relative;
-    }
-
-    .unlock-btn, .export-btn {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      background: var(--primary-color);
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      font-weight: 600;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      z-index: 2;
-      transition: background 0.3s;
-    }
-
-    .unlock-btn:hover, .export-btn:hover {
-      background: #16a34a;
-    }
-
-    footer {
-      background: var(--secondary-color);
-      padding: 1rem;
-      text-align: center;
-      margin-top: 2rem;
-    }
-
-    footer a {
-      color: var(--primary-color);
-      margin: 0 1rem;
-      text-decoration: none;
-    }
-
-    /* Modal style for big chart */
-    body.modal-open {
-      overflow: hidden;
-    }
-
-    #bigChartModal {
-      position: fixed;
-      inset: 0;
-      background-color: rgba(15, 23, 42, 0.9);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      overflow-y: auto;
-    }
-
-    #bigChartModal.active {
-      display: flex;
-    }
-
-    #bigChartContent {
-      background-color: var(--secondary-color);
-      border-radius: 1rem;
-      padding: 1.5rem;
-      width: 90%;
-      max-width: 900px;
-      max-height: 90vh;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 0 20px var(--primary-color);
-      position: relative;
-      overflow-y: auto;
-    }
-
-    #bigChartHeader {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
-
-    #bigChartHeader h3 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--accent-color);
-    }
-
-    #closeBigChartBtn {
-      background: transparent;
-      border: none;
-      color: var(--accent-color);
-      font-size: 1.5rem;
-      cursor: pointer;
-      transition: color 0.3s;
-    }
-
-    #closeBigChartBtn:hover {
-      color: var(--primary-color);
-    }
-
-    #bigChartCanvas {
-      flex-grow: 1;
-      max-height: 70vh;
-      background: #0f172a;
-      border-radius: 0.6rem;
-    }
-
-    #predictionsContainer {
-      margin-top: 1rem;
-      padding: 1rem;
-      background: #0f172a;
-      border-radius: 0.6rem;
-    }
-
-    #bigChartActions {
-      margin-top: 1rem;
-      display: flex;
-      justify-content: flex-end;
-      gap: 1rem;
-    }
-
-    #bigChartActions button {
-      background: var(--primary-color);
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      font-weight: 600;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    #bigChartActions button:hover {
-      background: #16a34a;
-    }
-  </style>
-</head>
-<body>
-
-  <script type="module" src="JS/loadHeader.js"></script>
-
-  <!-- Header partagé -->
-  <div id="headerContainer"></div>
-
-  <!-- Navigation spécifique au dashboard -->
-  <nav class="dashboard-nav overflow-x-auto whitespace-nowrap flex gap-2 sm:justify-center p-4 bg-gray-800">
-    <button onclick="filterSignals('all')" class="text-sm sm:text-base px-3 py-1.5 bg-green-500 text-white font-medium rounded-full whitespace-nowrap">Tous</button>
-    <button onclick="filterSignals('achat')" class="text-sm sm:text-base px-3 py-1.5 bg-green-500 text-white font-medium rounded-full whitespace-nowrap">Achat</button>
-    <button onclick="filterSignals('vente')" class="text-sm sm:text-base px-3 py-1.5 bg-green-500 text-white font-medium rounded-full whitespace-nowrap">Vente</button>
-    <button onclick="filterSignals('conservation')" class="text-sm sm:text-base px-3 py-1.5 bg-green-500 text-white font-medium rounded-full whitespace-nowrap">Conservation</button>
-  </nav>
-
-  <main>
-    <div id="premiumNotice" class="notice" style="display: none;"></div>
-    <div id="signalsContainer"></div>
-    <section id="performanceReports">
-      <h2>Rapports de Performance</h2>
-      <!-- Contenu des rapports de performance -->
-    </section>
-    <section id="testimonials">
-      <h2>Témoignages</h2>
-      <!-- Contenu des témoignages -->
-    </section>
-  </main>
-
-  <!-- Modal grand graphique -->
-  <div id="bigChartModal" role="dialog" aria-modal="true" aria-labelledby="bigChartTitle">
-    <div id="bigChartContent">
-      <div id="bigChartHeader">
-        <h3 id="bigChartTitle">Graphique</h3>
-        <button id="closeBigChartBtn" aria-label="Fermer le graphique"><i class="fas fa-times"></i></button>
+      <div class="flex flex-wrap gap-4 mb-6 justify-center">
+        <button class="filter-btn bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" data-type="all">Tous</button>
+        <button class="filter-btn bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600" data-type="buy">Achats</button>
+        <button class="filter-btn bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600" data-type="hold">Conservation</button>
+        <button class="filter-btn bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600" data-type="sell">Ventes</button>
       </div>
-      <canvas id="bigChartCanvas"></canvas>
-      <div id="predictionsContainer"></div>
-      <div id="bigChartActions">
-        <button id="resetZoomBtn">Réinitialiser Zoom</button>
-        <button id="exportBigChartBtn">Exporter le Graphique</button>
+
+      <div class="mb-6 flex justify-center">
+        <label class="mr-2 font-medium">Trier par :</label>
+        <select id="sort-select" class="border rounded px-3 py-1">
+          <option value="none">Aucun</option>
+          <option value="performance">Performance (30j)</option>
+          <option value="name">Nom</option>
+        </select>
       </div>
+
+      <div id="signals-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
     </div>
-  </div>
 
-  <footer>
-    <a href="/docs">Documentation</a>
-    <a href="/support">Support</a>
-  </footer>
+    <script>
+      fetch('data/signals.json')
+        .then(response => response.json())
+        .then(data => {
+          window.signals = data;
+          renderSignals(data);
+        });
 
-  <script>
-    // Simuler statut premium (à remplacer par vrai contrôle utilisateur)
-    const isPremium = true;
-    function isPremiumUser() { return isPremium; }
+      function renderSignals(signals) {
+        const container = document.getElementById('signals-container');
+        container.innerHTML = '';
+        signals.forEach(signal => {
+          const card = document.createElement('div');
+          const isPremium = signal.premium === true;
+          const blurClass = isPremium ? 'blur-sm relative' : '';
+          const lockOverlay = isPremium ? `
+            <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center text-white rounded-xl">
+              <div class="mb-2"><i data-lucide="lock" class="w-6 h-6"></i></div>
+              <p class="text-sm">Abonnez-vous pour débloquer</p>
+            </div>` : '';
 
-    // Fonction d'export pour petits graphiques
-    function exportChart(chartId) {
-      if (!isPremiumUser()) {
-        alert("Cette fonctionnalité est réservée aux utilisateurs premium.");
-        return;
-      }
-      const element = document.getElementById(chartId);
-      html2canvas(element).then(canvas => {
-        const link = document.createElement('a');
-        link.download = 'chart.png';
-        link.href = canvas.toDataURL();
-        link.click();
-      });
-    }
-
-    // Variables globales pour modal graphique
-    let bigChartInstance = null;
-    const bigChartModal = document.getElementById("bigChartModal");
-    const bigChartCanvas = document.getElementById("bigChartCanvas").getContext('2d');
-    const bigChartTitle = document.getElementById("bigChartTitle");
-    const closeBigChartBtn = document.getElementById("closeBigChartBtn");
-    const resetZoomBtn = document.getElementById("resetZoomBtn");
-    const exportBigChartBtn = document.getElementById("exportBigChartBtn");
-
-    // Fonction pour ouvrir modal grand graphique
-    function openBigChart(signal) {
-      if (signal.premium && !isPremiumUser()) {
-        alert("Ce signal est réservé aux abonnés premium.");
-        return;
-      }
-      bigChartTitle.textContent = signal.name + " - Prix Historique";
-
-      // Détruire l'ancien graphique si existe
-      if (bigChartInstance) {
-        bigChartInstance.destroy();
-      }
-
-      bigChartInstance = new Chart(bigChartCanvas, {
-        type: "line",
-        data: {
-          labels: signal.history.map((_, idx) => `J-${signal.history.length - idx}`),
-          datasets: [{
-            label: `${signal.name} - Prix de clôture`,
-            data: signal.history,
-            borderColor: "#22c55e",
-            backgroundColor: "rgba(34,197,94,0.3)",
-            fill: true,
-            tension: 0.3,
-            pointRadius: 3,
-            pointHoverRadius: 6
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              labels: { color: '#d1d5db' }
-            },
-            tooltip: {
-              mode: 'index',
-              intersect: false
-            },
-            zoom: {
-              pan: {
-                enabled: true,
-                mode: 'x',
-                modifierKey: 'ctrl',
-              },
-              zoom: {
-                wheel: {
-                  enabled: true,
-                },
-                pinch: {
-                  enabled: true
-                },
-                mode: 'x',
-              }
-            }
-          },
-          scales: {
-            x: {
-              display: true,
-              ticks: { color: '#a3bffa' },
-              grid: { color: '#334155' }
-            },
-            y: {
-              beginAtZero: false,
-              ticks: { color: '#a3bffa' },
-              grid: { color: '#334155' }
-            }
-          }
-        }
-      });
-
-      // Afficher les prédictions de prix pour les utilisateurs premium
-      if (signal.premium && isPremiumUser() && signal.predictions) {
-        const predictionsDiv = document.getElementById('predictionsContainer');
-        predictionsDiv.innerHTML = `
-          <h4>Prédictions de prix</h4>
-          <p>Jour 1: $${signal.predictions.day1}</p>
-          <p>Jour 3: $${signal.predictions.day3}</p>
-          <p>Jour 7: $${signal.predictions.day7}</p>
-        `;
-      }
-
-      // Ajouter la classe modal-open au corps de la page
-      document.body.classList.add('modal-open');
-
-      bigChartModal.classList.add("active");
-    }
-
-    function closeBigChart() {
-      if (bigChartInstance) {
-        bigChartInstance.destroy();
-        bigChartInstance = null;
-      }
-
-      // Supprimer la classe modal-open du corps de la page
-      document.body.classList.remove('modal-open');
-
-      bigChartModal.classList.remove("active");
-    }
-
-    // Réinitialiser zoom du grand graphique
-    resetZoomBtn.addEventListener("click", () => {
-      if (bigChartInstance) bigChartInstance.resetZoom();
-    });
-
-    // Exporter grand graphique
-    exportBigChartBtn.addEventListener("click", () => {
-      if (!isPremiumUser()) {
-        alert("Cette fonctionnalité est réservée aux utilisateurs premium.");
-        return;
-      }
-      html2canvas(bigChartCanvas.canvas).then(canvas => {
-        const link = document.createElement('a');
-        link.download = 'big-chart.png';
-        link.href = canvas.toDataURL();
-        link.click();
-      });
-    });
-
-    closeBigChartBtn.addEventListener("click", closeBigChart);
-
-    // Fermer modal au clic hors contenu
-    bigChartModal.addEventListener("click", e => {
-      if (e.target === bigChartModal) closeBigChart();
-    });
-
-    // Chargement des signaux et affichage
-    async function fetchSignals() {
-      try {
-        const res = await fetch("data/signals.json");
-        if (!res.ok) throw new Error("HTTP error " + res.status);
-        return await res.json();
-      } catch (err) {
-        console.error("Erreur lors du chargement des signaux:", err);
-        document.getElementById("signalsContainer").textContent = "Erreur lors du chargement des signaux.";
-        return null;
-      }
-    }
-
-    async function renderSignals() {
-      const data = await fetchSignals();
-      if (!data) return;
-
-      const container = document.getElementById("signalsContainer");
-      const premiumNotice = document.getElementById("premiumNotice");
-      let premiumLocked = false;
-      container.innerHTML = "";
-
-      ["achat", "vente", "conservation"].forEach(category => {
-        if (!data[category] || !Array.isArray(data[category])) return;
-
-        data[category].forEach((signal, i) => {
-          const card = document.createElement("div");
-          card.className = "card";
-          card.dataset.category = category;
-
-          const isLocked = signal.premium && !isPremiumUser();
-          if (isLocked) {
-            card.classList.add("blur");
-            premiumLocked = true;
-          }
-
-          const chartId = `chart-${category}-${i}`;
+          card.className = `relative rounded-xl shadow p-4 bg-white ${getColor(signal.recommendation)} ${blurClass}`;
 
           card.innerHTML = `
-  <h3>${signal.name}</h3>
-  <p><strong>Prix actuel :</strong> $${signal.price.toFixed(2)}</p>
-  <p><strong>Performance (30j) :</strong> ${signal.performance30j}%</p>
-  <p><strong>Recommandation :</strong> <span class="recommendation">${signal.recommendation}</span></p>
-  <div class="chart-container">
-    <canvas id="${chartId}" width="300" height="150"></canvas>
-  </div>
-  ${isLocked ? `<button class="unlock-btn" onclick="alert('Abonnement premium requis pour accéder à ce signal.')">Débloquer</button>` : ''}
-`;
+            ${lockOverlay}
+            <h2 class="text-xl font-semibold mb-2">${signal.name}</h2>
+            <p class="mb-1">🔁 Recommandation : <strong>${signal.recommendation}</strong></p>
+            <p class="mb-1">📈 Performance 30j : <strong>${signal.performance_30d ?? 'N/A'}%</strong></p>
+            ${signal.forecast_1d && !isPremium ? `<p class="mb-1">🔮 Prévision 1j : <strong>${signal.forecast_1d}</strong></p>` : ''}
+            ${signal.forecast_3d && !isPremium ? `<p class="mb-1">🔮 Prévision 3j : <strong>${signal.forecast_3d}</strong></p>` : ''}
+            ${signal.forecast_7d && !isPremium ? `<p class="mb-1">🔮 Prévision 7j : <strong>${signal.forecast_7d}</strong></p>` : ''}
+          `;
 
           container.appendChild(card);
+        });
+        lucide.createIcons();
+      }
 
-          if (!isLocked) {
-            const ctx = document.getElementById(chartId).getContext("2d");
-            new Chart(ctx, {
-              type: "line",
-              data: {
-                labels: signal.history.map((_, idx) => `J-${signal.history.length - idx}`),
-                datasets: [{
-                  label: `${signal.name} - Prix de clôture`,
-                  data: signal.history,
-                  borderColor: "#22c55e",
-                  backgroundColor: "rgba(34,197,94,0.3)",
-                  fill: true,
-                  tension: 0.3,
-                  pointRadius: 0
-                }]
-              },
-              options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                  x: {
-                    display: false
-                  },
-                  y: {
-                    beginAtZero: false,
-                    ticks: {
-                      color: '#a3bffa'
-                    },
-                    grid: {
-                      color: '#334155'
-                    }
-                  }
-                },
-                plugins: {
-                  legend: {
-                    labels: { color: '#d1d5db' }
-                  },
-                  tooltip: {
-                    mode: 'index',
-                    intersect: false
-                  }
-                }
-              }
-            });
+      function getColor(reco) {
+        switch (reco) {
+          case 'Achat': return 'border-l-4 border-green-500';
+          case 'Vente': return 'border-l-4 border-red-500';
+          case 'Conserver': return 'border-l-4 border-yellow-500';
+          default: return '';
+        }
+      }
 
-            // Ajouter un gestionnaire d'événements pour le clic sur le graphique
-            card.querySelector('.chart-container').addEventListener('click', () => {
-              openBigChart(signal);
-            });
-          }
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const type = btn.getAttribute('data-type');
+          const filtered = type === 'all' ? window.signals : window.signals.filter(s => s.recommendation.toLowerCase() === type);
+          renderSignals(filtered);
         });
       });
 
-      if (premiumLocked && !isPremiumUser()) {
-        premiumNotice.style.display = "block";
-        premiumNotice.textContent = "Certains signaux sont réservés aux abonnés premium. Abonnez-vous pour tout débloquer.";
-      }
-    }
-
-    function filterSignals(category) {
-      const cards = document.querySelectorAll('.card');
-      cards.forEach(card => {
-        if (category === 'all' || card.dataset.category === category) {
-          card.style.display = 'block';
-        } else {
-          card.style.display = 'none';
+      document.getElementById('sort-select').addEventListener('change', (e) => {
+        let sorted = [...window.signals];
+        const value = e.target.value;
+        if (value === 'performance') {
+          sorted.sort((a, b) => (b.performance_30d || 0) - (a.performance_30d || 0));
+        } else if (value === 'name') {
+          sorted.sort((a, b) => a.name.localeCompare(b.name));
         }
+        renderSignals(sorted);
       });
-    }
-
-    document.addEventListener('DOMContentLoaded', renderSignals);
-  </script>
-</body>
+    </script>
+  </body>
 </html>
