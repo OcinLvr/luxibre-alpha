@@ -2,17 +2,20 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="Dashboard moderne pour Luxibre Alpha">
   <title>Luxibre Alpha - Dashboard Moderne</title>
 
-  <!-- Utilisation de HTTPS pour les ressources externes -->
+  <!-- Chart.js + Luxon adapter + zoom plugin -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/luxon@1.25.0"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.0.0"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@1.2.1/dist/chartjs-plugin-zoom.min.js"></script>
+
+  <!-- html2canvas for export -->
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
+  <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
@@ -32,24 +35,6 @@
       margin: 0;
     }
 
-    /* Ajoutez des styles pour améliorer l'accessibilité */
-    a:focus, button:focus {
-      outline: 2px solid var(--accent-color);
-      outline-offset: 2px;
-    }
-
-    /* Assurez-vous que le contraste des couleurs est suffisant */
-    .notice {
-      background: #dcfce7;
-      color: #166534;
-      border-left: 5px solid var(--primary-color);
-      padding: 1rem 1.5rem;
-      border-radius: 0.75rem;
-      margin-bottom: 2rem;
-      font-weight: 600;
-      text-align: center;
-    }
-
     nav.dashboard-nav button {
       background: var(--primary-color);
       color: white;
@@ -63,6 +48,17 @@
 
     nav.dashboard-nav button:hover {
       background: #16a34a;
+    }
+
+    .notice {
+      background: #dcfce7;
+      color: #166534;
+      border-left: 5px solid var(--primary-color);
+      padding: 1rem 1.5rem;
+      border-radius: 0.75rem;
+      margin-bottom: 2rem;
+      font-weight: 600;
+      text-align: center;
     }
 
     .card {
@@ -230,6 +226,7 @@
   </style>
 </head>
 <body>
+
   <script type="module" src="JS/loadHeader.js"></script>
 
   <!-- Header partagé -->
@@ -237,14 +234,14 @@
 
   <!-- Navigation spécifique au dashboard -->
   <nav class="dashboard-nav overflow-x-auto whitespace-nowrap flex gap-2 sm:justify-center p-4 bg-gray-800">
-    <button onclick="filterSignals('all')" class="text-sm sm:text-base px-3 py-1.5 bg-green-500 text-white font-medium rounded-full whitespace-nowrap" aria-label="Tous les signaux">Tous</button>
-    <button onclick="filterSignals('achat')" class="text-sm sm:text-base px-3 py-1.5 bg-green-500 text-white font-medium rounded-full whitespace-nowrap" aria-label="Signaux d'achat">Achat</button>
-    <button onclick="filterSignals('vente')" class="text-sm sm:text-base px-3 py-1.5 bg-green-500 text-white font-medium rounded-full whitespace-nowrap" aria-label="Signaux de vente">Vente</button>
-    <button onclick="filterSignals('conservation')" class="text-sm sm:text-base px-3 py-1.5 bg-green-500 text-white font-medium rounded-full whitespace-nowrap" aria-label="Signaux de conservation">Conservation</button>
+    <button onclick="filterSignals('all')" class="text-sm sm:text-base px-3 py-1.5 bg-green-500 text-white font-medium rounded-full whitespace-nowrap">Tous</button>
+    <button onclick="filterSignals('achat')" class="text-sm sm:text-base px-3 py-1.5 bg-green-500 text-white font-medium rounded-full whitespace-nowrap">Achat</button>
+    <button onclick="filterSignals('vente')" class="text-sm sm:text-base px-3 py-1.5 bg-green-500 text-white font-medium rounded-full whitespace-nowrap">Vente</button>
+    <button onclick="filterSignals('conservation')" class="text-sm sm:text-base px-3 py-1.5 bg-green-500 text-white font-medium rounded-full whitespace-nowrap">Conservation</button>
   </nav>
 
   <main>
-    <div id="premiumNotice" class="notice" style="display: none;" role="alert"></div>
+    <div id="premiumNotice" class="notice" style="display: none;"></div>
     <div id="signalsContainer"></div>
     <section id="performanceReports">
       <h2>Rapports de Performance</h2>
@@ -273,8 +270,8 @@
   </div>
 
   <footer>
-    <a href="/docs" aria-label="Lien vers la documentation">Documentation</a>
-    <a href="/support" aria-label="Lien vers le support">Support</a>
+    <a href="/docs">Documentation</a>
+    <a href="/support">Support</a>
   </footer>
 
   <script>
@@ -492,9 +489,9 @@
               : `<p class="text-sm text-yellow-400 italic mt-1">Les prédictions de prix sont réservées aux membres premium.</p>`
             }
             <div class="chart-container">
-              <canvas id="${chartId}" width="300" height="150" aria-label="Graphique de ${signal.name}"></canvas>
+              <canvas id="${chartId}" width="300" height="150"></canvas>
             </div>
-            ${isLocked ? `<button class="unlock-btn" onclick="alert('Abonnement premium requis pour accéder à ce signal.')" aria-label="Débloquer le signal premium">Débloquer</button>` : ''}
+            ${isLocked ? `<button class="unlock-btn" onclick="alert('Abonnement premium requis pour accéder à ce signal.')">Débloquer</button>` : ''}
           `;
 
           container.appendChild(card);
