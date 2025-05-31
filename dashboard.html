@@ -67,7 +67,6 @@
       border-radius: 1rem;
       box-shadow: 0 4px 15px rgba(0,0,0,0.15);
       position: relative;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     .card:hover {
@@ -75,7 +74,7 @@
       box-shadow: 0 10px 20px rgba(34,197,94,0.4);
     }
 
-    .card.blur {
+    .card-content {
       filter: blur(4px);
       pointer-events: none;
       user-select: none;
@@ -138,7 +137,7 @@
       position: absolute;
       top: 1rem;
       right: 1rem;
-      z-index: 3; /* Assurez-vous que le badge est au-dessus du contenu flouté */
+      z-index: 3;
     }
 
     .cta-button {
@@ -152,6 +151,7 @@
       display: inline-block;
       margin-top: 1rem;
       width: auto;
+      z-index: 3;
     }
 
     .cta-button-mobile {
@@ -526,39 +526,45 @@
           card.className = "card";
           card.dataset.category = category;
 
-          const isLocked = signal.premium && !isPremium;
-          if (isLocked) {
-            card.classList.add("blur");
-            premiumLocked = true;
-          }
-
-          const chartId = `chart-${category}-${i}`;
-
-          card.innerHTML = `
-            <div style="position: relative;">
-              <h3>${signal.name}</h3>
-              ${signal.premium ? '<span class="premium-badge">Premium</span>' : ''}
-            </div>
+          const cardContent = document.createElement("div");
+          cardContent.className = "card-content";
+          cardContent.innerHTML = `
+            <h3>${signal.name}</h3>
             <p><strong>Prix actuel :</strong> $${signal.price.toFixed(2)}</p>
             <p><strong>Performance (30j) :</strong> ${signal.performance30j}%</p>
             <p><strong>Recommandation :</strong> <span class="recommendation">${signal.recommendation}</span></p>
             ${
-              !isLocked && signal.forecast1d !== undefined
+              !signal.premium || isPremium
               ? `<p><strong>Prévision 1j :</strong> $${signal.forecast1d.toFixed(2)}<br>
                  <strong>Prévision 3j :</strong> $${signal.forecast3d.toFixed(2)}<br>
                  <strong>Prévision 7j :</strong> $${signal.forecast7d.toFixed(2)}</p>`
               : `<p class="text-sm text-yellow-400 italic mt-1">Les prédictions de prix sont réservées aux membres premium.</p>`
             }
             <div class="chart-container">
-              <canvas id="${chartId}" width="300" height="150"></canvas>
+              <canvas id="chart-${category}-${i}" width="300" height="150"></canvas>
             </div>
-            ${isLocked ? `<button class="unlock-btn cta-button cta-button-mobile" onclick="window.location.href='pricing.html'">Débloquer</button>` : ''}
           `;
 
+          if (signal.premium) {
+            const premiumBadge = document.createElement("span");
+            premiumBadge.className = "premium-badge";
+            premiumBadge.textContent = "Premium";
+            card.appendChild(premiumBadge);
+          }
+
+          if (!isPremium && signal.premium) {
+            const unlockButton = document.createElement("button");
+            unlockButton.className = "unlock-btn cta-button cta-button-mobile";
+            unlockButton.textContent = "Débloquer";
+            unlockButton.onclick = () => window.location.href='pricing.html';
+            card.appendChild(unlockButton);
+          }
+
+          card.appendChild(cardContent);
           container.appendChild(card);
 
-          if (!isLocked) {
-            const ctx = document.getElementById(chartId).getContext("2d");
+          if (!signal.premium || isPremium) {
+            const ctx = document.getElementById(`chart-${category}-${i}`).getContext("2d");
             new Chart(ctx, {
               type: "line",
               data: {
