@@ -144,12 +144,18 @@
       background-color: var(--primary-color);
       color: white;
       border: none;
-      padding: 0.5rem 1rem;
+      padding: 0.75rem 1.5rem;
       border-radius: 0.5rem;
       cursor: pointer;
       font-weight: bold;
       display: inline-block;
       margin-top: 1rem;
+      width: auto;
+    }
+
+    .cta-button-mobile {
+      width: 100%;
+      margin-top: 0.5rem;
     }
 
     .promo-block {
@@ -158,6 +164,7 @@
       padding: 1rem;
       border-radius: 0.5rem;
       margin: 1rem 0;
+      text-align: center;
     }
 
     /* Modal style for big chart */
@@ -254,6 +261,13 @@
 
     #bigChartActions button:hover {
       background: #16a34a;
+    }
+
+    @media (max-width: 768px) {
+      .cta-button {
+        width: 100%;
+        padding: 0.75rem;
+      }
     }
   </style>
 </head>
@@ -520,7 +534,10 @@
           const chartId = `chart-${category}-${i}`;
 
           card.innerHTML = `
-            <h3>${signal.name} ${signal.premium ? '<span class="premium-badge">Premium</span>' : ''}</h3>
+            <div style="position: relative;">
+              <h3>${signal.name}</h3>
+              ${signal.premium ? '<span class="premium-badge">Premium</span>' : ''}
+            </div>
             <p><strong>Prix actuel :</strong> $${signal.price.toFixed(2)}</p>
             <p><strong>Performance (30j) :</strong> ${signal.performance30j}%</p>
             <p><strong>Recommandation :</strong> <span class="recommendation">${signal.recommendation}</span></p>
@@ -534,7 +551,7 @@
             <div class="chart-container">
               <canvas id="${chartId}" width="300" height="150"></canvas>
             </div>
-            ${isLocked ? `<button class="unlock-btn" onclick="window.location.href='pricing.html'">Débloquer</button>` : ''}
+            ${isLocked ? `<button class="unlock-btn cta-button cta-button-mobile" onclick="window.location.href='pricing.html'">Débloquer</button>` : ''}
           `;
 
           container.appendChild(card);
@@ -589,7 +606,7 @@
         premiumNotice.style.display = "block";
         premiumNotice.innerHTML = `
           Certains signaux sont réservés aux abonnés premium.
-          <button class="cta-button" onclick="window.location.href='pricing.html'">Passer Premium</button>
+          <button class="cta-button cta-button-mobile" onclick="window.location.href='pricing.html'">Passer Premium</button>
         `;
       }
     }
