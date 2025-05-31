@@ -230,6 +230,7 @@
   </style>
 </head>
 <body>
+  <script type="module" src="JS/loadHeader.js"></script>
 
   <!-- Header partagé -->
   <div id="headerContainer"></div>
@@ -277,15 +278,6 @@
   </footer>
 
   <script>
-    // Simuler une vérification de statut premium
-    window.isPremiumPromise = new Promise((resolve) => {
-      // Simuler une vérification asynchrone
-      setTimeout(() => {
-        // Remplacez cette valeur par une vérification réelle du statut premium
-        resolve(false);
-      }, 500);
-    });
-
     // Fonction pour vérifier si l'utilisateur est premium
     async function isPremiumUser() {
       return await window.isPremiumPromise;
