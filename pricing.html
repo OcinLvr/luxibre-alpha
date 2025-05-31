@@ -11,7 +11,6 @@
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      min-height: 100vh;
       background: linear-gradient(145deg, #f0f4f8, #ffffff);
       overflow-y: auto;
     }
@@ -34,33 +33,39 @@
   <script type="module" src="JS/loadHeader.js"></script>
 
   <section class="flex flex-col items-center justify-center min-h-screen px-4 py-20">
-    <h1 class="text-3xl md:text-5xl font-bold text-center mb-8">Choisissez votre formule</h1>
-    <p class="text-gray-600 text-center mb-12 max-w-xl">Comparez nos offres et accédez aux signaux boursiers les plus pertinents mis à jour toutes les heures.</p>
+    <h1 class="text-4xl md:text-5xl font-bold text-center mb-6">Nos offres</h1>
+    <p class="text-gray-600 text-center mb-12 max-w-xl">Découvrez la puissance de notre intelligence financière. Choisissez l'offre qui vous correspond et prenez de meilleures décisions d'investissement.</p>
 
     <div class="flex flex-col md:flex-row gap-10 w-full max-w-5xl justify-center">
-      <!-- Plan Gratuit -->
+      
+      <!-- Offre Gratuite -->
       <div class="bg-white shadow-lg rounded-3xl p-8 w-full md:w-1/2 border border-gray-200 relative">
         <h2 class="text-2xl font-bold mb-2">Gratuit</h2>
-        <p class="text-gray-500 mb-6">Découverte avec fonctionnalités limitées</p>
-        <ul class="space-y-3 mb-6">
-          <li class="flex items-center"><span class="text-green-500 font-bold mr-2">✓</span> Accès partiel aux signaux</li>
-          <li class="flex items-center"><span class="text-green-500 font-bold mr-2">✓</span> Mises à jour quotidiennes</li>
-          <li class="flex items-center"><span class="text-gray-400 font-bold mr-2">✗</span> Support prioritaire</li>
-          <li class="flex items-center"><span class="text-gray-400 font-bold mr-2">✗</span> Visualisations avancées</li>
+        <p class="text-gray-500 mb-6">Explorez les bases, gratuitement.</p>
+        <ul class="space-y-4 mb-6 text-sm">
+          <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Accès partiel aux signaux</li>
+          <li class="flex items-center"><i class="fas fa-check-circle text-green-500 mr-2"></i> Mises à jour quotidiennes</li>
+          <li class="flex items-center"><i class="fas fa-times-circle text-gray-400 mr-2"></i> Prédictions de prix</li>
+          <li class="flex items-center"><i class="fas fa-times-circle text-gray-400 mr-2"></i> Visualisations interactives</li>
+          <li class="flex items-center"><i class="fas fa-times-circle text-gray-400 mr-2"></i> Liste de surveillance</li>
+          <li class="flex items-center"><i class="fas fa-times-circle text-gray-400 mr-2"></i> Alertes personnalisées</li>
         </ul>
-        <a id="freeAccountBtn" href="signup.html" class="block w-full text-center bg-gray-100 text-gray-700 py-3 rounded-xl font-semibold hover:bg-gray-200 transition">Créer un compte gratuit</a>
+        <a href="signup.html" class="block w-full text-center bg-gray-100 text-gray-700 py-3 rounded-xl font-semibold hover:bg-gray-200 transition">Créer un compte gratuit</a>
       </div>
 
-      <!-- Plan Premium -->
+      <!-- Offre Premium -->
       <div class="bg-gradient-to-br from-green-500 to-blue-600 text-white shadow-2xl rounded-3xl p-8 w-full md:w-1/2 relative overflow-hidden">
         <div class="absolute top-0 right-0 mt-4 mr-4 bg-yellow-300 text-yellow-900 text-xs font-semibold px-3 py-1 rounded-full shadow">Recommandé</div>
         <h2 class="text-2xl font-bold mb-2">Premium</h2>
-        <p class="mb-6">5€ / 30 jours</p>
-        <ul class="space-y-3 mb-6">
-          <li class="flex items-center"><span class="text-white font-bold mr-2">✓</span> Accès complet aux signaux</li>
-          <li class="flex items-center"><span class="text-white font-bold mr-2">✓</span> Actualisation horaire</li>
-          <li class="flex items-center"><span class="text-white font-bold mr-2">✓</span> Visualisations avancées</li>
-          <li class="flex items-center"><span class="text-white font-bold mr-2">✓</span> Support prioritaire</li>
+        <p class="mb-6 text-lg">Seulement 5€ / 30 jours</p>
+        <ul class="space-y-4 mb-6 text-sm">
+          <li class="flex items-center"><i class="fas fa-star text-white mr-2"></i> Accès complet à tous les signaux</li>
+          <li class="flex items-center"><i class="fas fa-clock text-white mr-2"></i> Actualisation **horaire** des signaux</li>
+          <li class="flex items-center"><i class="fas fa-chart-line text-white mr-2"></i> Prédictions IA à 1, 3 et 7 jours</li>
+          <li class="flex items-center"><i class="fas fa-eye text-white mr-2"></i> Visualisations avancées & zoom interactif</li>
+          <li class="flex items-center"><i class="fas fa-list text-white mr-2"></i> Liste de surveillance intelligente</li>
+          <li class="flex items-center"><i class="fas fa-bell text-white mr-2"></i> Notifications lors des changements de recommandation</li>
+          <li class="flex items-center"><i class="fas fa-headset text-white mr-2"></i> Support prioritaire par email</li>
         </ul>
         <a href="checkout.html" class="block w-full text-center bg-white text-green-600 py-3 rounded-xl font-semibold hover:bg-gray-100 transition">Passer au Premium</a>
       </div>
