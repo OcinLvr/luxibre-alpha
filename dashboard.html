@@ -472,11 +472,11 @@
   <p><strong>Performance (30j) :</strong> ${signal.performance30j}%</p>
   <p><strong>Recommandation :</strong> <span class="recommendation">${signal.recommendation}</span></p>
   ${
-    isLocked
-      ? `<p class="text-sm text-yellow-400 italic mt-1">Les prédictions de prix sont réservées aux membres premium.</p>`
-      : `<p><strong>Prévision 1j :</strong> $${signal.forecast1d.toFixed(2)}<br>
-           <strong>Prévision 3j :</strong> $${signal.forecast3d.toFixed(2)}<br>
-           <strong>Prévision 7j :</strong> $${signal.forecast7d.toFixed(2)}</p>`
+    !isLocked && signal.forecast1d !== undefined
+  ? `<p><strong>Prévision 1j :</strong> $${signal.forecast1d.toFixed(2)}<br>
+       <strong>Prévision 3j :</strong> $${signal.forecast3d.toFixed(2)}<br>
+       <strong>Prévision 7j :</strong> $${signal.forecast7d.toFixed(2)}</p>`
+  : `<p class="text-sm text-yellow-400 italic mt-1">Les prédictions de prix sont réservées aux membres premium.</p>`
   }
   <div class="chart-container">
     <canvas id="${chartId}" width="300" height="150"></canvas>
