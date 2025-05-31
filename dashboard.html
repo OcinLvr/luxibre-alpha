@@ -302,11 +302,11 @@
 
     // Fonction pour ouvrir modal grand graphique
     function openBigChart(signal) {
-      const isPremiumUser = await window.isPremiumPromise;
       if (signal.premium && !isPremiumUser()) {
         alert("Ce signal est réservé aux abonnés premium.");
         return;
       }
+      const isPremiumUser = await window.isPremiumPromise;
       bigChartTitle.textContent = signal.name + " - Prix Historique";
 
       // Détruire l'ancien graphique si existe
