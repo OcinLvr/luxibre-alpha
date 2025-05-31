@@ -301,7 +301,7 @@
     const exportBigChartBtn = document.getElementById("exportBigChartBtn");
 
   // Fonction pour ouvrir la modal du grand graphique
-  function openBigChart(signal) {
+ async function openBigChart(signal) {
     const isPremium = await window.isPremiumPromise;
 
     if (signal.premium && !isPremium) {
