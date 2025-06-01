@@ -184,7 +184,14 @@ function mapRecommendationToCategory(rec) {
 }
 
 const generate = async (type) => {
-  const signals = { achat: [], vente: [], conservation: [] };
+  let signals = { achat: [], vente: [], conservation: [] };
+
+  // Lire le fichier existant si disponible
+  if (fs.existsSync('data/signals.json')) {
+    const existingData = fs.readFileSync('data/signals.json', 'utf8');
+    signals = JSON.parse(existingData);
+  }
+
   let assetsToProcess = [];
 
   if (type === 'cryptos') {
@@ -228,14 +235,21 @@ const generate = async (type) => {
         performance30j: performance30Jours(data.history)
       };
 
-      signals[category].push(signal);
+      // Vérifier si le signal existe déjà et le mettre à jour
+      const existingIndex = signals[category].findIndex(s => s.symbol === asset.symbol);
+      if (existingIndex >= 0) {
+        signals[category][existingIndex] = signal; // Mettre à jour le signal existant
+      } else {
+        signals[category].push(signal); // Ajouter un nouveau signal
+      }
     } catch (err) {
       console.error(`Erreur pour ${asset.symbol}:`, err.message);
     }
   }
 
+  // Écrire les signaux mis à jour dans le fichier
   fs.writeFileSync('data/signals.json', JSON.stringify(signals, null, 2));
-  console.log("Fichier signals.json généré avec succès !");
+  console.log("Fichier signals.json mis à jour avec succès !");
 };
 
 // Récupérer le type d'actifs à traiter depuis les arguments de la ligne de commande
