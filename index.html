@@ -5,38 +5,73 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Luxibre Alpha - Signaux Boursiers</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link rel="stylesheet" href="css/styles.css">
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
   <style>
     body {
       font-family: 'Inter', sans-serif;
     }
 
-    /* Pré-style pour éviter le flash */
-    #header-container {
-      min-height: 80px;
-      background-color: white;
-    } 
+    .hero {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.9), rgba(20, 83, 45, 0.9));
+      color: white;
+      padding: 4rem 1rem;
+      text-align: center;
+    }
+
+    .cta-button {
+      background-color: #22c55e;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-weight: bold;
+      display: inline-block;
+      margin-top: 1rem;
+      transition: background-color 0.3s;
+    }
+
+    .cta-button:hover {
+      background-color: #16a34a;
+    }
+
+    .testimonials {
+      padding: 2rem;
+      background-color: rgba(34, 197, 94, 0.1);
+      margin: 2rem auto;
+      max-width: 800px;
+      border-radius: 0.5rem;
+    }
+
+    .social-proof {
+      display: flex;
+      justify-content: space-around;
+      margin: 1rem 0;
+    }
+
+    .logo {
+      height: 50px;
+      margin: 0 1rem;
+    }
+
+    .urgency {
+      font-style: italic;
+      margin-top: 1rem;
+    }
   </style>
 </head>
 <body class="bg-gray-50 text-gray-900">
 
-
   <script type="module" src="JS/loadHeader.js"></script>
 
-
-  <!-- Hero Section with Lottie -->
-  <section class="bg-gray-900 text-white py-20 relative text-center">
-    <div class="max-w-3xl mx-auto px-6 z-10 relative">
-      <h2 class="text-5xl font-extrabold mb-6">Des Signaux Qui Parlent Argent</h2>
-      <p class="text-xl text-gray-300 mb-8">Recevez chaque jour des opportunités concrètes pour investir avec confiance.</p>
-      <a href="pricing.html" class="inline-block px-8 py-4 bg-green-600 hover:bg-green-700 text-white rounded-xl text-lg font-semibold transition transform hover:scale-105">Accéder aux signaux premium</a>
-    </div>
-    <div class="absolute inset-0 flex items-center justify-center opacity-30 pointer-events-none">
-      <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_zrqthn6o.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></lottie-player>
-    </div>
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1 class="text-5xl font-extrabold mb-6">Les signaux boursiers les plus précis du marché, chaque jour.</h1>
+    <p class="text-xl mb-8">Accédez à une plateforme conçue pour les traders actifs et les investisseurs sérieux.</p>
+    <a href="signup.html" class="cta-button">Accédez à vos signaux gratuitement</a>
+    <p class="urgency">Accès gratuit valable 7 jours</p>
   </section>
 
   <!-- Features Section -->
@@ -63,25 +98,39 @@
     </div>
   </section>
 
+  <!-- Testimonials Section -->
+  <section class="testimonials">
+    <h2 class="text-3xl font-bold text-center mb-8">Témoignages</h2>
+    <div class="social-proof">
+      <div class="testimonial">
+        <p>"Cette plateforme a transformé ma façon de trader. Les signaux sont précis et fiables."</p>
+        <p><strong>- Jean D.</strong></p>
+      </div>
+      <div class="testimonial">
+        <p>"Je recommande Luxibre Alpha à tous les traders sérieux. Les résultats parlent d'eux-mêmes."</p>
+        <p><strong>- Marie L.</strong></p>
+      </div>
+    </div>
+  </section>
+
   <!-- CTA Section -->
   <section class="py-20 bg-gradient-to-r from-red-500 to-orange-500 text-white">
     <div class="max-w-4xl mx-auto px-6 text-center">
       <h3 class="text-4xl md:text-5xl font-bold mb-6">Faites le choix de l'efficacité</h3>
       <p class="text-xl md:text-2xl mb-8">Votre avenir financier commence maintenant. Ne laissez pas passer les meilleures opportunités.</p>
-      <a href="pricing.html" class="inline-block px-8 py-4 bg-white text-red-600 font-semibold rounded-xl hover:bg-gray-100 transition transform hover:scale-105">Je passe à l’action</a>
+      <a href="signup.html" class="cta-button">Je passe à l’action</a>
     </div>
   </section>
 
   <!-- Footer -->
-<footer class="py-10 bg-gray-100 mt-16">
-  <div class="max-w-7xl mx-auto px-6 text-center text-sm text-gray-600">
-    &copy; 2025 <span class="font-semibold text-green-600">Luxibre Alpha</span>. Tous droits réservés. |
-    <a href="/legal/mentions-legales.html" class="underline hover:text-green-600 transition">Mentions légales</a> |
-    <a href="/legal/cgu.html" class="underline hover:text-green-600 transition">CGU</a> |
-    <a href="/legal/rgpd.html" class="underline hover:text-green-600 transition">RGPD</a>
-  </div>
-</footer>
-
+  <footer class="py-10 bg-gray-100 mt-16">
+    <div class="max-w-7xl mx-auto px-6 text-center text-sm text-gray-600">
+      &copy; 2025 <span class="font-semibold text-green-600">Luxibre Alpha</span>. Tous droits réservés. |
+      <a href="/legal/mentions-legales.html" class="underline hover:text-green-600 transition">Mentions légales</a> |
+      <a href="/legal/cgu.html" class="underline hover:text-green-600 transition">CGU</a> |
+      <a href="/legal/rgpd.html" class="underline hover:text-green-600 transition">RGPD</a>
+    </div>
+  </footer>
 
 </body>
 </html>
