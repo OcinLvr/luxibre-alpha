@@ -324,7 +324,7 @@
   <script>
     // Fonction pour vérifier si l'utilisateur est premium
     async function isPremiumUser() {
-      return true; // Remplacez par la logique réelle pour vérifier le statut premium
+      return await window.isPremiumPromise;
     }
 
     // Variables globales pour modal graphique
