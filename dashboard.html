@@ -359,7 +359,9 @@
   <script>
     // Fonction pour vérifier si l'utilisateur est premium
     async function isPremiumUser() {
-      return await window.isPremiumPromise;
+      // Remplacez cette partie par votre logique réelle pour vérifier si l'utilisateur est premium
+      // Par exemple, en appelant une API ou en vérifiant une variable de session
+      return await window.isPremiumPromise; // Assurez-vous que cette promesse est définie ailleurs dans votre code
     }
 
     // Fonction d'export pour petits graphiques
@@ -490,6 +492,9 @@
       // Ouvrir la modal
       document.body.classList.add('modal-open');
       document.getElementById("bigChartModal").classList.add("active");
+
+      // Ajouter l'écouteur d'événement pour le bouton de fermeture
+      closeBigChartBtn.onclick = closeBigChart;
     }
 
     function closeBigChart() {
@@ -504,36 +509,28 @@
     }
 
     // Réinitialiser zoom du grand graphique
-    if (resetZoomBtn) {
-      resetZoomBtn.addEventListener("click", () => {
-        if (bigChartInstance) bigChartInstance.resetZoom();
-      });
-    }
+    resetZoomBtn.addEventListener("click", () => {
+      if (bigChartInstance) bigChartInstance.resetZoom();
+    });
 
     // Exporter grand graphique
-    if (exportBigChartBtn) {
-      exportBigChartBtn.addEventListener("click", () => {
-        isPremiumUser().then(isPremium => {
-          if (!isPremium) {
-            alert("Cette fonctionnalité est réservée aux utilisateurs premium.");
-            return;
-          }
-          html2canvas(bigChartCanvas).then(canvas => {
-            const link = document.createElement('a');
-            link.download = 'big-chart.png';
-            link.href = canvas.toDataURL();
-            link.click();
-          });
+    exportBigChartBtn.addEventListener("click", () => {
+      isPremiumUser().then(isPremium => {
+        if (!isPremium) {
+          alert("Cette fonctionnalité est réservée aux utilisateurs premium.");
+          return;
+        }
+        html2canvas(bigChartCanvas).then(canvas => {
+          const link = document.createElement('a');
+          link.download = 'big-chart.png';
+          link.href = canvas.toDataURL();
+          link.click();
         });
       });
-    }
-
-    if (closeBigChartBtn) {
-      closeBigChartBtn.addEventListener("click", closeBigChart);
-    }
+    });
 
     // Fermer modal au clic hors contenu
-    document.getElementById("bigChartModal").addEventListener("click", e => {
+    document.getElementById("bigChartModal").addEventListener("click", (e) => {
       if (e.target === document.getElementById("bigChartModal")) closeBigChart();
     });
 
