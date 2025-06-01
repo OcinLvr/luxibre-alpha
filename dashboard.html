@@ -132,6 +132,12 @@
       border-radius: 0.6rem;
       cursor: pointer;
       position: relative;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: box-shadow 0.3s ease;
+    }
+
+    .chart-container:hover {
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
     }
 
     .export-btn {
@@ -372,24 +378,42 @@
           datasets: [{
             label: `${signal.name} - Prix de clôture`,
             data: signal.history,
-            borderColor: "#22c55e",
-            backgroundColor: "rgba(34,197,94,0.3)",
+            borderColor: "#4ade80",
+            backgroundColor: "rgba(74, 222, 128, 0.2)",
             fill: true,
-            tension: 0.3,
-            pointRadius: 3,
-            pointHoverRadius: 6
+            tension: 0.4,
+            pointRadius: 4,
+            pointHoverRadius: 6,
+            pointBackgroundColor: "#4ade80",
+            borderWidth: 2
           }]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
+          animation: {
+            duration: 1000,
+            easing: 'easeInOutQuart'
+          },
           plugins: {
             legend: {
-              labels: { color: '#d1d5db' }
+              labels: {
+                color: '#d1d5db',
+                font: {
+                  size: 14
+                }
+              }
             },
             tooltip: {
               mode: 'index',
-              intersect: false
+              intersect: false,
+              backgroundColor: 'rgba(0, 0, 0, 0.8)',
+              titleFont: {
+                size: 16
+              },
+              bodyFont: {
+                size: 14
+              }
             },
             zoom: {
               pan: {
@@ -411,13 +435,28 @@
           scales: {
             x: {
               display: true,
-              ticks: { color: '#a3bffa' },
-              grid: { color: '#334155' }
+              ticks: {
+                color: '#9ca3af',
+                font: {
+                  size: 12
+                }
+              },
+              grid: {
+                color: '#374151',
+                drawBorder: false
+              }
             },
             y: {
               beginAtZero: false,
-              ticks: { color: '#a3bffa' },
-              grid: { color: '#334155' }
+              ticks: {
+                color: '#9ca3af',
+                font: {
+                  size: 12
+                }
+              },
+              grid: {
+                color: '#374151'
+              }
             }
           }
         }
@@ -554,31 +593,51 @@
                 datasets: [{
                   label: `${signal.name} - Prix de clôture`,
                   data: signal.history,
-                  borderColor: "#22c55e",
-                  backgroundColor: "rgba(34,197,94,0.3)",
+                  borderColor: "#4ade80",
+                  backgroundColor: "rgba(74, 222, 128, 0.2)",
                   fill: true,
-                  tension: 0.3,
-                  pointRadius: 0
+                  tension: 0.4,
+                  pointRadius: 2,
+                  pointHoverRadius: 4,
+                  pointBackgroundColor: "#4ade80",
+                  borderWidth: 2
                 }]
               },
               options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                animation: {
+                  duration: 1000,
+                  easing: 'easeInOutQuart'
+                },
                 scales: {
-                  x: { display: false },
+                  x: {
+                    display: false
+                  },
                   y: {
                     beginAtZero: false,
-                    ticks: { color: '#a3bffa' },
-                    grid: { color: '#334155' }
+                    ticks: {
+                      color: '#9ca3af'
+                    },
+                    grid: {
+                      color: '#374151'
+                    }
                   }
                 },
                 plugins: {
                   legend: {
-                    labels: { color: '#d1d5db' }
+                    display: false
                   },
                   tooltip: {
                     mode: 'index',
-                    intersect: false
+                    intersect: false,
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    titleFont: {
+                      size: 14
+                    },
+                    bodyFont: {
+                      size: 12
+                    }
                   }
                 }
               }
