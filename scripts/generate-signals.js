@@ -1,4 +1,3 @@
-// generate-signals.js
 import fs from 'fs';
 import axios from 'axios';
 import dotenv from 'dotenv';
@@ -184,11 +183,19 @@ function mapRecommendationToCategory(rec) {
   return "conservation";
 }
 
-const generate = async () => {
+const generate = async (type) => {
   const signals = { achat: [], vente: [], conservation: [] };
-  const allAssets = [...STOCKS, ...ETFS, ...CRYPTOS];
+  let assetsToProcess = [];
 
-  for (const asset of allAssets) {
+  if (type === 'cryptos') {
+    assetsToProcess = [...CRYPTOS];
+  } else if (type === 'stocks-etfs') {
+    assetsToProcess = [...STOCKS, ...ETFS];
+  } else {
+    assetsToProcess = [...STOCKS, ...ETFS, ...CRYPTOS];
+  }
+
+  for (const asset of assetsToProcess) {
     try {
       const data = asset.type === 'etf'
         ? await fetchETF(asset.symbol)
@@ -217,7 +224,7 @@ const generate = async () => {
           ema20: EMA(data.history, 20),
           adx: ADX(data.history)
         },
-        predictions: asset.premium ? predictFuturePrices(data.history) : null,
+        predictions: predictFuturePrices(data.history),
         performance30j: performance30Jours(data.history)
       };
 
@@ -231,4 +238,7 @@ const generate = async () => {
   console.log("Fichier signals.json généré avec succès !");
 };
 
-generate();
+// Récupérer le type d'actifs à traiter depuis les arguments de la ligne de commande
+const assetType = process.argv[2];
+
+generate(assetType);
