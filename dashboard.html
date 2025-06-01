@@ -460,13 +460,17 @@
       });
 
       // Afficher les prédictions de prix si premium
-      if (signal.premium && isPremium && signal.predictions) {
-        const predictionsDiv = document.getElementById('predictionsContainer');
+      const predictionsDiv = document.getElementById('predictionsContainer');
+      if (isPremium && signal.predictions) {
         predictionsDiv.innerHTML = `
           <h4>Prédictions de prix</h4>
           <p>Jour 1: $${signal.predictions.day1}</p>
           <p>Jour 3: $${signal.predictions.day3}</p>
           <p>Jour 7: $${signal.predictions.day7}</p>
+        `;
+      } else {
+        predictionsDiv.innerHTML = `
+          <p>Les prédictions de prix sont réservées aux membres premium.</p>
         `;
       }
 
@@ -529,136 +533,129 @@
     }
 
     async function renderSignals() {
-  const data = await fetchSignals();
-  if (!data) return;
+      const data = await fetchSignals();
+      if (!data) return;
 
-  const isPremium = await isPremiumUser();
+      const isPremium = await isPremiumUser();
 
-  const container = document.getElementById("signalsContainer");
-  const premiumNotice = document.getElementById("premiumNotice");
-  let premiumLocked = false;
-  container.innerHTML = "";
+      const container = document.getElementById("signalsContainer");
+      const premiumNotice = document.getElementById("premiumNotice");
+      let premiumLocked = false;
+      container.innerHTML = "";
 
-  ["achat", "vente", "conservation"].forEach(category => {
-    if (!data[category] || !Array.isArray(data[category])) return;
+      ["achat", "vente", "conservation"].forEach(category => {
+        if (!data[category] || !Array.isArray(data[category])) return;
 
-    // Trier les signaux pour que les non-premium apparaissent en premier
-    data[category].sort((a, b) => (a.premium === b.premium) ? 0 : a.premium ? 1 : -1);
+        // Trier les signaux pour que les non-premium apparaissent en premier
+        data[category].sort((a, b) => (a.premium === b.premium) ? 0 : a.premium ? 1 : -1);
 
-    data[category].forEach((signal, i) => {
-      const card = document.createElement("div");
-      card.className = "card";
-      card.dataset.category = category;
+        data[category].forEach((signal, i) => {
+          const card = document.createElement("div");
+          card.className = "card";
+          card.dataset.category = category;
 
-      const isLocked = signal.premium && !isPremium;
-      if (isLocked) {
-        card.classList.add("blur");
-        premiumLocked = true;
-      }
-
-      const chartId = `chart-${category}-${i}`;
-
-      // Utiliser Luxon pour formater la date de mise à jour
-      const updatedDate = luxon.DateTime.fromISO(signal.updated);
-      const formattedUpdatedDate = updatedDate.toLocaleString(luxon.DateTime.DATETIME_MED);
-
-      card.innerHTML = `
-        ${signal.premium ? '<div class="premium-badge">Premium</div>' : ''}
-        ${isLocked ? '<button class="upgrade-message" onclick="window.location.href=\'/subscription\'">Devenez Premium</button>' : ''}
-        <div class="card-content">
-          <h3>${signal.name}</h3>
-          <p><strong>Prix actuel :</strong> $${signal.price.toFixed(2)}</p>
-          <p><strong>Performance (30j) :</strong> ${signal.performance30j}%</p>
-          <p><strong>Recommandation :</strong> <span class="recommendation">${signal.recommendation}</span></p>
-          <p><strong>Dernière mise à jour :</strong> ${formattedUpdatedDate}</p>
-          ${
-            !isLocked && signal.predictions
-            ? `<p><strong>Prévision 1j :</strong> $${signal.predictions.day1}<br>
-               <strong>Prévision 3j :</strong> $${signal.predictions.day3}<br>
-               <strong>Prévision 7j :</strong> $${signal.predictions.day7}</p>`
-            : !isPremium ? `<p class="text-sm text-yellow-400 italic mt-1">Les prédictions de prix sont réservées aux membres premium.</p>` : ''
+          const isLocked = signal.premium && !isPremium;
+          if (isLocked) {
+            card.classList.add("blur");
+            premiumLocked = true;
           }
-          <div class="chart-container">
-            <canvas id="${chartId}" width="300" height="150"></canvas>
-          </div>
-        </div>
-      `;
 
-      container.appendChild(card);
+          const chartId = `chart-${category}-${i}`;
 
-      if (!isLocked) {
-        const ctx = document.getElementById(chartId).getContext("2d");
-        new Chart(ctx, {
-          type: "line",
-          data: {
-            labels: signal.history.map((_, idx) => `J-${signal.history.length - idx}`),
-            datasets: [{
-              label: `${signal.name} - Prix de clôture`,
-              data: signal.history,
-              borderColor: "#3b82f6",
-              backgroundColor: "rgba(59, 130, 246, 0.1)",
-              fill: true,
-              tension: 0.4,
-              pointRadius: 2,
-              pointHoverRadius: 4,
-              pointBackgroundColor: "#3b82f6",
-              borderWidth: 2
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            animation: {
-              duration: 1000,
-              easing: 'easeInOutQuart'
-            },
-            scales: {
-              x: {
-                display: false
+          // Utiliser Luxon pour formater la date de mise à jour
+          const updatedDate = luxon.DateTime.fromISO(signal.updated);
+          const formattedUpdatedDate = updatedDate.toLocaleString(luxon.DateTime.DATETIME_MED);
+
+          card.innerHTML = `
+            ${signal.premium ? '<div class="premium-badge">Premium</div>' : ''}
+            ${isLocked ? '<button class="upgrade-message" onclick="window.location.href=\'/subscription\'">Devenez Premium</button>' : ''}
+            <div class="card-content">
+              <h3>${signal.name}</h3>
+              <p><strong>Prix actuel :</strong> $${signal.price.toFixed(2)}</p>
+              <p><strong>Performance (30j) :</strong> ${signal.performance30j}%</p>
+              <p><strong>Recommandation :</strong> <span class="recommendation">${signal.recommendation}</span></p>
+              <p><strong>Dernière mise à jour :</strong> ${formattedUpdatedDate}</p>
+              <div class="chart-container">
+                <canvas id="${chartId}" width="300" height="150"></canvas>
+              </div>
+            </div>
+          `;
+
+          container.appendChild(card);
+
+          if (!isLocked) {
+            const ctx = document.getElementById(chartId).getContext("2d");
+            new Chart(ctx, {
+              type: "line",
+              data: {
+                labels: signal.history.map((_, idx) => `J-${signal.history.length - idx}`),
+                datasets: [{
+                  label: `${signal.name} - Prix de clôture`,
+                  data: signal.history,
+                  borderColor: "#3b82f6",
+                  backgroundColor: "rgba(59, 130, 246, 0.1)",
+                  fill: true,
+                  tension: 0.4,
+                  pointRadius: 2,
+                  pointHoverRadius: 4,
+                  pointBackgroundColor: "#3b82f6",
+                  borderWidth: 2
+                }]
               },
-              y: {
-                beginAtZero: false,
-                ticks: {
-                  color: '#9ca3af'
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: {
+                  duration: 1000,
+                  easing: 'easeInOutQuart'
                 },
-                grid: {
-                  color: '#374151'
+                scales: {
+                  x: {
+                    display: false
+                  },
+                  y: {
+                    beginAtZero: false,
+                    ticks: {
+                      color: '#9ca3af'
+                    },
+                    grid: {
+                      color: '#374151'
+                    }
+                  }
+                },
+                plugins: {
+                  legend: {
+                    display: false
+                  },
+                  tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    titleFont: {
+                      size: 14
+                    },
+                    bodyFont: {
+                      size: 12
+                    },
+                    padding: 8,
+                    displayColors: false
+                  }
                 }
               }
-            },
-            plugins: {
-              legend: {
-                display: false
-              },
-              tooltip: {
-                mode: 'index',
-                intersect: false,
-                backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                titleFont: {
-                  size: 14
-                },
-                bodyFont: {
-                  size: 12
-                },
-                padding: 8,
-                displayColors: false
-              }
-            }
+            });
+
+            card.querySelector('.chart-container').addEventListener('click', () => {
+              openBigChart(signal);
+            });
           }
         });
+      });
 
-        card.querySelector('.chart-container').addEventListener('click', () => {
-          openBigChart(signal);
-        });
+      if (premiumLocked && !isPremium) {
+        premiumNotice.style.display = "block";
+        premiumNotice.textContent = "Certains signaux sont réservés aux abonnés premium. Abonnez-vous pour tout débloquer.";
       }
-    });
-  });
-
-  if (premiumLocked && !isPremium) {
-    premiumNotice.style.display = "block";
-    premiumNotice.textContent = "Certains signaux sont réservés aux abonnés premium. Abonnez-vous pour tout débloquer.";
-  }
-}
+    }
 
     function filterSignals(category) {
       const cards = document.querySelectorAll('.card');
