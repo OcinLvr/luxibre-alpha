@@ -109,7 +109,7 @@
       "recommendation": "Acheter",
       "score": 65,
       "premium": true,
-      "updated": "2025-05-30T20:18:42.212Z",
+      "updated": "2025-06-01T15:48:49.176Z",
       "indicators": {
         "rsi": 68.33815248820571,
         "macd": 20.538291433184042,
@@ -133,9 +133,8 @@
     {
       "name": "Amazon.com Inc.",
       "symbol": "AMZN",
-      "price": 205.7,
+      "price": 205.01,
       "history": [
-        224.19,
         227.61,
         222.11,
         222.13,
@@ -234,36 +233,37 @@
         200.99,
         206.02,
         204.72,
-        205.7
+        205.7,
+        205.01
       ],
       "recommendation": "Acheter",
       "score": 65,
       "premium": true,
-      "updated": "2025-05-30T20:18:42.459Z",
+      "updated": "2025-06-01T15:48:49.655Z",
       "indicators": {
-        "rsi": 65.86672879776324,
-        "macd": 4.239401486549241,
+        "rsi": 64.01595120806942,
+        "macd": 4.096771359651683,
         "bollinger": {
-          "middle": 199.91449999999995,
-          "upper": 216.4674495558948,
-          "lower": 183.3615504441051
+          "middle": 200.65499999999997,
+          "upper": 216.72127834938755,
+          "lower": 184.5887216506124
         },
-        "sma50": 191.69840000000005,
+        "sma50": 191.88780000000003,
         "sma200": null,
-        "ema20": 200.09436270072368,
-        "adx": 31.733457595526506
+        "ema20": 200.56239796494546,
+        "adx": 28.031902416138845
       },
       "predictions": {
-        "day1": 205.63,
-        "day3": 205.5,
-        "day7": 205.24
+        "day1": 205.14,
+        "day3": 205.41,
+        "day7": 205.95
       },
-      "performance30j": 17.99
+      "performance30j": 18.77
     },
     {
       "name": "JPMorgan Chase & Co.",
       "symbol": "JPM",
-      "price": 263.93,
+      "price": 264,
       "history": [
         240.85,
         243.17,
@@ -364,36 +364,36 @@
         265.29,
         263.49,
         264.37,
-        263.93
+        264
       ],
       "recommendation": "Acheter",
       "score": 65,
       "premium": true,
-      "updated": "2025-05-30T20:18:43.071Z",
+      "updated": "2025-06-01T15:48:50.774Z",
       "indicators": {
-        "rsi": 67.66525561706283,
-        "macd": 5.190392079160006,
+        "rsi": 67.81984334203652,
+        "macd": 5.195976124743993,
         "bollinger": {
-          "middle": 260.20349999999996,
-          "upper": 272.17204757270065,
-          "lower": 248.23495242729925
+          "middle": 260.207,
+          "upper": 272.17994466703993,
+          "lower": 248.23405533296005
         },
-        "sma50": 246.62060000000002,
+        "sma50": 246.622,
         "sma200": null,
-        "ema20": 259.09856906106575,
-        "adx": 35.33051123412567
+        "ema20": 259.10523572773246,
+        "adx": 35.63968668407305
       },
       "predictions": {
-        "day1": 263.68,
-        "day3": 263.18,
-        "day7": 262.18
+        "day1": 263.76,
+        "day3": 263.28,
+        "day7": 262.32
       },
-      "performance30j": 13.78
+      "performance30j": 13.81
     },
     {
       "name": "Visa Inc.",
       "symbol": "V",
-      "price": 365.01,
+      "price": 365.19,
       "history": [
         313.04,
         311.67,
@@ -494,32 +494,36 @@
         359.3,
         359.73,
         362.4,
-        365.01
+        365.19
       ],
       "recommendation": "Acheter",
       "score": 65,
       "premium": false,
-      "updated": "2025-05-30T20:18:43.177Z",
+      "updated": "2025-06-01T15:48:51.095Z",
       "indicators": {
-        "rsi": 65.13716921582909,
-        "macd": 5.4616107471758255,
+        "rsi": 65.28885665941505,
+        "macd": 5.4759697215347956,
         "bollinger": {
-          "middle": 357.22300000000007,
-          "upper": 369.71516730595624,
-          "lower": 344.7308326940439
+          "middle": 357.232,
+          "upper": 369.7468337583845,
+          "lower": 344.71716624161553
         },
-        "sma50": 344.147,
+        "sma50": 344.1506,
         "sma200": null,
-        "ema20": 356.21758641375595,
-        "adx": 30.27433843165818
+        "ema20": 356.2347292708988,
+        "adx": 30.577713318830092
       },
-      "predictions": null,
-      "performance30j": 10.74
+      "predictions": {
+        "day1": 364.95,
+        "day3": 364.48,
+        "day7": 363.54
+      },
+      "performance30j": 10.79
     },
     {
       "name": "The Walt Disney Company",
       "symbol": "DIS",
-      "price": 113.02,
+      "price": 113.04,
       "history": [
         111.05,
         111.39,
@@ -620,27 +624,31 @@
         112.36,
         111.52,
         112.02,
-        113.02
+        113.04
       ],
       "recommendation": "Acheter",
       "score": 65,
       "premium": false,
-      "updated": "2025-05-30T20:18:43.530Z",
+      "updated": "2025-06-01T15:48:51.578Z",
       "indicators": {
-        "rsi": 68.69060190073915,
-        "macd": 4.628974908185725,
+        "rsi": 68.72362869198312,
+        "macd": 4.630570349781166,
         "bollinger": {
-          "middle": 107.78099999999999,
-          "upper": 122.00530159972713,
-          "lower": 93.55669840027285
+          "middle": 107.782,
+          "upper": 122.0077774479991,
+          "lower": 93.55622255200089
         },
-        "sma50": 97.72500000000004,
+        "sma50": 97.72540000000002,
         "sma200": null,
-        "ema20": 107.47877684166639,
-        "adx": 37.381203801478314
+        "ema20": 107.48068160357114,
+        "adx": 37.447257383966246
       },
-      "predictions": null,
-      "performance30j": 33.26
+      "predictions": {
+        "day1": 113.14,
+        "day3": 113.33,
+        "day7": 113.72
+      },
+      "performance30j": 33.29
     },
     {
       "name": "Netflix Inc.",
@@ -751,7 +759,7 @@
       "recommendation": "Acheter",
       "score": 65,
       "premium": true,
-      "updated": "2025-05-30T20:18:43.726Z",
+      "updated": "2025-06-01T15:48:51.895Z",
       "indicators": {
         "rsi": 66.80712315023825,
         "macd": 39.99015756801987,
@@ -881,7 +889,7 @@
       "recommendation": "Acheter",
       "score": 65,
       "premium": false,
-      "updated": "2025-05-30T20:18:45.031Z",
+      "updated": "2025-06-01T15:48:53.680Z",
       "indicators": {
         "rsi": 68.39145106861636,
         "macd": 1.259881300361748,
@@ -895,7 +903,11 @@
         "ema20": 61.966665471838,
         "adx": 36.782902137232746
       },
-      "predictions": null,
+      "predictions": {
+        "day1": 62.99,
+        "day3": 62.88,
+        "day7": 62.66
+      },
       "performance30j": 13.06
     },
     {
@@ -1522,7 +1534,7 @@
       "recommendation": "Acheter fort",
       "score": 80,
       "premium": false,
-      "updated": "2025-05-30T20:18:45.575Z",
+      "updated": "2025-06-01T15:48:53.992Z",
       "indicators": {
         "rsi": 62.8434577948281,
         "macd": 0.34051961134890796,
@@ -1536,7 +1548,11 @@
         "ema20": 12.55251756538698,
         "adx": 25.686915589656195
       },
-      "predictions": null,
+      "predictions": {
+        "day1": 12.83,
+        "day3": 12.79,
+        "day7": 12.69
+      },
       "performance30j": 16.07
     },
     {
@@ -2490,7 +2506,7 @@
       "recommendation": "Vendre",
       "score": 35,
       "premium": false,
-      "updated": "2025-05-30T20:18:42.077Z",
+      "updated": "2025-06-01T15:48:48.837Z",
       "indicators": {
         "rsi": 53.00673924313114,
         "macd": -1.680161953938864,
@@ -2504,7 +2520,11 @@
         "ema20": 203.35223891603843,
         "adx": 6.013478486262294
       },
-      "predictions": null,
+      "predictions": {
+        "day1": 199.99,
+        "day3": 198.27,
+        "day7": 194.84
+      },
       "performance30j": 1.96
     },
     {
@@ -2616,7 +2636,7 @@
       "recommendation": "Vendre",
       "score": 35,
       "premium": true,
-      "updated": "2025-05-30T20:18:44.851Z",
+      "updated": "2025-06-01T15:48:53.383Z",
       "indicators": {
         "rsi": 53.34215751158169,
         "macd": -1.9879284589116253,
@@ -2748,7 +2768,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-05-30T20:18:42.319Z",
+      "updated": "2025-06-01T15:48:49.475Z",
       "indicators": {
         "rsi": 71.42008318478906,
         "macd": 14.680201648170623,
@@ -2878,7 +2898,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-05-30T20:18:42.645Z",
+      "updated": "2025-06-01T15:48:49.953Z",
       "indicators": {
         "rsi": 77.88546255506608,
         "macd": 3.4883831982953666,
@@ -2892,7 +2912,11 @@
         "ema20": 165.99887624287538,
         "adx": 55.77092511013217
       },
-      "predictions": null,
+      "predictions": {
+        "day1": 172.85,
+        "day3": 175.07,
+        "day7": 179.5
+      },
       "performance30j": 13.61
     },
     {
@@ -3004,7 +3028,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-05-30T20:18:42.761Z",
+      "updated": "2025-06-01T15:48:50.143Z",
       "indicators": {
         "rsi": 72.55577427821521,
         "macd": 18.965379575471616,
@@ -3028,9 +3052,8 @@
     {
       "name": "NVIDIA Corp.",
       "symbol": "NVDA",
-      "price": 139.19,
+      "price": 135.13,
       "history": [
-        144.47,
         149.43,
         140.14,
         140.11,
@@ -3129,32 +3152,37 @@
         131.29,
         135.5,
         134.81,
-        139.19
+        139.19,
+        135.13
       ],
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-05-30T20:18:42.916Z",
+      "updated": "2025-06-01T15:48:50.455Z",
       "indicators": {
-        "rsi": 80.07166482910696,
-        "macd": 6.459644130321351,
+        "rsi": 73.32155477031802,
+        "macd": 6.227711874194739,
         "bollinger": {
-          "middle": 126.921,
-          "upper": 145.67049695325184,
-          "lower": 108.17150304674817
+          "middle": 128.09699999999998,
+          "upper": 145.77760869992883,
+          "lower": 110.41639130007113
         },
-        "sma50": 115.84939999999999,
+        "sma50": 116.20159999999998,
         "sma200": null,
-        "ema20": 127.91835848886879,
-        "adx": 60.143329658213936
+        "ema20": 128.60525875175654,
+        "adx": 46.64310954063605
       },
-      "predictions": null,
-      "performance30j": 33.21
+      "predictions": {
+        "day1": 135.24,
+        "day3": 135.45,
+        "day7": 135.88
+      },
+      "performance30j": 33.15
     },
     {
       "name": "Walmart Inc.",
       "symbol": "WMT",
-      "price": 98.64,
+      "price": 98.72,
       "history": [
         91.43,
         90.81,
@@ -3255,31 +3283,31 @@
         97.58,
         97.24,
         97.1,
-        98.64
+        98.72
       ],
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-05-30T20:18:43.425Z",
+      "updated": "2025-06-01T15:48:51.270Z",
       "indicators": {
-        "rsi": 59.411764705882355,
-        "macd": 0.9041502944733679,
+        "rsi": 59.72762645914397,
+        "macd": 0.9105320608551324,
         "bollinger": {
-          "middle": 97.44200000000001,
-          "upper": 99.48151562877072,
-          "lower": 95.40248437122929
+          "middle": 97.446,
+          "upper": 99.4951891079156,
+          "lower": 95.39681089208439
         },
-        "sma50": 93.13019999999999,
+        "sma50": 93.13179999999998,
         "sma200": null,
-        "ema20": 96.78499576698697,
-        "adx": 18.82352941176471
+        "ema20": 96.79261481460601,
+        "adx": 19.455252918287933
       },
       "predictions": {
-        "day1": 98.76,
-        "day3": 99,
-        "day7": 99.48
+        "day1": 98.85,
+        "day3": 99.11,
+        "day7": 99.64
       },
-      "performance30j": 5.81
+      "performance30j": 5.9
     },
     {
       "name": "PayPal Holdings Inc.",
@@ -3390,7 +3418,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-05-30T20:18:43.915Z",
+      "updated": "2025-06-01T15:48:52.074Z",
       "indicators": {
         "rsi": 50.09803921568626,
         "macd": 1.182481092100815,
@@ -3404,7 +3432,11 @@
         "ema20": 70.16463145864589,
         "adx": 0.19607843137251277
       },
-      "predictions": null,
+      "predictions": {
+        "day1": 69.95,
+        "day3": 69.28,
+        "day7": 67.95
+      },
       "performance30j": 15.21
     },
     {
@@ -3516,7 +3548,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-05-30T20:18:44.035Z",
+      "updated": "2025-06-01T15:48:52.389Z",
       "indicators": {
         "rsi": 76.45102278396806,
         "macd": 10.093411379725012,
@@ -3540,7 +3572,7 @@
     {
       "name": "Salesforce.com Inc.",
       "symbol": "CRM",
-      "price": 265.4,
+      "price": 265.37,
       "history": [
         330.53,
         324.93,
@@ -3641,27 +3673,31 @@
         277.19,
         276.03,
         266.92,
-        265.4
+        265.37
       ],
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-05-30T20:18:44.257Z",
+      "updated": "2025-06-01T15:48:52.566Z",
       "indicators": {
-        "rsi": 40.50056882821385,
-        "macd": 0.49544112052899436,
+        "rsi": 40.4775440591245,
+        "macd": 0.49304795813588953,
         "bollinger": {
-          "middle": 280.258,
-          "upper": 296.11967153864936,
-          "lower": 264.3963284613506
+          "middle": 280.2565,
+          "upper": 296.1237962725223,
+          "lower": 264.3892037274777
         },
-        "sma50": 269.5686,
+        "sma50": 269.56800000000004,
         "sma200": null,
-        "ema20": 276.28475921246053,
-        "adx": 18.998862343572284
+        "ema20": 276.2819020696034,
+        "adx": 19.044911881751005
       },
-      "predictions": null,
-      "performance30j": 7.34
+      "predictions": {
+        "day1": 262.13,
+        "day3": 255.65,
+        "day7": 242.68
+      },
+      "performance30j": 7.32
     },
     {
       "name": "Intel Corp.",
@@ -3772,7 +3808,7 @@
       "recommendation": "Conserver",
       "score": 45,
       "premium": true,
-      "updated": "2025-05-30T20:18:44.441Z",
+      "updated": "2025-06-01T15:48:52.898Z",
       "indicators": {
         "rsi": 32.78084714548801,
         "macd": -0.20356368433282412,
@@ -3902,7 +3938,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-05-30T20:18:44.660Z",
+      "updated": "2025-06-01T15:48:53.081Z",
       "indicators": {
         "rsi": 53.68663594470046,
         "macd": 0.01417428153216349,
@@ -3916,7 +3952,11 @@
         "ema20": 34.69548507801544,
         "adx": 7.373271889400932
       },
-      "predictions": null,
+      "predictions": {
+        "day1": 34.42,
+        "day3": 34.13,
+        "day7": 33.55
+      },
       "performance30j": 1.65
     },
     {
@@ -4028,7 +4068,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-05-30T20:18:45.208Z",
+      "updated": "2025-06-01T15:48:53.854Z",
       "indicators": {
         "rsi": 83.83616383616388,
         "macd": 12.618214634848101,
