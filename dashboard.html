@@ -378,13 +378,13 @@
           datasets: [{
             label: `${signal.name} - Prix de clôture`,
             data: signal.history,
-            borderColor: "#4ade80",
-            backgroundColor: "rgba(74, 222, 128, 0.2)",
+            borderColor: "#3b82f6",
+            backgroundColor: "rgba(59, 130, 246, 0.1)",
             fill: true,
             tension: 0.4,
-            pointRadius: 4,
+            pointRadius: 3,
             pointHoverRadius: 6,
-            pointBackgroundColor: "#4ade80",
+            pointBackgroundColor: "#3b82f6",
             borderWidth: 2
           }]
         },
@@ -397,12 +397,7 @@
           },
           plugins: {
             legend: {
-              labels: {
-                color: '#d1d5db',
-                font: {
-                  size: 14
-                }
-              }
+              display: false
             },
             tooltip: {
               mode: 'index',
@@ -413,12 +408,14 @@
               },
               bodyFont: {
                 size: 14
-              }
+              },
+              padding: 10,
+              displayColors: false
             },
             zoom: {
               pan: {
                 enabled: true,
-                mode: 'x',
+                mode: 'xy',
                 modifierKey: 'ctrl',
               },
               zoom: {
@@ -428,7 +425,7 @@
                 pinch: {
                   enabled: true
                 },
-                mode: 'x',
+                mode: 'xy',
               }
             }
           },
@@ -593,13 +590,13 @@
                 datasets: [{
                   label: `${signal.name} - Prix de clôture`,
                   data: signal.history,
-                  borderColor: "#4ade80",
-                  backgroundColor: "rgba(74, 222, 128, 0.2)",
+                  borderColor: "#3b82f6",
+                  backgroundColor: "rgba(59, 130, 246, 0.1)",
                   fill: true,
                   tension: 0.4,
                   pointRadius: 2,
                   pointHoverRadius: 4,
-                  pointBackgroundColor: "#4ade80",
+                  pointBackgroundColor: "#3b82f6",
                   borderWidth: 2
                 }]
               },
@@ -637,7 +634,9 @@
                     },
                     bodyFont: {
                       size: 12
-                    }
+                    },
+                    padding: 8,
+                    displayColors: false
                   }
                 }
               }
