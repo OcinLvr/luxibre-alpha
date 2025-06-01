@@ -89,3 +89,40 @@
   font-size: 0.75rem;
   font-weight: bold;
 }
+
+
+
+
+
+
+
+
+
+
+
+.stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 2rem auto;
+      max-width: 800px;
+    }
+
+    .stat-item {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+
+    .stat-label {
+      font-size: 1rem;
+      color: #4b5563;
+    }
