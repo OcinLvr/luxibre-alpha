@@ -5,39 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Luxibre Alpha - Signaux Boursiers</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
   <style>
-    :root {
-      --primary-color: #22c55e;
-      --secondary-color: #1e293b;
-      --text-color: #f1f5f9;
-      --accent-color: #86efac;
-    }
-
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #f9fafb;
-      color: #1f2937;
     }
 
     #header-container {
       min-height: 80px;
       background-color: white;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
-
+    
     .hero {
       background: linear-gradient(135deg, rgba(34, 197, 94, 0.9), rgba(20, 83, 45, 0.9));
       color: white;
       padding: 4rem 1rem;
       text-align: center;
-      border-radius: 0 0 2rem 2rem;
     }
 
     .cta-button {
-      background-color: var(--primary-color);
+      background-color: #22c55e;
       color: white;
       border: none;
       padding: 0.75rem 1.5rem;
@@ -46,35 +36,25 @@
       font-weight: bold;
       display: inline-block;
       margin-top: 1rem;
-      transition: background-color 0.3s, transform 0.3s;
+      transition: background-color 0.3s;
     }
 
     .cta-button:hover {
       background-color: #16a34a;
-      transform: translateY(-2px);
     }
 
     .testimonials {
-      padding: 3rem;
+      padding: 2rem;
       background-color: rgba(34, 197, 94, 0.1);
       margin: 2rem auto;
-      max-width: 1000px;
-      border-radius: 1rem;
+      max-width: 800px;
+      border-radius: 0.5rem;
     }
 
     .social-proof {
       display: flex;
       justify-content: space-around;
       margin: 1rem 0;
-    }
-
-    .testimonial {
-      background: white;
-      padding: 2rem;
-      border-radius: 0.75rem;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      margin: 0 1rem;
-      flex: 1;
     }
 
     .logo {
@@ -85,100 +65,6 @@
     .urgency {
       font-style: italic;
       margin-top: 1rem;
-      font-weight: 600;
-    }
-
-    .feature-icon {
-      font-size: 3rem;
-      margin-bottom: 1rem;
-      color: var(--primary-color);
-    }
-
-    .feature-card {
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
-
-    .feature-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 14px 28px rgba(0,0,0,0.1), 0 10px 10px rgba(0,0,0,0.1);
-    }
-
-    .footer-links a {
-      color: var(--primary-color);
-      margin: 0 1rem;
-      text-decoration: none;
-    }
-
-    .footer-links a:hover {
-      text-decoration: underline;
-    }
-
-    .animation-container {
-      max-width: 200px;
-      margin: 1rem auto;
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      margin: 2rem auto;
-      max-width: 800px;
-    }
-
-    .stat-item {
-      background: white;
-      padding: 1.5rem;
-      border-radius: 0.75rem;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      text-align: center;
-    }
-
-    .stat-number {
-      font-size: 2rem;
-      font-weight: bold;
-      color: var(--primary-color);
-    }
-
-    .stat-label {
-      font-size: 1rem;
-      color: #4b5563;
-    }
-
-    /* Modal styles */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0, 0, 0, 0.5);
-    }
-
-    .modal-content {
-      background-color: #fefefe;
-      margin: 15% auto;
-      padding: 20px;
-      border: 1px solid #888;
-      width: 80%;
-      max-width: 500px;
-      border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .close {
-      color: #aaa;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    .close:hover {
-      color: black;
     }
   </style>
 </head>
@@ -188,49 +74,10 @@
 
   <!-- Hero Section -->
   <section class="hero">
-    <h1 class="text-4xl font-extrabold mb-4">Les signaux boursiers les plus précis du marché, chaque jour.</h1>
-    <p class="text-lg mb-6">Accédez à une plateforme conçue pour les traders actifs et les investisseurs sérieux.</p>
+    <h1 class="text-5xl font-extrabold mb-6">Les signaux boursiers les plus précis du marché, chaque jour.</h1>
+    <p class="text-xl mb-8">Accédez à une plateforme conçue pour les traders actifs et les investisseurs sérieux.</p>
     <a href="signup.html" class="cta-button">Accédez à vos signaux gratuitement</a>
     <p class="urgency">Accès gratuit valable 7 jours</p>
-    <div class="animation-container">
-      <lottie-player src="https://assets5.lottiefiles.com/packages/lf20_3XNcJN.json" background="transparent" speed="1" style="width: 200px; height: 200px;" loop autoplay></lottie-player>
-    </div>
-  </section>
-
-  <!-- User Info Modal -->
-  <div id="userInfoModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="document.getElementById('userInfoModal').style.display='none'">&times;</span>
-      <h2>Informations Utilisateur</h2>
-      <p>Ici, vous pouvez voir et modifier vos informations personnelles.</p>
-    </div>
-  </div>
-
-  <!-- Notifications Modal -->
-  <div id="notificationsModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="document.getElementById('notificationsModal').style.display='none'">&times;</span>
-      <h2>Notifications</h2>
-      <p>Voici vos dernières notifications.</p>
-    </div>
-  </div>
-
-  <!-- Stats Section -->
-  <section class="py-10">
-    <div class="stats">
-      <div class="stat-item">
-        <div class="stat-number">+1000</div>
-        <div class="stat-label">Utilisateurs actifs</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-number">95%</div>
-        <div class="stat-label">Taux de précision</div>
-      </div>
-      <div class="stat-item">
-        <div class="stat-number">24/7</div>
-        <div class="stat-label">Support client</div>
-      </div>
-    </div>
   </section>
 
   <!-- Features Section -->
@@ -238,18 +85,18 @@
     <div class="max-w-7xl mx-auto px-6">
       <h3 class="text-4xl font-bold text-center mb-16">Pourquoi Luxibre ?</h3>
       <div class="grid md:grid-cols-3 gap-10">
-        <div class="feature-card bg-gray-50 p-8 rounded-xl shadow-lg text-center">
-          <div class="feature-icon">📈</div>
+        <div class="bg-gray-50 p-8 rounded-xl shadow-lg text-center hover:shadow-xl transition">
+          <div class="text-5xl mb-4">📈</div>
           <h4 class="text-2xl font-semibold mb-2">Signaux Quotidiens</h4>
           <p class="text-gray-600">Des opportunités concrètes chaque matin pour ne plus rater le bon moment.</p>
         </div>
-        <div class="feature-card bg-gray-50 p-8 rounded-xl shadow-lg text-center">
-          <div class="feature-icon">📊</div>
+        <div class="bg-gray-50 p-8 rounded-xl shadow-lg text-center hover:shadow-xl transition">
+          <div class="text-5xl mb-4">📊</div>
           <h4 class="text-2xl font-semibold mb-2">Graphiques Dynamiques</h4>
           <p class="text-gray-600">Visualisez les tendances en un clin d’œil grâce à nos outils premium.</p>
         </div>
-        <div class="feature-card bg-gray-50 p-8 rounded-xl shadow-lg text-center">
-          <div class="feature-icon">🔒</div>
+        <div class="bg-gray-50 p-8 rounded-xl shadow-lg text-center hover:shadow-xl transition">
+          <div class="text-5xl mb-4">🔒</div>
           <h4 class="text-2xl font-semibold mb-2">Espace Premium</h4>
           <p class="text-gray-600">Accès réservé, données exclusives, pour ceux qui veulent vraiment performer.</p>
         </div>
@@ -273,7 +120,7 @@
   </section>
 
   <!-- CTA Section -->
-  <section class="py-20 bg-gradient-to-r from-green-500 to-emerald-600 text-white">
+  <section class="py-20 bg-gradient-to-r from-red-500 to-orange-500 text-white">
     <div class="max-w-4xl mx-auto px-6 text-center">
       <h3 class="text-4xl md:text-5xl font-bold mb-6">Faites le choix de l'efficacité</h3>
       <p class="text-xl md:text-2xl mb-8">Votre avenir financier commence maintenant. Ne laissez pas passer les meilleures opportunités.</p>
@@ -282,32 +129,14 @@
   </section>
 
   <!-- Footer -->
-  <footer class="py-10 bg-gray-800 text-white">
-    <div class="max-w-7xl mx-auto px-6 text-center">
-      <p>&copy; 2025 <span class="font-semibold text-green-400">Luxibre Alpha</span>. Tous droits réservés.</p>
-      <div class="footer-links">
-        <a href="/legal/mentions-legales.html">Mentions légales</a>
-        <a href="/legal/cgu.html">CGU</a>
-        <a href="/legal/rgpd.html">RGPD</a>
-      </div>
+  <footer class="py-10 bg-gray-100 mt-16">
+    <div class="max-w-7xl mx-auto px-6 text-center text-sm text-gray-600">
+      &copy; 2025 <span class="font-semibold text-green-600">Luxibre Alpha</span>. Tous droits réservés. |
+      <a href="/legal/mentions-legales.html" class="underline hover:text-green-600 transition">Mentions légales</a> |
+      <a href="/legal/cgu.html" class="underline hover:text-green-600 transition">CGU</a> |
+      <a href="/legal/rgpd.html" class="underline hover:text-green-600 transition">RGPD</a>
     </div>
   </footer>
 
-  <script>
-    // Fonction pour ouvrir les modales
-    function openModal(modalId) {
-      document.getElementById(modalId).style.display = 'block';
-    }
-
-    // Fermer les modales si l'utilisateur clique en dehors
-    window.onclick = function(event) {
-      const modals = document.getElementsByClassName('modal');
-      for (let modal of modals) {
-        if (event.target == modal) {
-          modal.style.display = 'none';
-        }
-      }
-    }
-  </script>
 </body>
 </html>
