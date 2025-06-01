@@ -75,7 +75,12 @@
       box-shadow: 0 10px 20px rgba(34,197,94,0.4);
     }
 
-    .card.blur {
+    .card-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .card.blur .card-content {
       filter: blur(4px);
       pointer-events: none;
       user-select: none;
@@ -91,6 +96,7 @@
       border-radius: 0.5rem;
       font-size: 0.75rem;
       font-weight: bold;
+      z-index: 2;
     }
 
     .upgrade-message {
@@ -103,7 +109,7 @@
       padding: 1rem;
       border-radius: 0.5rem;
       text-align: center;
-      z-index: 10;
+      z-index: 2;
     }
 
     .recommendation {
@@ -507,21 +513,23 @@
           const chartId = `chart-${category}-${i}`;
 
           card.innerHTML = `
-            <h3>${signal.name}</h3>
             ${signal.premium ? '<div class="premium-badge">Premium</div>' : ''}
             ${isLocked ? '<div class="upgrade-message">Devenez Premium pour débloquer ce contenu</div>' : ''}
-            <p><strong>Prix actuel :</strong> $${signal.price.toFixed(2)}</p>
-            <p><strong>Performance (30j) :</strong> ${signal.performance30j}%</p>
-            <p><strong>Recommandation :</strong> <span class="recommendation">${signal.recommendation}</span></p>
-            ${
-              !isLocked && signal.forecast1d !== undefined
-              ? `<p><strong>Prévision 1j :</strong> $${signal.forecast1d.toFixed(2)}<br>
-                 <strong>Prévision 3j :</strong> $${signal.forecast3d.toFixed(2)}<br>
-                 <strong>Prévision 7j :</strong> $${signal.forecast7d.toFixed(2)}</p>`
-              : `<p class="text-sm text-yellow-400 italic mt-1">Les prédictions de prix sont réservées aux membres premium.</p>`
-            }
-            <div class="chart-container">
-              <canvas id="${chartId}" width="300" height="150"></canvas>
+            <div class="card-content">
+              <h3>${signal.name}</h3>
+              <p><strong>Prix actuel :</strong> $${signal.price.toFixed(2)}</p>
+              <p><strong>Performance (30j) :</strong> ${signal.performance30j}%</p>
+              <p><strong>Recommandation :</strong> <span class="recommendation">${signal.recommendation}</span></p>
+              ${
+                !isLocked && signal.forecast1d !== undefined
+                ? `<p><strong>Prévision 1j :</strong> $${signal.forecast1d.toFixed(2)}<br>
+                   <strong>Prévision 3j :</strong> $${signal.forecast3d.toFixed(2)}<br>
+                   <strong>Prévision 7j :</strong> $${signal.forecast7d.toFixed(2)}</p>`
+                : `<p class="text-sm text-yellow-400 italic mt-1">Les prédictions de prix sont réservées aux membres premium.</p>`
+              }
+              <div class="chart-container">
+                <canvas id="${chartId}" width="300" height="150"></canvas>
+              </div>
             </div>
             ${isLocked ? `<button class="unlock-btn" onclick="alert('Abonnement premium requis pour accéder à ce signal.')">Débloquer</button>` : ''}
           `;
