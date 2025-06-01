@@ -31,7 +31,7 @@
     .hero {
       background: linear-gradient(135deg, rgba(34, 197, 94, 0.9), rgba(20, 83, 45, 0.9));
       color: white;
-      padding: 6rem 1rem;
+      padding: 4rem 1rem;
       text-align: center;
       border-radius: 0 0 2rem 2rem;
     }
@@ -114,8 +114,8 @@
     }
 
     .animation-container {
-      max-width: 300px;
-      margin: 2rem auto;
+      max-width: 200px;
+      margin: 1rem auto;
     }
 
     .stats {
@@ -144,6 +144,42 @@
       font-size: 1rem;
       color: #4b5563;
     }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 500px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: black;
+    }
   </style>
 </head>
 <body class="bg-gray-50 text-gray-900">
@@ -152,14 +188,32 @@
 
   <!-- Hero Section -->
   <section class="hero">
-    <h1 class="text-5xl font-extrabold mb-6">Les signaux boursiers les plus précis du marché, chaque jour.</h1>
-    <p class="text-xl mb-8">Accédez à une plateforme conçue pour les traders actifs et les investisseurs sérieux.</p>
+    <h1 class="text-4xl font-extrabold mb-4">Les signaux boursiers les plus précis du marché, chaque jour.</h1>
+    <p class="text-lg mb-6">Accédez à une plateforme conçue pour les traders actifs et les investisseurs sérieux.</p>
     <a href="signup.html" class="cta-button">Accédez à vos signaux gratuitement</a>
     <p class="urgency">Accès gratuit valable 7 jours</p>
     <div class="animation-container">
-      <lottie-player src="https://assets5.lottiefiles.com/packages/lf20_3XNcJN.json" background="transparent" speed="1" style="width: 300px; height: 300px;" loop autoplay></lottie-player>
+      <lottie-player src="https://assets5.lottiefiles.com/packages/lf20_3XNcJN.json" background="transparent" speed="1" style="width: 200px; height: 200px;" loop autoplay></lottie-player>
     </div>
   </section>
+
+  <!-- User Info Modal -->
+  <div id="userInfoModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="document.getElementById('userInfoModal').style.display='none'">&times;</span>
+      <h2>Informations Utilisateur</h2>
+      <p>Ici, vous pouvez voir et modifier vos informations personnelles.</p>
+    </div>
+  </div>
+
+  <!-- Notifications Modal -->
+  <div id="notificationsModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="document.getElementById('notificationsModal').style.display='none'">&times;</span>
+      <h2>Notifications</h2>
+      <p>Voici vos dernières notifications.</p>
+    </div>
+  </div>
 
   <!-- Stats Section -->
   <section class="py-10">
@@ -239,5 +293,21 @@
     </div>
   </footer>
 
+  <script>
+    // Fonction pour ouvrir les modales
+    function openModal(modalId) {
+      document.getElementById(modalId).style.display = 'block';
+    }
+
+    // Fermer les modales si l'utilisateur clique en dehors
+    window.onclick = function(event) {
+      const modals = document.getElementsByClassName('modal');
+      for (let modal of modals) {
+        if (event.target == modal) {
+          modal.style.display = 'none';
+        }
+      }
+    }
+  </script>
 </body>
 </html>
