@@ -1814,7 +1814,7 @@
       "recommendation": "Acheter",
       "score": 70,
       "premium": true,
-      "updated": "2025-06-01T22:21:51.247Z",
+      "updated": "2025-06-01T23:21:52.813Z",
       "indicators": {
         "rsi": 44.795186184718474,
         "macd": 1867.276241931264,
@@ -2094,7 +2094,7 @@
       "recommendation": "Acheter",
       "score": 65,
       "premium": false,
-      "updated": "2025-06-01T22:21:51.565Z",
+      "updated": "2025-06-01T23:21:53.120Z",
       "indicators": {
         "rsi": 33.13667649950838,
         "macd": 0.8695077809571785,
@@ -2374,7 +2374,7 @@
       "recommendation": "Acheter fort",
       "score": 80,
       "premium": false,
-      "updated": "2025-06-01T22:21:51.698Z",
+      "updated": "2025-06-01T23:21:53.218Z",
       "indicators": {
         "rsi": 25.8594569397506,
         "macd": 0.00012394699516873886,
@@ -4348,7 +4348,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-06-01T22:21:51.304Z",
+      "updated": "2025-06-01T23:21:52.872Z",
       "indicators": {
         "rsi": 51.81623082425883,
         "macd": 109.74284907893161,
@@ -4628,7 +4628,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-06-01T22:21:51.437Z",
+      "updated": "2025-06-01T23:21:52.991Z",
       "indicators": {
         "rsi": 27.734976887519224,
         "macd": -0.02777938603459651,
@@ -4908,7 +4908,7 @@
       "recommendation": "Conserver",
       "score": 45,
       "premium": true,
-      "updated": "2025-06-01T22:21:51.505Z",
+      "updated": "2025-06-01T23:21:53.054Z",
       "indicators": {
         "rsi": 33.627574611181174,
         "macd": -0.007775826772377981,
@@ -5188,7 +5188,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-06-01T22:21:51.629Z",
+      "updated": "2025-06-01T23:21:53.164Z",
       "indicators": {
         "rsi": 28.929384965831403,
         "macd": -0.07269469348080992,
