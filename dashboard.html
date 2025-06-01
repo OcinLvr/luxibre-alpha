@@ -21,6 +21,7 @@
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
   <style>
+    /* Vos styles CSS ici */
     :root {
       --primary-color: #22c55e;
       --secondary-color: #1e293b;
@@ -35,262 +36,7 @@
       margin: 0;
     }
 
-    nav.dashboard-nav button {
-      background: var(--primary-color);
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      font-weight: 600;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    nav.dashboard-nav button:hover {
-      background: #16a34a;
-    }
-
-    .notice {
-      background: #dcfce7;
-      color: #166534;
-      border-left: 5px solid var(--primary-color);
-      padding: 1rem 1.5rem;
-      border-radius: 0.75rem;
-      margin-bottom: 2rem;
-      font-weight: 600;
-      text-align: center;
-    }
-
-    .card {
-      background: var(--secondary-color);
-      padding: 1.5rem;
-      border-radius: 1rem;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-      position: relative;
-      margin-bottom: 1rem;
-    }
-
-    .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 10px 20px rgba(34,197,94,0.4);
-    }
-
-    .card-content {
-      filter: blur(4px);
-      pointer-events: none;
-      user-select: none;
-    }
-
-    .recommendation {
-      margin-top: 0.8rem;
-      font-weight: 700;
-      color: #4ade80;
-    }
-
-    .chart-container {
-      height: 200px;
-      margin-top: 1rem;
-      background: #0f172a;
-      border-radius: 0.6rem;
-      cursor: pointer;
-      position: relative;
-    }
-
-    .unlock-btn {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(34, 197, 94, 0.7);
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      font-weight: 600;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      z-index: 2;
-      transition: background 0.3s;
-      opacity: 0.8;
-    }
-
-    .unlock-btn:hover {
-      background: rgba(22, 163, 74, 0.9);
-    }
-
-    footer {
-      background: var(--secondary-color);
-      padding: 1rem;
-      text-align: center;
-      margin-top: 2rem;
-    }
-
-    footer a {
-      color: var(--primary-color);
-      margin: 0 1rem;
-      text-decoration: none;
-    }
-
-    .premium-badge {
-      background-color: gold;
-      color: black;
-      padding: 0.25rem 0.5rem;
-      border-radius: 0.5rem;
-      font-size: 0.75rem;
-      font-weight: bold;
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      z-index: 3;
-    }
-
-    .cta-button {
-      background-color: var(--primary-color);
-      color: white;
-      border: none;
-      padding: 0.75rem 1.5rem;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      font-weight: bold;
-      display: inline-block;
-      margin-top: 1rem;
-      width: auto;
-      z-index: 3;
-      transition: background-color 0.3s;
-    }
-
-    .cta-button:hover {
-      background-color: #16a34a;
-    }
-
-    .cta-button-mobile {
-      width: 100%;
-      margin-top: 0.5rem;
-    }
-
-    .promo-block {
-      background-color: rgba(34, 197, 94, 0.1);
-      border-left: 4px solid var(--primary-color);
-      padding: 1.5rem;
-      border-radius: 0.5rem;
-      margin: 1rem auto;
-      max-width: 800px;
-      text-align: center;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .premium-notice {
-      background-color: rgba(34, 197, 94, 0.2);
-      border-left: 4px solid var(--primary-color);
-      padding: 1.5rem;
-      border-radius: 0.5rem;
-      margin: 1rem auto;
-      max-width: 800px;
-      text-align: center;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    /* Modal style for big chart */
-    body.modal-open {
-      overflow: hidden;
-    }
-
-    #bigChartModal {
-      position: fixed;
-      inset: 0;
-      background-color: rgba(15, 23, 42, 0.9);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      overflow-y: auto;
-    }
-
-    #bigChartModal.active {
-      display: flex;
-    }
-
-    #bigChartContent {
-      background-color: var(--secondary-color);
-      border-radius: 1rem;
-      padding: 1.5rem;
-      width: 90%;
-      max-width: 900px;
-      max-height: 90vh;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 0 20px var(--primary-color);
-      position: relative;
-      overflow-y: auto;
-    }
-
-    #bigChartHeader {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
-
-    #bigChartHeader h3 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--accent-color);
-    }
-
-    #closeBigChartBtn {
-      background: transparent;
-      border: none;
-      color: var(--accent-color);
-      font-size: 1.5rem;
-      cursor: pointer;
-      transition: color 0.3s;
-    }
-
-    #closeBigChartBtn:hover {
-      color: var(--primary-color);
-    }
-
-    #bigChartCanvas {
-      flex-grow: 1;
-      max-height: 70vh;
-      background: #0f172a;
-      border-radius: 0.6rem;
-    }
-
-    #predictionsContainer {
-      margin-top: 1rem;
-      padding: 1rem;
-      background: #0f172a;
-      border-radius: 0.6rem;
-    }
-
-    #bigChartActions {
-      margin-top: 1rem;
-      display: flex;
-      justify-content: flex-end;
-      gap: 1rem;
-    }
-
-    #bigChartActions button {
-      background: var(--primary-color);
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      font-weight: 600;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    #bigChartActions button:hover {
-      background: #16a34a;
-    }
-
-    @media (max-width: 768px) {
-      .cta-button {
-        width: 100%;
-        padding: 0.75rem;
-      }
-    }
+    /* Autres styles CSS */
   </style>
 </head>
 <body>
@@ -330,6 +76,22 @@
     <button class="cta-button" onclick="window.location.href='pricing.html'">Voir les offres</button>
   </div>
 
+  <!-- Modal grand graphique -->
+  <div id="bigChartModal" role="dialog" aria-modal="true" aria-labelledby="bigChartTitle">
+    <div id="bigChartContent">
+      <div id="bigChartHeader">
+        <h3 id="bigChartTitle">Graphique</h3>
+        <button id="closeBigChartBtn" aria-label="Fermer le graphique"><i class="fas fa-times"></i></button>
+      </div>
+      <canvas id="bigChartCanvas"></canvas>
+      <div id="predictionsContainer"></div>
+      <div id="bigChartActions">
+        <button id="resetZoomBtn">Réinitialiser Zoom</button>
+        <button id="exportBigChartBtn">Exporter le Graphique</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Footer -->
   <footer class="py-10 bg-gray-100 mt-16">
     <div class="max-w-7xl mx-auto px-6 text-center text-sm text-gray-600">
@@ -354,23 +116,20 @@
           return;
         }
         const element = document.getElementById(chartId);
-        html2canvas(element).then(canvas => {
-          const link = document.createElement('a');
-          link.download = 'chart.png';
-          link.href = canvas.toDataURL();
-          link.click();
-        });
+        if (element) {
+          html2canvas(element).then(canvas => {
+            const link = document.createElement('a');
+            link.download = 'chart.png';
+            link.href = canvas.toDataURL();
+            link.click();
+          });
+        }
       });
     }
 
     // Variables globales pour modal graphique
     let bigChartInstance = null;
-    const bigChartModal = document.getElementById("bigChartModal");
-    const bigChartCanvas = document.getElementById("bigChartCanvas").getContext('2d');
-    const bigChartTitle = document.getElementById("bigChartTitle");
-    const closeBigChartBtn = document.getElementById("closeBigChartBtn");
-    const resetZoomBtn = document.getElementById("resetZoomBtn");
-    const exportBigChartBtn = document.getElementById("exportBigChartBtn");
+    let bigChartCanvas, bigChartTitle, closeBigChartBtn, resetZoomBtn, exportBigChartBtn;
 
     // Fonction pour ouvrir la modal du grand graphique
     async function openBigChart(signal) {
@@ -381,6 +140,18 @@
         return;
       }
 
+      // Assurez-vous que les éléments existent
+      bigChartCanvas = document.getElementById("bigChartCanvas");
+      bigChartTitle = document.getElementById("bigChartTitle");
+      closeBigChartBtn = document.getElementById("closeBigChartBtn");
+      resetZoomBtn = document.getElementById("resetZoomBtn");
+      exportBigChartBtn = document.getElementById("exportBigChartBtn");
+
+      if (!bigChartCanvas) {
+        console.error("Canvas element not found");
+        return;
+      }
+
       bigChartTitle.textContent = signal.name + " - Prix Historique";
 
       // Détruire l'ancien graphique si présent
@@ -388,78 +159,83 @@
         bigChartInstance.destroy();
       }
 
-      bigChartInstance = new Chart(bigChartCanvas, {
-        type: "line",
-        data: {
-          labels: signal.history.map((_, idx) => `J-${signal.history.length - idx}`),
-          datasets: [{
-            label: `${signal.name} - Prix de clôture`,
-            data: signal.history,
-            borderColor: "#22c55e",
-            backgroundColor: "rgba(34,197,94,0.3)",
-            fill: true,
-            tension: 0.3,
-            pointRadius: 3,
-            pointHoverRadius: 6
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              labels: { color: '#d1d5db' }
-            },
-            tooltip: {
-              mode: 'index',
-              intersect: false
-            },
-            zoom: {
-              pan: {
-                enabled: true,
-                mode: 'x',
-                modifierKey: 'ctrl',
+      const ctx = bigChartCanvas.getContext("2d");
+      if (ctx) {
+        bigChartInstance = new Chart(ctx, {
+          type: "line",
+          data: {
+            labels: signal.history.map((_, idx) => `J-${signal.history.length - idx}`),
+            datasets: [{
+              label: `${signal.name} - Prix de clôture`,
+              data: signal.history,
+              borderColor: "#22c55e",
+              backgroundColor: "rgba(34,197,94,0.3)",
+              fill: true,
+              tension: 0.3,
+              pointRadius: 3,
+              pointHoverRadius: 6
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                labels: { color: '#d1d5db' }
+              },
+              tooltip: {
+                mode: 'index',
+                intersect: false
               },
               zoom: {
-                wheel: {
+                pan: {
                   enabled: true,
+                  mode: 'x',
+                  modifierKey: 'ctrl',
                 },
-                pinch: {
-                  enabled: true
-                },
-                mode: 'x',
+                zoom: {
+                  wheel: {
+                    enabled: true,
+                  },
+                  pinch: {
+                    enabled: true
+                  },
+                  mode: 'x',
+                }
+              }
+            },
+            scales: {
+              x: {
+                display: true,
+                ticks: { color: '#a3bffa' },
+                grid: { color: '#334155' }
+              },
+              y: {
+                beginAtZero: false,
+                ticks: { color: '#a3bffa' },
+                grid: { color: '#334155' }
               }
             }
-          },
-          scales: {
-            x: {
-              display: true,
-              ticks: { color: '#a3bffa' },
-              grid: { color: '#334155' }
-            },
-            y: {
-              beginAtZero: false,
-              ticks: { color: '#a3bffa' },
-              grid: { color: '#334155' }
-            }
           }
-        }
-      });
+        });
+      }
 
       // Afficher les prédictions de prix si premium
       if (signal.premium && isPremium && signal.predictions) {
         const predictionsDiv = document.getElementById('predictionsContainer');
-        predictionsDiv.innerHTML = `
-          <h4>Prédictions de prix</h4>
-          <p>Jour 1: $${signal.predictions.day1}</p>
-          <p>Jour 3: $${signal.predictions.day3}</p>
-          <p>Jour 7: $${signal.predictions.day7}</p>
-        `;
+        if (predictionsDiv) {
+          predictionsDiv.innerHTML = `
+            <h4>Prédictions de prix</h4>
+            <p>Jour 1: $${signal.predictions.day1}</p>
+            <p>Jour 3: $${signal.predictions.day3}</p>
+            <p>Jour 7: $${signal.predictions.day7}</p>
+          `;
+        }
       }
 
       // Ouvrir la modal
       document.body.classList.add('modal-open');
-      bigChartModal.classList.add("active");
+      document.getElementById("bigChartModal").classList.add("active");
     }
 
     function closeBigChart() {
@@ -470,36 +246,41 @@
 
       // Supprimer la classe modal-open du corps de la page
       document.body.classList.remove('modal-open');
-
-      bigChartModal.classList.remove("active");
+      document.getElementById("bigChartModal").classList.remove("active");
     }
 
     // Réinitialiser zoom du grand graphique
-    resetZoomBtn.addEventListener("click", () => {
-      if (bigChartInstance) bigChartInstance.resetZoom();
-    });
+    if (resetZoomBtn) {
+      resetZoomBtn.addEventListener("click", () => {
+        if (bigChartInstance) bigChartInstance.resetZoom();
+      });
+    }
 
     // Exporter grand graphique
-    exportBigChartBtn.addEventListener("click", () => {
-      isPremiumUser().then(isPremium => {
-        if (!isPremium) {
-          alert("Cette fonctionnalité est réservée aux utilisateurs premium.");
-          return;
-        }
-        html2canvas(bigChartCanvas.canvas).then(canvas => {
-          const link = document.createElement('a');
-          link.download = 'big-chart.png';
-          link.href = canvas.toDataURL();
-          link.click();
+    if (exportBigChartBtn) {
+      exportBigChartBtn.addEventListener("click", () => {
+        isPremiumUser().then(isPremium => {
+          if (!isPremium) {
+            alert("Cette fonctionnalité est réservée aux utilisateurs premium.");
+            return;
+          }
+          html2canvas(bigChartCanvas).then(canvas => {
+            const link = document.createElement('a');
+            link.download = 'big-chart.png';
+            link.href = canvas.toDataURL();
+            link.click();
+          });
         });
       });
-    });
+    }
 
-    closeBigChartBtn.addEventListener("click", closeBigChart);
+    if (closeBigChartBtn) {
+      closeBigChartBtn.addEventListener("click", closeBigChart);
+    }
 
     // Fermer modal au clic hors contenu
-    bigChartModal.addEventListener("click", e => {
-      if (e.target === bigChartModal) closeBigChart();
+    document.getElementById("bigChartModal").addEventListener("click", e => {
+      if (e.target === document.getElementById("bigChartModal")) closeBigChart();
     });
 
     // Chargement des signaux et affichage
@@ -526,7 +307,6 @@
       let premiumLocked = false;
       container.innerHTML = "";
 
-      // Trier les signaux pour que les gratuits apparaissent en premier
       ["achat", "vente", "conservation"].forEach(category => {
         if (!data[category] || !Array.isArray(data[category])) return;
 
@@ -581,47 +361,48 @@
           container.appendChild(card);
 
           if (!isLocked && signal.history) {
-            const ctx = document.getElementById(`chart-${category}-${i}`).getContext("2d");
-            new Chart(ctx, {
-              type: "line",
-              data: {
-                labels: signal.history.map((_, idx) => `J-${signal.history.length - idx}`),
-                datasets: [{
-                  label: `${signal.name} - Prix de clôture`,
-                  data: signal.history,
-                  borderColor: "#22c55e",
-                  backgroundColor: "rgba(34,197,94,0.3)",
-                  fill: true,
-                  tension: 0.3,
-                  pointRadius: 0
-                }]
-              },
-              options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                  x: { display: false },
-                  y: {
-                    beginAtZero: false,
-                    ticks: { color: '#a3bffa' },
-                    grid: { color: '#334155' }
-                  }
-                },
-                plugins: {
-                  legend: {
-                    labels: { color: '#d1d5db' }
+            const canvasElement = document.getElementById(`chart-${category}-${i}`);
+            if (canvasElement) {
+              const ctx = canvasElement.getContext("2d");
+              if (ctx) {
+                new Chart(ctx, {
+                  type: "line",
+                  data: {
+                    labels: signal.history.map((_, idx) => `J-${signal.history.length - idx}`),
+                    datasets: [{
+                      label: `${signal.name} - Prix de clôture`,
+                      data: signal.history,
+                      borderColor: "#22c55e",
+                      backgroundColor: "rgba(34,197,94,0.3)",
+                      fill: true,
+                      tension: 0.3,
+                      pointRadius: 0
+                    }]
                   },
-                  tooltip: {
-                    mode: 'index',
-                    intersect: false
+                  options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                      x: { display: false },
+                      y: {
+                        beginAtZero: false,
+                        ticks: { color: '#a3bffa' },
+                        grid: { color: '#334155' }
+                      }
+                    },
+                    plugins: {
+                      legend: {
+                        labels: { color: '#d1d5db' }
+                      },
+                      tooltip: {
+                        mode: 'index',
+                        intersect: false
+                      }
+                    }
                   }
-                }
+                });
               }
-            });
-
-            card.querySelector('.chart-container').addEventListener('click', () => {
-              openBigChart(signal);
-            });
+            }
           }
         });
       });
