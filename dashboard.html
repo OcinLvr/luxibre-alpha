@@ -67,6 +67,7 @@
       border-radius: 1rem;
       box-shadow: 0 4px 15px rgba(0,0,0,0.15);
       position: relative;
+      margin-bottom: 1rem;
     }
 
     .card:hover {
@@ -154,6 +155,11 @@
       margin-top: 1rem;
       width: auto;
       z-index: 3;
+      transition: background-color 0.3s;
+    }
+
+    .cta-button:hover {
+      background-color: #16a34a;
     }
 
     .cta-button-mobile {
@@ -164,10 +170,23 @@
     .promo-block {
       background-color: rgba(34, 197, 94, 0.1);
       border-left: 4px solid var(--primary-color);
-      padding: 1rem;
+      padding: 1.5rem;
       border-radius: 0.5rem;
-      margin: 1rem 0;
+      margin: 1rem auto;
+      max-width: 800px;
       text-align: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .premium-notice {
+      background-color: rgba(34, 197, 94, 0.2);
+      border-left: 4px solid var(--primary-color);
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      margin: 1rem auto;
+      max-width: 800px;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
     /* Modal style for big chart */
@@ -289,7 +308,10 @@
   </nav>
 
   <main>
-    <div id="premiumNotice" class="notice" style="display: none;"></div>
+    <div id="premiumNotice" class="premium-notice" style="display: none;">
+      Certains signaux sont réservés aux abonnés premium.
+      <button class="cta-button" onclick="window.location.href='pricing.html'">Passer Premium</button>
+    </div>
     <div id="signalsContainer"></div>
     <section id="performanceReports">
       <h2>Rapports de Performance</h2>
@@ -300,22 +322,6 @@
       <!-- Contenu des témoignages -->
     </section>
   </main>
-
-  <!-- Modal grand graphique -->
-  <div id="bigChartModal" role="dialog" aria-modal="true" aria-labelledby="bigChartTitle">
-    <div id="bigChartContent">
-      <div id="bigChartHeader">
-        <h3 id="bigChartTitle">Graphique</h3>
-        <button id="closeBigChartBtn" aria-label="Fermer le graphique"><i class="fas fa-times"></i></button>
-      </div>
-      <canvas id="bigChartCanvas"></canvas>
-      <div id="predictionsContainer"></div>
-      <div id="bigChartActions">
-        <button id="resetZoomBtn">Réinitialiser Zoom</button>
-        <button id="exportBigChartBtn">Exporter le Graphique</button>
-      </div>
-    </div>
-  </div>
 
   <!-- Bloc promotionnel pour les fonctionnalités verrouillées -->
   <div class="promo-block">
@@ -520,10 +526,14 @@
       let premiumLocked = false;
       container.innerHTML = "";
 
+      // Trier les signaux pour que les gratuits apparaissent en premier
       ["achat", "vente", "conservation"].forEach(category => {
         if (!data[category] || !Array.isArray(data[category])) return;
 
-        data[category].forEach((signal, i) => {
+        // Trier les signaux gratuits en premier
+        const sortedSignals = [...data[category]].sort((a, b) => a.premium - b.premium);
+
+        sortedSignals.forEach((signal, i) => {
           const card = document.createElement("div");
           card.className = "card";
           card.dataset.category = category;
@@ -618,10 +628,6 @@
 
       if (premiumLocked && !isPremium) {
         premiumNotice.style.display = "block";
-        premiumNotice.innerHTML = `
-          Certains signaux sont réservés aux abonnés premium.
-          <button class="cta-button cta-button-mobile" onclick="window.location.href='pricing.html'">Passer Premium</button>
-        `;
       }
     }
 
