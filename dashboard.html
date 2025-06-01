@@ -128,6 +128,40 @@
       text-decoration: none;
     }
 
+    .premium-badge {
+      background-color: gold;
+      color: black;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: bold;
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      z-index: 3;
+    }
+
+    .premium-invite {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(34, 197, 94, 0.7);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      z-index: 2;
+      transition: background 0.3s;
+      opacity: 0.8;
+    }
+
+    .premium-invite:hover {
+      background: rgba(22, 163, 74, 0.9);
+    }
+
     /* Modal style for big chart */
     body.modal-open {
       overflow: hidden;
@@ -226,7 +260,6 @@
   </style>
 </head>
 <body>
-
   <script type="module" src="JS/loadHeader.js"></script>
 
   <!-- Header partagé -->
@@ -270,14 +303,14 @@
   </div>
 
   <!-- Footer -->
-<footer class="py-10 bg-gray-100 mt-16">
-  <div class="max-w-7xl mx-auto px-6 text-center text-sm text-gray-600">
-    &copy; 2025 <span class="font-semibold text-green-600">Luxibre Alpha</span>. Tous droits réservés. |
-    <a href="/legal/mentions-legales.html" class="underline hover:text-green-600 transition">Mentions légales</a> |
-    <a href="/legal/cgu.html" class="underline hover:text-green-600 transition">CGU</a> |
-    <a href="/legal/rgpd.html" class="underline hover:text-green-600 transition">RGPD</a>
-  </div>
-</footer>
+  <footer class="py-10 bg-gray-100 mt-16">
+    <div class="max-w-7xl mx-auto px-6 text-center text-sm text-gray-600">
+      &copy; 2025 <span class="font-semibold text-green-600">Luxibre Alpha</span>. Tous droits réservés. |
+      <a href="/legal/mentions-legales.html" class="underline hover:text-green-600 transition">Mentions légales</a> |
+      <a href="/legal/cgu.html" class="underline hover:text-green-600 transition">CGU</a> |
+      <a href="/legal/rgpd.html" class="underline hover:text-green-600 transition">RGPD</a>
+    </div>
+  </footer>
 
   <script>
     // Fonction pour vérifier si l'utilisateur est premium
@@ -305,7 +338,7 @@
     // Variables globales pour modal graphique
     let bigChartInstance = null;
     const bigChartModal = document.getElementById("bigChartModal");
-    const bigChartCanvas = document.getElementById("bigChartCanvas").getContext('2d');
+    const bigChartCanvas = document.getElementById("bigChartCanvas");
     const bigChartTitle = document.getElementById("bigChartTitle");
     const closeBigChartBtn = document.getElementById("closeBigChartBtn");
     const resetZoomBtn = document.getElementById("resetZoomBtn");
@@ -327,7 +360,8 @@
         bigChartInstance.destroy();
       }
 
-      bigChartInstance = new Chart(bigChartCanvas, {
+      const ctx = bigChartCanvas.getContext("2d");
+      bigChartInstance = new Chart(ctx, {
         type: "line",
         data: {
           labels: signal.history.map((_, idx) => `J-${signal.history.length - idx}`),
@@ -409,7 +443,6 @@
 
       // Supprimer la classe modal-open du corps de la page
       document.body.classList.remove('modal-open');
-
       bigChartModal.classList.remove("active");
     }
 
@@ -425,7 +458,7 @@
           alert("Cette fonctionnalité est réservée aux utilisateurs premium.");
           return;
         }
-        html2canvas(bigChartCanvas.canvas).then(canvas => {
+        html2canvas(bigChartCanvas).then(canvas => {
           const link = document.createElement('a');
           link.download = 'big-chart.png';
           link.href = canvas.toDataURL();
@@ -434,6 +467,7 @@
       });
     });
 
+    // Fermer modal au clic sur la croix
     closeBigChartBtn.addEventListener("click", closeBigChart);
 
     // Fermer modal au clic hors contenu
@@ -482,7 +516,10 @@
           const chartId = `chart-${category}-${i}`;
 
           card.innerHTML = `
-            <h3>${signal.name}</h3>
+            <div style="position: relative;">
+              <h3>${signal.name}</h3>
+              ${signal.premium ? '<span class="premium-badge">Premium</span>' : ''}
+            </div>
             <p><strong>Prix actuel :</strong> $${signal.price.toFixed(2)}</p>
             <p><strong>Performance (30j) :</strong> ${signal.performance30j}%</p>
             <p><strong>Recommandation :</strong> <span class="recommendation">${signal.recommendation}</span></p>
@@ -496,10 +533,7 @@
             <div class="chart-container">
               <canvas id="${chartId}" width="300" height="150"></canvas>
             </div>
-            ${isLocked ? `<button class="unlock-btn" onclick="alert('Abonnement premium requis pour accéder à ce signal.')">Débloquer</button>` : ''}
           `;
-
-          container.appendChild(card);
 
           if (!isLocked) {
             const ctx = document.getElementById(chartId).getContext("2d");
@@ -544,6 +578,16 @@
               openBigChart(signal);
             });
           }
+
+          if (!isPremium && signal.premium) {
+            const premiumInvite = document.createElement("button");
+            premiumInvite.className = "premium-invite";
+            premiumInvite.textContent = "Devenez Premium";
+            premiumInvite.onclick = () => window.location.href='pricing.html';
+            card.appendChild(premiumInvite);
+          }
+
+          container.appendChild(card);
         });
       });
 
