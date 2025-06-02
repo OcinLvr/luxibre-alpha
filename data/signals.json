@@ -1815,7 +1815,7 @@
       "recommendation": "Acheter",
       "score": 70,
       "premium": true,
-      "updated": "2025-06-02T12:50:09.377Z",
+      "updated": "2025-06-02T13:35:24.170Z",
       "indicators": {
         "rsi": 50.03106189246222,
         "macd": 1772.877126858657,
@@ -4349,7 +4349,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-06-02T12:50:09.591Z",
+      "updated": "2025-06-02T13:35:24.407Z",
       "indicators": {
         "rsi": 50.46256666886152,
         "macd": 101.21460897519728,
@@ -4629,7 +4629,7 @@
       "recommendation": "Conserver",
       "score": 45,
       "premium": false,
-      "updated": "2025-06-02T12:50:09.905Z",
+      "updated": "2025-06-02T13:35:24.804Z",
       "indicators": {
         "rsi": 30.708516886930965,
         "macd": -0.03219703100152138,
@@ -4909,7 +4909,7 @@
       "recommendation": "Conserver",
       "score": 45,
       "premium": true,
-      "updated": "2025-06-02T12:50:10.198Z",
+      "updated": "2025-06-02T13:35:25.166Z",
       "indicators": {
         "rsi": 36.63003663003663,
         "macd": -0.010350978158550461,
@@ -5189,7 +5189,7 @@
       "recommendation": "Conserver",
       "score": 45,
       "premium": true,
-      "updated": "2025-06-02T12:50:10.745Z",
+      "updated": "2025-06-02T13:35:25.627Z",
       "indicators": {
         "rsi": 32.989025177533875,
         "macd": -0.0904897321647331,
@@ -5469,7 +5469,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-06-02T12:50:10.459Z",
+      "updated": "2025-06-02T13:35:25.388Z",
       "indicators": {
         "rsi": 39.73626373626374,
         "macd": 0.22599030303311451,
@@ -5749,7 +5749,7 @@
       "recommendation": "Conserver",
       "score": 45,
       "premium": false,
-      "updated": "2025-06-02T12:50:10.950Z",
+      "updated": "2025-06-02T13:35:25.860Z",
       "indicators": {
         "rsi": 30.00257201646089,
         "macd": -0.0011833487291577627,
