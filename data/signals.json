@@ -1816,7 +1816,7 @@
       "recommendation": "Acheter",
       "score": 70,
       "premium": true,
-      "updated": "2025-06-03T08:33:22.923Z",
+      "updated": "2025-06-03T09:26:14.806Z",
       "indicators": {
         "rsi": 48.478232480911366,
         "macd": 1669.422599494501,
@@ -3308,7 +3308,7 @@
       "recommendation": "Vendre",
       "score": 35,
       "premium": true,
-      "updated": "2025-06-03T08:33:23.816Z",
+      "updated": "2025-06-03T09:26:15.039Z",
       "indicators": {
         "rsi": 38.45462713387242,
         "macd": -0.01129116297678101,
@@ -3588,7 +3588,7 @@
       "recommendation": "Vendre",
       "score": 35,
       "premium": false,
-      "updated": "2025-06-03T08:33:24.021Z",
+      "updated": "2025-06-03T09:26:15.099Z",
       "indicators": {
         "rsi": 38.15296451399603,
         "macd": -0.3872622959654848,
@@ -5430,7 +5430,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-06-03T08:33:23.210Z",
+      "updated": "2025-06-03T09:26:14.890Z",
       "indicators": {
         "rsi": 57.154627041341755,
         "macd": 103.80904601755174,
@@ -5710,7 +5710,7 @@
       "recommendation": "Conserver",
       "score": 45,
       "premium": false,
-      "updated": "2025-06-03T08:33:23.620Z",
+      "updated": "2025-06-03T09:26:14.992Z",
       "indicators": {
         "rsi": 35.847647498132886,
         "macd": -0.03162876084429689,
@@ -6270,7 +6270,7 @@
       "recommendation": "Conserver",
       "score": 45,
       "premium": true,
-      "updated": "2025-06-03T08:33:24.307Z",
+      "updated": "2025-06-03T09:26:15.175Z",
       "indicators": {
         "rsi": 33.504163997437544,
         "macd": -0.09184876735244796,
@@ -6830,7 +6830,7 @@
       "recommendation": "Conserver",
       "score": 45,
       "premium": false,
-      "updated": "2025-06-03T08:33:24.429Z",
+      "updated": "2025-06-03T09:26:15.239Z",
       "indicators": {
         "rsi": 31.498354846874193,
         "macd": -0.0019087251243582182,
