@@ -1816,7 +1816,7 @@
       "recommendation": "Acheter fort",
       "score": 80,
       "premium": true,
-      "updated": "2025-06-04T03:19:53.457Z",
+      "updated": "2025-06-04T04:31:03.115Z",
       "indicators": {
         "rsi": 36.725592025036924,
         "macd": 1422.659828302625,
@@ -5430,7 +5430,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-06-04T03:19:53.512Z",
+      "updated": "2025-06-04T04:31:03.169Z",
       "indicators": {
         "rsi": 53.64350966645422,
         "macd": 96.49390908625128,
@@ -5710,7 +5710,7 @@
       "recommendation": "Conserver",
       "score": 45,
       "premium": false,
-      "updated": "2025-06-04T03:19:53.606Z",
+      "updated": "2025-06-04T04:31:03.265Z",
       "indicators": {
         "rsi": 35.60411311053983,
         "macd": -0.027296871843479842,
@@ -5990,7 +5990,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-06-04T03:19:53.666Z",
+      "updated": "2025-06-04T04:31:03.330Z",
       "indicators": {
         "rsi": 28.89221556886227,
         "macd": -0.013701313440782403,
@@ -6270,7 +6270,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-06-04T03:19:53.776Z",
+      "updated": "2025-06-04T04:31:03.439Z",
       "indicators": {
         "rsi": 29.666666666666643,
         "macd": -0.10089675552485478,
@@ -6550,7 +6550,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-06-04T03:19:53.723Z",
+      "updated": "2025-06-04T04:31:03.384Z",
       "indicators": {
         "rsi": 27.316486161251476,
         "macd": -1.233139599783243,
@@ -6830,7 +6830,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-06-04T03:19:53.849Z",
+      "updated": "2025-06-04T04:31:03.511Z",
       "indicators": {
         "rsi": 21.25664707528685,
         "macd": -0.003140509812650377,
