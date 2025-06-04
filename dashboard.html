@@ -3,703 +3,232 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Dashboard moderne pour Luxibre Alpha">
-  <title>Luxibre Alpha - Dashboard Moderne</title>
-
-  <!-- Chart.js + Luxon adapter + zoom plugin -->
+  <title>Luxibre Alpha - Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/luxon@1.25.0"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.0.0"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@1.2.1/dist/chartjs-plugin-zoom.min.js"></script>
-
-  <!-- html2canvas for export -->
-  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-
   <style>
-    :root {
-      --primary-color: #22c55e;
-      --secondary-color: #1e293b;
-      --text-color: #f1f5f9;
-      --accent-color: #86efac;
+    /* Animation fade in */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
     }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #0f172a;
-      color: var(--text-color);
-      margin: 0;
-    }
-
-    nav.dashboard-nav select {
-      background: var(--primary-color);
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      font-weight: 600;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    nav.dashboard-nav select:hover {
-      background: #16a34a;
-    }
-
-    .notice {
-      background: #dcfce7;
-      color: #166534;
-      border-left: 5px solid var(--primary-color);
-      padding: 1rem 1.5rem;
-      border-radius: 0.75rem;
-      margin-bottom: 2rem;
-      font-weight: 600;
-      text-align: center;
-    }
-
-    .card {
-      background: var(--secondary-color);
-      padding: 1.5rem;
-      border-radius: 1rem;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-      position: relative;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 10px 20px rgba(34,197,94,0.4);
-    }
-
-    .card-content {
-      position: relative;
-      z-index: 1;
-    }
-
-    .card.blur .card-content {
-      filter: blur(4px);
-      pointer-events: none;
-      user-select: none;
-    }
-
-    .premium-badge {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: gold;
-      color: black;
-      padding: 0.25rem 0.5rem;
-      border-radius: 0.5rem;
-      font-size: 0.75rem;
-      font-weight: bold;
-      z-index: 2;
-    }
-
-    .upgrade-message {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(15, 23, 42, 0.8);
-      color: white;
-      padding: 0.75rem 1.5rem;
-      border-radius: 2rem;
-      text-align: center;
-      z-index: 2;
-      border: 1px solid rgba(34, 197, 94, 0.5);
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    .upgrade-message:hover {
-      background: rgba(34, 197, 94, 0.9);
-    }
-
-    .recommendation {
-      margin-top: 0.8rem;
-      font-weight: 700;
-      color: #4ade80;
-    }
-
-    .chart-container {
-      height: 200px;
-      margin-top: 1rem;
-      background: #0f172a;
-      border-radius: 0.6rem;
-      cursor: pointer;
-      position: relative;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      transition: box-shadow 0.3s ease;
-    }
-
-    .chart-container:hover {
-      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .export-btn {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      background: var(--primary-color);
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      font-weight: 600;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      z-index: 2;
-      transition: background 0.3s;
-    }
-
-    .export-btn:hover {
-      background: #16a34a;
-    }
-
-    footer {
-      background: var(--secondary-color);
-      padding: 1rem;
-      text-align: center;
-      margin-top: 2rem;
-    }
-
-    footer a {
-      color: var(--primary-color);
-      margin: 0 1rem;
-      text-decoration: none;
-    }
-
-    /* Modal style for big chart */
-    body.modal-open {
-      overflow: hidden;
-    }
-
-    #bigChartModal {
-      position: fixed;
-      inset: 0;
-      background-color: rgba(15, 23, 42, 0.9);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-      overflow-y: auto;
-    }
-
-    #bigChartModal.active {
-      display: flex;
-    }
-
-    #bigChartContent {
-      background-color: var(--secondary-color);
-      border-radius: 1rem;
-      padding: 1.5rem;
-      width: 90%;
-      max-width: 900px;
-      max-height: 90vh;
-      display: flex;
-      flex-direction: column;
-      box-shadow: 0 0 20px var(--primary-color);
-      position: relative;
-      overflow-y: auto;
-    }
-
-    #bigChartHeader {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-    }
-
-    #bigChartHeader h3 {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--accent-color);
-    }
-
-    #closeBigChartBtn {
-      background: transparent;
-      border: none;
-      color: var(--accent-color);
-      font-size: 1.5rem;
-      cursor: pointer;
-      transition: color 0.3s;
-    }
-
-    #closeBigChartBtn:hover {
-      color: var(--primary-color);
-    }
-
-    #bigChartCanvas {
-      flex-grow: 1;
-      max-height: 70vh;
-      background: #0f172a;
-      border-radius: 0.6rem;
-    }
-
-    #predictionsContainer {
-      margin-top: 1rem;
-      padding: 1rem;
-      background: #0f172a;
-      border-radius: 0.6rem;
-    }
-
-    #bigChartActions {
-      margin-top: 1rem;
-      display: flex;
-      justify-content: flex-end;
-      gap: 1rem;
-    }
-
-    #bigChartActions button {
-      background: var(--primary-color);
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      font-weight: 600;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    #bigChartActions button:hover {
-      background: #16a34a;
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
   </style>
 </head>
-<body>
+<body class="bg-gray-100 text-gray-900 min-h-screen flex flex-col">
 
-  <script type="module" src="JS/loadHeader.js"></script>
+  <!-- Header -->
+  <header class="bg-white shadow-md sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-indigo-600">Luxibre Alpha</h1>
+      <nav>
+        <ul class="flex space-x-6 text-gray-700">
+          <li><a href="#" class="hover:text-indigo-600">Dashboard</a></li>
+          <li><a href="#" class="hover:text-indigo-600">Profil</a></li>
+          <li><a href="#" class="hover:text-indigo-600">Déconnexion</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
-  <!-- Header partagé -->
-  <div id="headerContainer"></div>
+  <!-- Main Content -->
+  <main class="flex-grow max-w-7xl mx-auto p-6">
+    <h2 class="text-3xl font-extrabold mb-8">Tableau de bord</h2>
 
-  <!-- Navigation spécifique au dashboard -->
-  <nav class="dashboard-nav flex gap-2 sm:justify-center p-4 bg-gray-800">
-    <select id="signalFilter" class="text-sm sm:text-base px-3 py-1.5 bg-green-500 text-white font-medium rounded-full">
-      <option value="all">Tous les signaux</option>
-      <option value="achat">Achat</option>
-      <option value="vente">Vente</option>
-      <option value="conservation">Conservation</option>
-    </select>
-    <select id="typeFilter" class="text-sm sm:text-base px-3 py-1.5 bg-green-500 text-white font-medium rounded-full">
-      <option value="all">Tous les types</option>
-      <option value="ETF">ETF</option>
-      <option value="actions">Actions</option>
-      <option value="cryptomonnaie">Cryptomonnaie</option>
-    </select>
-  </nav>
-
-  <main>
-    <div id="premiumNotice" class="notice" style="display: none;"></div>
-    <div id="signalsContainer"></div>
-    <section id="performanceReports">
-      <h2>Rapports de Performance</h2>
-      <!-- Contenu des rapports de performance -->
+    <!-- Stats Cards -->
+    <section class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
+      <div class="bg-white rounded-lg shadow p-6 fade-in" tabindex="0">
+        <h3 class="text-lg font-semibold mb-2">Signaux Achat</h3>
+        <p class="text-3xl font-bold text-green-600" id="count-buy">0</p>
+      </div>
+      <div class="bg-white rounded-lg shadow p-6 fade-in" tabindex="0">
+        <h3 class="text-lg font-semibold mb-2">Signaux Vente</h3>
+        <p class="text-3xl font-bold text-red-600" id="count-sell">0</p>
+      </div>
+      <div class="bg-white rounded-lg shadow p-6 fade-in" tabindex="0">
+        <h3 class="text-lg font-semibold mb-2">Signaux Conservation</h3>
+        <p class="text-3xl font-bold text-orange-500" id="count-hold">0</p>
+      </div>
     </section>
-    <section id="testimonials">
-      <h2>Témoignages</h2>
-      <!-- Contenu des témoignages -->
+
+    <!-- Filter/Search -->
+    <section class="mb-6">
+      <input
+        type="search"
+        id="search-input"
+        placeholder="Rechercher un actif (ex: AAPL, BTC)..."
+        class="w-full max-w-md px-4 py-2 border border-gray-300 rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+        aria-label="Rechercher un actif"
+      />
+    </section>
+
+    <!-- Table of Assets -->
+    <section class="overflow-x-auto">
+      <table class="min-w-full bg-white rounded-lg shadow overflow-hidden" aria-describedby="asset-table-description" role="table">
+        <caption id="asset-table-description" class="sr-only">Liste des actifs avec signaux boursiers</caption>
+        <thead class="bg-indigo-600 text-white">
+          <tr>
+            <th scope="col" class="px-6 py-3 text-left font-semibold">Actif</th>
+            <th scope="col" class="px-6 py-3 text-left font-semibold">Prix (€)</th>
+            <th scope="col" class="px-6 py-3 text-left font-semibold">Signal</th>
+            <th scope="col" class="px-6 py-3 text-left font-semibold">Performance 30j</th>
+          </tr>
+        </thead>
+        <tbody id="asset-table-body" class="divide-y divide-gray-200"></tbody>
+      </table>
+    </section>
+
+    <!-- Chart Section -->
+    <section class="mt-12 bg-white p-6 rounded-lg shadow fade-in" tabindex="0" aria-label="Graphique de l'évolution du prix">
+      <h3 class="text-xl font-semibold mb-4">Évolution du prix - Actif sélectionné</h3>
+      <canvas id="priceChart" aria-describedby="chart-desc"></canvas>
+      <p id="chart-desc" class="sr-only">Graphique représentant l'évolution du prix sur 30 jours.</p>
     </section>
   </main>
 
-  <!-- Modal grand graphique -->
-  <div id="bigChartModal" role="dialog" aria-modal="true" aria-labelledby="bigChartTitle">
-    <div id="bigChartContent">
-      <div id="bigChartHeader">
-        <h3 id="bigChartTitle">Graphique</h3>
-        <button id="closeBigChartBtn" aria-label="Fermer le graphique"><i class="fas fa-times"></i></button>
-      </div>
-      <canvas id="bigChartCanvas"></canvas>
-      <div id="predictionsContainer"></div>
-      <div id="bigChartActions">
-        <button id="resetZoomBtn">Réinitialiser Zoom</button>
-        <button id="exportBigChartBtn">Exporter le Graphique</button>
-      </div>
-    </div>
-  </div>
-
   <!-- Footer -->
-<footer class="py-10 bg-gray-100 mt-16">
-  <div class="max-w-7xl mx-auto px-6 text-center text-sm text-gray-600">
-    &copy; 2025 <span class="font-semibold text-green-600">Luxibre Alpha</span>. Tous droits réservés. |
-    <a href="/legal/mentions-legales.html" class="underline hover:text-green-600 transition">Mentions légales</a> |
-    <a href="/legal/cgu.html" class="underline hover:text-green-600 transition">CGU</a> |
-    <a href="/legal/rgpd.html" class="underline hover:text-green-600 transition">RGPD</a>
-  </div>
-</footer>
+  <footer class="bg-gray-900 text-gray-300 py-6 text-center text-sm mt-auto">
+    <p>© 2025 Luxibre Alpha. Tous droits réservés.</p>
+  </footer>
 
   <script>
-    // Fonction pour vérifier si l'utilisateur est premium
-    async function isPremiumUser() {
-      return await window.isPremiumPromise;
+    // Exemple de données simulées (à remplacer par appels API ou fetch signals.json)
+    const assets = [
+      { symbol: 'AAPL', price: 174.5, signal: 'Achat', performance30d: '+5.3%' },
+      { symbol: 'TSLA', price: 720.1, signal: 'Vente', performance30d: '-2.1%' },
+      { symbol: 'BTC', price: 27000, signal: 'Conservation', performance30d: '+1.8%' },
+      { symbol: 'MSFT', price: 299.3, signal: 'Achat', performance30d: '+4.7%' },
+      { symbol: 'AMZN', price: 3201.5, signal: 'Vente', performance30d: '-3.5%' },
+      { symbol: 'ETH', price: 1800, signal: 'Conservation', performance30d: '+2.0%' },
+    ];
+
+    const signalColors = {
+      'Achat': 'text-green-600',
+      'Vente': 'text-red-600',
+      'Conservation': 'text-orange-500',
+    };
+
+    // Mise à jour des compteurs
+    function updateCounters() {
+      const countBuy = assets.filter(a => a.signal === 'Achat').length;
+      const countSell = assets.filter(a => a.signal === 'Vente').length;
+      const countHold = assets.filter(a => a.signal === 'Conservation').length;
+
+      document.getElementById('count-buy').textContent = countBuy;
+      document.getElementById('count-sell').textContent = countSell;
+      document.getElementById('count-hold').textContent = countHold;
     }
 
-    // Fonction d'export pour petits graphiques
-    function exportChart(chartId) {
-      isPremiumUser().then(isPremium => {
-        if (!isPremium) {
-          alert("Cette fonctionnalité est réservée aux utilisateurs premium.");
-          return;
-        }
-        const element = document.getElementById(chartId);
-        html2canvas(element).then(canvas => {
-          const link = document.createElement('a');
-          link.download = 'chart.png';
-          link.href = canvas.toDataURL();
-          link.click();
+    // Remplir le tableau avec filtres
+    function populateTable(filter = '') {
+      const tbody = document.getElementById('asset-table-body');
+      tbody.innerHTML = '';
+      const filtered = assets.filter(a =>
+        a.symbol.toLowerCase().includes(filter.toLowerCase())
+      );
+      filtered.forEach(asset => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-gray-100 cursor-pointer';
+        tr.tabIndex = 0;
+        tr.setAttribute('role', 'row');
+        tr.addEventListener('click', () => updateChart(asset.symbol));
+        tr.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            updateChart(asset.symbol);
+          }
         });
+
+        tr.innerHTML = `
+          <td class="px-6 py-4 font-semibold">${asset.symbol}</td>
+          <td class="px-6 py-4">${asset.price.toFixed(2)}</td>
+          <td class="px-6 py-4 font-bold ${signalColors[asset.signal]}">${asset.signal}</td>
+          <td class="px-6 py-4">${asset.performance30d}</td>
+        `;
+        tbody.appendChild(tr);
       });
     }
 
-    // Variables globales pour modal graphique
-    let bigChartInstance = null;
-    const bigChartModal = document.getElementById("bigChartModal");
-    const bigChartCanvas = document.getElementById("bigChartCanvas").getContext('2d');
-    const bigChartTitle = document.getElementById("bigChartTitle");
-    const closeBigChartBtn = document.getElementById("closeBigChartBtn");
-    const resetZoomBtn = document.getElementById("resetZoomBtn");
-    const exportBigChartBtn = document.getElementById("exportBigChartBtn");
+    // Initialisation Chart.js
+    const ctx = document.getElementById('priceChart').getContext('2d');
+    let chart = null;
 
-    // Fonction pour ouvrir la modal du grand graphique
-    async function openBigChart(signal) {
-      const isPremium = await isPremiumUser();
-
-      if (signal.premium && !isPremium) {
-        alert("Ce signal est réservé aux abonnés premium.");
-        return;
+    function generateRandomData() {
+      // Simule un historique prix 30 jours pour l'exemple
+      const data = [];
+      let base = 100;
+      for(let i = 29; i >= 0; i--) {
+        base += (Math.random() - 0.5) * 3;
+        data.push(base.toFixed(2));
       }
+      return data.reverse();
+    }
 
-      bigChartTitle.textContent = signal.name + " - Prix Historique";
-
-      // Détruire l'ancien graphique si présent
-      if (bigChartInstance) {
-        bigChartInstance.destroy();
+    function updateChart(symbol) {
+      const labels = [];
+      const today = new Date();
+      for(let i = 29; i >= 0; i--) {
+        const d = new Date(today);
+        d.setDate(d.getDate() - i);
+        labels.push(d.toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }));
       }
+      const prices = generateRandomData();
 
-      bigChartInstance = new Chart(bigChartCanvas, {
-        type: "line",
+      if(chart) chart.destroy();
+
+      chart = new Chart(ctx, {
+        type: 'line',
         data: {
-          labels: signal.history.map((_, idx) => `J-${signal.history.length - idx}`),
+          labels,
           datasets: [{
-            label: `${signal.name} - Prix de clôture`,
-            data: signal.history,
-            borderColor: "#3b82f6",
-            backgroundColor: "rgba(59, 130, 246, 0.1)",
+            label: symbol,
+            data: prices,
+            borderColor: 'rgba(99, 102, 241, 0.8)', // Indigo 500
+            backgroundColor: 'rgba(99, 102, 241, 0.3)',
             fill: true,
-            tension: 0.4,
+            tension: 0.3,
             pointRadius: 3,
-            pointHoverRadius: 6,
-            pointBackgroundColor: "#3b82f6",
-            borderWidth: 2
+            pointHoverRadius: 5,
           }]
         },
         options: {
           responsive: true,
-          maintainAspectRatio: false,
-          animation: {
-            duration: 1000,
-            easing: 'easeInOutQuart'
-          },
-          plugins: {
-            legend: {
-              display: false
-            },
-            tooltip: {
-              mode: 'index',
-              intersect: false,
-              backgroundColor: 'rgba(0, 0, 0, 0.8)',
-              titleFont: {
-                size: 16
-              },
-              bodyFont: {
-                size: 14
-              },
-              padding: 10,
-              displayColors: false
-            },
-            zoom: {
-              pan: {
-                enabled: true,
-                mode: 'xy',
-                modifierKey: 'ctrl',
-              },
-              zoom: {
-                wheel: {
-                  enabled: true,
-                },
-                pinch: {
-                  enabled: true
-                },
-                mode: 'xy',
-              }
-            }
-          },
           scales: {
-            x: {
-              display: true,
-              ticks: {
-                color: '#9ca3af',
-                font: {
-                  size: 12
-                }
-              },
-              grid: {
-                color: '#374151',
-                drawBorder: false
-              }
-            },
             y: {
               beginAtZero: false,
               ticks: {
-                color: '#9ca3af',
-                font: {
-                  size: 12
+                callback: function(value) {
+                  return value + ' €';
                 }
-              },
-              grid: {
-                color: '#374151'
               }
+            }
+          },
+          plugins: {
+            legend: {
+              labels: { color: '#4B5563' }
             }
           }
         }
       });
-
-      // Afficher les prédictions de prix si premium
-      const predictionsDiv = document.getElementById('predictionsContainer');
-      if (isPremium) {
-        if (signal.predictions) {
-          predictionsDiv.innerHTML = `
-            <h4>Prédictions de prix</h4>
-            <p>Jour 1: $${signal.predictions.day1}</p>
-            <p>Jour 3: $${signal.predictions.day3}</p>
-            <p>Jour 7: $${signal.predictions.day7}</p>
-          `;
-        } else {
-          predictionsDiv.innerHTML = `
-            <p>Les prédictions de prix ne sont pas disponibles pour ce signal.</p>
-          `;
-        }
-      } else {
-        predictionsDiv.innerHTML = `
-          <p>Les prédictions de prix sont réservées aux membres premium.</p>
-        `;
-      }
-
-      // Ouvrir la modal
-      document.body.classList.add('modal-open');
-      bigChartModal.classList.add("active");
     }
 
-    function closeBigChart() {
-      if (bigChartInstance) {
-        bigChartInstance.destroy();
-        bigChartInstance = null;
-      }
-
-      // Supprimer la classe modal-open du corps de la page
-      document.body.classList.remove('modal-open');
-
-      bigChartModal.classList.remove("active");
-    }
-
-    // Réinitialiser zoom du grand graphique
-    resetZoomBtn.addEventListener("click", () => {
-      if (bigChartInstance) bigChartInstance.resetZoom();
+    // Event search input
+    document.getElementById('search-input').addEventListener('input', e => {
+      populateTable(e.target.value);
     });
 
-    // Exporter grand graphique
-    exportBigChartBtn.addEventListener("click", () => {
-      isPremiumUser().then(isPremium => {
-        if (!isPremium) {
-          alert("Cette fonctionnalité est réservée aux utilisateurs premium.");
-          return;
-        }
-        html2canvas(bigChartCanvas.canvas).then(canvas => {
-          const link = document.createElement('a');
-          link.download = 'big-chart.png';
-          link.href = canvas.toDataURL();
-          link.click();
-        });
+    // Animation fade-in à l'affichage
+    window.addEventListener('load', () => {
+      document.querySelectorAll('.fade-in').forEach(el => {
+        setTimeout(() => el.classList.add('visible'), 100);
       });
-    });
-
-    closeBigChartBtn.addEventListener("click", closeBigChart);
-
-    // Fermer modal au clic hors contenu
-    bigChartModal.addEventListener("click", e => {
-      if (e.target === bigChartModal) closeBigChart();
-    });
-
-    // Chargement des signaux et affichage
-    async function fetchSignals() {
-      try {
-        const res = await fetch("data/signals.json");
-        if (!res.ok) throw new Error("HTTP error " + res.status);
-        return await res.json();
-      } catch (err) {
-        console.error("Erreur lors du chargement des signaux:", err);
-        document.getElementById("signalsContainer").textContent = "Erreur lors du chargement des signaux.";
-        return null;
-      }
-    }
-
-    async function renderSignals() {
-      const data = await fetchSignals();
-      if (!data) return;
-
-      const isPremium = await isPremiumUser();
-
-      const container = document.getElementById("signalsContainer");
-      const premiumNotice = document.getElementById("premiumNotice");
-      let premiumLocked = false;
-      container.innerHTML = "";
-
-      ["achat", "vente", "conservation"].forEach(category => {
-        if (!data[category] || !Array.isArray(data[category])) return;
-
-        // Trier les signaux pour que les non-premium apparaissent en premier
-        data[category].sort((a, b) => (a.premium === b.premium) ? 0 : a.premium ? 1 : -1);
-
-        data[category].forEach((signal, i) => {
-          const card = document.createElement("div");
-          card.className = "card";
-          card.dataset.category = category;
-          card.dataset.type = signal.type;
-
-          const isLocked = signal.premium && !isPremium;
-          if (isLocked) {
-            card.classList.add("blur");
-            premiumLocked = true;
-          }
-
-          const chartId = `chart-${category}-${i}`;
-
-          // Utiliser Luxon pour formater la date de mise à jour
-          const updatedDate = luxon.DateTime.fromISO(signal.updated);
-          const formattedUpdatedDate = updatedDate.toLocaleString(luxon.DateTime.DATETIME_MED);
-
-          card.innerHTML = `
-            ${signal.premium ? '<div class="premium-badge">Premium</div>' : ''}
-            ${isLocked ? '<button class="upgrade-message" onclick="window.location.href=\'/pricing.html\'">Devenez Premium</button>' : ''}
-            <div class="card-content">
-              <h3>${signal.name}</h3>
-              <p><strong>Prix actuel :</strong> $${signal.price.toFixed(2)}</p>
-              <p><strong>Performance (30j) :</strong> ${signal.performance30j}%</p>
-              <p><strong>Recommandation :</strong> <span class="recommendation">${signal.recommendation}</span></p>
-              <p><strong>Dernière mise à jour :</strong> ${formattedUpdatedDate}</p>
-              <div class="chart-container">
-                <canvas id="${chartId}" width="300" height="150"></canvas>
-              </div>
-            </div>
-          `;
-
-          container.appendChild(card);
-
-          if (!isLocked) {
-            const ctx = document.getElementById(chartId).getContext("2d");
-            new Chart(ctx, {
-              type: "line",
-              data: {
-                labels: signal.history.map((_, idx) => `J-${signal.history.length - idx}`),
-                datasets: [{
-                  label: `${signal.name} - Prix de clôture`,
-                  data: signal.history,
-                  borderColor: "#3b82f6",
-                  backgroundColor: "rgba(59, 130, 246, 0.1)",
-                  fill: true,
-                  tension: 0.4,
-                  pointRadius: 2,
-                  pointHoverRadius: 4,
-                  pointBackgroundColor: "#3b82f6",
-                  borderWidth: 2
-                }]
-              },
-              options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                animation: {
-                  duration: 1000,
-                  easing: 'easeInOutQuart'
-                },
-                scales: {
-                  x: {
-                    display: false
-                  },
-                  y: {
-                    beginAtZero: false,
-                    ticks: {
-                      color: '#9ca3af'
-                    },
-                    grid: {
-                      color: '#374151'
-                    }
-                  }
-                },
-                plugins: {
-                  legend: {
-                    display: false
-                  },
-                  tooltip: {
-                    mode: 'index',
-                    intersect: false,
-                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                    titleFont: {
-                      size: 14
-                    },
-                    bodyFont: {
-                      size: 12
-                    },
-                    padding: 8,
-                    displayColors: false
-                  }
-                }
-              }
-            });
-
-            card.querySelector('.chart-container').addEventListener('click', () => {
-              openBigChart(signal);
-            });
-          }
-        });
-      });
-
-      if (premiumLocked && !isPremium) {
-        premiumNotice.style.display = "block";
-        premiumNotice.textContent = "Certains signaux sont réservés aux abonnés premium. Abonnez-vous pour tout débloquer.";
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-      const signalFilter = document.getElementById('signalFilter');
-      const typeFilter = document.getElementById('typeFilter');
-
-      signalFilter.addEventListener('change', filterAssets);
-      typeFilter.addEventListener('change', filterAssets);
-
-      async function filterAssets() {
-        const signalCategory = signalFilter.value;
-        const typeCategory = typeFilter.value;
-
-        const cards = document.querySelectorAll('.card');
-        cards.forEach(card => {
-          const cardSignalCategory = card.dataset.category;
-          const cardTypeCategory = card.dataset.type;
-
-          const matchesSignal = signalCategory === 'all' || cardSignalCategory === signalCategory;
-          const matchesType = typeCategory === 'all' || cardTypeCategory === typeCategory;
-
-          if (matchesSignal && matchesType) {
-            card.style.display = 'block';
-          } else {
-            card.style.display = 'none';
-          }
-        });
-      }
-
-      renderSignals();
+      updateCounters();
+      populateTable();
+      updateChart(assets[0].symbol);
     });
   </script>
 </body>
