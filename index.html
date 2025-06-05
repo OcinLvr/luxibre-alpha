@@ -1,279 +1,154 @@
 <!DOCTYPE html>
-<html lang="fr" class="scroll-smooth">
+<html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Luxibre Alpha - Signaux Boursiers Précis & Quotidiens</title>
-  <meta name="description" content="Luxibre Alpha, la plateforme n°1 des signaux boursiers précis et quotidiens. Recevez des recommandations validées par IA et boostez vos investissements." />
-  <link rel="icon" href="favicon.ico" />
-  <!-- Fonts & Icons -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
-  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js" defer></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Luxibre Alpha - Signaux Boursiers</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background: #f9fafb;
-      color: #111827;
-      scroll-behavior: smooth;
     }
-    /* Loader overlay */
-    #loader {
-      position: fixed;
-      inset: 0;
-      background: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
+
+    #header-container {
+      min-height: 80px;
+      background-color: white;
     }
-    /* Smooth appear animation */
-    .fade-in {
-      animation: fadeInUp 0.8s ease forwards;
-      opacity: 0;
-      transform: translateY(20px);
+    
+    .hero {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.9), rgba(20, 83, 45, 0.9));
+      color: white;
+      padding: 4rem 1rem;
+      text-align: center;
     }
-    @keyframes fadeInUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    /* Accordion FAQ */
-    details summary {
+
+    .cta-button {
+      background-color: #22c55e;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
       cursor: pointer;
-      font-weight: 600;
-      list-style: none;
+      font-weight: bold;
+      display: inline-block;
+      margin-top: 1rem;
+      transition: background-color 0.3s;
     }
-    details[open] summary::after {
-      content: "▲";
-      float: right;
+
+    .cta-button:hover {
+      background-color: #16a34a;
     }
-    summary::after {
-      content: "▼";
-      float: right;
+
+    .testimonials {
+      padding: 2rem;
+      background-color: rgba(34, 197, 94, 0.1);
+      margin: 2rem auto;
+      max-width: 800px;
+      border-radius: 0.5rem;
     }
-    /* Focus outline for accessibility */
-    a:focus, button:focus, summary:focus {
-      outline: 3px solid #10B981;
-      outline-offset: 2px;
+
+    .social-proof {
+      display: flex;
+      justify-content: space-around;
+      margin: 1rem 0;
+    }
+
+    .logo {
+      height: 50px;
+      margin: 0 1rem;
     }
   </style>
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-50 text-gray-900">
 
-  <!-- Loader -->
-  <div id="loader" aria-label="Chargement de la page">
-    <lottie-player
-      src="https://assets7.lottiefiles.com/packages/lf20_usmfx6bp.json"
-      background="transparent"
-      speed="1"
-      style="width: 150px; height: 150px;"
-      loop
-      autoplay>
-    </lottie-player>
-  </div>
+  <script type="module" src="JS/loadHeader.js"></script>
 
-  <!-- Header -->
-  <header class="sticky top-0 bg-white shadow-md z-50" role="banner" aria-label="Navigation principale">
-    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-      <a href="#" class="text-2xl font-extrabold text-green-600 tracking-wide focus:outline-none focus:ring-2 focus:ring-green-600" aria-label="Accueil Luxibre Alpha">
-        Luxibre Alpha
-      </a>
-      <nav class="space-x-6 text-sm font-semibold hidden md:flex" role="navigation" aria-label="Menu principal">
-        <a href="#features" class="hover:text-green-600 focus:outline-none focus:ring-2 focus:ring-green-600 rounded">Fonctionnalités</a>
-        <a href="#pricing" class="hover:text-green-600 focus:outline-none focus:ring-2 focus:ring-green-600 rounded">Tarifs</a>
-        <a href="#faq" class="hover:text-green-600 focus:outline-none focus:ring-2 focus:ring-green-600 rounded">FAQ</a>
-        <a href="login.html" class="text-green-600 hover:underline focus:outline-none focus:ring-2 focus:ring-green-600 rounded">Connexion</a>
-        <a href="signup.html" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition focus:outline-none focus:ring-2 focus:ring-green-600 rounded">S'inscrire</a>
-      </nav>
-
-      <!-- Mobile menu button -->
-      <button id="btn-mobile-menu" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobile-menu" class="md:hidden focus:outline-none focus:ring-2 focus:ring-green-600 rounded">
-        <i class="fas fa-bars text-2xl text-green-600"></i>
-      </button>
-    </div>
-
-    <!-- Mobile menu -->
-    <nav id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-200" aria-label="Menu mobile">
-      <div class="flex flex-col px-6 py-4 space-y-3 text-sm font-semibold">
-        <a href="#features" class="hover:text-green-600 focus:outline-none focus:ring-2 focus:ring-green-600 rounded">Fonctionnalités</a>
-        <a href="#pricing" class="hover:text-green-600 focus:outline-none focus:ring-2 focus:ring-green-600 rounded">Tarifs</a>
-        <a href="#faq" class="hover:text-green-600 focus:outline-none focus:ring-2 focus:ring-green-600 rounded">FAQ</a>
-        <a href="login.html" class="text-green-600 hover:underline focus:outline-none focus:ring-2 focus:ring-green-600 rounded">Connexion</a>
-        <a href="signup.html" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition focus:outline-none focus:ring-2 focus:ring-green-600 rounded">S'inscrire</a>
-      </div>
-    </nav>
-  </header>
-
-  <!-- Hero -->
-  <section
-    class="relative bg-gradient-to-br from-green-500 to-emerald-700 text-white text-center py-24 px-6 overflow-hidden"
-    aria-label="Section d’introduction et appel à l’action">
-    <h1 class="text-4xl md:text-6xl font-extrabold max-w-4xl mx-auto fade-in">Anticipez les marchés avec une précision inégalée</h1>
-    <p class="mt-6 text-xl md:text-2xl max-w-3xl mx-auto fade-in" style="animation-delay: 0.3s;">
-      Recevez chaque jour des signaux d’achat, vente ou conservation validés par des algorithmes avancés et enrichis par l’IA.
-    </p>
-    <a href="signup.html" class="inline-block mt-10 bg-white text-green-700 font-bold text-lg px-8 py-4 rounded shadow-lg hover:bg-gray-100 transition focus:outline-none focus:ring-4 focus:ring-green-300 fade-in" style="animation-delay: 0.6s;">
-      Commencer gratuitement
-    </a>
-
-    <!-- Decorative floating circles -->
-    <div aria-hidden="true" class="absolute top-0 left-0 w-72 h-72 bg-green-400 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-    <div aria-hidden="true" class="absolute top-10 right-10 w-72 h-72 bg-emerald-500 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1 class="text-4xl font-extrabold mb-4">Les signaux boursiers les plus précis du marché, chaque jour.</h1>
+    <p class="text-xl mb-6">Accédez à une plateforme conçue pour les traders actifs et les investisseurs sérieux.</p>
+    <a href="signup.html" class="cta-button">Accédez à vos signaux gratuitement</a>
   </section>
 
-  <!-- Social Proof -->
-  <section class="bg-white py-12" aria-label="Preuves sociales">
-    <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-around items-center text-center space-y-8 md:space-y-0">
-      <div class="fade-in">
-        <div class="text-4xl font-extrabold text-green-600">+1 200</div>
-        <div class="text-gray-500 mt-1">Utilisateurs actifs</div>
+  <!-- Stats Section -->
+  <section class="py-10">
+    <div class="stats">
+      <div class="stat-item">
+        <div class="stat-number">+1000</div>
+        <div class="stat-label">Utilisateurs actifs</div>
       </div>
-      <div class="fade-in" style="animation-delay: 0.2s;">
-        <div class="text-4xl font-extrabold text-green-600">95%</div>
-        <div class="text-gray-500 mt-1">Taux de précision sur 30 jours</div>
+      <div class="stat-item">
+        <div class="stat-number">95%</div>
+        <div class="stat-label">Taux de précision</div>
       </div>
-      <div class="fade-in" style="animation-delay: 0.4s;">
-        <div class="text-4xl font-extrabold text-green-600">24h/24</div>
-        <div class="text-gray-500 mt-1">Support Premium</div>
+      <div class="stat-item">
+        <div class="stat-number">24/7</div>
+        <div class="stat-label">Support client</div>
       </div>
     </div>
   </section>
 
-  <!-- Pourquoi Luxibre -->
-  <section id="features" class="py-20 bg-gray-50" aria-label="Fonctionnalités principales">
+  <!-- Features Section -->
+  <section class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-6">
-      <h2 class="text-4xl font-extrabold text-center mb-16 fade-in">Pourquoi choisir Luxibre Alpha ?</h2>
-      <div class="grid md:grid-cols-3 gap-12">
-        <div class="bg-white p-10 rounded-xl shadow-md hover:shadow-xl transition transform hover:scale-105 cursor-default fade-in" style="animation-delay: 0.1s;" tabindex="0" role="group" aria-label="Signaux Quotidiens">
-          <div class="text-6xl mb-6" aria-hidden="true">📈</div>
-          <h3 class="text-2xl font-bold mb-3">Signaux Quotidiens</h3>
-          <p class="text-gray-700 leading-relaxed">Recevez des recommandations fiables chaque matin basées sur des analyses avancées.</p>
+      <h3 class="text-4xl font-bold text-center mb-16">Pourquoi Luxibre ?</h3>
+      <div class="grid md:grid-cols-3 gap-10">
+        <div class="bg-gray-50 p-8 rounded-xl shadow-lg text-center hover:shadow-xl transition">
+          <div class="text-5xl mb-4">📈</div>
+          <h4 class="text-2xl font-semibold mb-2">Signaux Quotidiens</h4>
+          <p class="text-gray-600">Des opportunités concrètes chaque matin pour ne plus rater le bon moment.</p>
         </div>
-        <div class="bg-white p-10 rounded-xl shadow-md hover:shadow-xl transition transform hover:scale-105 cursor-default fade-in" style="animation-delay: 0.3s;" tabindex="0" role="group" aria-label="Algorithme IA">
-          <div class="text-6xl mb-6" aria-hidden="true">🤖</div>
-          <h3 class="text-2xl font-bold mb-3">Algorithme IA</h3>
-          <p class="text-gray-700 leading-relaxed">Un moteur intelligent qui filtre le bruit et identifie les signaux réellement exploitables.</p>
+        <div class="bg-gray-50 p-8 rounded-xl shadow-lg text-center hover:shadow-xl transition">
+          <div class="text-5xl mb-4">📊</div>
+          <h4 class="text-2xl font-semibold mb-2">Graphiques Dynamiques</h4>
+          <p class="text-gray-600">Visualisez les tendances en un clin d’œil grâce à nos outils premium.</p>
         </div>
-        <div class="bg-white p-10 rounded-xl shadow-md hover:shadow-xl transition transform hover:scale-105 cursor-default fade-in" style="animation-delay: 0.5s;" tabindex="0" role="group" aria-label="Espace Premium Sécurisé">
-          <div class="text-6xl mb-6" aria-hidden="true">🔐</div>
-          <h3 class="text-2xl font-bold mb-3">Espace Premium Sécurisé</h3>
-          <p class="text-gray-700 leading-relaxed">Accédez à des prévisions sur 1, 3 et 7 jours avec indicateurs exclusifs.</p>
+        <div class="bg-gray-50 p-8 rounded-xl shadow-lg text-center hover:shadow-xl transition">
+          <div class="text-5xl mb-4">🔒</div>
+          <h4 class="text-2xl font-semibold mb-2">Espace Premium</h4>
+          <p class="text-gray-600">Accès réservé, données exclusives, pour ceux qui veulent vraiment performer.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Tarifs -->
-  <section id="pricing" class="py-20 bg-white" aria-label="Section tarifs">
-    <div class="max-w-6xl mx-auto px-6">
-      <h2 class="text-4xl font-extrabold text-center mb-16 fade-in">Gratuit ou Premium ?</h2>
-      <div class="grid md:grid-cols-2 gap-10 max-w-4xl mx-auto">
-        <!-- Offre gratuite -->
-        <article class="border rounded-xl p-8 text-center hover:shadow-lg transition fade-in" style="animation-delay: 0.2s;" tabindex="0" aria-label="Offre gratuite">
-          <h3 class="text-3xl font-extrabold mb-4 text-gray-900">Gratuit</h3>
-          <p class="mb-8 text-gray-600">Accès limité aux signaux en temps réel. Idéal pour découvrir la plateforme.</p>
-          <ul class="mb-8 space-y-3 text-gray-700">
-            <li><i class="fas fa-check-circle text-green-600 mr-2" aria-hidden="true"></i>Signaux journaliers basiques</li>
-            <li><i class="fas fa-check-circle text-green-600 mr-2" aria-hidden="true"></i>Accès aux FAQ et tutoriels</li>
-            <li><i class="fas fa-times-circle text-red-500 mr-2" aria-hidden="true"></i>Pas de prévisions avancées</li>
-            <li><i class="fas fa-times-circle text-red-500 mr-2" aria-hidden="true"></i>Pas de notifications personnalisées</li>
-          </ul>
-          <button disabled class="bg-gray-300 text-gray-600 cursor-not-allowed px-6 py-3 rounded-lg font-semibold" aria-disabled="true" tabindex="-1">Gratuit</button>
-        </article>
-
-        <!-- Offre premium -->
-        <article class="border-4 border-green-600 rounded-xl p-10 bg-green-50 shadow-lg text-center fade-in" style="animation-delay: 0.4s;" tabindex="0" aria-label="Offre premium">
-          <div class="inline-block bg-green-600 text-white rounded-full px-4 py-1 mb-6 font-semibold tracking-wide uppercase text-sm">Premium</div>
-          <h3 class="text-3xl font-extrabold mb-4 text-green-900">5€/mois</h3>
-          <p class="mb-8 text-green-800 font-semibold">Tout le potentiel pour maximiser vos gains</p>
-          <ul class="mb-8 space-y-3 text-green-900 font-semibold">
-            <li><i class="fas fa-check-circle" aria-hidden="true"></i>Signaux quotidiens + prévisions 1, 3 & 7 jours</li>
-            <li><i class="fas fa-check-circle" aria-hidden="true"></i>Notifications personnalisées instantanées</li>
-            <li><i class="fas fa-check-circle" aria-hidden="true"></i>Support dédié 24/7</li>
-            <li><i class="fas fa-check-circle" aria-hidden="true"></i>Interface premium & personnalisable</li>
-          </ul>
-          <a href="checkout.html" class="inline-block bg-green-600 text-white px-8 py-4 rounded-lg font-bold hover:bg-green-700 transition focus:outline-none focus:ring-4 focus:ring-green-300">S’abonner</a>
-        </article>
+  <!-- Testimonials Section -->
+  <section class="testimonials">
+    <h2 class="text-3xl font-bold text-center mb-8">Témoignages</h2>
+    <div class="social-proof">
+      <div class="testimonial">
+        <p>"Cette plateforme a transformé ma façon de trader. Les signaux sont précis et fiables."</p>
+        <p><strong>- Jean D.</strong></p>
+      </div>
+      <div class="testimonial">
+        <p>"Je recommande Luxibre Alpha à tous les traders sérieux. Les résultats parlent d'eux-mêmes."</p>
+        <p><strong>- Marie L.</strong></p>
       </div>
     </div>
   </section>
 
-  <!-- FAQ -->
-  <section id="faq" class="py-20 bg-gray-50" aria-label="Questions fréquentes">
-    <div class="max-w-4xl mx-auto px-6">
-      <h2 class="text-4xl font-extrabold mb-12 text-center fade-in">Questions fréquentes</h2>
-      <div class="space-y-6 fade-in">
-        <details tabindex="0" role="region" aria-labelledby="faq1_summary" open>
-          <summary id="faq1_summary" class="text-lg font-semibold">Comment fonctionne Luxibre Alpha ?</summary>
-          <p class="mt-2 text-gray-700 leading-relaxed">Nous analysons les marchés financiers en temps réel avec des algorithmes avancés et une IA, pour vous fournir des signaux d’achat, vente ou conservation fiables.</p>
-        </details>
-        <details tabindex="0" role="region" aria-labelledby="faq2_summary">
-          <summary id="faq2_summary" class="text-lg font-semibold">Puis-je essayer gratuitement ?</summary>
-          <p class="mt-2 text-gray-700 leading-relaxed">Oui, un accès gratuit est disponible avec des fonctionnalités limitées pour vous familiariser avec nos signaux.</p>
-        </details>
-        <details tabindex="0" role="region" aria-labelledby="faq3_summary">
-          <summary id="faq3_summary" class="text-lg font-semibold">Comment m’abonner au service Premium ?</summary>
-          <p class="mt-2 text-gray-700 leading-relaxed">Il suffit de créer un compte puis de choisir l’offre Premium dans votre espace personnel. Le paiement est sécurisé via Stripe.</p>
-        </details>
-        <details tabindex="0" role="region" aria-labelledby="faq4_summary">
-          <summary id="faq4_summary" class="text-lg font-semibold">Quelle est la précision des signaux ?</summary>
-          <p class="mt-2 text-gray-700 leading-relaxed">Notre taux de précision est supérieur à 95 % sur les 30 derniers jours, grâce à nos algorithmes et au backtesting rigoureux.</p>
-        </details>
-      </div>
+  <!-- CTA Section -->
+  <section class="py-20 bg-gradient-to-r from-red-500 to-orange-500 text-white">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <h3 class="text-4xl md:text-5xl font-bold mb-6">Faites le choix de l'efficacité</h3>
+      <p class="text-xl md:text-2xl mb-8">Votre avenir financier commence maintenant. Ne laissez pas passer les meilleures opportunités.</p>
+      <a href="signup.html" class="cta-button">Je passe à l’action</a>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="bg-white border-t border-gray-200 py-12" role="contentinfo">
-    <div class="max-w-7xl mx-auto px-6 text-center text-gray-600 text-sm">
-      <p>&copy; 2025 Luxibre Alpha. Tous droits réservés.</p>
-      <nav class="mt-4 space-x-4" aria-label="Liens légaux">
-        <a href="mentions-legales.html" class="hover:underline focus:outline-none focus:ring-2 focus:ring-green-600 rounded">Mentions légales</a>
-        <a href="cgu.html" class="hover:underline focus:outline-none focus:ring-2 focus:ring-green-600 rounded">CGU</a>
-        <a href="rgpd.html" class="hover:underline focus:outline-none focus:ring-2 focus:ring-green-600 rounded">RGPD</a>
-      </nav>
+  <footer class="py-10 bg-gray-100 mt-16">
+    <div class="max-w-7xl mx-auto px-6 text-center text-sm text-gray-600">
+      &copy; 2025 <span class="font-semibold text-green-600">Luxibre Alpha</span>. Tous droits réservés. |
+      <a href="/legal/mentions-legales.html" class="underline hover:text-green-600 transition">Mentions légales</a> |
+      <a href="/legal/cgu.html" class="underline hover:text-green-600 transition">CGU</a> |
+      <a href="/legal/rgpd.html" class="underline hover:text-green-600 transition">RGPD</a>
     </div>
   </footer>
-
-  <script>
-    // Loader hide
-    window.addEventListener('load', () => {
-      document.getElementById('loader').style.display = 'none';
-    });
-
-    // Mobile menu toggle
-    const btnMenu = document.getElementById('btn-mobile-menu');
-    const mobileMenu = document.getElementById('mobile-menu');
-    btnMenu.addEventListener('click', () => {
-      const expanded = btnMenu.getAttribute('aria-expanded') === 'true' || false;
-      btnMenu.setAttribute('aria-expanded', !expanded);
-      mobileMenu.classList.toggle('hidden');
-    });
-  </script>
-
-  <!-- Animation keyframes for blobs -->
-  <style>
-    @keyframes blob {
-      0%, 100% {
-        transform: translate(0px, 0px) scale(1);
-      }
-      33% {
-        transform: translate(30px, -50px) scale(1.1);
-      }
-      66% {
-        transform: translate(-20px, 20px) scale(0.9);
-      }
-    }
-    .animate-blob {
-      animation: blob 7s infinite;
-    }
-    .animation-delay-2000 {
-      animation-delay: 2s !important;
-    }
-  </style>
 
 </body>
 </html>
