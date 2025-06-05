@@ -1817,7 +1817,7 @@
       "recommendation": "Acheter fort",
       "score": 90,
       "premium": true,
-      "updated": "2025-06-05T04:31:29.056Z",
+      "updated": "2025-06-05T05:24:16.121Z",
       "indicators": {
         "rsi": 27.43506997956385,
         "macd": 1194.9244639895187,
@@ -5561,7 +5561,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-06-05T04:31:29.366Z",
+      "updated": "2025-06-05T05:24:16.188Z",
       "indicators": {
         "rsi": 45.46363409147715,
         "macd": 93.1242617919579,
@@ -5841,7 +5841,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-06-05T04:31:29.811Z",
+      "updated": "2025-06-05T05:24:16.299Z",
       "indicators": {
         "rsi": 29.947587204048375,
         "macd": -0.030767807958445026,
@@ -6121,7 +6121,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-06-05T04:31:30.099Z",
+      "updated": "2025-06-05T05:24:16.367Z",
       "indicators": {
         "rsi": 11.00055279159757,
         "macd": -0.017265316400700725,
@@ -6401,7 +6401,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-06-05T04:31:30.683Z",
+      "updated": "2025-06-05T05:24:16.506Z",
       "indicators": {
         "rsi": 17.82729805013929,
         "macd": -0.12158751297008319,
@@ -6681,7 +6681,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-06-05T04:31:30.396Z",
+      "updated": "2025-06-05T05:24:16.427Z",
       "indicators": {
         "rsi": 15.608324439701164,
         "macd": -1.8727998096449312,
@@ -6961,7 +6961,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-06-05T04:31:30.988Z",
+      "updated": "2025-06-05T05:24:16.560Z",
       "indicators": {
         "rsi": 7.039683746388889,
         "macd": -0.004438311453046767,
