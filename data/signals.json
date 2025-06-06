@@ -1818,7 +1818,7 @@
       "recommendation": "Acheter fort",
       "score": 90,
       "premium": true,
-      "updated": "2025-06-06T15:22:37.957Z",
+      "updated": "2025-06-06T16:30:55.632Z",
       "indicators": {
         "rsi": 29.526716675867576,
         "macd": 576.1789102867479,
@@ -5562,7 +5562,7 @@
       "recommendation": "Conserver",
       "score": 60,
       "premium": true,
-      "updated": "2025-06-06T15:22:38.009Z",
+      "updated": "2025-06-06T16:30:55.699Z",
       "indicators": {
         "rsi": 40.67851953437494,
         "macd": 60.47660763313934,
@@ -5842,7 +5842,7 @@
       "recommendation": "Conserver",
       "score": 45,
       "premium": false,
-      "updated": "2025-06-06T15:22:38.141Z",
+      "updated": "2025-06-06T16:30:55.874Z",
       "indicators": {
         "rsi": 30.744087675446963,
         "macd": -0.04687457417102259,
@@ -6122,7 +6122,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-06-06T15:22:38.224Z",
+      "updated": "2025-06-06T16:30:55.941Z",
       "indicators": {
         "rsi": 11.53601019757808,
         "macd": -0.02457678695147658,
@@ -6402,7 +6402,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-06-06T15:22:38.357Z",
+      "updated": "2025-06-06T16:30:56.140Z",
       "indicators": {
         "rsi": 21.86009538950715,
         "macd": -0.15484904909411767,
@@ -6682,7 +6682,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-06-06T15:22:38.284Z",
+      "updated": "2025-06-06T16:30:56.040Z",
       "indicators": {
         "rsi": 15.431201550387598,
         "macd": -3.5273515735980823,
@@ -6962,7 +6962,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-06-06T15:22:38.419Z",
+      "updated": "2025-06-06T16:30:56.232Z",
       "indicators": {
         "rsi": 6.378500890399863,
         "macd": -0.007622274209933916,
