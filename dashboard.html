@@ -154,14 +154,19 @@
       }
 
       async function renderSignals() {
-        const data = await fetch('data/signals.json').then(r => r.json()).catch(e => { console.error(e); return null; });
-        if (!data) return;
+    // Attendre que window.isPremiumUser soit disponible
+    while (typeof window.isPremiumUser !== 'function') {
+        await new Promise(resolve => setTimeout(resolve, 50));
+    }
 
-        const isPremium = await window.isPremiumUser();
-        const { data: { user } } = await supabase.auth.getUser();
-        const container = document.getElementById('signalsContainer');
-        container.innerHTML = '';
-        let premiumLocked = false;
+    const data = await fetch('data/signals.json').then(r => r.json()).catch(e => { console.error(e); return null; });
+    if (!data) return;
+
+    const isPremium = await window.isPremiumUser();
+    const { data: { user } } = await supabase.auth.getUser();
+    const container = document.getElementById('signalsContainer');
+    container.innerHTML = '';
+    let premiumLocked = false;
 
         for (const category of ['achat', 'vente', 'conservation']) {
           (data[category] || []).sort((a, b) => a.premium - b.premium).forEach(async signal => {
