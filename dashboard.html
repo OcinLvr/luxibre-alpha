@@ -88,7 +88,7 @@
   <script>
     // Assurez-vous que le DOM est complètement chargé avant d'exécuter le script
     document.addEventListener('DOMContentLoaded', function() {
-      // Function to export charts
+      // Fonction pour exporter les graphiques
       function exportChart(chartId) {
         window.isPremiumUser().then(isPremium => {
           if (!isPremium) {
@@ -105,7 +105,7 @@
         });
       }
 
-      // Variables for the big chart modal
+      // Variables pour la modal du grand graphique
       let bigChartInstance = null;
       const bigChartModal = document.getElementById("bigChartModal");
       const bigChartCanvas = document.getElementById("bigChartCanvas").getContext('2d');
@@ -114,7 +114,7 @@
       const resetZoomBtn = document.getElementById("resetZoomBtn");
       const exportBigChartBtn = document.getElementById("exportBigChartBtn");
 
-      // Function to open the big chart modal
+      // Fonction pour ouvrir la modal du grand graphique
       async function openBigChart(signal) {
         const isPremium = await window.isPremiumUser();
 
@@ -125,7 +125,7 @@
 
         bigChartTitle.textContent = signal.name + " - Prix Historique";
 
-        // Destroy the old chart if present
+        // Détruire l'ancien graphique s'il est présent
         if (bigChartInstance) {
           bigChartInstance.destroy();
         }
@@ -218,7 +218,7 @@
           }
         });
 
-        // Display price predictions if premium
+        // Afficher les prédictions de prix si premium
         const predictionsDiv = document.getElementById('predictionsContainer');
         if (isPremium) {
           if (signal.predictions) {
@@ -239,7 +239,7 @@
           `;
         }
 
-        // Open the modal
+        // Ouvrir la modal
         document.body.classList.add('modal-open');
         bigChartModal.classList.add("active");
       }
@@ -254,12 +254,12 @@
         bigChartModal.classList.remove("active");
       }
 
-      // Reset zoom of the big chart
+      // Réinitialiser le zoom du grand graphique
       resetZoomBtn.addEventListener("click", () => {
         if (bigChartInstance) bigChartInstance.resetZoom();
       });
 
-      // Export big chart
+      // Exporter le grand graphique
       exportBigChartBtn.addEventListener("click", () => {
         window.isPremiumUser().then(isPremium => {
           if (!isPremium) {
@@ -277,12 +277,12 @@
 
       closeBigChartBtn.addEventListener("click", closeBigChart);
 
-      // Close modal when clicking outside content
+      // Fermer la modal en cliquant en dehors du contenu
       bigChartModal.addEventListener("click", e => {
         if (e.target === bigChartModal) closeBigChart();
       });
 
-      // Function to fetch signals from signals.json
+      // Fonction pour récupérer les signaux depuis signals.json
       async function fetchSignals() {
         try {
           const response = await fetch('data/signals.json');
@@ -297,7 +297,7 @@
         }
       }
 
-      // Function to render signals
+      // Fonction pour afficher les signaux
       async function renderSignals() {
         const data = await fetchSignals();
         if (!data) return;
