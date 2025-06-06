@@ -7,7 +7,7 @@
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script type="module" src="loadHeader.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/luxon@1.25.0"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.0.0"></script>
@@ -19,6 +19,13 @@
       --secondary-color: #1e293b;
       --text-color: #f1f5f9;
       --accent-color: #86efac;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0f172a;
+      color: var(--text-color);
+      margin: 0;
     }
 
     .dashboard-nav select {
@@ -271,8 +278,8 @@
   </style>
 </head>
 <body>
-  <script type="module" src="JS/loadHeader.js"></script>
-  
+  <div id="headerContainer"></div>
+
   <nav class="dashboard-nav flex gap-2 sm:justify-center p-4 bg-gray-800">
     <select id="signalFilter" class="text-sm sm:text-base px-3 py-1.5 bg-green-500 text-white font-medium rounded-full">
       <option value="all">Tous les signaux</option>
@@ -293,11 +300,9 @@
     <div id="signalsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
     <section id="performanceReports" class="mt-8">
       <h2 class="text-2xl font-bold mb-4">Rapports de Performance</h2>
-      <!-- Contenu des rapports de performance -->
     </section>
     <section id="testimonials" class="mt-8">
       <h2 class="text-2xl font-bold mb-4">Témoignages</h2>
-      <!-- Contenu des témoignages -->
     </section>
   </main>
 
@@ -326,14 +331,9 @@
   </footer>
 
   <script>
-    // Function to check if the user is premium
-    async function isPremiumUser() {
-      return await window.isPremiumPromise;
-    }
-
     // Function to export charts
     function exportChart(chartId) {
-      isPremiumUser().then(isPremium => {
+      window.isPremiumPromise.then(isPremium => {
         if (!isPremium) {
           alert("Cette fonctionnalité est réservée aux utilisateurs premium.");
           return;
@@ -359,7 +359,7 @@
 
     // Function to open the big chart modal
     async function openBigChart(signal) {
-      const isPremium = await isPremiumUser();
+      const isPremium = await window.isPremiumPromise;
 
       if (signal.premium && !isPremium) {
         alert("Ce signal est réservé aux abonnés premium.");
@@ -493,9 +493,7 @@
         bigChartInstance = null;
       }
 
-      // Remove the modal-open class from the body
       document.body.classList.remove('modal-open');
-
       bigChartModal.classList.remove("active");
     }
 
@@ -506,7 +504,7 @@
 
     // Export big chart
     exportBigChartBtn.addEventListener("click", () => {
-      isPremiumUser().then(isPremium => {
+      window.isPremiumPromise.then(isPremium => {
         if (!isPremium) {
           alert("Cette fonctionnalité est réservée aux utilisateurs premium.");
           return;
@@ -544,8 +542,8 @@
 
     // Function to toggle follow status
     async function toggleFollow(signal) {
-      const isPremium = await isPremiumUser();
-      const user = supabase.auth.user();
+      const isPremium = await window.isPremiumPromise;
+      const user = window.supabase.auth.user();
 
       if (!user) {
         alert("Vous devez être connecté pour suivre un signal.");
@@ -553,7 +551,7 @@
       }
 
       if (!isPremium) {
-        const { data: followedSignals, error } = await supabase
+        const { data: followedSignals, error } = await window.supabase
           .from('followed_signals')
           .select('*')
           .eq('user_id', user.id);
@@ -569,7 +567,7 @@
         }
       }
 
-      const { data: existingFollow, error: fetchError } = await supabase
+      const { data: existingFollow, error: fetchError } = await window.supabase
         .from('followed_signals')
         .select('*')
         .eq('user_id', user.id)
@@ -582,8 +580,7 @@
       }
 
       if (existingFollow) {
-        // Supprimer le signal suivi
-        const { error: deleteError } = await supabase
+        const { error: deleteError } = await window.supabase
           .from('followed_signals')
           .delete()
           .eq('id', existingFollow.id);
@@ -594,8 +591,7 @@
           alert("Signal retiré de vos suivis.");
         }
       } else {
-        // Ajouter le signal suivi
-        const { error: insertError } = await supabase
+        const { error: insertError } = await window.supabase
           .from('followed_signals')
           .insert([{ user_id: user.id, signal_name: signal.name }]);
 
@@ -611,13 +607,13 @@
 
     // Function to check if a signal is followed
     async function isFollowed(signal) {
-      const user = supabase.auth.user();
+      const user = window.supabase.auth.user();
 
       if (!user) {
         return false;
       }
 
-      const { data, error } = await supabase
+      const { data, error } = await window.supabase
         .from('followed_signals')
         .select('*')
         .eq('user_id', user.id)
@@ -637,8 +633,8 @@
       const data = await fetchSignals();
       if (!data) return;
 
-      const isPremium = await isPremiumUser();
-      const user = supabase.auth.user();
+      const isPremium = await window.isPremiumPromise;
+      const user = window.supabase.auth.user();
 
       const container = document.getElementById("signalsContainer");
       const premiumNotice = document.getElementById("premiumNotice");
@@ -764,6 +760,7 @@
         premiumNotice.textContent = "Certains signaux sont réservés aux abonnés premium. Abonnez-vous pour tout débloquer.";
       }
     }
+  }
 
     document.addEventListener('DOMContentLoaded', function() {
       const signalFilter = document.getElementById('signalFilter');
