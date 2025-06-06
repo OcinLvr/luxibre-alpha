@@ -14,7 +14,6 @@
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@1.2.1/dist/chartjs-plugin-zoom.min.js"></script>
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
   <style>
-    /* Styles remain the same as before */
     :root {
       --primary-color: #22c55e;
       --secondary-color: #1e293b;
@@ -85,16 +84,11 @@
     </div>
   </footer>
 
-  <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
-
+  <script>
     // Initialiser Supabase
     const supabaseUrl = 'https://jrgdwozxcilasllpvikh.supabase.co';
     const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpyZ2R3b3p4Y2lsYXNsbHB2aWtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4MjQ0NTEsImV4cCI6MjA2MzQwMDQ1MX0.S2oGP2rdtq1IkW-oH5mC8omm698PdCgQJtGVLlIFj3w';
-    const supabase = createClient(supabaseUrl, supabaseKey);
-
-    // Assurez-vous que Supabase est accessible globalement
-    window.supabase = supabase;
+    const supabase = window.supabase = window.Supabase.createClient(supabaseUrl, supabaseKey);
 
     // Function to export charts
     function exportChart(chartId) {
@@ -308,7 +302,7 @@
     // Function to toggle follow status
     async function toggleFollow(signal) {
       const isPremium = await window.isPremiumPromise;
-      const user = window.supabase.auth.user();
+      const { data: { user } } = await supabase.auth.getUser();
 
       if (!user) {
         alert("Vous devez être connecté pour suivre un signal.");
@@ -316,7 +310,7 @@
       }
 
       if (!isPremium) {
-        const { data: followedSignals, error } = await window.supabase
+        const { data: followedSignals, error } = await supabase
           .from('followed_signals')
           .select('*')
           .eq('user_id', user.id);
@@ -332,7 +326,7 @@
         }
       }
 
-      const { data: existingFollow, error: fetchError } = await window.supabase
+      const { data: existingFollow, error: fetchError } = await supabase
         .from('followed_signals')
         .select('*')
         .eq('user_id', user.id)
@@ -345,7 +339,7 @@
       }
 
       if (existingFollow) {
-        const { error: deleteError } = await window.supabase
+        const { error: deleteError } = await supabase
           .from('followed_signals')
           .delete()
           .eq('id', existingFollow.id);
@@ -356,7 +350,7 @@
           alert("Signal retiré de vos suivis.");
         }
       } else {
-        const { error: insertError } = await window.supabase
+        const { error: insertError } = await supabase
           .from('followed_signals')
           .insert([{ user_id: user.id, signal_name: signal.name }]);
 
@@ -372,13 +366,13 @@
 
     // Function to check if a signal is followed
     async function isFollowed(signal) {
-      const user = window.supabase.auth.user();
+      const { data: { user } } = await supabase.auth.getUser();
 
       if (!user) {
         return false;
       }
 
-      const { data, error } = await window.supabase
+      const { data, error } = await supabase
         .from('followed_signals')
         .select('*')
         .eq('user_id', user.id)
@@ -399,7 +393,7 @@
       if (!data) return;
 
       const isPremium = await window.isPremiumPromise;
-      const user = window.supabase.auth.user();
+      const { data: { user } } = await supabase.auth.getUser();
 
       const container = document.getElementById("signalsContainer");
       const premiumNotice = document.getElementById("premiumNotice");
@@ -525,6 +519,7 @@
         premiumNotice.textContent = "Certains signaux sont réservés aux abonnés premium. Abonnez-vous pour tout débloquer.";
       }
     }
+  }
 
     document.addEventListener('DOMContentLoaded', function() {
       const signalFilter = document.getElementById('signalFilter');
