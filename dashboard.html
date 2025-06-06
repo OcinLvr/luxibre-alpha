@@ -7,13 +7,13 @@
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/luxon@1.25.0"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.0.0"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@1.2.1/dist/chartjs-plugin-zoom.min.js"></script>
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
   <style>
-    /* Styles remain the same as before */
     :root {
       --primary-color: #22c55e;
       --secondary-color: #1e293b;
@@ -149,6 +149,22 @@
     }
 
     .export-btn:hover {
+      background: #16a34a;
+    }
+
+    .follow-btn {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: background 0.3s;
+    }
+
+    .follow-btn:hover {
       background: #16a34a;
     }
 
@@ -315,9 +331,14 @@
   </footer>
 
   <script>
+    // Initialiser Supabase
+    const supabaseUrl = 'VOTRE_SUPABASE_URL';
+    const supabaseKey = 'VOTRE_SUPABASE_KEY';
+    const supabase = Supabase.createClient(supabaseUrl, supabaseKey);
+
     // Function to check if the user is premium
     async function isPremiumUser() {
-      return false; // Change this to true to simulate a premium user
+      return await window.isPremiumPromise;
     }
 
     // Function to export charts
@@ -531,12 +552,103 @@
       }
     }
 
+    // Function to toggle follow status
+    async function toggleFollow(signal) {
+      const isPremium = await isPremiumUser();
+      const user = supabase.auth.user();
+
+      if (!user) {
+        alert("Vous devez être connecté pour suivre un signal.");
+        return;
+      }
+
+      if (!isPremium) {
+        const { data: followedSignals, error } = await supabase
+          .from('followed_signals')
+          .select('*')
+          .eq('user_id', user.id);
+
+        if (error) {
+          console.error("Erreur lors de la récupération des signaux suivis:", error);
+          return;
+        }
+
+        if (followedSignals.length >= 1) {
+          alert("Les utilisateurs gratuits ne peuvent suivre qu'un seul article. Passez premium pour en suivre plus.");
+          return;
+        }
+      }
+
+      const { data: existingFollow, error: fetchError } = await supabase
+        .from('followed_signals')
+        .select('*')
+        .eq('user_id', user.id)
+        .eq('signal_name', signal.name)
+        .single();
+
+      if (fetchError && fetchError.message !== "JSON object requested, multiple (or no) rows returned") {
+        console.error("Erreur lors de la vérification du signal suivi:", fetchError);
+        return;
+      }
+
+      if (existingFollow) {
+        // Supprimer le signal suivi
+        const { error: deleteError } = await supabase
+          .from('followed_signals')
+          .delete()
+          .eq('id', existingFollow.id);
+
+        if (deleteError) {
+          console.error("Erreur lors de la suppression du signal suivi:", deleteError);
+        } else {
+          alert("Signal retiré de vos suivis.");
+        }
+      } else {
+        // Ajouter le signal suivi
+        const { error: insertError } = await supabase
+          .from('followed_signals')
+          .insert([{ user_id: user.id, signal_name: signal.name }]);
+
+        if (insertError) {
+          console.error("Erreur lors de l'ajout du signal suivi:", insertError);
+        } else {
+          alert("Signal ajouté à vos suivis.");
+        }
+      }
+
+      renderSignals();
+    }
+
+    // Function to check if a signal is followed
+    async function isFollowed(signal) {
+      const user = supabase.auth.user();
+
+      if (!user) {
+        return false;
+      }
+
+      const { data, error } = await supabase
+        .from('followed_signals')
+        .select('*')
+        .eq('user_id', user.id)
+        .eq('signal_name', signal.name)
+        .single();
+
+      if (error && error.message !== "JSON object requested, multiple (or no) rows returned") {
+        console.error("Erreur lors de la vérification du signal suivi:", error);
+        return false;
+      }
+
+      return !!data;
+    }
+
     // Function to render signals
     async function renderSignals() {
       const data = await fetchSignals();
       if (!data) return;
 
       const isPremium = await isPremiumUser();
+      const user = supabase.auth.user();
 
       const container = document.getElementById("signalsContainer");
       const premiumNotice = document.getElementById("premiumNotice");
@@ -546,10 +658,9 @@
       ["achat", "vente", "conservation"].forEach(category => {
         if (!data[category] || !Array.isArray(data[category])) return;
 
-        // Sort signals so that non-premium appear first
         data[category].sort((a, b) => (a.premium === b.premium) ? 0 : a.premium ? 1 : -1);
 
-        data[category].forEach((signal, i) => {
+        data[category].forEach(async (signal) => {
           const card = document.createElement("div");
           card.className = "card";
           card.dataset.category = category;
@@ -561,11 +672,11 @@
             premiumLocked = true;
           }
 
-          const chartId = `chart-${category}-${i}`;
-
-          // Use Luxon to format the update date
+          const chartId = `chart-${category}-${data[category].indexOf(signal)}`;
           const updatedDate = luxon.DateTime.fromISO(signal.updated);
           const formattedUpdatedDate = updatedDate.toLocaleString(luxon.DateTime.DATETIME_MED);
+
+          const isSignalFollowed = user ? await isFollowed(signal) : false;
 
           card.innerHTML = `
             ${signal.premium ? '<div class="premium-badge">Premium</div>' : ''}
@@ -580,6 +691,9 @@
                 <canvas id="${chartId}" width="300" height="150"></canvas>
                 <button class="export-btn" onclick="exportChart('${chartId}')">Exporter</button>
               </div>
+              ${user ? `<button class="follow-btn" onclick="toggleFollow(${JSON.stringify(signal).split('"').join('&quot;')})">
+                ${isSignalFollowed ? 'Ne plus suivre' : 'Suivre'}
+              </button>` : '<p>Connectez-vous pour suivre ce signal.</p>'}
             </div>
           `;
 
@@ -660,6 +774,7 @@
         premiumNotice.textContent = "Certains signaux sont réservés aux abonnés premium. Abonnez-vous pour tout débloquer.";
       }
     }
+  }
 
     document.addEventListener('DOMContentLoaded', function() {
       const signalFilter = document.getElementById('signalFilter');
