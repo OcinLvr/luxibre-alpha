@@ -21,13 +21,6 @@
       --accent-color: #86efac;
     }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #0f172a;
-      color: var(--text-color);
-      margin: 0;
-    }
-
     .dashboard-nav select {
       background: var(--primary-color);
       color: white;
@@ -278,6 +271,8 @@
   </style>
 </head>
 <body>
+  <script type="module" src="JS/loadHeader.js"></script>
+  
   <nav class="dashboard-nav flex gap-2 sm:justify-center p-4 bg-gray-800">
     <select id="signalFilter" class="text-sm sm:text-base px-3 py-1.5 bg-green-500 text-white font-medium rounded-full">
       <option value="all">Tous les signaux</option>
