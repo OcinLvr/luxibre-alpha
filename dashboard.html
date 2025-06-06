@@ -633,8 +633,7 @@
       const data = await fetchSignals();
       if (!data) return;
 
-      const isPremium = await window.isPremiumPromise;
-      const user = window.supabase.auth.user();
+      const isPremium = await isPremiumUser();
 
       const container = document.getElementById("signalsContainer");
       const premiumNotice = document.getElementById("premiumNotice");
