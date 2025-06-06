@@ -519,7 +519,7 @@
     // Function to fetch signals from signals.json
     async function fetchSignals() {
       try {
-        const response = await fetch('signals.json');
+        const response = await fetch('data/signals.json');
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
