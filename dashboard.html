@@ -1,26 +1,19 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Dashboard moderne pour Luxibre Alpha">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Luxibre Alpha - Dashboard Moderne</title>
-
-  <!-- Chart.js + Luxon adapter + zoom plugin -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/luxon@1.25.0"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.0.0"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@1.2.1/dist/chartjs-plugin-zoom.min.js"></script>
-
-  <!-- html2canvas for export -->
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-
   <style>
+    /* Styles remain the same as before */
     :root {
       --primary-color: #22c55e;
       --secondary-color: #1e293b;
@@ -35,7 +28,7 @@
       margin: 0;
     }
 
-    nav.dashboard-nav select {
+    .dashboard-nav select {
       background: var(--primary-color);
       color: white;
       border: none;
@@ -46,7 +39,7 @@
       transition: background 0.3s;
     }
 
-    nav.dashboard-nav select:hover {
+    .dashboard-nav select:hover {
       background: #16a34a;
     }
 
@@ -172,7 +165,6 @@
       text-decoration: none;
     }
 
-    /* Modal style for big chart */
     body.modal-open {
       overflow: hidden;
     }
@@ -270,13 +262,6 @@
   </style>
 </head>
 <body>
-
-  <script type="module" src="JS/loadHeader.js"></script>
-
-  <!-- Header partagé -->
-  <div id="headerContainer"></div>
-
-  <!-- Navigation spécifique au dashboard -->
   <nav class="dashboard-nav flex gap-2 sm:justify-center p-4 bg-gray-800">
     <select id="signalFilter" class="text-sm sm:text-base px-3 py-1.5 bg-green-500 text-white font-medium rounded-full">
       <option value="all">Tous les signaux</option>
@@ -292,20 +277,19 @@
     </select>
   </nav>
 
-  <main>
+  <main class="container mx-auto p-4">
     <div id="premiumNotice" class="notice" style="display: none;"></div>
-    <div id="signalsContainer"></div>
-    <section id="performanceReports">
-      <h2>Rapports de Performance</h2>
+    <div id="signalsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+    <section id="performanceReports" class="mt-8">
+      <h2 class="text-2xl font-bold mb-4">Rapports de Performance</h2>
       <!-- Contenu des rapports de performance -->
     </section>
-    <section id="testimonials">
-      <h2>Témoignages</h2>
+    <section id="testimonials" class="mt-8">
+      <h2 class="text-2xl font-bold mb-4">Témoignages</h2>
       <!-- Contenu des témoignages -->
     </section>
   </main>
 
-  <!-- Modal grand graphique -->
   <div id="bigChartModal" role="dialog" aria-modal="true" aria-labelledby="bigChartTitle">
     <div id="bigChartContent">
       <div id="bigChartHeader">
@@ -321,23 +305,22 @@
     </div>
   </div>
 
-  <!-- Footer -->
-<footer class="py-10 bg-gray-100 mt-16">
-  <div class="max-w-7xl mx-auto px-6 text-center text-sm text-gray-600">
-    &copy; 2025 <span class="font-semibold text-green-600">Luxibre Alpha</span>. Tous droits réservés. |
-    <a href="/legal/mentions-legales.html" class="underline hover:text-green-600 transition">Mentions légales</a> |
-    <a href="/legal/cgu.html" class="underline hover:text-green-600 transition">CGU</a> |
-    <a href="/legal/rgpd.html" class="underline hover:text-green-600 transition">RGPD</a>
-  </div>
-</footer>
+  <footer class="py-10 bg-gray-100 mt-16">
+    <div class="max-w-7xl mx-auto px-6 text-center text-sm text-gray-600">
+      &copy; 2025 <span class="font-semibold text-green-600">Luxibre Alpha</span>. Tous droits réservés. |
+      <a href="/legal/mentions-legales.html" class="underline hover:text-green-600 transition">Mentions légales</a> |
+      <a href="/legal/cgu.html" class="underline hover:text-green-600 transition">CGU</a> |
+      <a href="/legal/rgpd.html" class="underline hover:text-green-600 transition">RGPD</a>
+    </div>
+  </footer>
 
   <script>
-    // Fonction pour vérifier si l'utilisateur est premium
+    // Function to check if the user is premium
     async function isPremiumUser() {
-      return await window.isPremiumPromise;
+      return false; // Change this to true to simulate a premium user
     }
 
-    // Fonction d'export pour petits graphiques
+    // Function to export charts
     function exportChart(chartId) {
       isPremiumUser().then(isPremium => {
         if (!isPremium) {
@@ -354,7 +337,7 @@
       });
     }
 
-    // Variables globales pour modal graphique
+    // Variables for the big chart modal
     let bigChartInstance = null;
     const bigChartModal = document.getElementById("bigChartModal");
     const bigChartCanvas = document.getElementById("bigChartCanvas").getContext('2d');
@@ -363,7 +346,7 @@
     const resetZoomBtn = document.getElementById("resetZoomBtn");
     const exportBigChartBtn = document.getElementById("exportBigChartBtn");
 
-    // Fonction pour ouvrir la modal du grand graphique
+    // Function to open the big chart modal
     async function openBigChart(signal) {
       const isPremium = await isPremiumUser();
 
@@ -374,7 +357,7 @@
 
       bigChartTitle.textContent = signal.name + " - Prix Historique";
 
-      // Détruire l'ancien graphique si présent
+      // Destroy the old chart if present
       if (bigChartInstance) {
         bigChartInstance.destroy();
       }
@@ -467,7 +450,7 @@
         }
       });
 
-      // Afficher les prédictions de prix si premium
+      // Display price predictions if premium
       const predictionsDiv = document.getElementById('predictionsContainer');
       if (isPremium) {
         if (signal.predictions) {
@@ -488,7 +471,7 @@
         `;
       }
 
-      // Ouvrir la modal
+      // Open the modal
       document.body.classList.add('modal-open');
       bigChartModal.classList.add("active");
     }
@@ -499,18 +482,18 @@
         bigChartInstance = null;
       }
 
-      // Supprimer la classe modal-open du corps de la page
+      // Remove the modal-open class from the body
       document.body.classList.remove('modal-open');
 
       bigChartModal.classList.remove("active");
     }
 
-    // Réinitialiser zoom du grand graphique
+    // Reset zoom of the big chart
     resetZoomBtn.addEventListener("click", () => {
       if (bigChartInstance) bigChartInstance.resetZoom();
     });
 
-    // Exporter grand graphique
+    // Export big chart
     exportBigChartBtn.addEventListener("click", () => {
       isPremiumUser().then(isPremium => {
         if (!isPremium) {
@@ -528,17 +511,19 @@
 
     closeBigChartBtn.addEventListener("click", closeBigChart);
 
-    // Fermer modal au clic hors contenu
+    // Close modal when clicking outside content
     bigChartModal.addEventListener("click", e => {
       if (e.target === bigChartModal) closeBigChart();
     });
 
-    // Chargement des signaux et affichage
+    // Function to fetch signals from signals.json
     async function fetchSignals() {
       try {
-        const res = await fetch("data/signals.json");
-        if (!res.ok) throw new Error("HTTP error " + res.status);
-        return await res.json();
+        const response = await fetch('signals.json');
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.json();
       } catch (err) {
         console.error("Erreur lors du chargement des signaux:", err);
         document.getElementById("signalsContainer").textContent = "Erreur lors du chargement des signaux.";
@@ -546,6 +531,7 @@
       }
     }
 
+    // Function to render signals
     async function renderSignals() {
       const data = await fetchSignals();
       if (!data) return;
@@ -560,7 +546,7 @@
       ["achat", "vente", "conservation"].forEach(category => {
         if (!data[category] || !Array.isArray(data[category])) return;
 
-        // Trier les signaux pour que les non-premium apparaissent en premier
+        // Sort signals so that non-premium appear first
         data[category].sort((a, b) => (a.premium === b.premium) ? 0 : a.premium ? 1 : -1);
 
         data[category].forEach((signal, i) => {
@@ -577,7 +563,7 @@
 
           const chartId = `chart-${category}-${i}`;
 
-          // Utiliser Luxon pour formater la date de mise à jour
+          // Use Luxon to format the update date
           const updatedDate = luxon.DateTime.fromISO(signal.updated);
           const formattedUpdatedDate = updatedDate.toLocaleString(luxon.DateTime.DATETIME_MED);
 
@@ -592,6 +578,7 @@
               <p><strong>Dernière mise à jour :</strong> ${formattedUpdatedDate}</p>
               <div class="chart-container">
                 <canvas id="${chartId}" width="300" height="150"></canvas>
+                <button class="export-btn" onclick="exportChart('${chartId}')">Exporter</button>
               </div>
             </div>
           `;
@@ -659,8 +646,10 @@
               }
             });
 
-            card.querySelector('.chart-container').addEventListener('click', () => {
-              openBigChart(signal);
+            card.querySelector('.chart-container').addEventListener('click', (e) => {
+              if (e.target !== card.querySelector('.export-btn')) {
+                openBigChart(signal);
+              }
             });
           }
         });
@@ -679,7 +668,7 @@
       signalFilter.addEventListener('change', filterAssets);
       typeFilter.addEventListener('change', filterAssets);
 
-      async function filterAssets() {
+      function filterAssets() {
         const signalCategory = signalFilter.value;
         const typeCategory = typeFilter.value;
 
