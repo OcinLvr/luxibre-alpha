@@ -1,94 +1,55 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Luxibre Alpha – Dashboard</title>
-  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script defer src="supabase.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/@tailwindcss/forms@0.5.3/dist/forms.min.css" rel="stylesheet">
+  <meta name="description" content="Tableau de bord dynamique Luxibre Alpha : signaux boursiers, alertes, prévisions IA, réservé aux utilisateurs premium." />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tailwindcss/forms@0.5.6/dist/forms.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js/dist/Chart.min.css">
+  <link rel="stylesheet" href="/styles/dashboard.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/luxon@3/build/global/luxon.min.js"></script>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans">
+<body class="bg-gray-900 text-white font-sans min-h-screen">
 
-  <!-- Header -->
-  <header class="bg-white shadow">
-    <div class="max-w-7xl mx-auto px-4 py-6 flex justify-between items-center">
-      <h1 class="text-2xl font-bold">Luxibre Alpha</h1>
-      <div id="user-status" class="text-sm text-gray-600">Chargement...</div>
-    </div>
+  <!-- En-tête -->
+  <header class="bg-gray-800 p-4 shadow-md flex justify-between items-center">
+    <h1 class="text-xl font-bold">📊 Luxibre Alpha</h1>
+    <a href="/pricing.html" class="text-blue-400 hover:text-blue-300 font-medium">Passer Premium</a>
   </header>
 
-  <!-- Contenu principal -->
-  <main class="max-w-7xl mx-auto p-6">
-    <h2 class="text-xl font-semibold mb-4">Vos signaux boursiers</h2>
-    <div id="signals-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <!-- Les cartes de signaux seront injectées ici -->
-    </div>
+  <!-- Notification Premium -->
+  <div id="premiumNotice" class="text-center text-yellow-400 mt-4 px-4 hidden"></div>
+
+  <!-- Conteneur principal -->
+  <main id="signalsContainer" class="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- Les cartes sont injectées ici par dashboard.js -->
   </main>
 
-  <!-- Alertes stylisées -->
-  <div id="alert-container" class="fixed bottom-4 right-4 z-50"></div>
+  <!-- Modale graphique -->
+  <div id="bigChartModal" class="fixed inset-0 bg-black bg-opacity-80 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-gray-800 p-6 rounded-lg w-full max-w-4xl relative max-h-[90vh] overflow-auto">
+      <h2 id="bigChartTitle" class="text-xl font-semibold mb-4 text-center"></h2>
+      <canvas id="bigChartCanvas" class="w-full h-64 mb-4"></canvas>
+      <div id="predictionsContainer" class="text-sm text-gray-300 mb-4 text-center"></div>
+      <div class="flex justify-end gap-2">
+        <button id="resetZoomBtn" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded">Réinitialiser Zoom</button>
+        <button id="exportBigChartBtn" class="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded">Exporter</button>
+        <button id="closeBigChartBtn" class="bg-red-600 hover:bg-red-500 text-white px-4 py-2 rounded">Fermer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chargement Supabase -->
+  <script type="module" src="JS/supabase.js"></script>
 
   <!-- Script principal -->
-  <script>
-    async function showAlert(message, type = 'info') {
-      const color = {
-        info: 'bg-blue-100 text-blue-800',
-        success: 'bg-green-100 text-green-800',
-        error: 'bg-red-100 text-red-800',
-      }[type] || 'bg-gray-100 text-gray-800';
-
-      const alert = document.createElement('div');
-      alert.className = `p-4 mb-2 rounded shadow ${color}`;
-      alert.textContent = message;
-      document.getElementById('alert-container').appendChild(alert);
-      setTimeout(() => alert.remove(), 4000);
-    }
-
-    async function renderSignals() {
-      const isPremium = await isPremiumUser();
-      const { data: signalsRes, error } = await supabase.from('signals').select('*');
-
-      if (error) {
-        showAlert("Erreur lors du chargement des signaux.", "error");
-        return;
-      }
-
-      document.getElementById('user-status').textContent = isPremium
-        ? 'Abonnement : Premium ⭐'
-        : 'Abonnement : Gratuit';
-
-      const container = document.getElementById('signals-container');
-      container.innerHTML = '';
-
-      for (const signal of signalsRes) {
-        const isFollowing = await isFollowed(signal);
-
-        const card = document.createElement('div');
-        card.className = 'bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition duration-300';
-
-        card.innerHTML = `
-          <h3 class="text-lg font-bold mb-2">${signal.name}</h3>
-          <p class="mb-2">Recommandation : <span class="font-semibold text-${signal.recommendation === 'acheter' ? 'green' : signal.recommendation === 'vendre' ? 'red' : 'yellow'}-600">${signal.recommendation}</span></p>
-          <p class="text-sm text-gray-500 mb-4">${signal.description || ''}</p>
-          <button onclick="handleToggleFollow(${JSON.stringify(signal).replace(/"/g, '&quot;')})"
-            class="follow-btn px-4 py-2 rounded font-semibold text-white ${isFollowing ? 'bg-red-500 hover:bg-red-600' : 'bg-blue-600 hover:bg-blue-700'}">
-            ${isFollowing ? 'Retirer des suivis' : 'Suivre'}
-          </button>
-        `;
-
-        container.appendChild(card);
-      }
-    }
-
-    async function handleToggleFollow(signal) {
-      await toggleFollow(signal);
-      await renderSignals();
-    }
-
-    // Au chargement
-    window.addEventListener('DOMContentLoaded', renderSignals);
+  <script type="module">
+    import { renderSignals } from 'JS/dashboard.js';
+    renderSignals(); // attend que supabase.js ait défini isPremiumPromise
   </script>
 </body>
 </html>
