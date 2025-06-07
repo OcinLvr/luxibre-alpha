@@ -1818,7 +1818,7 @@
       "recommendation": "Acheter",
       "score": 70,
       "premium": true,
-      "updated": "2025-06-07T13:29:23.160Z",
+      "updated": "2025-06-07T14:19:43.861Z",
       "indicators": {
         "rsi": 39.12437004210473,
         "macd": 668.8400488457119,
@@ -5562,7 +5562,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-06-07T13:29:23.226Z",
+      "updated": "2025-06-07T14:19:44.065Z",
       "indicators": {
         "rsi": 45.41086299653622,
         "macd": 55.14763324699197,
@@ -5842,7 +5842,7 @@
       "recommendation": "Conserver",
       "score": 45,
       "premium": false,
-      "updated": "2025-06-07T13:29:23.326Z",
+      "updated": "2025-06-07T14:19:44.486Z",
       "indicators": {
         "rsi": 34.517766497461906,
         "macd": -0.04272919309940226,
@@ -6122,7 +6122,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-06-07T13:29:23.386Z",
+      "updated": "2025-06-07T14:19:44.699Z",
       "indicators": {
         "rsi": 25.294117647058812,
         "macd": -0.023363510172416557,
@@ -6402,7 +6402,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-06-07T13:29:23.508Z",
+      "updated": "2025-06-07T14:19:45.109Z",
       "indicators": {
         "rsi": 25.462962962962962,
         "macd": -0.15978756209582734,
@@ -6682,7 +6682,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-06-07T13:29:23.448Z",
+      "updated": "2025-06-07T14:19:44.905Z",
       "indicators": {
         "rsi": 16.41720123544785,
         "macd": -3.8570830457516934,
@@ -6962,7 +6962,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-06-07T13:29:23.578Z",
+      "updated": "2025-06-07T14:19:45.333Z",
       "indicators": {
         "rsi": 17.682232346241435,
         "macd": -0.007762307266220597,
