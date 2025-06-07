@@ -1,92 +1,42 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Luxibre Alpha - Signaux Boursiers</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link rel="stylesheet" href="css/styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <link rel="stylesheet" href="path/to/your/local/font-awesome.min.css">
+  <link rel="stylesheet" href="path/to/your/local/tailwind.min.css">
+  <link rel="stylesheet" href="css/styles.min.css">
+  <script src="path/to/your/local/lottie-player.js" defer></script>
   <style>
     body {
-      font-family: 'Inter', sans-serif;
-    }
-
-    #header-container {
-      min-height: 80px;
-      background-color: white;
-    }
-    
-    .hero {
-      background: linear-gradient(135deg, rgba(34, 197, 94, 0.9), rgba(20, 83, 45, 0.9));
-      color: white;
-      padding: 4rem 1rem;
-      text-align: center;
-    }
-
-    .cta-button {
-      background-color: #22c55e;
-      color: white;
-      border: none;
-      padding: 0.75rem 1.5rem;
-      border-radius: 0.5rem;
-      cursor: pointer;
-      font-weight: bold;
-      display: inline-block;
-      margin-top: 1rem;
-      transition: background-color 0.3s;
-    }
-
-    .cta-button:hover {
-      background-color: #16a34a;
-    }
-
-    .testimonials {
-      padding: 2rem;
-      background-color: rgba(34, 197, 94, 0.1);
-      margin: 2rem auto;
-      max-width: 800px;
-      border-radius: 0.5rem;
-    }
-
-    .social-proof {
-      display: flex;
-      justify-content: space-around;
-      margin: 1rem 0;
-    }
-
-    .logo {
-      height: 50px;
-      margin: 0 1rem;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     }
   </style>
 </head>
 <body class="bg-gray-50 text-gray-900">
-
-  <script type="module" src="JS/loadHeader.js"></script>
+  <script type="module" src="JS/loadHeader.js" defer></script>
 
   <!-- Hero Section -->
-  <section class="hero">
+  <section class="bg-gradient-to-br from-green-500 to-green-800 text-white py-20 px-4 text-center">
     <h1 class="text-4xl font-extrabold mb-4">Les signaux boursiers les plus précis du marché, chaque jour.</h1>
     <p class="text-xl mb-6">Accédez à une plateforme conçue pour les traders actifs et les investisseurs sérieux.</p>
-    <a href="signup.html" class="cta-button">Accédez à vos signaux gratuitement</a>
+    <a href="signup.html" class="bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300">Accédez à vos signaux gratuitement</a>
   </section>
 
   <!-- Stats Section -->
   <section class="py-10">
-    <div class="stats">
-      <div class="stat-item">
-        <div class="stat-number">+1000</div>
+    <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+      <div class="stat-item p-4">
+        <div class="stat-number text-3xl font-bold">+1000</div>
         <div class="stat-label">Utilisateurs actifs</div>
       </div>
-      <div class="stat-item">
-        <div class="stat-number">95%</div>
+      <div class="stat-item p-4">
+        <div class="stat-number text-3xl font-bold">95%</div>
         <div class="stat-label">Taux de précision</div>
       </div>
-      <div class="stat-item">
-        <div class="stat-number">24/7</div>
+      <div class="stat-item p-4">
+        <div class="stat-number text-3xl font-bold">24/7</div>
         <div class="stat-label">Support client</div>
       </div>
     </div>
@@ -117,16 +67,18 @@
   </section>
 
   <!-- Testimonials Section -->
-  <section class="testimonials">
-    <h2 class="text-3xl font-bold text-center mb-8">Témoignages</h2>
-    <div class="social-proof">
-      <div class="testimonial">
-        <p>"Cette plateforme a transformé ma façon de trader. Les signaux sont précis et fiables."</p>
-        <p><strong>- Jean D.</strong></p>
-      </div>
-      <div class="testimonial">
-        <p>"Je recommande Luxibre Alpha à tous les traders sérieux. Les résultats parlent d'eux-mêmes."</p>
-        <p><strong>- Marie L.</strong></p>
+  <section class="testimonials py-10 bg-green-50">
+    <div class="max-w-4xl mx-auto px-6">
+      <h2 class="text-3xl font-bold text-center mb-8">Témoignages</h2>
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="testimonial p-4 bg-white rounded-lg shadow">
+          <p>"Cette plateforme a transformé ma façon de trader. Les signaux sont précis et fiables."</p>
+          <p class="font-bold">- Jean D.</p>
+        </div>
+        <div class="testimonial p-4 bg-white rounded-lg shadow">
+          <p>"Je recommande Luxibre Alpha à tous les traders sérieux. Les résultats parlent d'eux-mêmes."</p>
+          <p class="font-bold">- Marie L.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -136,12 +88,12 @@
     <div class="max-w-4xl mx-auto px-6 text-center">
       <h3 class="text-4xl md:text-5xl font-bold mb-6">Faites le choix de l'efficacité</h3>
       <p class="text-xl md:text-2xl mb-8">Votre avenir financier commence maintenant. Ne laissez pas passer les meilleures opportunités.</p>
-      <a href="signup.html" class="cta-button">Je passe à l’action</a>
+      <a href="signup.html" class="bg-white text-red-500 hover:bg-gray-100 font-bold py-3 px-6 rounded-lg transition duration-300">Je passe à l’action</a>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="py-10 bg-gray-100 mt-16">
+  <footer class="py-10 bg-gray-100">
     <div class="max-w-7xl mx-auto px-6 text-center text-sm text-gray-600">
       &copy; 2025 <span class="font-semibold text-green-600">Luxibre Alpha</span>. Tous droits réservés. |
       <a href="/legal/mentions-legales.html" class="underline hover:text-green-600 transition">Mentions légales</a> |
@@ -149,6 +101,5 @@
       <a href="/legal/rgpd.html" class="underline hover:text-green-600 transition">RGPD</a>
     </div>
   </footer>
-
 </body>
 </html>
