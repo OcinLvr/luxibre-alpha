@@ -1,245 +1,94 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Luxibre Alpha - Dashboard Moderne</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-  <script src="supabase.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/luxon@1.25.0"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.0.0"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@1.2.1/dist/chartjs-plugin-zoom.min.js"></script>
-  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-  <style>
-    :root {
-      --primary-color: #22c55e;
-      --secondary-color: #1e293b;
-      --text-color: #f1f5f9;
-      --accent-color: #86efac;
-    }
-    body {
-      font-family: 'Inter', sans-serif;
-      background: #0f172a;
-      color: var(--text-color);
-      margin: 0;
-    }
-    .modal-open { overflow: hidden; }
-    #bigChartModal {
-      display: none;
-      position: fixed;
-      inset:0; background: rgba(0,0,0,0.5);
-      justify-content:center; align-items:center;
-    }
-    #bigChartContent {
-      background: #1e293b; padding:1rem; border-radius:0.5rem;
-      max-width:90%; max-height:90%; overflow:auto;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Luxibre Alpha – Dashboard</title>
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <script defer src="supabase.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@tailwindcss/forms@0.5.3/dist/forms.min.css" rel="stylesheet">
 </head>
-<body>
-  <div id="headerContainer"></div>
+<body class="bg-gray-50 text-gray-800 font-sans">
 
-  <nav class="dashboard-nav flex gap-2 sm:justify-center p-4 bg-gray-800">
-    <select id="signalFilter" class="..."> <!-- conservé visible abrégé -->
-      <!-- options -->
-    </select>
-    <select id="typeFilter" class="...">
-      <!-- options -->
-    </select>
-  </nav>
+  <!-- Header -->
+  <header class="bg-white shadow">
+    <div class="max-w-7xl mx-auto px-4 py-6 flex justify-between items-center">
+      <h1 class="text-2xl font-bold">Luxibre Alpha</h1>
+      <div id="user-status" class="text-sm text-gray-600">Chargement...</div>
+    </div>
+  </header>
 
-  <main class="container mx-auto p-4">
-    <div id="premiumNotice" class="notice hidden"></div>
-    <div id="signalsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
-    <!-- sections performance & témoignages inchangées -->
+  <!-- Contenu principal -->
+  <main class="max-w-7xl mx-auto p-6">
+    <h2 class="text-xl font-semibold mb-4">Vos signaux boursiers</h2>
+    <div id="signals-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Les cartes de signaux seront injectées ici -->
+    </div>
   </main>
 
-  <div id="bigChartModal" role="dialog" aria-modal="true" aria-labelledby="bigChartTitle">
-    <div id="bigChartContent">
-      <div class="flex justify-between items-center mb-4">
-        <h3 id="bigChartTitle" class="text-xl font-bold"></h3>
-        <button id="closeBigChartBtn" aria-label="Fermer"><i class="fas fa-times text-white"></i></button>
-      </div>
-      <canvas id="bigChartCanvas" style="max-height:400px;"></canvas>
-      <div id="predictionsContainer" class="mt-4 text-sm"></div>
-      <div class="flex gap-2 mt-4">
-        <button id="resetZoomBtn" class="btn">Réinitialiser Zoom</button>
-        <button id="exportBigChartBtn" class="btn">Exporter</button>
-      </div>
-    </div>
-  </div>
+  <!-- Alertes stylisées -->
+  <div id="alert-container" class="fixed bottom-4 right-4 z-50"></div>
 
-  <footer class="py-10 bg-gray-100 mt-16 text-center text-sm text-gray-600">
-    &copy; 2025 <span class="font-semibold text-green-600">Luxibre Alpha</span>. Tous droits réservés. |
-    <a href="/legal/mentions-legales.html">Mentions légales</a> |
-    <a href="/legal/cgu.html">CGU</a> |
-    <a href="/legal/rgpd.html">RGPD</a>
-  </footer>
-
+  <!-- Script principal -->
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // Chargement du header commun
-      fetch('/header.html')
-        .then(r => r.text())
-        .then(html => document.getElementById('headerContainer').innerHTML = html)
-        .catch(e => console.error("Erreur chargement header :", e));
+    async function showAlert(message, type = 'info') {
+      const color = {
+        info: 'bg-blue-100 text-blue-800',
+        success: 'bg-green-100 text-green-800',
+        error: 'bg-red-100 text-red-800',
+      }[type] || 'bg-gray-100 text-gray-800';
 
-      const modal = document.getElementById('bigChartModal');
-      document.getElementById('closeBigChartBtn')
-        .addEventListener('click', closeBigChart);
-      document.addEventListener('keydown', e => { if (e.key === 'Escape') closeBigChart(); });
-
-      async function closeBigChart() {
-        modal.classList.remove('flex');
-        modal.style.display = 'none';
-      }
-
-      function exportChartById(chartId) {
-        window.isPremiumUser().then(isPremium => {
-          if (!isPremium) {
-            alert("Fonction réservée aux abonnés premium.");
-            return;
-          }
-          html2canvas(document.getElementById(chartId)).then(canvas => {
-            const link = document.createElement('a');
-            link.download = 'chart.png';
-            link.href = canvas.toDataURL();
-            link.click();
-          });
-        });
-      }
-      window.exportChart = exportChartById;
-
-      async function openBigChart(signal) {
-        const modal = document.getElementById('bigChartModal');
-        if (signal.premium && !await window.isPremiumUser()) {
-          alert("Accès réservé aux abonnés premium.");
-          return;
-        }
-
-        document.getElementById('bigChartTitle').textContent = signal.name;
-        const ctx = document.getElementById('bigChartCanvas').getContext('2d');
-        if (window.bigChartInstance) window.bigChartInstance.destroy();
-
-        window.bigChartInstance = new Chart(ctx, {
-          type: 'line',
-          data: {
-            labels: signal.history.map((_, i) => `J-${signal.history.length - i}`),
-            datasets: [{ label: signal.name, data: signal.history, borderColor:'#3b82f6', backgroundColor:'rgba(59,130,246,0.1)', tension:0.4 }]
-          },
-          options: { plugins:{ zoom:{ zoom:{ wheel:{enabled:true}, pinch:{enabled:true}, mode:'xy' }, pan:{ enabled:true, mode:'xy', modifierKey:'ctrl' } } } }
-        });
-
-        const predDiv = document.getElementById('predictionsContainer');
-        if (await window.isPremiumUser() && signal.predictions) {
-          predDiv.innerHTML = `
-            <h4 class="font-semibold mb-2">Prévisions de prix :</h4>
-            <ul class="list-disc list-inside space-y-1">
-              <li>1 jour : €${signal.predictions["1d"]}</li>
-              <li>3 jours : €${signal.predictions["3d"]}</li>
-              <li>7 jours : €${signal.predictions["7d"]}</li>
-            </ul>`;
-        } else {
-          predDiv.innerHTML = signal.premium
-            ? '<p>Prédictions réservées au premium.</p>'
-            : '<p>Aucune prédiction disponible.</p>';
-        }
-
-        modal.style.display = 'flex';
-        modal.classList.add('modal-open');
-      }
-
-      async function renderSignals() {
-    // Attendre que window.isPremiumUser soit disponible
-    while (typeof window.isPremiumUser !== 'function') {
-        await new Promise(resolve => setTimeout(resolve, 50));
+      const alert = document.createElement('div');
+      alert.className = `p-4 mb-2 rounded shadow ${color}`;
+      alert.textContent = message;
+      document.getElementById('alert-container').appendChild(alert);
+      setTimeout(() => alert.remove(), 4000);
     }
 
-    const data = await fetch('data/signals.json').then(r => r.json()).catch(e => { console.error(e); return null; });
-    if (!data) return;
+    async function renderSignals() {
+      const isPremium = await isPremiumUser();
+      const { data: signalsRes, error } = await supabase.from('signals').select('*');
 
-    const isPremium = await window.isPremiumUser();
-    const { data: { user } } = await supabase.auth.getUser();
-    const container = document.getElementById('signalsContainer');
-    container.innerHTML = '';
-    let premiumLocked = false;
-
-        for (const category of ['achat', 'vente', 'conservation']) {
-          (data[category] || []).sort((a, b) => a.premium - b.premium).forEach(async signal => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.dataset.category = category;
-            card.dataset.type = signal.type;
-
-            const locked = signal.premium && !isPremium;
-            if (locked) { card.classList.add('blur'); premiumLocked = true; }
-
-            const updated = luxon.DateTime.fromISO(signal.updated).toLocaleString(luxon.DateTime.DATETIME_MED);
-
-            const followed = user ? await window.isFollowed(signal) : false;
-            const btnFollow = user
-              ? `<button class="follow-btn" onclick='toggleFollow(${JSON.stringify(signal).replace(/"/g, '&quot;')})'>${followed ? 'Ne plus suivre' : 'Suivre'}</button>`
-              : '<p>Connectez-vous pour suivre.</p>';
-
-            card.innerHTML = `
-              ${signal.premium ? '<div class="premium-badge">Premium</div>' : ''}
-              ${locked ? '<button onclick="window.location.href=\'/pricing.html\'" class="upgrade">Devenez Premium</button>' : ''}
-              <div class="card-content">
-                <h3>${signal.name}</h3>
-                <p>Prix actuel : $${signal.price.toFixed(2)}</p>
-                <p>Performance 30j : ${signal.performance30j}%</p>
-                <p>Recommandation : <span>${signal.recommendation}</span></p>
-                <p>Dernière mise à jour : ${updated}</p>
-                <div class="chart-container">
-                  <canvas id="chart-${category}-${data[category].indexOf(signal)}" width="300" height="150"></canvas>
-                  <button class="export-btn" onclick="exportChart('chart-${category}-${data[category].indexOf(signal)}')">Exporter</button>
-                </div>
-                ${btnFollow}
-              </div>`;
-
-            container.appendChild(card);
-
-            if (!locked) {
-              const ctx = card.querySelector('canvas').getContext('2d');
-              new Chart(ctx, {
-                type: 'line',
-                data: {
-                  labels: signal.history.map((_,i) => `J-${signal.history.length - i}`),
-                  datasets: [{ data: signal.history, borderColor:'#3b82f6', backgroundColor:'rgba(59,130,246,0.1)', tension:0.4 }]
-                },
-                options:{},
-              });
-
-              card.querySelector('.chart-container').addEventListener('click', e => {
-                if (!e.target.classList.contains('export-btn')) openBigChart(signal);
-              });
-            }
-          });
-        }
-
-        if (premiumLocked && !isPremium) {
-          const notice = document.getElementById('premiumNotice');
-          notice.classList.remove('hidden');
-          notice.textContent = "Certains signaux sont réservés aux abonnés premium. Abonnez-vous pour tout débloquer.";
-        }
+      if (error) {
+        showAlert("Erreur lors du chargement des signaux.", "error");
+        return;
       }
 
-      ['signalFilter','typeFilter'].forEach(id =>
-        document.getElementById(id).addEventListener('change', () => {
-          document.querySelectorAll('.card').forEach(card => {
-            const matchFilter = (document.getElementById('signalFilter').value === 'all' || card.dataset.category === document.getElementById('signalFilter').value)
-              && (document.getElementById('typeFilter').value === 'all' || card.dataset.type === document.getElementById('typeFilter').value);
-            card.style.display = matchFilter ? '' : 'none';
-          });
-        })
-      );
+      document.getElementById('user-status').textContent = isPremium
+        ? 'Abonnement : Premium ⭐'
+        : 'Abonnement : Gratuit';
 
-      renderSignals();
-    });
+      const container = document.getElementById('signals-container');
+      container.innerHTML = '';
+
+      for (const signal of signalsRes) {
+        const isFollowing = await isFollowed(signal);
+
+        const card = document.createElement('div');
+        card.className = 'bg-white p-4 rounded-xl shadow-md hover:shadow-lg transition duration-300';
+
+        card.innerHTML = `
+          <h3 class="text-lg font-bold mb-2">${signal.name}</h3>
+          <p class="mb-2">Recommandation : <span class="font-semibold text-${signal.recommendation === 'acheter' ? 'green' : signal.recommendation === 'vendre' ? 'red' : 'yellow'}-600">${signal.recommendation}</span></p>
+          <p class="text-sm text-gray-500 mb-4">${signal.description || ''}</p>
+          <button onclick="handleToggleFollow(${JSON.stringify(signal).replace(/"/g, '&quot;')})"
+            class="follow-btn px-4 py-2 rounded font-semibold text-white ${isFollowing ? 'bg-red-500 hover:bg-red-600' : 'bg-blue-600 hover:bg-blue-700'}">
+            ${isFollowing ? 'Retirer des suivis' : 'Suivre'}
+          </button>
+        `;
+
+        container.appendChild(card);
+      }
+    }
+
+    async function handleToggleFollow(signal) {
+      await toggleFollow(signal);
+      await renderSignals();
+    }
+
+    // Au chargement
+    window.addEventListener('DOMContentLoaded', renderSignals);
   </script>
 </body>
 </html>
