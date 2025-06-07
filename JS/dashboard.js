@@ -1,3 +1,11 @@
+// dashboard.js
+// Import des dépendances nécessaires
+import html2canvas from "html2canvas";
+import Chart from "chart.js/auto";
+import zoomPlugin from "chartjs-plugin-zoom";
+import { DateTime } from "luxon";
+Chart.register(zoomPlugin);
+
 // Fonction pour vérifier si l'utilisateur est premium
 export async function isPremiumUser() {
   return await window.isPremiumPromise;
@@ -12,38 +20,33 @@ export function exportChart(chartId) {
     }
     const element = document.getElementById(chartId);
     html2canvas(element).then(canvas => {
-      const link = document.createElement('a');
-      link.download = 'chart.png';
+      const link = document.createElement("a");
+      link.download = "chart.png";
       link.href = canvas.toDataURL();
       link.click();
     });
   });
 }
 
-// Variables globales pour modal graphique
+// Variables globales
 let bigChartInstance = null;
 const bigChartModal = document.getElementById("bigChartModal");
-const bigChartCanvas = document.getElementById("bigChartCanvas").getContext('2d');
+const bigChartCanvas = document.getElementById("bigChartCanvas").getContext("2d");
 const bigChartTitle = document.getElementById("bigChartTitle");
 const closeBigChartBtn = document.getElementById("closeBigChartBtn");
 const resetZoomBtn = document.getElementById("resetZoomBtn");
 const exportBigChartBtn = document.getElementById("exportBigChartBtn");
 
-// Fonction pour ouvrir la modal du grand graphique
 export async function openBigChart(signal) {
   const isPremium = await isPremiumUser();
-
   if (signal.premium && !isPremium) {
     alert("Ce signal est réservé aux abonnés premium.");
     return;
   }
 
-  bigChartTitle.textContent = signal.name + " - Prix Historique";
+  bigChartTitle.textContent = `${signal.name} - Prix Historique`;
 
-  // Détruire l'ancien graphique si présent
-  if (bigChartInstance) {
-    bigChartInstance.destroy();
-  }
+  if (bigChartInstance) bigChartInstance.destroy();
 
   bigChartInstance = new Chart(bigChartCanvas, {
     type: "line",
@@ -65,118 +68,70 @@ export async function openBigChart(signal) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      animation: {
-        duration: 1000,
-        easing: 'easeInOutQuart'
-      },
+      animation: { duration: 1000, easing: "easeInOutQuart" },
       plugins: {
-        legend: {
-          display: false
-        },
+        legend: { display: false },
         tooltip: {
-          mode: 'index',
+          mode: "index",
           intersect: false,
-          backgroundColor: 'rgba(0, 0, 0, 0.8)',
-          titleFont: {
-            size: 16
-          },
-          bodyFont: {
-            size: 14
-          },
+          backgroundColor: "rgba(0, 0, 0, 0.8)",
+          titleFont: { size: 16 },
+          bodyFont: { size: 14 },
           padding: 10,
           displayColors: false
         },
         zoom: {
-          pan: {
-            enabled: true,
-            mode: 'xy',
-            modifierKey: 'ctrl',
-          },
+          pan: { enabled: true, mode: "xy", modifierKey: "ctrl" },
           zoom: {
-            wheel: {
-              enabled: true,
-            },
-            pinch: {
-              enabled: true
-            },
-            mode: 'xy',
+            wheel: { enabled: true },
+            pinch: { enabled: true },
+            mode: "xy"
           }
         }
       },
       scales: {
         x: {
-          display: true,
-          ticks: {
-            color: '#9ca3af',
-            font: {
-              size: 12
-            }
-          },
-          grid: {
-            color: '#374151',
-            drawBorder: false
-          }
+          ticks: { color: "#9ca3af", font: { size: 12 } },
+          grid: { color: "#374151", drawBorder: false }
         },
         y: {
           beginAtZero: false,
-          ticks: {
-            color: '#9ca3af',
-            font: {
-              size: 12
-            }
-          },
-          grid: {
-            color: '#374151'
-          }
+          ticks: { color: "#9ca3af", font: { size: 12 } },
+          grid: { color: "#374151" }
         }
       }
     }
   });
 
-  // Afficher les prédictions de prix si premium
-  const predictionsDiv = document.getElementById('predictionsContainer');
-  if (isPremium) {
-    if (signal.predictions) {
-      predictionsDiv.innerHTML = `
-        <h4>Prédictions de prix</h4>
-        <p>Jour 1: $${signal.predictions.day1}</p>
-        <p>Jour 3: $${signal.predictions.day3}</p>
-        <p>Jour 7: $${signal.predictions.day7}</p>
-      `;
-    } else {
-      predictionsDiv.innerHTML = `
-        <p>Les prédictions de prix ne sont pas disponibles pour ce signal.</p>
-      `;
-    }
+  const predictionsDiv = document.getElementById("predictionsContainer");
+  if (isPremium && signal.predictions) {
+    predictionsDiv.innerHTML = `
+      <h4>Prédictions de prix</h4>
+      <p>Jour 1: $${signal.predictions.day1}</p>
+      <p>Jour 3: $${signal.predictions.day3}</p>
+      <p>Jour 7: $${signal.predictions.day7}</p>
+    `;
   } else {
     predictionsDiv.innerHTML = `
-      <p>Les prédictions de prix sont réservées aux membres premium.</p>
+      <p>${isPremium ? "Les prédictions de prix ne sont pas disponibles pour ce signal." : "Les prédictions de prix sont réservées aux membres premium."}</p>
     `;
   }
 
-  // Ouvrir la modal
-  document.body.classList.add('modal-open');
+  document.body.classList.add("modal-open");
   bigChartModal.classList.add("active");
 }
 
 export function closeBigChart() {
-  if (bigChartInstance) {
-    bigChartInstance.destroy();
-    bigChartInstance = null;
-  }
-
-  // Supprimer la classe modal-open du corps de la page
-  document.body.classList.remove('modal-open');
-
+  if (bigChartInstance) bigChartInstance.destroy();
+  bigChartInstance = null;
+  document.body.classList.remove("modal-open");
   bigChartModal.classList.remove("active");
 }
 
-// Réinitialiser zoom du grand graphique
 resetZoomBtn.addEventListener("click", () => {
   if (bigChartInstance) bigChartInstance.resetZoom();
 });
 
-// Exporter grand graphique
 exportBigChartBtn.addEventListener("click", () => {
   isPremiumUser().then(isPremium => {
     if (!isPremium) {
@@ -184,8 +139,8 @@ exportBigChartBtn.addEventListener("click", () => {
       return;
     }
     html2canvas(bigChartCanvas.canvas).then(canvas => {
-      const link = document.createElement('a');
-      link.download = 'big-chart.png';
+      const link = document.createElement("a");
+      link.download = "big-chart.png";
       link.href = canvas.toDataURL();
       link.click();
     });
@@ -193,13 +148,10 @@ exportBigChartBtn.addEventListener("click", () => {
 });
 
 closeBigChartBtn.addEventListener("click", closeBigChart);
-
-// Fermer modal au clic hors contenu
 bigChartModal.addEventListener("click", e => {
   if (e.target === bigChartModal) closeBigChart();
 });
 
-// Chargement des signaux et affichage
 export async function fetchSignals() {
   try {
     const res = await fetch("data/signals.json");
@@ -217,24 +169,19 @@ export async function renderSignals() {
   if (!data) return;
 
   const isPremium = await isPremiumUser();
-
   const container = document.getElementById("signalsContainer");
   const premiumNotice = document.getElementById("premiumNotice");
   let premiumLocked = false;
   container.innerHTML = "";
 
   ["achat", "vente", "conservation"].forEach(category => {
-    if (!data[category] || !Array.isArray(data[category])) return;
+    if (!data[category]) return;
 
-    // Trier les signaux pour que les non-premium apparaissent en premier
     data[category].sort((a, b) => (a.premium === b.premium) ? 0 : a.premium ? 1 : -1);
 
     data[category].forEach((signal, i) => {
       const card = document.createElement("div");
       card.className = "card";
-      card.dataset.category = category;
-      card.dataset.type = signal.type;
-
       const isLocked = signal.premium && !isPremium;
       if (isLocked) {
         card.classList.add("blur");
@@ -242,10 +189,7 @@ export async function renderSignals() {
       }
 
       const chartId = `chart-${category}-${i}`;
-
-      // Utiliser Luxon pour formater la date de mise à jour
-      const updatedDate = luxon.DateTime.fromISO(signal.updated);
-      const formattedUpdatedDate = updatedDate.toLocaleString(luxon.DateTime.DATETIME_MED);
+      const updatedDate = DateTime.fromISO(signal.updated).toLocaleString(DateTime.DATETIME_MED);
 
       card.innerHTML = `
         ${signal.premium ? '<div class="premium-badge">Premium</div>' : ''}
@@ -255,7 +199,7 @@ export async function renderSignals() {
           <p><strong>Prix actuel :</strong> $${signal.price.toFixed(2)}</p>
           <p><strong>Performance (30j) :</strong> ${signal.performance30j}%</p>
           <p><strong>Recommandation :</strong> <span class="recommendation">${signal.recommendation}</span></p>
-          <p><strong>Dernière mise à jour :</strong> ${formattedUpdatedDate}</p>
+          <p><strong>Dernière mise à jour :</strong> ${updatedDate}</p>
           <div class="chart-container">
             <canvas id="${chartId}" width="300" height="150"></canvas>
           </div>
@@ -286,38 +230,23 @@ export async function renderSignals() {
           options: {
             responsive: true,
             maintainAspectRatio: false,
-            animation: {
-              duration: 1000,
-              easing: 'easeInOutQuart'
-            },
+            animation: { duration: 1000, easing: "easeInOutQuart" },
             scales: {
-              x: {
-                display: false
-              },
+              x: { display: false },
               y: {
                 beginAtZero: false,
-                ticks: {
-                  color: '#9ca3af'
-                },
-                grid: {
-                  color: '#374151'
-                }
+                ticks: { color: "#9ca3af" },
+                grid: { color: "#374151" }
               }
             },
             plugins: {
-              legend: {
-                display: false
-              },
+              legend: { display: false },
               tooltip: {
-                mode: 'index',
+                mode: "index",
                 intersect: false,
-                backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                titleFont: {
-                  size: 14
-                },
-                bodyFont: {
-                  size: 12
-                },
+                backgroundColor: "rgba(0, 0, 0, 0.8)",
+                titleFont: { size: 14 },
+                bodyFont: { size: 12 },
                 padding: 8,
                 displayColors: false
               }
@@ -325,7 +254,7 @@ export async function renderSignals() {
           }
         });
 
-        card.querySelector('.chart-container').addEventListener('click', () => {
+        card.querySelector(".chart-container").addEventListener("click", () => {
           openBigChart(signal);
         });
       }
