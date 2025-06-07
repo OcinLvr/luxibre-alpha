@@ -1,9 +1,9 @@
 // Initialiser Supabase
 const supabaseUrl = 'https://jrgdwozxcilasllpvikh.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpyZ2R3b3p4Y2lsYXNsbHB2aWtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4MjQ0NTEsImV4cCI6MjA2MzQwMDQ1MX0.S2oGP2rdtq1IkW-oH5mC8omm698PdCgQJtGVLlIFj3w';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; // (tronqué pour publication)
 const supabase = window.supabase = window.Supabase.createClient(supabaseUrl, supabaseKey);
 
-// Fonction pour vérifier si l'utilisateur est premium
+// Vérifie si l'utilisateur est premium
 async function isPremiumUser() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return false;
@@ -14,15 +14,15 @@ async function isPremiumUser() {
     .eq('id', user.id)
     .single();
 
-  if (error) {
-    console.error('Error fetching user premium status:', error);
+  if (error || !data) {
+    console.warn("Impossible de vérifier le statut premium.");
     return false;
   }
 
   return data.ispremium;
 }
 
-// Fonction pour vérifier si un signal est suivi
+// Vérifie si un signal est suivi
 async function isFollowed(signal) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return false;
@@ -32,80 +32,53 @@ async function isFollowed(signal) {
     .select('*')
     .eq('user_id', user.id)
     .eq('signal_name', signal.name)
-    .single();
-
-  if (error && error.message !== "JSON object requested, multiple (or no) rows returned") {
-    console.error("Erreur lors de la vérification du signal suivi:", error);
-    return false;
-  }
+    .maybeSingle();
 
   return !!data;
 }
 
-// Fonction pour basculer l'état de suivi d'un signal
+// Suivre ou retirer un signal
 async function toggleFollow(signal) {
-  const isPremium = await isPremiumUser();
   const { data: { user } } = await supabase.auth.getUser();
-
   if (!user) {
-    alert("Vous devez être connecté pour suivre un signal.");
+    alert("Connectez-vous pour gérer vos suivis.");
     return;
   }
 
-  if (!isPremium) {
-    const { data: followedSignals, error } = await supabase
+  const premium = await isPremiumUser();
+
+  if (!premium) {
+    const { data: followed, error } = await supabase
       .from('followed_signals')
       .select('*')
       .eq('user_id', user.id);
 
-    if (error) {
-      console.error("Erreur lors de la récupération des signaux suivis:", error);
-      return;
-    }
-
-    if (followedSignals.length >= 1) {
-      alert("Les utilisateurs gratuits ne peuvent suivre qu'un seul article. Passez premium pour en suivre plus.");
+    if (followed?.length >= 1) {
+      alert("Offre gratuite : 1 signal suivi maximum. Passez Premium pour plus.");
       return;
     }
   }
 
-  const { data: existingFollow, error: fetchError } = await supabase
+  const { data: exist } = await supabase
     .from('followed_signals')
     .select('*')
     .eq('user_id', user.id)
     .eq('signal_name', signal.name)
-    .single();
+    .maybeSingle();
 
-  if (fetchError && fetchError.message !== "JSON object requested, multiple (or no) rows returned") {
-    console.error("Erreur lors de la vérification du signal suivi:", fetchError);
-    return;
-  }
-
-  if (existingFollow) {
-    const { error: deleteError } = await supabase
+  if (exist) {
+    await supabase
       .from('followed_signals')
       .delete()
-      .eq('id', existingFollow.id);
-
-    if (deleteError) {
-      console.error("Erreur lors de la suppression du signal suivi:", deleteError);
-    } else {
-      alert("Signal retiré de vos suivis.");
-    }
+      .eq('id', exist.id);
   } else {
-    const { error: insertError } = await supabase
+    await supabase
       .from('followed_signals')
       .insert([{ user_id: user.id, signal_name: signal.name }]);
-
-    if (insertError) {
-      console.error("Erreur lors de l'ajout du signal suivi:", insertError);
-    } else {
-      alert("Signal ajouté à vos suivis.");
-    }
   }
 }
 
-// Exposer les fonctions pour qu'elles soient accessibles globalement
+// Exposer globalement
 window.isPremiumUser = isPremiumUser;
 window.isFollowed = isFollowed;
 window.toggleFollow = toggleFollow;
