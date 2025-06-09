@@ -109,7 +109,7 @@
       "recommendation": "Acheter",
       "score": 65,
       "premium": true,
-      "updated": "2025-06-09T07:17:12.275Z",
+      "updated": "2025-06-09T08:23:34.553Z",
       "indicators": {
         "rsi": 31.1338929406908,
         "macd": 6.429817961093136,
@@ -239,7 +239,7 @@
       "recommendation": "Acheter",
       "score": 65,
       "premium": true,
-      "updated": "2025-06-09T07:17:12.813Z",
+      "updated": "2025-06-09T08:23:34.907Z",
       "indicators": {
         "rsi": 64.17910447761194,
         "macd": 4.261210571629874,
@@ -759,7 +759,7 @@
       "recommendation": "Acheter",
       "score": 65,
       "premium": true,
-      "updated": "2025-06-09T07:17:14.875Z",
+      "updated": "2025-06-09T08:23:36.466Z",
       "indicators": {
         "rsi": 67.58441009752488,
         "macd": 40.23839242750978,
@@ -913,7 +913,7 @@
     {
       "name": "iShares EURO STOXX Banks 30-15 UCITS ETF (DE)",
       "symbol": "EXA1.AS",
-      "price": 13.049699783325195,
+      "price": 12.98069953918457,
       "history": [
         5.373300075531006,
         5.471399784088135,
@@ -1534,31 +1534,32 @@
         12.88029956817627,
         12.805000305175781,
         12.946800231933594,
-        13.049699783325195
+        13.049699783325195,
+        12.98069953918457
       ],
       "recommendation": "Acheter",
       "score": 70,
       "premium": false,
-      "updated": "2025-06-09T07:17:17.368Z",
+      "updated": "2025-06-09T08:23:38.225Z",
       "indicators": {
-        "rsi": 57.78930443506544,
-        "macd": 0.27754274477830876,
+        "rsi": 49.545610234189624,
+        "macd": 0.26735352866335127,
         "bollinger": {
-          "middle": 12.820984983444214,
-          "upper": 13.11825657579203,
-          "lower": 12.523713391096399
+          "middle": 12.843519973754884,
+          "upper": 13.116478507470715,
+          "lower": 12.570561440039052
         },
-        "sma50": 11.914676036834717,
-        "sma200": 10.101354022026062,
-        "ema20": 12.697399905945632,
-        "adx": 15.578608870130878
+        "sma50": 11.931450023651124,
+        "sma200": 10.123557519912719,
+        "ema20": 12.72438082339696,
+        "adx": 0.9087795316207519
       },
       "predictions": {
-        "day1": 13.08,
-        "day3": 13.15,
-        "day7": 13.29
+        "day1": 13,
+        "day3": 13.03,
+        "day7": 13.1
       },
-      "performance30j": 12.96
+      "performance30j": 10.74
     },
     {
       "name": "Bitcoin",
@@ -2509,7 +2510,7 @@
       "recommendation": "Acheter",
       "score": 65,
       "premium": true,
-      "updated": "2025-06-09T07:17:12.548Z",
+      "updated": "2025-06-09T08:23:34.730Z",
       "indicators": {
         "rsi": 68.00804828973844,
         "macd": 13.320666502544327,
@@ -3029,7 +3030,7 @@
       "recommendation": "Acheter",
       "score": 65,
       "premium": true,
-      "updated": "2025-06-09T07:17:17.018Z",
+      "updated": "2025-06-09T08:23:37.901Z",
       "indicators": {
         "rsi": 66.91909863317326,
         "macd": 14.149324500580178,
@@ -3161,7 +3162,7 @@
       "recommendation": "Vendre",
       "score": 35,
       "premium": false,
-      "updated": "2025-06-09T07:17:12.003Z",
+      "updated": "2025-06-09T08:23:34.375Z",
       "indicators": {
         "rsi": 38.10758263123784,
         "macd": -1.0771817111180155,
@@ -3291,7 +3292,7 @@
       "recommendation": "Vendre",
       "score": 35,
       "premium": true,
-      "updated": "2025-06-09T07:17:16.551Z",
+      "updated": "2025-06-09T08:23:37.558Z",
       "indicators": {
         "rsi": 40.63400576368883,
         "macd": -1.4308347912509305,
@@ -3981,7 +3982,7 @@
       "recommendation": "Vendre",
       "score": 35,
       "premium": false,
-      "updated": "2025-06-09T07:17:16.280Z",
+      "updated": "2025-06-09T08:23:37.381Z",
       "indicators": {
         "rsi": 40.57971014492762,
         "macd": -0.044811949767414205,
@@ -4523,7 +4524,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-06-09T07:17:13.093Z",
+      "updated": "2025-06-09T08:23:35.092Z",
       "indicators": {
         "rsi": 62.139384116693684,
         "macd": 2.7001553814321255,
@@ -4653,7 +4654,7 @@
       "recommendation": "Conserver",
       "score": 50,
       "premium": true,
-      "updated": "2025-06-09T07:17:13.364Z",
+      "updated": "2025-06-09T08:23:35.297Z",
       "indicators": {
         "rsi": 78.39817839817837,
         "macd": 25.278759962939944,
@@ -4783,7 +4784,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-06-09T07:17:13.631Z",
+      "updated": "2025-06-09T08:23:35.476Z",
       "indicators": {
         "rsi": 60.429042904290434,
         "macd": 6.294302944772653,
@@ -4913,7 +4914,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-06-09T07:17:14.341Z",
+      "updated": "2025-06-09T08:23:36.099Z",
       "indicators": {
         "rsi": 46.08341810783319,
         "macd": 0.9312134044088225,
@@ -5043,7 +5044,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-06-09T07:17:15.143Z",
+      "updated": "2025-06-09T08:23:36.649Z",
       "indicators": {
         "rsi": 56.35808748728382,
         "macd": 1.2109528938275957,
@@ -5173,7 +5174,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-06-09T07:17:15.497Z",
+      "updated": "2025-06-09T08:23:36.824Z",
       "indicators": {
         "rsi": 49.800951548694066,
         "macd": 8.104888566106297,
@@ -5303,7 +5304,7 @@
       "recommendation": "Conserver",
       "score": 45,
       "premium": false,
-      "updated": "2025-06-09T07:17:15.814Z",
+      "updated": "2025-06-09T08:23:37.013Z",
       "indicators": {
         "rsi": 35.21677327647481,
         "macd": -1.7506419587346613,
@@ -5433,7 +5434,7 @@
       "recommendation": "Conserver",
       "score": 45,
       "premium": true,
-      "updated": "2025-06-09T07:17:16.081Z",
+      "updated": "2025-06-09T08:23:37.206Z",
       "indicators": {
         "rsi": 31.04265402843599,
         "macd": -0.24828782591080412,
@@ -7893,7 +7894,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-06-09T07:17:13.893Z",
+      "updated": "2025-06-09T08:23:35.656Z",
       "indicators": {
         "rsi": 46.551074255559776,
         "macd": 4.094484083473219,
@@ -8023,7 +8024,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-06-09T07:17:14.068Z",
+      "updated": "2025-06-09T08:23:35.921Z",
       "indicators": {
         "rsi": 57.028665931642806,
         "macd": 5.783412526215045,
@@ -8153,7 +8154,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-06-09T07:17:14.610Z",
+      "updated": "2025-06-09T08:23:36.278Z",
       "indicators": {
         "rsi": 51.815431164901675,
         "macd": 3.8883959099481444,
@@ -8543,7 +8544,7 @@
       "recommendation": "Conserver",
       "score": 50,
       "premium": false,
-      "updated": "2025-06-09T07:17:16.741Z",
+      "updated": "2025-06-09T08:23:37.727Z",
       "indicators": {
         "rsi": 71.03448275862073,
         "macd": 1.3925844328371113,
