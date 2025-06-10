@@ -1,6 +1,6 @@
 // Initialiser Supabase
 const supabaseUrl = 'https://jrgdwozxcilasllpvikh.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; // (tronqué pour publication)
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpyZ2R3b3p4Y2lsYXNsbHB2aWtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4MjQ0NTEsImV4cCI6MjA2MzQwMDQ1MX0.S2oGP2rdtq1IkW-oH5mC8omm698PdCgQJtGVLlIFj3w'; // (tronqué pour publication)
 const supabase = window.supabase = window.Supabase.createClient(supabaseUrl, supabaseKey);
 
 // Vérifie si l'utilisateur est premium
