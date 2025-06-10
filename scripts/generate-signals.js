@@ -191,37 +191,32 @@ function mapRecommendationToCategory(rec) {
   return "conservation";
 }
 
-// Fonction pour fusionner les signaux existants et nouveaux sans doublons
-function mergeSignals(existingSignals, newSignals) {
-  const merged = { achat: [], vente: [], conservation: [] };
-  for (const category of ["achat", "vente", "conservation"]) {
-    const seenSymbols = new Set();
-    // Ajout des nouveaux signaux (sont prioritaires)
-    for (const sig of newSignals[category]) {
-      merged[category].push(sig);
-      seenSymbols.add(sig.symbol);
-    }
-    // Ajout des existants qui ne sont pas déjà dans les nouveaux
-    if (existingSignals && Array.isArray(existingSignals[category])) {
-      for (const sig of existingSignals[category]) {
-        if (!seenSymbols.has(sig.symbol)) {
-          merged[category].push(sig);
-          seenSymbols.add(sig.symbol);
-        }
+// Fusionne les signaux en mettant à jour ceux présents dans la génération, et en conservant les autres
+function mergeKeepAllUpdateFound(existingSignals, newSignals) {
+  const out = { achat: [], vente: [], conservation: [] };
+  for (const cat of ["achat", "vente", "conservation"]) {
+    // On commence par tous les anciens signaux (copie profonde)
+    let merged = existingSignals && existingSignals[cat] ? [...existingSignals[cat].map(s => ({...s}))] : [];
+    // Pour chaque signal de la génération du jour, on remplace s'il existe (par symbol), sinon on ajoute
+    for (const sig of newSignals[cat]) {
+      const index = merged.findIndex(s => s.symbol === sig.symbol);
+      if (index >= 0) {
+        merged[index] = sig; // Mise à jour
+      } else {
+        merged.push(sig);    // Ajout
       }
     }
+    out[cat] = merged;
   }
-  return merged;
+  return out;
 }
 
 const generate = async (type) => {
-  // 1. Lit l'existant pour éviter d'effacer les autres signaux
   let existingSignals = null;
   if (fs.existsSync('data/signals.json')) {
     existingSignals = JSON.parse(fs.readFileSync('data/signals.json', 'utf8'));
   }
 
-  // 2. Détermine les assets à traiter pour cette exécution
   let assetsToProcess = [];
   if (type === 'cryptos') {
     assetsToProcess = [...CRYPTOS];
@@ -231,7 +226,7 @@ const generate = async (type) => {
     assetsToProcess = [...STOCKS, ...ETFS, ...CRYPTOS];
   }
 
-  // 3. Génère les nouveaux signaux de cette catégorie
+  // Génère les nouveaux signaux pour les assets à traiter
   const newSignals = { achat: [], vente: [], conservation: [] };
 
   for (const asset of assetsToProcess) {
@@ -245,10 +240,12 @@ const generate = async (type) => {
       const recommendation = determineRecommendation(score);
       const category = mapRecommendationToCategory(recommendation);
 
+      const signalType = assetTypeToDashboardType(asset.type);
+
       const signal = {
         name: asset.name,
         symbol: asset.symbol,
-        type: assetTypeToDashboardType(asset.type), // harmonisé pour dashboard.js
+        type: signalType,
         price: data.price,
         history: data.history,
         recommendation,
@@ -268,7 +265,7 @@ const generate = async (type) => {
         performance30j: performance30Jours(data.history)
       };
 
-      // Met à jour ou ajoute le signal selon le symbole
+      // Ajoute ou remplace dans la nouvelle génération
       const existingIndex = newSignals[category].findIndex(s => s.symbol === asset.symbol);
       if (existingIndex >= 0) {
         newSignals[category][existingIndex] = signal;
@@ -280,15 +277,12 @@ const generate = async (type) => {
     }
   }
 
-  // 4. Fusionne les nouveaux signaux avec les existants pour garder tout à jour
-  const mergedSignals = mergeSignals(existingSignals, newSignals);
+  // Fusion intelligente : conserve tout, met à jour ce qui existe, ajoute les nouveaux
+  let mergedSignals = mergeKeepAllUpdateFound(existingSignals, newSignals);
 
-  // 5. Écrit le fichier à jour
   fs.writeFileSync('data/signals.json', JSON.stringify(mergedSignals, null, 2));
   console.log("Fichier signals.json mis à jour avec succès !");
 };
 
-// Récupérer le type d'actifs à traiter depuis les arguments de la ligne de commande
 const assetType = process.argv[2];
-
 generate(assetType);
