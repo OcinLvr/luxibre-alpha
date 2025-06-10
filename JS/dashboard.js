@@ -1,52 +1,46 @@
-// dashboard.js
-// Import des dépendances nécessaires
-import html2canvas from "html2canvas";
-import Chart from "chart.js/auto";
-import zoomPlugin from "chartjs-plugin-zoom";
-import { DateTime } from "luxon";
-Chart.register(zoomPlugin);
+// Dashboard JS externalisé pour Luxibre Alpha
 
-// Fonction pour vérifier si l'utilisateur est premium
-export async function isPremiumUser() {
+// Fonction pour vérifier si l'utilisateur est premium (exposez window.isPremiumPromise dans le header !)
+async function isPremiumUser() {
   return await window.isPremiumPromise;
 }
 
-// Fonction d'export pour petits graphiques
-export function exportChart(chartId) {
-  isPremiumUser().then(isPremium => {
-    if (!isPremium) {
-      alert("Cette fonctionnalité est réservée aux utilisateurs premium.");
-      return;
-    }
-    const element = document.getElementById(chartId);
-    html2canvas(element).then(canvas => {
-      const link = document.createElement("a");
-      link.download = "chart.png";
-      link.href = canvas.toDataURL();
-      link.click();
-    });
-  });
+function performanceBadge(value) {
+  const isPositive = value >= 0;
+  const cls = isPositive ? "performance-badge performance-positive" : "performance-badge performance-negative";
+  const sign = isPositive && value > 0 ? "+" : "";
+  return `<span class="${cls}">${sign}${value}%</span>`;
 }
 
-// Variables globales
+// Loader
+const loader = document.getElementById('loader');
+function showLoader() { loader.style.display = 'block'; }
+function hideLoader() { loader.style.display = 'none'; }
+
+// Variables globales pour modal graphique
 let bigChartInstance = null;
 const bigChartModal = document.getElementById("bigChartModal");
-const bigChartCanvas = document.getElementById("bigChartCanvas").getContext("2d");
+const bigChartCanvas = document.getElementById("bigChartCanvas").getContext('2d');
 const bigChartTitle = document.getElementById("bigChartTitle");
 const closeBigChartBtn = document.getElementById("closeBigChartBtn");
 const resetZoomBtn = document.getElementById("resetZoomBtn");
 const exportBigChartBtn = document.getElementById("exportBigChartBtn");
 
-export async function openBigChart(signal) {
+// Fonction pour ouvrir la modal du grand graphique
+async function openBigChart(signal) {
   const isPremium = await isPremiumUser();
+
   if (signal.premium && !isPremium) {
     alert("Ce signal est réservé aux abonnés premium.");
     return;
   }
 
-  bigChartTitle.textContent = `${signal.name} - Prix Historique`;
+  bigChartTitle.textContent = signal.name + " - Prix Historique";
 
-  if (bigChartInstance) bigChartInstance.destroy();
+  // Détruire l'ancien graphique si présent
+  if (bigChartInstance) {
+    bigChartInstance.destroy();
+  }
 
   bigChartInstance = new Chart(bigChartCanvas, {
     type: "line",
@@ -68,70 +62,75 @@ export async function openBigChart(signal) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      animation: { duration: 1000, easing: "easeInOutQuart" },
+      animation: {
+        duration: 1000,
+        easing: 'easeInOutQuart'
+      },
       plugins: {
         legend: { display: false },
         tooltip: {
-          mode: "index",
+          mode: 'index',
           intersect: false,
-          backgroundColor: "rgba(0, 0, 0, 0.8)",
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
           titleFont: { size: 16 },
           bodyFont: { size: 14 },
           padding: 10,
           displayColors: false
         },
         zoom: {
-          pan: { enabled: true, mode: "xy", modifierKey: "ctrl" },
+          pan: { enabled: true, mode: 'xy', modifierKey: 'ctrl' },
           zoom: {
             wheel: { enabled: true },
             pinch: { enabled: true },
-            mode: "xy"
+            mode: 'xy',
           }
         }
       },
       scales: {
         x: {
-          ticks: { color: "#9ca3af", font: { size: 12 } },
-          grid: { color: "#374151", drawBorder: false }
+          display: true,
+          ticks: { color: '#9ca3af', font: { size: 12 } },
+          grid: { color: '#374151', drawBorder: false }
         },
         y: {
           beginAtZero: false,
-          ticks: { color: "#9ca3af", font: { size: 12 } },
-          grid: { color: "#374151" }
+          ticks: { color: '#9ca3af', font: { size: 12 } },
+          grid: { color: '#374151' }
         }
       }
     }
   });
 
-  const predictionsDiv = document.getElementById("predictionsContainer");
-  if (isPremium && signal.predictions) {
-    predictionsDiv.innerHTML = `
-      <h4>Prédictions de prix</h4>
-      <p>Jour 1: $${signal.predictions.day1}</p>
-      <p>Jour 3: $${signal.predictions.day3}</p>
-      <p>Jour 7: $${signal.predictions.day7}</p>
-    `;
+  // Afficher les prédictions de prix si premium
+  const predictionsDiv = document.getElementById('predictionsContainer');
+  if (isPremium) {
+    if (signal.predictions) {
+      predictionsDiv.innerHTML = `
+        <h4>Prédictions de prix</h4>
+        <p>Jour 1: $${signal.predictions.day1}</p>
+        <p>Jour 3: $${signal.predictions.day3}</p>
+        <p>Jour 7: $${signal.predictions.day7}</p>
+      `;
+    } else {
+      predictionsDiv.innerHTML = `<p>Les prédictions de prix ne sont pas disponibles pour ce signal.</p>`;
+    }
   } else {
-    predictionsDiv.innerHTML = `
-      <p>${isPremium ? "Les prédictions de prix ne sont pas disponibles pour ce signal." : "Les prédictions de prix sont réservées aux membres premium."}</p>
-    `;
+    predictionsDiv.innerHTML = `<p>Les prédictions de prix sont réservées aux membres premium.</p>`;
   }
 
-  document.body.classList.add("modal-open");
+  // Ouvrir la modal
+  document.body.classList.add('modal-open');
   bigChartModal.classList.add("active");
 }
-
-export function closeBigChart() {
-  if (bigChartInstance) bigChartInstance.destroy();
-  bigChartInstance = null;
-  document.body.classList.remove("modal-open");
+function closeBigChart() {
+  if (bigChartInstance) {
+    bigChartInstance.destroy();
+    bigChartInstance = null;
+  }
+  document.body.classList.remove('modal-open');
   bigChartModal.classList.remove("active");
 }
-
-resetZoomBtn.addEventListener("click", () => {
-  if (bigChartInstance) bigChartInstance.resetZoom();
-});
-
+resetZoomBtn.addEventListener("click", () => { if (bigChartInstance) bigChartInstance.resetZoom(); });
 exportBigChartBtn.addEventListener("click", () => {
   isPremiumUser().then(isPremium => {
     if (!isPremium) {
@@ -139,20 +138,18 @@ exportBigChartBtn.addEventListener("click", () => {
       return;
     }
     html2canvas(bigChartCanvas.canvas).then(canvas => {
-      const link = document.createElement("a");
-      link.download = "big-chart.png";
+      const link = document.createElement('a');
+      link.download = 'big-chart.png';
       link.href = canvas.toDataURL();
       link.click();
     });
   });
 });
-
 closeBigChartBtn.addEventListener("click", closeBigChart);
-bigChartModal.addEventListener("click", e => {
-  if (e.target === bigChartModal) closeBigChart();
-});
+bigChartModal.addEventListener("click", e => { if (e.target === bigChartModal) closeBigChart(); });
 
-export async function fetchSignals() {
+// Chargement des signaux et affichage
+async function fetchSignals() {
   try {
     const res = await fetch("data/signals.json");
     if (!res.ok) throw new Error("HTTP error " + res.status);
@@ -160,13 +157,15 @@ export async function fetchSignals() {
   } catch (err) {
     console.error("Erreur lors du chargement des signaux:", err);
     document.getElementById("signalsContainer").textContent = "Erreur lors du chargement des signaux.";
+    hideLoader();
     return null;
   }
 }
 
-export async function renderSignals() {
+async function renderSignals() {
+  showLoader();
   const data = await fetchSignals();
-  if (!data) return;
+  if (!data) return hideLoader();
 
   const isPremium = await isPremiumUser();
   const container = document.getElementById("signalsContainer");
@@ -175,13 +174,15 @@ export async function renderSignals() {
   container.innerHTML = "";
 
   ["achat", "vente", "conservation"].forEach(category => {
-    if (!data[category]) return;
-
+    if (!data[category] || !Array.isArray(data[category])) return;
     data[category].sort((a, b) => (a.premium === b.premium) ? 0 : a.premium ? 1 : -1);
 
     data[category].forEach((signal, i) => {
       const card = document.createElement("div");
       card.className = "card";
+      card.dataset.category = category;
+      card.dataset.type = signal.type;
+
       const isLocked = signal.premium && !isPremium;
       if (isLocked) {
         card.classList.add("blur");
@@ -189,23 +190,24 @@ export async function renderSignals() {
       }
 
       const chartId = `chart-${category}-${i}`;
-      const updatedDate = DateTime.fromISO(signal.updated).toLocaleString(DateTime.DATETIME_MED);
+      // Luxon pour date
+      const updatedDate = luxon.DateTime.fromISO(signal.updated);
+      const formattedUpdatedDate = updatedDate.toLocaleString(luxon.DateTime.DATETIME_MED);
 
       card.innerHTML = `
         ${signal.premium ? '<div class="premium-badge">Premium</div>' : ''}
-        ${isLocked ? '<button class="upgrade-message" onclick="window.location.href=\'/pricing.html\'">Devenez Premium</button>' : ''}
+        ${isLocked ? '<button class="upgrade-message" onclick="window.location.href=\'/#tarifs\'">Devenez Premium</button>' : ''}
         <div class="card-content">
           <h3>${signal.name}</h3>
           <p><strong>Prix actuel :</strong> $${signal.price.toFixed(2)}</p>
-          <p><strong>Performance (30j) :</strong> ${signal.performance30j}%</p>
+          <p><strong>Performance (30j) :</strong> ${performanceBadge(signal.performance30j)}</p>
           <p><strong>Recommandation :</strong> <span class="recommendation">${signal.recommendation}</span></p>
-          <p><strong>Dernière mise à jour :</strong> ${updatedDate}</p>
+          <p><strong>Dernière mise à jour :</strong> ${formattedUpdatedDate}</p>
           <div class="chart-container">
             <canvas id="${chartId}" width="300" height="150"></canvas>
           </div>
         </div>
       `;
-
       container.appendChild(card);
 
       if (!isLocked) {
@@ -230,21 +232,24 @@ export async function renderSignals() {
           options: {
             responsive: true,
             maintainAspectRatio: false,
-            animation: { duration: 1000, easing: "easeInOutQuart" },
+            animation: {
+              duration: 1000,
+              easing: 'easeInOutQuart'
+            },
             scales: {
               x: { display: false },
               y: {
                 beginAtZero: false,
-                ticks: { color: "#9ca3af" },
-                grid: { color: "#374151" }
+                ticks: { color: '#9ca3af' },
+                grid: { color: '#374151' }
               }
             },
             plugins: {
               legend: { display: false },
               tooltip: {
-                mode: "index",
+                mode: 'index',
                 intersect: false,
-                backgroundColor: "rgba(0, 0, 0, 0.8)",
+                backgroundColor: 'rgba(0, 0, 0, 0.8)',
                 titleFont: { size: 14 },
                 bodyFont: { size: 12 },
                 padding: 8,
@@ -253,8 +258,7 @@ export async function renderSignals() {
             }
           }
         });
-
-        card.querySelector(".chart-container").addEventListener("click", () => {
+        card.querySelector('.chart-container').addEventListener('click', () => {
           openBigChart(signal);
         });
       }
@@ -263,6 +267,46 @@ export async function renderSignals() {
 
   if (premiumLocked && !isPremium) {
     premiumNotice.style.display = "block";
-    premiumNotice.textContent = "Certains signaux sont réservés aux abonnés premium. Abonnez-vous pour tout débloquer.";
+  } else {
+    premiumNotice.style.display = "none";
   }
+
+  // Si aucune carte affichée (après filtrage)
+  if (!container.querySelector('.card')) {
+    container.innerHTML = `<div class="text-center text-gray-400 font-semibold text-lg py-8">Aucun signal pour ce filtre.</div>`;
+  }
+  hideLoader();
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+  const signalFilter = document.getElementById('signalFilter');
+  const typeFilter = document.getElementById('typeFilter');
+  signalFilter.addEventListener('change', filterAssets);
+  typeFilter.addEventListener('change', filterAssets);
+
+  function filterAssets() {
+    const signalCategory = signalFilter.value;
+    const typeCategory = typeFilter.value;
+    const cards = document.querySelectorAll('.card');
+    let anyVisible = false;
+    cards.forEach(card => {
+      const cardSignalCategory = card.dataset.category;
+      const cardTypeCategory = card.dataset.type;
+      const matchesSignal = signalCategory === 'all' || cardSignalCategory === signalCategory;
+      const matchesType = typeCategory === 'all' || cardTypeCategory === typeCategory;
+      if (matchesSignal && matchesType) {
+        card.style.display = 'flex';
+        anyVisible = true;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+    // Message si aucun signal visible
+    const container = document.getElementById("signalsContainer");
+    if (!anyVisible) {
+      container.innerHTML = `<div class="text-center text-gray-400 font-semibold text-lg py-8">Aucun signal pour ce filtre.</div>`;
+    }
+  }
+
+  renderSignals();
+});
