@@ -13,7 +13,7 @@ async function loadHeader() {
   const res = await fetch('header.html');
   headerContainer.innerHTML = await res.text();
 
-  // 2. Récupère les éléments DOM du header
+  // 2. Récupère les éléments DOM du header (maintenant ils existent !)
   const loginBtnLi = document.getElementById('loginBtnLi');
   const signupBtnLi = document.getElementById('signupBtnLi');
   const premiumBtnLi = document.getElementById('premiumBtnLi');
@@ -117,48 +117,45 @@ async function loadHeader() {
     await supabase.auth.signOut();
     window.location.href = "index.html";
   });
-}
 
+  // ----------- Mobile burger menu (doit être ici !)
+  const burgerBtn = document.getElementById('burgerBtn');
+  const headerNav = document.getElementById('headerNav');
+  const menuOverlay = document.getElementById('menuOverlay');
 
-
-// mobile
-
-// Responsive burger menu
-const burgerBtn = document.getElementById('burgerBtn');
-const headerNav = document.getElementById('headerNav');
-const menuOverlay = document.getElementById('menuOverlay');
-
-function openMenu() {
-  headerNav.classList.remove('-translate-x-full');
-  menuOverlay.classList.remove('hidden');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeMenu() {
-  headerNav.classList.add('-translate-x-full');
-  menuOverlay.classList.add('hidden');
-  document.body.style.overflow = '';
-}
-
-burgerBtn?.addEventListener('click', openMenu);
-menuOverlay?.addEventListener('click', closeMenu);
-
-// Ferme le menu lors du clic sur un lien du menu (mobile)
-headerNav?.querySelectorAll('a').forEach(link =>
-  link.addEventListener('click', closeMenu)
-);
-
-// Sur desktop, le menu doit toujours être affiché
-function handleResize() {
-  if (window.innerWidth >= 768) {
+  function openMenu() {
     headerNav.classList.remove('-translate-x-full');
+    menuOverlay.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMenu() {
+    headerNav.classList.add('-translate-x-full');
     menuOverlay.classList.add('hidden');
     document.body.style.overflow = '';
-  } else {
-    headerNav.classList.add('-translate-x-full');
   }
-}
-window.addEventListener('resize', handleResize);
-handleResize();
 
+  burgerBtn?.addEventListener('click', openMenu);
+  menuOverlay?.addEventListener('click', closeMenu);
+
+  // Ferme le menu lors du clic sur un lien du menu (mobile)
+  headerNav?.querySelectorAll('a').forEach(link =>
+    link.addEventListener('click', closeMenu)
+  );
+
+  // Sur desktop, le menu doit toujours être affiché
+  function handleResize() {
+    if (window.innerWidth >= 768) {
+      headerNav.classList.remove('-translate-x-full');
+      menuOverlay.classList.add('hidden');
+      document.body.style.overflow = '';
+    } else {
+      headerNav.classList.add('-translate-x-full');
+    }
+  }
+  window.addEventListener('resize', handleResize);
+  handleResize();
+}
+
+// On charge le header AU CHARGEMENT DE LA PAGE
 document.addEventListener('DOMContentLoaded', loadHeader);
