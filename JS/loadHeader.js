@@ -5,34 +5,15 @@ const supabase = createClient(
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpyZ2R3b3p4Y2lsYXNsbHB2aWtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4MjQ0NTEsImV4cCI6MjA2MzQwMDQ1MX0.S2oGP2rdtq1IkW-oH5mC8omm698PdCgQJtGVLlIFj3w'
 );
 
-// Système de header dynamique avec affichage utilisateur, notifications et gestion premium
 async function loadHeader() {
   const headerContainer = document.getElementById('header');
   if (!headerContainer) return;
 
-  // Charge le template header
+  // 1. Charge le template header
   const res = await fetch('header.html');
   headerContainer.innerHTML = await res.text();
 
-  // ...après avoir chargé le header...
-let userInfoObj = null;
-if (window.getUserInfo) {
-  userInfoObj = await getUserInfo();
-}
-if (userInfoObj) {
-  // Afficher le nom et le statut premium
-  userInfo.classList.remove('hidden');
-  userName.textContent = userInfoObj.name;
-  userStatus.textContent = userInfoObj.isPremium ? "Premium" : "Gratuit";
-  premiumBtnLi.style.display = userInfoObj.isPremium ? "none" : "";
-  // ... notifications, etc.
-} else {
-  // Non connecté
-  userInfo.classList.add('hidden');
-  premiumBtnLi.style.display = "none";
-}
-  
-  // Sélecteurs utiles
+  // 2. Récupère les éléments DOM du header
   const loginBtnLi = document.getElementById('loginBtnLi');
   const signupBtnLi = document.getElementById('signupBtnLi');
   const premiumBtnLi = document.getElementById('premiumBtnLi');
@@ -46,32 +27,31 @@ if (userInfoObj) {
   const notifDropdown = document.getElementById('notifDropdown');
   const notifList = document.getElementById('notifList');
 
-  // Authentification via Supabase
+  // 3. Récupère l'utilisateur et ses infos
   let isLogged = false;
   let isPremium = false;
-  let user = null;
   let name = "";
+  let user = null;
   let notifications = [];
 
-  if (window.supabase) {
-    const { data: auth } = await supabase.auth.getUser();
-    if (auth && auth.user) {
-      isLogged = true;
-      user = auth.user;
-      // Récup info utilisateur dans la table users
-      const { data: userData } = await supabase
-        .from('users')
-        .select('ispremium, name')
-        .eq('id', user.id)
-        .single();
-      if (userData) {
-        isPremium = !!userData.ispremium;
-        name = userData.name || user.email || "Utilisateur";
-      }
+  // Récupère l'utilisateur Supabase
+  const { data: auth } = await supabase.auth.getUser();
+  if (auth && auth.user) {
+    isLogged = true;
+    user = auth.user;
+    // Récup info utilisateur dans la table users
+    const { data: userData } = await supabase
+      .from('users')
+      .select('ispremium, name')
+      .eq('id', user.id)
+      .single();
+    if (userData) {
+      isPremium = !!userData.ispremium;
+      name = userData.name || user.email || "Utilisateur";
     }
   }
 
-  // Notifications (simple)
+  // 4. Notifications (simple)
   async function updateNotifications() {
     if (!isLogged || !user) return;
     notifWrapper.classList.remove('hidden');
@@ -91,7 +71,6 @@ if (userInfoObj) {
       : '<li class="p-2 text-gray-400">Aucune notification</li>';
   }
 
-  // Gestion du menu notifications
   notifBtn?.addEventListener('click', (e) => {
     notifDropdown.classList.toggle('hidden');
     // Marque tous comme lus à l'ouverture
@@ -106,7 +85,6 @@ if (userInfoObj) {
     }
   });
 
-  // Gestion click hors du menu pour fermer
   document.addEventListener('mousedown', function(e){
     if (!notifDropdown.classList.contains('hidden') &&
       !notifWrapper.contains(e.target)) {
@@ -114,7 +92,7 @@ if (userInfoObj) {
     }
   });
 
-  // Affichage selon statut utilisateur
+  // 5. Affichage selon le statut utilisateur
   if (isLogged) {
     loginBtnLi.style.display = "none";
     signupBtnLi.style.display = "none";
@@ -133,10 +111,10 @@ if (userInfoObj) {
     premiumBtnLi.style.display = "none";
   }
 
-  // Déconnexion
+  // 6. Déconnexion
   document.getElementById('logoutBtn')?.addEventListener('click', async function (e) {
     e.preventDefault();
-    if (window.supabase) await supabase.auth.signOut();
+    await supabase.auth.signOut();
     window.location.href = "index.html";
   });
 }
