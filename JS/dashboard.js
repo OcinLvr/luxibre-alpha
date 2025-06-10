@@ -1,8 +1,8 @@
 // Dashboard JS pour Luxibre Alpha - gestion watchlist Supabase
 
 // --- Supabase Client ---
-const supabaseUrl = 'https://xxxx.supabase.co'; // <-- À personnaliser
-const supabaseKey = 'public-anon-key';          // <-- À personnaliser
+const supabaseUrl = 'https://jrgdwozxcilasllpvikh.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpyZ2R3b3p4Y2lsYXNsbHB2aWtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4MjQ0NTEsImV4cCI6MjA2MzQwMDQ1MX0.S2oGP2rdtq1IkW-oH5mC8omm698PdCgQJtGVLlIFj3w';
 const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
 // --- Auth ---
