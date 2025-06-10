@@ -1,72 +1,26 @@
-<!-- Header -->
-<header class="py-4 bg-white shadow-md sticky top-0 z-50">
-  <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
-    <h1 class="text-3xl font-bold text-green-600">Luxibre</h1>
-    <nav class="hidden md:flex space-x-6 items-center">
-      <a href="index.html" class="hover:text-green-600 font-medium">Accueil</a>
-      <a href="dashboard.html" class="hover:text-green-600 font-medium">Dashboard</a>
-      <a href="pricing.html" class="hover:text-green-600 font-medium">Abonnement</a>
-      <button id="loginBtn" class="hover:text-green-600 font-medium">Connexion</button>
-      <button id="logoutBtn" class="hover:text-green-600 font-medium hidden">Déconnexion</button>
-      <a href="#" id="userIcon" class="hover:text-green-600 font-medium"><i class="fas fa-user"></i></a>
-      <div class="relative">
-        <a href="#" id="notificationIcon" class="hover:text-green-600 font-medium"><i class="fas fa-bell"></i></a>
-        <span id="notificationCount" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
-      </div>
-    </nav>
-    <!-- Mobile menu -->
-    <div class="md:hidden flex items-center space-x-4">
-      <a href="#" id="mobileUserIcon" class="hover:text-green-600 font-medium"><i class="fas fa-user"></i></a>
-      <div class="relative">
-        <a href="#" id="mobileNotificationIcon" class="hover:text-green-600 font-medium"><i class="fas fa-bell"></i></a>
-        <span id="mobileNotificationCount" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
-      </div>
-      <button id="menuToggle" class="text-green-600 text-2xl">&#9776;</button>
-    </div>
-  </div>
-  <div id="mobileMenu" class="md:hidden hidden px-6 pt-4 pb-2 bg-white space-y-2">
-    <a href="index.html" class="block text-gray-800 hover:text-green-600">Accueil</a>
-    <a href="dashboard.html" class="block text-gray-800 hover:text-green-600">Dashboard</a>
-    <a href="pricing.html" class="block text-gray-800 hover:text-green-600">Abonnement</a>
-    <button id="mobileLoginBtn" class="block text-left w-full text-gray-800 hover:text-green-600">Connexion</button>
-    <button id="mobileLogoutBtn" class="block text-left w-full text-gray-800 hover:text-green-600 hidden">Déconnexion</button>
-  </div>
-</header>
-
-<!-- Modal utilisateur -->
-<div id="userModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden justify-center items-center">
-  <div class="modal-content bg-white p-6 rounded-lg shadow-lg w-11/12 max-w-md">
-    <div class="flex justify-between items-center mb-4">
-      <h2 class="text-xl font-bold">Informations Utilisateur</h2>
-      <button id="closeModal" class="text-gray-500 hover:text-gray-700">
-        <i class="fas fa-times"></i>
+<nav class="max-w-7xl mx-auto flex justify-between items-center py-4 px-6">
+  <a href="index.html" class="text-2xl font-bold text-green-600">Luxibre Alpha</a>
+  <ul class="flex gap-6 items-center text-sm font-semibold">
+    <li><a href="index.html" class="hover:text-green-600 transition">Accueil</a></li>
+    <li><a href="#fonctionnalites" class="hover:text-green-600 transition">Fonctionnalités</a></li>
+    <li><a href="#tarifs" class="hover:text-green-600 transition">Tarifs</a></li>
+    <li><a href="dashboard.html" class="hover:text-green-600 transition">Dashboard</a></li>
+    <li id="notifWrapper" class="relative hidden">
+      <button id="notifBtn" class="relative">
+        <span class="fa fa-bell text-xl"></span>
+        <span id="notifCount" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full text-xs px-1.5 py-0.5"></span>
       </button>
-    </div>
-    <div id="userInfo">
-      <p><strong>Nom:</strong> <span id="userName">Non spécifié</span></p>
-      <p><strong>Email:</strong> <span id="userEmail">Non spécifié</span></p>
-      <p><strong>Version:</strong> <span id="userVersion">Gratuit</span></p>
-    </div>
-    <div id="watchlist" class="mt-4">
-      <h3 class="text-lg font-bold">Liste de surveillance</h3>
-      <ul id="watchlistItems">
-        <!-- Les éléments de la liste de surveillance seront ajoutés ici dynamiquement -->
-      </ul>
-    </div>
-  </div>
-</div>
-
-<!-- Modal de notification -->
-<div id="notificationModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden justify-center items-center">
-  <div class="modal-content bg-white p-6 rounded-lg shadow-lg w-11/12 max-w-md">
-    <div class="flex justify-between items-center mb-4">
-      <h2 class="text-xl font-bold">Notifications</h2>
-      <button id="closeNotificationModal" class="text-gray-500 hover:text-gray-700">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
-    <ul id="notificationList" class="space-y-2">
-      <!-- Les notifications seront ajoutées ici dynamiquement -->
-    </ul>
-  </div>
-</div>
+      <div id="notifDropdown" class="hidden absolute right-0 mt-2 w-72 max-h-96 overflow-y-auto bg-white border rounded-lg shadow-lg z-50">
+        <ul id="notifList" class="text-gray-800 text-left"></ul>
+      </div>
+    </li>
+    <li id="userInfo" class="hidden flex-col items-end mr-2 text-right">
+      <span id="userName" class="font-bold"></span>
+      <span id="userStatus" class="text-xs text-green-600"></span>
+    </li>
+    <li id="loginBtnLi"><a href="login.html" class="hover:text-green-600 transition">Connexion</a></li>
+    <li id="signupBtnLi"><a href="signup.html" class="bg-gradient-to-r from-green-500 to-blue-600 text-white px-4 py-2 rounded-xl hover:from-green-600 hover:to-blue-700 transition">Inscription</a></li>
+    <li id="premiumBtnLi" class="hidden"><a href="checkout.html" class="bg-yellow-400 text-gray-900 px-4 py-2 rounded-xl font-bold">Premium</a></li>
+    <li id="logoutBtnLi" class="hidden"><a href="#" id="logoutBtn" class="hover:text-green-600 transition">Déconnexion</a></li>
+  </ul>
+</nav>
