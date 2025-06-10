@@ -1,23 +1,30 @@
-<nav class="max-w-7xl mx-auto flex items-center justify-between py-4 px-6">
+<nav class="max-w-7xl mx-auto flex items-center justify-between py-4 px-6 relative z-50">
   <!-- Logo -->
   <a href="index.html" class="text-2xl font-bold text-green-600">Luxibre Alpha</a>
 
-  <!-- Burger Button (mobile only) -->
-  <button id="burgerBtn" class="md:hidden text-2xl focus:outline-none">
-    <span class="fa fa-bars"></span>
+  <!-- Burger Button -->
+  <button id="burgerBtn" class="md:hidden text-2xl focus:outline-none z-50">
+    <i class="fa fa-bars"></i>
   </button>
 
   <!-- Navigation Links -->
   <ul id="headerNav"
-      class="flex-col md:flex-row md:flex gap-6 items-center text-sm font-semibold
-             fixed md:static top-0 left-0 w-2/3 max-w-xs h-full bg-white shadow-lg z-50
-             transform -translate-x-full md:transform-none md:bg-transparent md:w-auto md:h-auto md:shadow-none
-             transition-transform duration-200 ease-in-out
-             pt-20 md:pt-0 px-6 md:px-0">
+      class="flex flex-col md:flex-row md:items-center md:gap-6 gap-4 text-sm font-semibold
+             fixed top-0 left-0 w-3/4 max-w-sm h-full bg-white shadow-xl z-50
+             transform -translate-x-full md:transform-none md:static md:w-auto md:h-auto md:bg-transparent md:shadow-none
+             transition-transform duration-300 ease-in-out px-6 pt-24 md:pt-0 md:px-0">
+    <!-- Bouton de fermeture mobile -->
+    <li class="md:hidden self-end mb-6">
+      <button id="closeMenu" class="text-2xl">
+        <i class="fa fa-times"></i>
+      </button>
+    </li>
+
     <li><a href="index.html" class="hover:text-green-600 transition">Accueil</a></li>
     <li><a href="#fonctionnalites" class="hover:text-green-600 transition">Fonctionnalités</a></li>
     <li><a href="#tarifs" class="hover:text-green-600 transition">Tarifs</a></li>
     <li><a href="dashboard.html" class="hover:text-green-600 transition">Dashboard</a></li>
+    
     <li id="notifWrapper" class="relative hidden">
       <button id="notifBtn" class="relative">
         <span class="fa fa-bell text-xl"></span>
@@ -27,16 +34,19 @@
         <ul id="notifList" class="text-gray-800 text-left"></ul>
       </div>
     </li>
-    <li id="userInfo" class="hidden flex-col items-end mr-2 text-right">
+
+    <li id="userInfo" class="hidden flex-col items-end md:items-start text-right md:text-left">
       <span id="userName" class="font-bold"></span>
       <span id="userStatus" class="text-xs text-green-600"></span>
     </li>
     <li id="loginBtnLi"><a href="login.html" class="hover:text-green-600 transition">Connexion</a></li>
-    <li id="signupBtnLi"><a href="signup.html" class="bg-gradient-to-r from-green-500 to-blue-600 text-white px-4 py-2 rounded-xl hover:from-green-600 hover:to-blue-700 transition">Inscription</a></li>
-    <li id="premiumBtnLi" class="hidden"><a href="checkout.html" class="bg-yellow-400 text-gray-900 px-4 py-2 rounded-xl font-bold">Premium</a></li>
+    <li id="signupBtnLi">
+      <a href="signup.html" class="bg-gradient-to-r from-green-500 to-blue-600 text-white px-4 py-2 rounded-xl hover:from-green-600 hover:to-blue-700 transition block text-center">Inscription</a>
+    </li>
+    <li id="premiumBtnLi" class="hidden"><a href="checkout.html" class="bg-yellow-400 text-gray-900 px-4 py-2 rounded-xl font-bold block text-center">Premium</a></li>
     <li id="logoutBtnLi" class="hidden"><a href="#" id="logoutBtn" class="hover:text-green-600 transition">Déconnexion</a></li>
   </ul>
-  
-  <!-- Overlay pour fermer le menu mobile -->
-  <div id="menuOverlay" class="fixed inset-0 bg-black bg-opacity-40 z-40 hidden md:hidden"></div>
+
+  <!-- Overlay -->
+  <div id="menuOverlay" class="fixed inset-0 bg-black bg-opacity-50 hidden md:hidden z-40"></div>
 </nav>
