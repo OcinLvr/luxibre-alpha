@@ -45,6 +45,14 @@ const CRYPTOS = [
   { symbol: "DOGE", name: "Dogecoin", type: "crypto", premium: false }
 ];
 
+// Harmonisation pour dashboard.js : "actions", "etf", "cryptomonnaie"
+function assetTypeToDashboardType(assetType) {
+  if (assetType === "stock") return "actions";
+  if (assetType === "etf") return "etf";
+  if (assetType === "crypto") return "cryptomonnaie";
+  return assetType;
+}
+
 function SMA(data, period) {
   if (data.length < period) return null;
   return data.slice(-period).reduce((sum, val) => sum + val, 0) / period;
@@ -216,6 +224,7 @@ const generate = async (type) => {
       const signal = {
         name: asset.name,
         symbol: asset.symbol,
+        type: assetTypeToDashboardType(asset.type), // harmonisé pour dashboard.js
         price: data.price,
         history: data.history,
         recommendation,
