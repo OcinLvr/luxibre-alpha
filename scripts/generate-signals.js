@@ -245,7 +245,7 @@ const generate = async (type) => {
       const signal = {
         name: asset.name,
         symbol: asset.symbol,
-        type: signalType,
+        type: signalType, // <-- CHAMP TOUJOURS PRÉSENT
         price: data.price,
         history: data.history,
         recommendation,
@@ -264,6 +264,9 @@ const generate = async (type) => {
         predictions: predictFuturePrices(data.history),
         performance30j: performance30Jours(data.history)
       };
+
+      // LOG DEBUG
+      console.log(`Signal généré: ${signal.symbol} - type: ${signal.type}`);
 
       // Ajoute ou remplace dans la nouvelle génération
       const existingIndex = newSignals[category].findIndex(s => s.symbol === asset.symbol);
