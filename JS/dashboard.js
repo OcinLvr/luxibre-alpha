@@ -1,7 +1,29 @@
 // Dashboard JS externalisé pour Luxibre Alpha
 
+// Petit utilitaire pour attendre que la promesse premium soit bien définie
+function waitUntil(conditionFn, interval = 100, maxTry = 30) {
+  return new Promise((resolve, reject) => {
+    let tries = 0;
+    const timer = setInterval(() => {
+      if (conditionFn()) {
+        clearInterval(timer);
+        resolve();
+      }
+      tries++;
+      if (tries >= maxTry) {
+        clearInterval(timer);
+        reject('Timeout');
+      }
+    }, interval);
+  });
+}
+
 // Fonction pour vérifier si l'utilisateur est premium (exposez window.isPremiumPromise dans le header !)
 async function isPremiumUser() {
+  // Attend que la promesse soit bien injectée par le header, max 3s
+  if (!window.isPremiumPromise) {
+    await waitUntil(() => window.isPremiumPromise, 100, 30);
+  }
   return await window.isPremiumPromise;
 }
 
@@ -278,7 +300,7 @@ async function renderSignals() {
   hideLoader();
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
   const signalFilter = document.getElementById('signalFilter');
   const typeFilter = document.getElementById('typeFilter');
   signalFilter.addEventListener('change', filterAssets);
@@ -308,5 +330,5 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
-  renderSignals();
+  await renderSignals();
 });
