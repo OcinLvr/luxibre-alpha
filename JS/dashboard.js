@@ -170,7 +170,91 @@ exportBigChartBtn.addEventListener("click", () => {
 closeBigChartBtn.addEventListener("click", closeBigChart);
 bigChartModal.addEventListener("click", e => { if (e.target === bigChartModal) closeBigChart(); });
 
-// Chargement des signaux et affichage
+// --- Watchlist (liste de suivi) & notifications ---
+
+function getWatchlist() {
+  return JSON.parse(localStorage.getItem('watchlist') || '[]');
+}
+function setWatchlist(list) {
+  localStorage.setItem('watchlist', JSON.stringify(list));
+}
+
+function toggleWatch(symbol) {
+  let list = getWatchlist();
+  if (list.includes(symbol)) {
+    list = list.filter(s => s !== symbol);
+  } else {
+    list.push(symbol);
+  }
+  setWatchlist(list);
+}
+
+function getWatchHistory() {
+  return JSON.parse(localStorage.getItem('watchHistory') || '{}');
+}
+function setWatchHistory(hist) {
+  localStorage.setItem('watchHistory', JSON.stringify(hist));
+}
+
+function isSymbolWatched(symbol) {
+  return getWatchlist().includes(symbol);
+}
+
+function checkForWatchlistNotifications(data) {
+  const watchlist = getWatchlist();
+  const hist = getWatchHistory();
+  const notifs = [];
+  // Balaye toutes les catégories
+  ['achat', 'vente', 'conservation'].forEach(cat => {
+    if (!data[cat]) return;
+    data[cat].forEach(signal => {
+      if (watchlist.includes(signal.symbol)) {
+        const prev = hist[signal.symbol];
+        if (prev && prev !== cat) {
+          notifs.push({
+            symbol: signal.symbol,
+            name: signal.name,
+            from: prev,
+            to: cat,
+            updated: signal.updated
+          });
+        }
+        // met à jour l'historique pour ce symbol
+        hist[signal.symbol] = cat;
+      }
+    });
+  });
+  setWatchHistory(hist);
+  showNotifBadge(notifs);
+}
+
+function showNotifBadge(notifs) {
+  const notifWrapper = document.getElementById('notifWrapper');
+  const notifCount = document.getElementById('notifCount');
+  const notifList = document.getElementById('notifList');
+  if (notifs.length > 0) {
+    notifWrapper.classList.remove('hidden');
+    notifCount.textContent = notifs.length;
+    notifList.innerHTML = notifs.map(n =>
+      `<li class="py-2 px-2 border-b border-gray-100">
+        <strong>${n.name}</strong><br>
+        Changement: <span class="capitalize">${n.from}</span> → <span class="capitalize">${n.to}</span><br>
+        <span class="text-xs text-gray-400">${luxon.DateTime.fromISO(n.updated).toLocaleString(luxon.DateTime.DATETIME_MED)}</span>
+      </li>`
+    ).join('');
+  } else {
+    notifWrapper.classList.add('hidden');
+    notifCount.textContent = '';
+    notifList.innerHTML = '';
+  }
+}
+
+document.getElementById('notifBtn')?.addEventListener('click', () => {
+  document.getElementById('notifDropdown').classList.toggle('hidden');
+});
+
+// --- Rendu des signaux et dashboard ---
+
 async function fetchSignals() {
   try {
     const res = await fetch("data/signals.json");
@@ -216,6 +300,9 @@ async function renderSignals() {
       const updatedDate = luxon.DateTime.fromISO(signal.updated);
       const formattedUpdatedDate = updatedDate.toLocaleString(luxon.DateTime.DATETIME_MED);
 
+      // --- Bouton liste de suivi ---
+      const isFollowed = isSymbolWatched(signal.symbol);
+
       card.innerHTML = `
         ${signal.premium ? '<div class="premium-badge">Premium</div>' : ''}
         ${isLocked ? '<button class="upgrade-message" onclick="window.location.href=\'/#tarifs\'">Devenez Premium</button>' : ''}
@@ -225,12 +312,22 @@ async function renderSignals() {
           <p><strong>Performance (30j) :</strong> ${performanceBadge(signal.performance30j)}</p>
           <p><strong>Recommandation :</strong> <span class="recommendation">${signal.recommendation}</span></p>
           <p><strong>Dernière mise à jour :</strong> ${formattedUpdatedDate}</p>
+          <button class="follow-btn" data-symbol="${signal.symbol}">
+            ${isFollowed ? "Retirer de la liste" : "Suivre"}
+          </button>
           <div class="chart-container">
             <canvas id="${chartId}" width="300" height="150"></canvas>
           </div>
         </div>
       `;
       container.appendChild(card);
+
+      // Gestion du bouton suivre
+      card.querySelector('.follow-btn').addEventListener('click', function(e) {
+        e.stopPropagation();
+        toggleWatch(signal.symbol);
+        this.textContent = isSymbolWatched(signal.symbol) ? "Retirer de la liste" : "Suivre";
+      });
 
       if (!isLocked) {
         const ctx = document.getElementById(chartId).getContext("2d");
@@ -297,6 +394,8 @@ async function renderSignals() {
   if (!container.querySelector('.card')) {
     container.innerHTML = `<div class="text-center text-gray-400 font-semibold text-lg py-8">Aucun signal pour ce filtre.</div>`;
   }
+  // Notifications après rendu
+  checkForWatchlistNotifications(data);
   hideLoader();
 }
 
