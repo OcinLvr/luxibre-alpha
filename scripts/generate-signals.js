@@ -191,24 +191,36 @@ function mapRecommendationToCategory(rec) {
   return "conservation";
 }
 
-// Fusionne les signaux en mettant à jour ceux présents dans la génération, et en conservant les autres
-function mergeKeepAllUpdateFound(existingSignals, newSignals) {
-  const out = { achat: [], vente: [], conservation: [] };
+// Nouvelle fusion : déplace et met à jour chaque signal dans la bonne catégorie, supprime les doublons
+function mergeMoveAndUpdate(existingSignals, newSignals) {
+  // 1. Index tous les nouveaux signaux par symbol
+  const newBySymbol = {};
   for (const cat of ["achat", "vente", "conservation"]) {
-    // On commence par tous les anciens signaux (copie profonde)
-    let merged = existingSignals && existingSignals[cat] ? [...existingSignals[cat].map(s => ({...s}))] : [];
-    // Pour chaque signal de la génération du jour, on remplace s'il existe (par symbol), sinon on ajoute
     for (const sig of newSignals[cat]) {
-      const index = merged.findIndex(s => s.symbol === sig.symbol);
-      if (index >= 0) {
-        merged[index] = sig; // Mise à jour
-      } else {
-        merged.push(sig);    // Ajout
-      }
+      newBySymbol[sig.symbol] = { ...sig, category: cat };
     }
-    out[cat] = merged;
   }
-  return out;
+
+  // 2. Parcours tous les anciens signaux, conserve ceux qui n'ont pas été mis à jour (pas présents dans newSignals)
+  const merged = { achat: [], vente: [], conservation: [] };
+  for (const cat of ["achat", "vente", "conservation"]) {
+    if (!existingSignals || !existingSignals[cat]) continue;
+    for (const sig of existingSignals[cat]) {
+      if (!newBySymbol[sig.symbol]) {
+        merged[cat].push(sig);
+      }
+      // sinon : il sera ajouté à la bonne catégorie à l’étape suivante (donc pas de doublon)
+    }
+  }
+
+  // 3. Ajoute les nouveaux signaux à la bonne catégorie
+  for (const cat of ["achat", "vente", "conservation"]) {
+    for (const sig of newSignals[cat]) {
+      merged[cat].push(sig);
+    }
+  }
+
+  return merged;
 }
 
 const generate = async (type) => {
@@ -266,7 +278,7 @@ const generate = async (type) => {
       };
 
       // LOG DEBUG
-      console.log(`Signal généré: ${signal.symbol} - type: ${signal.type}`);
+      console.log(`Signal généré: ${signal.symbol} - type: ${signal.type} - cat: ${category}`);
 
       // Ajoute ou remplace dans la nouvelle génération
       const existingIndex = newSignals[category].findIndex(s => s.symbol === asset.symbol);
@@ -280,8 +292,8 @@ const generate = async (type) => {
     }
   }
 
-  // Fusion intelligente : conserve tout, met à jour ce qui existe, ajoute les nouveaux
-  let mergedSignals = mergeKeepAllUpdateFound(existingSignals, newSignals);
+  // Fusion intelligente : déplace et met à jour chaque signal dans la bonne catégorie, supprime les doublons
+  let mergedSignals = mergeMoveAndUpdate(existingSignals, newSignals);
 
   fs.writeFileSync('data/signals.json', JSON.stringify(mergedSignals, null, 2));
   console.log("Fichier signals.json mis à jour avec succès !");
