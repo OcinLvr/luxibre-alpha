@@ -191,17 +191,38 @@ function mapRecommendationToCategory(rec) {
   return "conservation";
 }
 
-const generate = async (type) => {
-  let signals = { achat: [], vente: [], conservation: [] };
+// Fonction pour fusionner les signaux existants et nouveaux sans doublons
+function mergeSignals(existingSignals, newSignals) {
+  const merged = { achat: [], vente: [], conservation: [] };
+  for (const category of ["achat", "vente", "conservation"]) {
+    const seenSymbols = new Set();
+    // Ajout des nouveaux signaux (sont prioritaires)
+    for (const sig of newSignals[category]) {
+      merged[category].push(sig);
+      seenSymbols.add(sig.symbol);
+    }
+    // Ajout des existants qui ne sont pas déjà dans les nouveaux
+    if (existingSignals && Array.isArray(existingSignals[category])) {
+      for (const sig of existingSignals[category]) {
+        if (!seenSymbols.has(sig.symbol)) {
+          merged[category].push(sig);
+          seenSymbols.add(sig.symbol);
+        }
+      }
+    }
+  }
+  return merged;
+}
 
-  // Lire le fichier existant si disponible
+const generate = async (type) => {
+  // 1. Lit l'existant pour éviter d'effacer les autres signaux
+  let existingSignals = null;
   if (fs.existsSync('data/signals.json')) {
-    const existingData = fs.readFileSync('data/signals.json', 'utf8');
-    signals = JSON.parse(existingData);
+    existingSignals = JSON.parse(fs.readFileSync('data/signals.json', 'utf8'));
   }
 
+  // 2. Détermine les assets à traiter pour cette exécution
   let assetsToProcess = [];
-
   if (type === 'cryptos') {
     assetsToProcess = [...CRYPTOS];
   } else if (type === 'stocks-etfs') {
@@ -209,6 +230,9 @@ const generate = async (type) => {
   } else {
     assetsToProcess = [...STOCKS, ...ETFS, ...CRYPTOS];
   }
+
+  // 3. Génère les nouveaux signaux de cette catégorie
+  const newSignals = { achat: [], vente: [], conservation: [] };
 
   for (const asset of assetsToProcess) {
     try {
@@ -244,20 +268,23 @@ const generate = async (type) => {
         performance30j: performance30Jours(data.history)
       };
 
-      // Vérifier si le signal existe déjà et le mettre à jour
-      const existingIndex = signals[category].findIndex(s => s.symbol === asset.symbol);
+      // Met à jour ou ajoute le signal selon le symbole
+      const existingIndex = newSignals[category].findIndex(s => s.symbol === asset.symbol);
       if (existingIndex >= 0) {
-        signals[category][existingIndex] = signal; // Mettre à jour le signal existant
+        newSignals[category][existingIndex] = signal;
       } else {
-        signals[category].push(signal); // Ajouter un nouveau signal
+        newSignals[category].push(signal);
       }
     } catch (err) {
       console.error(`Erreur pour ${asset.symbol}:`, err.message);
     }
   }
 
-  // Écrire les signaux mis à jour dans le fichier
-  fs.writeFileSync('data/signals.json', JSON.stringify(signals, null, 2));
+  // 4. Fusionne les nouveaux signaux avec les existants pour garder tout à jour
+  const mergedSignals = mergeSignals(existingSignals, newSignals);
+
+  // 5. Écrit le fichier à jour
+  fs.writeFileSync('data/signals.json', JSON.stringify(mergedSignals, null, 2));
   console.log("Fichier signals.json mis à jour avec succès !");
 };
 
