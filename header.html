@@ -9,16 +9,22 @@
 
   <!-- Navigation Links -->
   <ul id="headerNav"
-      class="flex flex-col md:flex-row md:items-center md:gap-6 gap-4 text-sm font-semibold
-             fixed top-0 left-0 w-3/4 max-w-sm h-full bg-white shadow-xl z-50
+      class="flex flex-col md:flex-row md:items-center md:gap-6 gap-4 text-base font-semibold
+             fixed top-0 left-0 w-4/5 max-w-xs h-full bg-white shadow-2xl z-50
              transform -translate-x-full md:transform-none md:static md:w-auto md:h-auto md:bg-transparent md:shadow-none
-             transition-transform duration-300 ease-in-out px-6 pt-24 md:pt-0 md:px-0">
+             transition-transform duration-300 ease-in-out px-6 pt-10 md:pt-0 md:px-0 rounded-r-xl">
+    <!-- Bandeau utilisateur version mobile -->
+    <li class="md:hidden flex flex-col items-center mb-2">
+      <span id="mobileUserName" class="font-bold"></span>
+      <span id="mobileUserStatus" class="text-xs text-green-600"></span>
+    </li>
     <!-- Bouton de fermeture mobile -->
     <li class="md:hidden self-end mb-6">
       <button id="closeMenu" class="text-2xl">
         <i class="fa fa-times"></i>
       </button>
     </li>
+    <li class="border-b border-gray-200 w-full"></li>
 
     <li><a href="index.html" class="hover:text-green-600 transition">Accueil</a></li>
     <li><a href="#fonctionnalites" class="hover:text-green-600 transition">Fonctionnalités</a></li>
