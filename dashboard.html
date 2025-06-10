@@ -27,14 +27,12 @@
       --text-color: #f1f5f9;
       --accent-color: #86efac;
     }
-
     body {
       font-family: 'Inter', sans-serif;
       background: #0f172a;
       color: var(--text-color);
       margin: 0;
     }
-
     nav.dashboard-nav select {
       background: var(--primary-color);
       color: white;
@@ -45,11 +43,9 @@
       cursor: pointer;
       transition: background 0.3s;
     }
-
     nav.dashboard-nav select:hover {
       background: #16a34a;
     }
-
     .notice {
       background: #dcfce7;
       color: #166534;
@@ -59,8 +55,29 @@
       margin-bottom: 2rem;
       font-weight: 600;
       text-align: center;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
     }
-
+    .notice ul {
+      margin: 0.5rem 0 0.5rem 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+    .notice li {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 500;
+    }
+    .notice a {
+      margin-top: 8px;
+      display: inline-block;
+    }
     .card {
       background: var(--secondary-color);
       padding: 1.5rem;
@@ -68,24 +85,26 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.15);
       position: relative;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
+      min-width: 290px;
+      max-width: 370px;
+      margin: 0 auto;
+      flex: 1 1 320px;
+      display: flex;
+      flex-direction: column;
     }
-
     .card:hover {
       transform: translateY(-6px);
       box-shadow: 0 10px 20px rgba(34,197,94,0.4);
     }
-
     .card-content {
       position: relative;
       z-index: 1;
     }
-
     .card.blur .card-content {
       filter: blur(4px);
       pointer-events: none;
       user-select: none;
     }
-
     .premium-badge {
       position: absolute;
       top: 10px;
@@ -98,13 +117,12 @@
       font-weight: bold;
       z-index: 2;
     }
-
     .upgrade-message {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: rgba(15, 23, 42, 0.8);
+      background: rgba(15, 23, 42, 0.85);
       color: white;
       padding: 0.75rem 1.5rem;
       border-radius: 2rem;
@@ -113,18 +131,18 @@
       border: 1px solid rgba(34, 197, 94, 0.5);
       cursor: pointer;
       transition: background 0.3s;
+      font-weight: bold;
+      font-size: 1rem;
     }
-
     .upgrade-message:hover {
       background: rgba(34, 197, 94, 0.9);
+      color: #fff;
     }
-
     .recommendation {
       margin-top: 0.8rem;
       font-weight: 700;
       color: #4ade80;
     }
-
     .chart-container {
       height: 200px;
       margin-top: 1rem;
@@ -135,11 +153,27 @@
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       transition: box-shadow 0.3s ease;
     }
-
     .chart-container:hover {
       box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
     }
-
+    .performance-badge {
+      display: inline-block;
+      min-width: 56px;
+      text-align: center;
+      border-radius: 1rem;
+      font-weight: 600;
+      margin-left: 0.5rem;
+      padding: 0.15rem 0.75rem;
+      font-size: 1rem;
+    }
+    .performance-positive {
+      background: #22c55e;
+      color: #fff;
+    }
+    .performance-negative {
+      background: #f87171;
+      color: #fff;
+    }
     .export-btn {
       position: absolute;
       top: 1rem;
@@ -154,29 +188,24 @@
       z-index: 2;
       transition: background 0.3s;
     }
-
     .export-btn:hover {
       background: #16a34a;
     }
-
     footer {
       background: var(--secondary-color);
       padding: 1rem;
       text-align: center;
       margin-top: 2rem;
     }
-
     footer a {
       color: var(--primary-color);
       margin: 0 1rem;
       text-decoration: none;
     }
-
     /* Modal style for big chart */
     body.modal-open {
       overflow: hidden;
     }
-
     #bigChartModal {
       position: fixed;
       inset: 0;
@@ -187,11 +216,9 @@
       z-index: 1000;
       overflow-y: auto;
     }
-
     #bigChartModal.active {
       display: flex;
     }
-
     #bigChartContent {
       background-color: var(--secondary-color);
       border-radius: 1rem;
@@ -205,20 +232,17 @@
       position: relative;
       overflow-y: auto;
     }
-
     #bigChartHeader {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 1rem;
     }
-
     #bigChartHeader h3 {
       font-size: 1.5rem;
       font-weight: 700;
       color: var(--accent-color);
     }
-
     #closeBigChartBtn {
       background: transparent;
       border: none;
@@ -227,32 +251,27 @@
       cursor: pointer;
       transition: color 0.3s;
     }
-
     #closeBigChartBtn:hover {
       color: var(--primary-color);
     }
-
     #bigChartCanvas {
       flex-grow: 1;
       max-height: 70vh;
       background: #0f172a;
       border-radius: 0.6rem;
     }
-
     #predictionsContainer {
       margin-top: 1rem;
       padding: 1rem;
       background: #0f172a;
       border-radius: 0.6rem;
     }
-
     #bigChartActions {
       margin-top: 1rem;
       display: flex;
       justify-content: flex-end;
       gap: 1rem;
     }
-
     #bigChartActions button {
       background: var(--primary-color);
       color: white;
@@ -263,18 +282,62 @@
       cursor: pointer;
       transition: background 0.3s;
     }
-
     #bigChartActions button:hover {
       background: #16a34a;
+    }
+    /* Loader */
+    #loader {
+      display: none;
+      margin: 2rem auto;
+      text-align: center;
+    }
+    /* Responsive */
+    #signalsContainer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+      align-items: stretch;
+      margin-bottom: 2rem;
+    }
+    @media (max-width: 900px) {
+      #signalsContainer {
+        gap: 1.25rem;
+      }
+    }
+    @media (max-width: 700px) {
+      .card {
+        min-width: 90vw;
+        max-width: 97vw;
+        padding: 1rem;
+      }
+      #signalsContainer {
+        gap: 1rem;
+      }
+    }
+    @media (max-width: 600px) {
+      .card {
+        min-width: 98vw;
+        max-width: 99vw;
+        padding: 0.7rem;
+      }
+    }
+    @media (max-width: 480px) {
+      .card {
+        border-radius: 0.5rem;
+        padding: 0.5rem;
+      }
+      #signalsContainer {
+        gap: 0.5rem;
+      }
     }
   </style>
 </head>
 <body>
 
   <script type="module" src="JS/loadHeader.js"></script>
-
-  <!-- Header partagé -->
-  <div id="headerContainer"></div>
+  <!-- Header partagé (uniformisé) -->
+  <div id="header"></div>
 
   <!-- Navigation spécifique au dashboard -->
   <nav class="dashboard-nav flex gap-2 sm:justify-center p-4 bg-gray-800">
@@ -293,15 +356,62 @@
   </nav>
 
   <main>
-    <div id="premiumNotice" class="notice" style="display: none;"></div>
+    <!-- Loader -->
+    <div id="loader">
+      <i class="fa fa-spinner fa-spin text-4xl text-green-500"></i>
+    </div>
+    <!-- Notice premium améliorée -->
+    <div id="premiumNotice" class="notice" style="display: none;">
+      <div>
+        <span class="inline-block bg-yellow-400 text-black font-bold px-3 py-1 rounded-full mb-2">Premium</span>
+        <p>
+          Certains signaux sont réservés aux abonnés premium.<br>
+          <span class="block my-2 font-semibold">Débloquez :</span>
+        </p>
+        <ul>
+          <li><i class="fa fa-check text-green-500"></i> Signaux illimités</li>
+          <li><i class="fa fa-chart-line text-green-500"></i> Outils avancés</li>
+          <li><i class="fa fa-bolt text-green-500"></i> Notifications prioritaires</li>
+          <li><i class="fa fa-star text-green-500"></i> Zéro pub</li>
+        </ul>
+        <a href="/#tarifs" class="bg-gradient-to-r from-green-500 to-blue-600 text-white px-6 py-2 rounded-xl font-semibold hover:from-green-600 hover:to-blue-700 mt-2 transition">Je deviens Premium</a>
+      </div>
+    </div>
     <div id="signalsContainer"></div>
-    <section id="performanceReports">
-      <h2>Rapports de Performance</h2>
-      <!-- Contenu des rapports de performance -->
+    <!-- Section rapports de performance -->
+    <section id="performanceReports" class="max-w-3xl mx-auto mb-12 px-4">
+      <h2 class="text-2xl font-bold mb-4 text-green-400">Rapports de Performance</h2>
+      <div class="bg-gray-800 rounded-lg p-6 mb-2 shadow-lg text-gray-200">
+        <p class="mb-2"><span class="font-semibold text-green-300">Mai 2025 :</span> Les signaux premium ont généré un rendement moyen de <span class="font-bold text-green-400">+8,2%</span> sur 30 jours, contre <span class="font-bold text-yellow-400">+2,4%</span> pour les signaux gratuits.</p>
+        <ul class="list-disc pl-6 text-sm">
+          <li>Meilleure action : <span class="font-semibold">X Corp</span> (+13,5%)</li>
+          <li>Meilleur ETF : <span class="font-semibold">GreenEnergy</span> (+10,7%)</li>
+          <li>Meilleure crypto : <span class="font-semibold">SOL</span> (+24,1%)</li>
+        </ul>
+      </div>
+      <div class="bg-gray-800 rounded-lg p-6 shadow-lg text-gray-200">
+        <p class="mb-2"><span class="font-semibold text-green-300">Avril 2025 :</span> Les abonnés premium ont profité de <span class="font-bold text-green-400">3 alertes exclusives</span> et d’un taux de réussite de <span class="font-bold text-green-400">92%</span>.</p>
+      </div>
     </section>
-    <section id="testimonials">
-      <h2>Témoignages</h2>
-      <!-- Contenu des témoignages -->
+    <!-- Section témoignages -->
+    <section id="testimonials" class="max-w-3xl mx-auto mb-10 px-4">
+      <h2 class="text-2xl font-bold mb-4 text-green-400">Témoignages</h2>
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="bg-gray-900 rounded-lg p-6 shadow text-gray-100">
+          <p class="italic mb-2">« Les signaux premium sont ultra-précis. J’ai augmenté mes gains depuis mon abonnement ! »</p>
+          <div class="flex items-center gap-2">
+            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Avatar" class="w-8 h-8 rounded-full border border-green-400">
+            <span class="font-bold text-green-300">Jean D.</span>
+          </div>
+        </div>
+        <div class="bg-gray-900 rounded-lg p-6 shadow text-gray-100">
+          <p class="italic mb-2">« L’interface est claire, les outils graphiques sont top et le service client très réactif. »</p>
+          <div class="flex items-center gap-2">
+            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Avatar" class="w-8 h-8 rounded-full border border-green-400">
+            <span class="font-bold text-green-300">Marie L.</span>
+          </div>
+        </div>
+      </div>
     </section>
   </main>
 
@@ -315,392 +425,20 @@
       <canvas id="bigChartCanvas"></canvas>
       <div id="predictionsContainer"></div>
       <div id="bigChartActions">
-        <button id="resetZoomBtn">Réinitialiser Zoom</button>
-        <button id="exportBigChartBtn">Exporter le Graphique</button>
+        <button id="resetZoomBtn" aria-label="Réinitialiser Zoom">Réinitialiser Zoom</button>
+        <button id="exportBigChartBtn" aria-label="Exporter le Graphique">Exporter le Graphique</button>
       </div>
     </div>
   </div>
 
   <!-- Footer -->
-<footer class="py-10 bg-gray-100 mt-16">
-  <div class="max-w-7xl mx-auto px-6 text-center text-sm text-gray-600">
-    &copy; 2025 <span class="font-semibold text-green-600">Luxibre Alpha</span>. Tous droits réservés. |
-    <a href="/legal/mentions-legales.html" class="underline hover:text-green-600 transition">Mentions légales</a> |
-    <a href="/legal/cgu.html" class="underline hover:text-green-600 transition">CGU</a> |
-    <a href="/legal/rgpd.html" class="underline hover:text-green-600 transition">RGPD</a>
-  </div>
-</footer>
-
-  <script>
-    // Fonction pour vérifier si l'utilisateur est premium
-    async function isPremiumUser() {
-      return await window.isPremiumPromise;
-    }
-
-    // Fonction d'export pour petits graphiques
-    function exportChart(chartId) {
-      isPremiumUser().then(isPremium => {
-        if (!isPremium) {
-          alert("Cette fonctionnalité est réservée aux utilisateurs premium.");
-          return;
-        }
-        const element = document.getElementById(chartId);
-        html2canvas(element).then(canvas => {
-          const link = document.createElement('a');
-          link.download = 'chart.png';
-          link.href = canvas.toDataURL();
-          link.click();
-        });
-      });
-    }
-
-    // Variables globales pour modal graphique
-    let bigChartInstance = null;
-    const bigChartModal = document.getElementById("bigChartModal");
-    const bigChartCanvas = document.getElementById("bigChartCanvas").getContext('2d');
-    const bigChartTitle = document.getElementById("bigChartTitle");
-    const closeBigChartBtn = document.getElementById("closeBigChartBtn");
-    const resetZoomBtn = document.getElementById("resetZoomBtn");
-    const exportBigChartBtn = document.getElementById("exportBigChartBtn");
-
-    // Fonction pour ouvrir la modal du grand graphique
-    async function openBigChart(signal) {
-      const isPremium = await isPremiumUser();
-
-      if (signal.premium && !isPremium) {
-        alert("Ce signal est réservé aux abonnés premium.");
-        return;
-      }
-
-      bigChartTitle.textContent = signal.name + " - Prix Historique";
-
-      // Détruire l'ancien graphique si présent
-      if (bigChartInstance) {
-        bigChartInstance.destroy();
-      }
-
-      bigChartInstance = new Chart(bigChartCanvas, {
-        type: "line",
-        data: {
-          labels: signal.history.map((_, idx) => `J-${signal.history.length - idx}`),
-          datasets: [{
-            label: `${signal.name} - Prix de clôture`,
-            data: signal.history,
-            borderColor: "#3b82f6",
-            backgroundColor: "rgba(59, 130, 246, 0.1)",
-            fill: true,
-            tension: 0.4,
-            pointRadius: 3,
-            pointHoverRadius: 6,
-            pointBackgroundColor: "#3b82f6",
-            borderWidth: 2
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          animation: {
-            duration: 1000,
-            easing: 'easeInOutQuart'
-          },
-          plugins: {
-            legend: {
-              display: false
-            },
-            tooltip: {
-              mode: 'index',
-              intersect: false,
-              backgroundColor: 'rgba(0, 0, 0, 0.8)',
-              titleFont: {
-                size: 16
-              },
-              bodyFont: {
-                size: 14
-              },
-              padding: 10,
-              displayColors: false
-            },
-            zoom: {
-              pan: {
-                enabled: true,
-                mode: 'xy',
-                modifierKey: 'ctrl',
-              },
-              zoom: {
-                wheel: {
-                  enabled: true,
-                },
-                pinch: {
-                  enabled: true
-                },
-                mode: 'xy',
-              }
-            }
-          },
-          scales: {
-            x: {
-              display: true,
-              ticks: {
-                color: '#9ca3af',
-                font: {
-                  size: 12
-                }
-              },
-              grid: {
-                color: '#374151',
-                drawBorder: false
-              }
-            },
-            y: {
-              beginAtZero: false,
-              ticks: {
-                color: '#9ca3af',
-                font: {
-                  size: 12
-                }
-              },
-              grid: {
-                color: '#374151'
-              }
-            }
-          }
-        }
-      });
-
-      // Afficher les prédictions de prix si premium
-      const predictionsDiv = document.getElementById('predictionsContainer');
-      if (isPremium) {
-        if (signal.predictions) {
-          predictionsDiv.innerHTML = `
-            <h4>Prédictions de prix</h4>
-            <p>Jour 1: $${signal.predictions.day1}</p>
-            <p>Jour 3: $${signal.predictions.day3}</p>
-            <p>Jour 7: $${signal.predictions.day7}</p>
-          `;
-        } else {
-          predictionsDiv.innerHTML = `
-            <p>Les prédictions de prix ne sont pas disponibles pour ce signal.</p>
-          `;
-        }
-      } else {
-        predictionsDiv.innerHTML = `
-          <p>Les prédictions de prix sont réservées aux membres premium.</p>
-        `;
-      }
-
-      // Ouvrir la modal
-      document.body.classList.add('modal-open');
-      bigChartModal.classList.add("active");
-    }
-
-    function closeBigChart() {
-      if (bigChartInstance) {
-        bigChartInstance.destroy();
-        bigChartInstance = null;
-      }
-
-      // Supprimer la classe modal-open du corps de la page
-      document.body.classList.remove('modal-open');
-
-      bigChartModal.classList.remove("active");
-    }
-
-    // Réinitialiser zoom du grand graphique
-    resetZoomBtn.addEventListener("click", () => {
-      if (bigChartInstance) bigChartInstance.resetZoom();
-    });
-
-    // Exporter grand graphique
-    exportBigChartBtn.addEventListener("click", () => {
-      isPremiumUser().then(isPremium => {
-        if (!isPremium) {
-          alert("Cette fonctionnalité est réservée aux utilisateurs premium.");
-          return;
-        }
-        html2canvas(bigChartCanvas.canvas).then(canvas => {
-          const link = document.createElement('a');
-          link.download = 'big-chart.png';
-          link.href = canvas.toDataURL();
-          link.click();
-        });
-      });
-    });
-
-    closeBigChartBtn.addEventListener("click", closeBigChart);
-
-    // Fermer modal au clic hors contenu
-    bigChartModal.addEventListener("click", e => {
-      if (e.target === bigChartModal) closeBigChart();
-    });
-
-    // Chargement des signaux et affichage
-    async function fetchSignals() {
-      try {
-        const res = await fetch("data/signals.json");
-        if (!res.ok) throw new Error("HTTP error " + res.status);
-        return await res.json();
-      } catch (err) {
-        console.error("Erreur lors du chargement des signaux:", err);
-        document.getElementById("signalsContainer").textContent = "Erreur lors du chargement des signaux.";
-        return null;
-      }
-    }
-
-    async function renderSignals() {
-      const data = await fetchSignals();
-      if (!data) return;
-
-      const isPremium = await isPremiumUser();
-
-      const container = document.getElementById("signalsContainer");
-      const premiumNotice = document.getElementById("premiumNotice");
-      let premiumLocked = false;
-      container.innerHTML = "";
-
-      ["achat", "vente", "conservation"].forEach(category => {
-        if (!data[category] || !Array.isArray(data[category])) return;
-
-        // Trier les signaux pour que les non-premium apparaissent en premier
-        data[category].sort((a, b) => (a.premium === b.premium) ? 0 : a.premium ? 1 : -1);
-
-        data[category].forEach((signal, i) => {
-          const card = document.createElement("div");
-          card.className = "card";
-          card.dataset.category = category;
-          card.dataset.type = signal.type;
-
-          const isLocked = signal.premium && !isPremium;
-          if (isLocked) {
-            card.classList.add("blur");
-            premiumLocked = true;
-          }
-
-          const chartId = `chart-${category}-${i}`;
-
-          // Utiliser Luxon pour formater la date de mise à jour
-          const updatedDate = luxon.DateTime.fromISO(signal.updated);
-          const formattedUpdatedDate = updatedDate.toLocaleString(luxon.DateTime.DATETIME_MED);
-
-          card.innerHTML = `
-            ${signal.premium ? '<div class="premium-badge">Premium</div>' : ''}
-            ${isLocked ? '<button class="upgrade-message" onclick="window.location.href=\'/pricing.html\'">Devenez Premium</button>' : ''}
-            <div class="card-content">
-              <h3>${signal.name}</h3>
-              <p><strong>Prix actuel :</strong> $${signal.price.toFixed(2)}</p>
-              <p><strong>Performance (30j) :</strong> ${signal.performance30j}%</p>
-              <p><strong>Recommandation :</strong> <span class="recommendation">${signal.recommendation}</span></p>
-              <p><strong>Dernière mise à jour :</strong> ${formattedUpdatedDate}</p>
-              <div class="chart-container">
-                <canvas id="${chartId}" width="300" height="150"></canvas>
-              </div>
-            </div>
-          `;
-
-          container.appendChild(card);
-
-          if (!isLocked) {
-            const ctx = document.getElementById(chartId).getContext("2d");
-            new Chart(ctx, {
-              type: "line",
-              data: {
-                labels: signal.history.map((_, idx) => `J-${signal.history.length - idx}`),
-                datasets: [{
-                  label: `${signal.name} - Prix de clôture`,
-                  data: signal.history,
-                  borderColor: "#3b82f6",
-                  backgroundColor: "rgba(59, 130, 246, 0.1)",
-                  fill: true,
-                  tension: 0.4,
-                  pointRadius: 2,
-                  pointHoverRadius: 4,
-                  pointBackgroundColor: "#3b82f6",
-                  borderWidth: 2
-                }]
-              },
-              options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                animation: {
-                  duration: 1000,
-                  easing: 'easeInOutQuart'
-                },
-                scales: {
-                  x: {
-                    display: false
-                  },
-                  y: {
-                    beginAtZero: false,
-                    ticks: {
-                      color: '#9ca3af'
-                    },
-                    grid: {
-                      color: '#374151'
-                    }
-                  }
-                },
-                plugins: {
-                  legend: {
-                    display: false
-                  },
-                  tooltip: {
-                    mode: 'index',
-                    intersect: false,
-                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                    titleFont: {
-                      size: 14
-                    },
-                    bodyFont: {
-                      size: 12
-                    },
-                    padding: 8,
-                    displayColors: false
-                  }
-                }
-              }
-            });
-
-            card.querySelector('.chart-container').addEventListener('click', () => {
-              openBigChart(signal);
-            });
-          }
-        });
-      });
-
-      if (premiumLocked && !isPremium) {
-        premiumNotice.style.display = "block";
-        premiumNotice.textContent = "Certains signaux sont réservés aux abonnés premium. Abonnez-vous pour tout débloquer.";
-      }
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-      const signalFilter = document.getElementById('signalFilter');
-      const typeFilter = document.getElementById('typeFilter');
-
-      signalFilter.addEventListener('change', filterAssets);
-      typeFilter.addEventListener('change', filterAssets);
-
-      async function filterAssets() {
-        const signalCategory = signalFilter.value;
-        const typeCategory = typeFilter.value;
-
-        const cards = document.querySelectorAll('.card');
-        cards.forEach(card => {
-          const cardSignalCategory = card.dataset.category;
-          const cardTypeCategory = card.dataset.type;
-
-          const matchesSignal = signalCategory === 'all' || cardSignalCategory === signalCategory;
-          const matchesType = typeCategory === 'all' || cardTypeCategory === typeCategory;
-
-          if (matchesSignal && matchesType) {
-            card.style.display = 'block';
-          } else {
-            card.style.display = 'none';
-          }
-        });
-      }
-
-      renderSignals();
-    });
-  </script>
+  <footer class="py-10 bg-gray-100 mt-16">
+    <div class="max-w-7xl mx-auto px-6 text-center text-sm text-gray-600">
+      &copy; 2025 <span class="font-semibold text-green-600">Luxibre Alpha</span>. Tous droits réservés. |
+      <a href="/legal/mentions-legales.html" class="underline hover:text-green-600 transition">Mentions légales</a> |
+      <a href="/legal/cgu.html" class="underline hover:text-green-600 transition">CGU</a> |
+      <a href="/legal/rgpd.html" class="underline hover:text-green-600 transition">RGPD</a>
+    </div>
+  </footer>
 </body>
 </html>
