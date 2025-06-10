@@ -14,6 +14,24 @@ async function loadHeader() {
   const res = await fetch('header.html');
   headerContainer.innerHTML = await res.text();
 
+  // ...après avoir chargé le header...
+let userInfoObj = null;
+if (window.getUserInfo) {
+  userInfoObj = await getUserInfo();
+}
+if (userInfoObj) {
+  // Afficher le nom et le statut premium
+  userInfo.classList.remove('hidden');
+  userName.textContent = userInfoObj.name;
+  userStatus.textContent = userInfoObj.isPremium ? "Premium" : "Gratuit";
+  premiumBtnLi.style.display = userInfoObj.isPremium ? "none" : "";
+  // ... notifications, etc.
+} else {
+  // Non connecté
+  userInfo.classList.add('hidden');
+  premiumBtnLi.style.display = "none";
+}
+  
   // Sélecteurs utiles
   const loginBtnLi = document.getElementById('loginBtnLi');
   const signupBtnLi = document.getElementById('signupBtnLi');
