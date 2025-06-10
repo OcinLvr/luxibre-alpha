@@ -12,20 +12,20 @@ async function getUserInfo() {
     const user = auth.user;
     const { data: userData } = await supabase
       .from('users')
-      .select('ispremium, name')
+      .select('ispremium, email')
       .eq('id', user.id)
       .single();
     return {
       isLogged: true,
       isPremium: !!(userData && userData.ispremium),
-      name: userData?.name || user.email || "Utilisateur",
+      email: userData?.email || user.email || "Utilisateur",
       user,
     };
   } else {
     return {
       isLogged: false,
       isPremium: false,
-      name: "",
+      email: "",
       user: null,
     };
   }
@@ -45,7 +45,7 @@ async function loadHeader() {
   const premiumBtnLi = document.getElementById('premiumBtnLi');
   const logoutBtnLi = document.getElementById('logoutBtnLi');
   const userInfo = document.getElementById('userInfo');
-  const userName = document.getElementById('userName');
+  const userEmail = document.getElementById('userEmail');
   const userStatus = document.getElementById('userStatus');
   const notifWrapper = document.getElementById('notifWrapper');
   const notifBtn = document.getElementById('notifBtn');
@@ -57,7 +57,7 @@ async function loadHeader() {
   window.isPremiumPromise = (async () => {
     const userInfoObj = await getUserInfo();
     // Utilisation locale pour affichage
-    let { isLogged, isPremium, name, user } = userInfoObj;
+    let { isLogged, isPremium, email, user } = userInfoObj;
     let notifications = [];
 
     // Notifications (simple)
@@ -107,7 +107,7 @@ async function loadHeader() {
       signupBtnLi.style.display = "none";
       logoutBtnLi.style.display = "";
       userInfo.classList.remove('hidden');
-      userName.textContent = name;
+      userEmail.textContent = email;
       userStatus.textContent = isPremium ? "Premium" : "Gratuit";
       premiumBtnLi.style.display = isPremium ? "none" : "";
       await updateNotifications();
