@@ -1567,6 +1567,7 @@
     {
       "name": "Bitcoin",
       "symbol": "BTC",
+      "type": "cryptomonnaie",
       "price": 110133.46,
       "history": [
         62090.71,
@@ -1823,7 +1824,7 @@
       "recommendation": "Acheter",
       "score": 70,
       "premium": true,
-      "updated": "2025-06-10T18:33:28.863Z",
+      "updated": "2025-06-10T18:55:59.292Z",
       "indicators": {
         "rsi": 52.880261901840676,
         "macd": 1356.965336065099,
@@ -3322,6 +3323,7 @@
     {
       "name": "Cardano",
       "symbol": "ADA",
+      "type": "cryptomonnaie",
       "price": 0.7134,
       "history": [
         0.3516,
@@ -3578,7 +3580,7 @@
       "recommendation": "Vendre",
       "score": 35,
       "premium": true,
-      "updated": "2025-06-10T18:33:29.160Z",
+      "updated": "2025-06-10T18:55:59.658Z",
       "indicators": {
         "rsi": 40.07014467338886,
         "macd": -0.015140722610281876,
@@ -4013,6 +4015,7 @@
     {
       "name": "XRP",
       "symbol": "XRP",
+      "type": "cryptomonnaie",
       "price": 2.325,
       "history": [
         0.5341,
@@ -4269,7 +4272,7 @@
       "recommendation": "Vendre",
       "score": 35,
       "premium": false,
-      "updated": "2025-06-10T18:33:29.089Z",
+      "updated": "2025-06-10T18:55:59.563Z",
       "indicators": {
         "rsi": 50.51996985681991,
         "macd": -0.013450491815402366,
@@ -4293,6 +4296,7 @@
     {
       "name": "Polkadot",
       "symbol": "DOT",
+      "type": "cryptomonnaie",
       "price": 4.186,
       "history": [
         4.194,
@@ -4549,7 +4553,7 @@
       "recommendation": "Vendre",
       "score": 35,
       "premium": true,
-      "updated": "2025-06-10T18:33:29.294Z",
+      "updated": "2025-06-10T18:56:00.005Z",
       "indicators": {
         "rsi": 37.820957668285914,
         "macd": -0.117956828672793,
@@ -6144,6 +6148,7 @@
     {
       "name": "Ethereum",
       "symbol": "ETH",
+      "type": "cryptomonnaie",
       "price": 2723.83,
       "history": [
         2414.43,
@@ -6400,7 +6405,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-06-10T18:33:28.926Z",
+      "updated": "2025-06-10T18:55:59.379Z",
       "indicators": {
         "rsi": 53.794568835284146,
         "macd": 69.8297598746467,
@@ -7264,6 +7269,7 @@
     {
       "name": "Solana",
       "symbol": "SOL",
+      "type": "cryptomonnaie",
       "price": 161.45,
       "history": [
         143.22,
@@ -7520,7 +7526,7 @@
       "recommendation": "Conserver",
       "score": 45,
       "premium": false,
-      "updated": "2025-06-10T18:33:29.223Z",
+      "updated": "2025-06-10T18:55:59.758Z",
       "indicators": {
         "rsi": 35.37816726995615,
         "macd": -2.361716727476761,
@@ -7544,6 +7550,7 @@
     {
       "name": "Dogecoin",
       "symbol": "DOGE",
+      "type": "cryptomonnaie",
       "price": 0.19526,
       "history": [
         0.10924,
@@ -7800,7 +7807,7 @@
       "recommendation": "Conserver",
       "score": 45,
       "premium": false,
-      "updated": "2025-06-10T18:33:29.382Z",
+      "updated": "2025-06-10T18:56:00.262Z",
       "indicators": {
         "rsi": 32.13334876721842,
         "macd": -0.006134268505347318,
