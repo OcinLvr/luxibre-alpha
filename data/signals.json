@@ -783,6 +783,7 @@
     {
       "name": "Cisco Systems Inc.",
       "symbol": "CSCO",
+      "type": "actions",
       "price": 65.9,
       "history": [
         59.98,
@@ -889,7 +890,7 @@
       "recommendation": "Acheter",
       "score": 65,
       "premium": false,
-      "updated": "2025-06-10T16:20:55.475Z",
+      "updated": "2025-06-10T18:54:07.729Z",
       "indicators": {
         "rsi": 67.49116607773857,
         "macd": 1.446849248940346,
@@ -913,6 +914,7 @@
     {
       "name": "iShares EURO STOXX Banks 30-15 UCITS ETF (DE)",
       "symbol": "EXA1.AS",
+      "type": "etf",
       "price": 12.809100151062012,
       "history": [
         5.373300075531006,
@@ -1541,7 +1543,7 @@
       "recommendation": "Acheter",
       "score": 70,
       "premium": false,
-      "updated": "2025-06-10T16:20:55.795Z",
+      "updated": "2025-06-10T18:54:08.290Z",
       "indicators": {
         "rsi": 41.93149961104343,
         "macd": 0.24647204514717025,
@@ -2535,6 +2537,7 @@
     {
       "name": "Alphabet Inc.",
       "symbol": "GOOGL",
+      "type": "actions",
       "price": 176.09,
       "history": [
         195.55,
@@ -2641,7 +2644,7 @@
       "recommendation": "Acheter",
       "score": 65,
       "premium": false,
-      "updated": "2025-06-10T16:20:52.858Z",
+      "updated": "2025-06-10T18:54:03.498Z",
       "indicators": {
         "rsi": 64.5092676997873,
         "macd": 3.0641754871637374,
@@ -3057,6 +3060,7 @@
     {
       "name": "Apple Inc.",
       "symbol": "AAPL",
+      "type": "actions",
       "price": 201.45,
       "history": [
         237.87,
@@ -3163,7 +3167,7 @@
       "recommendation": "Vendre",
       "score": 35,
       "premium": false,
-      "updated": "2025-06-10T16:20:52.408Z",
+      "updated": "2025-06-10T18:54:02.351Z",
       "indicators": {
         "rsi": 38.11993517017826,
         "macd": -1.0761647678471036,
@@ -3187,6 +3191,7 @@
     {
       "name": "PepsiCo Inc.",
       "symbol": "PEP",
+      "type": "actions",
       "price": 129.96,
       "history": [
         144.78,
@@ -3293,7 +3298,7 @@
       "recommendation": "Vendre",
       "score": 35,
       "premium": true,
-      "updated": "2025-06-10T16:20:55.323Z",
+      "updated": "2025-06-10T18:54:07.487Z",
       "indicators": {
         "rsi": 41.10787172011672,
         "macd": -1.4182257357574315,
@@ -3877,6 +3882,7 @@
     {
       "name": "Comcast Corp.",
       "symbol": "CMCSA",
+      "type": "actions",
       "price": 34.6,
       "history": [
         36.5,
@@ -3983,7 +3989,7 @@
       "recommendation": "Vendre",
       "score": 35,
       "premium": false,
-      "updated": "2025-06-10T16:20:54.599Z",
+      "updated": "2025-06-10T18:54:07.253Z",
       "indicators": {
         "rsi": 40.000000000000064,
         "macd": -0.03986657531928728,
@@ -4567,6 +4573,7 @@
     {
       "name": "Intel Corp.",
       "symbol": "INTC",
+      "type": "actions",
       "price": 20.48,
       "history": [
         19.72,
@@ -4673,7 +4680,7 @@
       "recommendation": "Vendre",
       "score": 35,
       "premium": true,
-      "updated": "2025-06-10T16:20:54.502Z",
+      "updated": "2025-06-10T18:54:06.878Z",
       "indicators": {
         "rsi": 39.67889908256882,
         "macd": -0.21317976897462998,
@@ -4699,6 +4706,7 @@
     {
       "name": "Microsoft Corp.",
       "symbol": "MSFT",
+      "type": "actions",
       "price": 472.75,
       "history": [
         426.31,
@@ -4805,7 +4813,7 @@
       "recommendation": "Conserver",
       "score": 60,
       "premium": true,
-      "updated": "2025-06-10T16:20:52.598Z",
+      "updated": "2025-06-10T18:54:02.873Z",
       "indicators": {
         "rsi": 66.32941176470587,
         "macd": 13.311804448975977,
@@ -4959,6 +4967,7 @@
     {
       "name": "Meta Platforms Inc.",
       "symbol": "META",
+      "type": "actions",
       "price": 694.06,
       "history": [
         617.12,
@@ -5065,7 +5074,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-06-10T16:20:52.997Z",
+      "updated": "2025-06-10T18:54:03.886Z",
       "indicators": {
         "rsi": 75.64310987855018,
         "macd": 25.87712116106377,
@@ -5089,6 +5098,7 @@
     {
       "name": "NVIDIA Corp.",
       "symbol": "NVDA",
+      "type": "actions",
       "price": 142.63,
       "history": [
         136.24,
@@ -5195,7 +5205,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-06-10T16:20:53.090Z",
+      "updated": "2025-06-10T18:54:04.130Z",
       "indicators": {
         "rsi": 61.372422680412384,
         "macd": 6.266113344581811,
@@ -5219,6 +5229,7 @@
     {
       "name": "Walmart Inc.",
       "symbol": "WMT",
+      "type": "actions",
       "price": 97.45,
       "history": [
         91.34,
@@ -5325,7 +5336,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-06-10T16:20:53.482Z",
+      "updated": "2025-06-10T18:54:04.858Z",
       "indicators": {
         "rsi": 46.557040082219935,
         "macd": 0.811706031416648,
@@ -5349,6 +5360,7 @@
     {
       "name": "PayPal Holdings Inc.",
       "symbol": "PYPL",
+      "type": "actions",
       "price": 73.55,
       "history": [
         89.64,
@@ -5455,7 +5467,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-06-10T16:20:54.107Z",
+      "updated": "2025-06-10T18:54:05.730Z",
       "indicators": {
         "rsi": 56.26911314984711,
         "macd": 1.2654202128743748,
@@ -5479,6 +5491,7 @@
     {
       "name": "Adobe Inc.",
       "symbol": "ADBE",
+      "type": "actions",
       "price": 416.26,
       "history": [
         417.28,
@@ -5585,7 +5598,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-06-10T16:20:54.232Z",
+      "updated": "2025-06-10T18:54:06.105Z",
       "indicators": {
         "rsi": 45.45267489711934,
         "macd": 7.886069175187231,
@@ -5609,6 +5622,7 @@
     {
       "name": "Salesforce.com Inc.",
       "symbol": "CRM",
+      "type": "actions",
       "price": 272.25,
       "history": [
         321.16,
@@ -5715,7 +5729,7 @@
       "recommendation": "Conserver",
       "score": 45,
       "premium": false,
-      "updated": "2025-06-10T16:20:54.400Z",
+      "updated": "2025-06-10T18:54:06.501Z",
       "indicators": {
         "rsi": 36.02326426753911,
         "macd": -1.5341849718270169,
@@ -5999,6 +6013,7 @@
     {
       "name": "Broadcom Inc.",
       "symbol": "AVGO",
+      "type": "actions",
       "price": 244.28,
       "history": [
         228,
@@ -6105,7 +6120,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-06-10T16:20:55.572Z",
+      "updated": "2025-06-10T18:54:07.958Z",
       "indicators": {
         "rsi": 62.46120138762097,
         "macd": 13.064735226317396,
@@ -7939,6 +7954,7 @@
     {
       "name": "Tesla Inc.",
       "symbol": "TSLA",
+      "type": "actions",
       "price": 308.58,
       "history": [
         428.22,
@@ -8045,7 +8061,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-06-10T16:20:52.503Z",
+      "updated": "2025-06-10T18:54:02.640Z",
       "indicators": {
         "rsi": 38.89588441911328,
         "macd": 4.533771599770148,
@@ -8069,6 +8085,7 @@
     {
       "name": "Amazon.com Inc.",
       "symbol": "AMZN",
+      "type": "actions",
       "price": 216.98,
       "history": [
         223.35,
@@ -8175,7 +8192,7 @@
       "recommendation": "Conserver",
       "score": 60,
       "premium": true,
-      "updated": "2025-06-10T16:20:52.727Z",
+      "updated": "2025-06-10T18:54:03.247Z",
       "indicators": {
         "rsi": 67.46287927695289,
         "macd": 4.78992809305862,
@@ -8199,6 +8216,7 @@
     {
       "name": "JPMorgan Chase & Co.",
       "symbol": "JPM",
+      "type": "actions",
       "price": 266.74,
       "history": [
         252.35,
@@ -8305,7 +8323,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-06-10T16:20:53.175Z",
+      "updated": "2025-06-10T18:54:04.406Z",
       "indicators": {
         "rsi": 53.74094931617058,
         "macd": 4.046667835667336,
@@ -8329,6 +8347,7 @@
     {
       "name": "Visa Inc.",
       "symbol": "V",
+      "type": "actions",
       "price": 366.66,
       "history": [
         316.28,
@@ -8435,7 +8454,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-06-10T16:20:53.354Z",
+      "updated": "2025-06-10T18:54:04.637Z",
       "indicators": {
         "rsi": 48.32703723691317,
         "macd": 5.557681713035777,
@@ -8459,6 +8478,7 @@
     {
       "name": "The Walt Disney Company",
       "symbol": "DIS",
+      "type": "actions",
       "price": 115.66,
       "history": [
         108.18,
@@ -8565,7 +8585,7 @@
       "recommendation": "Conserver",
       "score": 50,
       "premium": false,
-      "updated": "2025-06-10T16:20:53.812Z",
+      "updated": "2025-06-10T18:54:05.238Z",
       "indicators": {
         "rsi": 60.548523206751064,
         "macd": 3.888834432582513,
@@ -8589,6 +8609,7 @@
     {
       "name": "Netflix Inc.",
       "symbol": "NFLX",
+      "type": "actions",
       "price": 1224.46,
       "history": [
         848.26,
@@ -8695,7 +8716,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-06-10T16:20:53.978Z",
+      "updated": "2025-06-10T18:54:05.485Z",
       "indicators": {
         "rsi": 60.32595016360431,
         "macd": 38.074427611792544,
