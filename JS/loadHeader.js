@@ -45,7 +45,7 @@ async function loadHeader() {
   const premiumBtnLi = document.getElementById('premiumBtnLi');
   const logoutBtnLi = document.getElementById('logoutBtnLi');
   const userInfo = document.getElementById('userInfo');
-  const userEmail = document.getElementById('userEmail');
+  const userName = document.getElementById('userName');
   const userStatus = document.getElementById('userStatus');
   const notifWrapper = document.getElementById('notifWrapper');
   const notifBtn = document.getElementById('notifBtn');
@@ -107,7 +107,7 @@ async function loadHeader() {
       signupBtnLi.style.display = "none";
       logoutBtnLi.style.display = "";
       userInfo.classList.remove('hidden');
-      userEmail.textContent = email;
+      userName.textContent = email;
       userStatus.textContent = isPremium ? "Premium" : "Gratuit";
       premiumBtnLi.style.display = isPremium ? "none" : "";
       await updateNotifications();
