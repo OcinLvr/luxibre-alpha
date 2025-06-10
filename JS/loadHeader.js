@@ -119,4 +119,46 @@ async function loadHeader() {
   });
 }
 
+
+
+// mobile
+
+// Responsive burger menu
+const burgerBtn = document.getElementById('burgerBtn');
+const headerNav = document.getElementById('headerNav');
+const menuOverlay = document.getElementById('menuOverlay');
+
+function openMenu() {
+  headerNav.classList.remove('-translate-x-full');
+  menuOverlay.classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeMenu() {
+  headerNav.classList.add('-translate-x-full');
+  menuOverlay.classList.add('hidden');
+  document.body.style.overflow = '';
+}
+
+burgerBtn?.addEventListener('click', openMenu);
+menuOverlay?.addEventListener('click', closeMenu);
+
+// Ferme le menu lors du clic sur un lien du menu (mobile)
+headerNav?.querySelectorAll('a').forEach(link =>
+  link.addEventListener('click', closeMenu)
+);
+
+// Sur desktop, le menu doit toujours être affiché
+function handleResize() {
+  if (window.innerWidth >= 768) {
+    headerNav.classList.remove('-translate-x-full');
+    menuOverlay.classList.add('hidden');
+    document.body.style.overflow = '';
+  } else {
+    headerNav.classList.add('-translate-x-full');
+  }
+}
+window.addEventListener('resize', handleResize);
+handleResize();
+
 document.addEventListener('DOMContentLoaded', loadHeader);
