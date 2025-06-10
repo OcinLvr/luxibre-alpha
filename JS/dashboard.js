@@ -1,6 +1,66 @@
-// Dashboard JS externalisé pour Luxibre Alpha
+// Dashboard JS pour Luxibre Alpha - gestion watchlist Supabase
 
-// Petit utilitaire pour attendre que la promesse premium soit bien définie
+// --- Supabase Client ---
+const supabaseUrl = 'https://xxxx.supabase.co'; // <-- À personnaliser
+const supabaseKey = 'public-anon-key';          // <-- À personnaliser
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+// --- Auth ---
+async function getCurrentUser() {
+  const { data: { user } } = await supabase.auth.getUser();
+  return user;
+}
+
+// --- Watchlist (Supabase) ---
+async function fetchWatchlistFromSupabase(userId) {
+  const { data, error } = await supabase
+    .from('user_follows')
+    .select('symbol')
+    .eq('user_id', userId);
+  if (error) {
+    console.error(error);
+    return [];
+  }
+  return data.map(row => row.symbol);
+}
+
+async function addToWatchlistSupabase(userId, symbol) {
+  const { error } = await supabase
+    .from('user_follows')
+    .insert([{ user_id: userId, symbol }]);
+  if (error && !String(error.message).includes("duplicate")) {
+    alert("Erreur lors de l'ajout à la liste de suivi");
+    console.error(error);
+  }
+}
+
+async function removeFromWatchlistSupabase(userId, symbol) {
+  const { error } = await supabase
+    .from('user_follows')
+    .delete()
+    .eq('user_id', userId)
+    .eq('symbol', symbol);
+  if (error) {
+    alert("Erreur lors du retrait de la liste de suivi");
+    console.error(error);
+  }
+}
+
+async function isWatchedByUser(userId, symbol) {
+  const { data, error } = await supabase
+    .from('user_follows')
+    .select('id')
+    .eq('user_id', userId)
+    .eq('symbol', symbol)
+    .maybeSingle();
+  if (error) {
+    console.error(error);
+    return false;
+  }
+  return !!data;
+}
+
+// --- Premium utils (inchangé) ---
 function waitUntil(conditionFn, interval = 100, maxTry = 30) {
   return new Promise((resolve, reject) => {
     let tries = 0;
@@ -18,9 +78,7 @@ function waitUntil(conditionFn, interval = 100, maxTry = 30) {
   });
 }
 
-// Fonction pour vérifier si l'utilisateur est premium (exposez window.isPremiumPromise dans le header !)
 async function isPremiumUser() {
-  // Attend que la promesse soit bien injectée par le header, max 3s
   if (!window.isPremiumPromise) {
     await waitUntil(() => window.isPremiumPromise, 100, 30);
   }
@@ -170,41 +228,16 @@ exportBigChartBtn.addEventListener("click", () => {
 closeBigChartBtn.addEventListener("click", closeBigChart);
 bigChartModal.addEventListener("click", e => { if (e.target === bigChartModal) closeBigChart(); });
 
-// --- Watchlist (liste de suivi) & notifications ---
-
-function getWatchlist() {
-  return JSON.parse(localStorage.getItem('watchlist') || '[]');
-}
-function setWatchlist(list) {
-  localStorage.setItem('watchlist', JSON.stringify(list));
-}
-
-function toggleWatch(symbol) {
-  let list = getWatchlist();
-  if (list.includes(symbol)) {
-    list = list.filter(s => s !== symbol);
-  } else {
-    list.push(symbol);
-  }
-  setWatchlist(list);
-}
-
+// --- Notifications/Watchlist historique local pour changements d'état ---
 function getWatchHistory() {
   return JSON.parse(localStorage.getItem('watchHistory') || '{}');
 }
 function setWatchHistory(hist) {
   localStorage.setItem('watchHistory', JSON.stringify(hist));
 }
-
-function isSymbolWatched(symbol) {
-  return getWatchlist().includes(symbol);
-}
-
-function checkForWatchlistNotifications(data) {
-  const watchlist = getWatchlist();
+function checkForWatchlistNotifications(data, watchlist) {
   const hist = getWatchHistory();
   const notifs = [];
-  // Balaye toutes les catégories
   ['achat', 'vente', 'conservation'].forEach(cat => {
     if (!data[cat]) return;
     data[cat].forEach(signal => {
@@ -219,7 +252,6 @@ function checkForWatchlistNotifications(data) {
             updated: signal.updated
           });
         }
-        // met à jour l'historique pour ce symbol
         hist[signal.symbol] = cat;
       }
     });
@@ -227,7 +259,6 @@ function checkForWatchlistNotifications(data) {
   setWatchHistory(hist);
   showNotifBadge(notifs);
 }
-
 function showNotifBadge(notifs) {
   const notifWrapper = document.getElementById('notifWrapper');
   const notifCount = document.getElementById('notifCount');
@@ -248,13 +279,11 @@ function showNotifBadge(notifs) {
     notifList.innerHTML = '';
   }
 }
-
 document.getElementById('notifBtn')?.addEventListener('click', () => {
   document.getElementById('notifDropdown').classList.toggle('hidden');
 });
 
 // --- Rendu des signaux et dashboard ---
-
 async function fetchSignals() {
   try {
     const res = await fetch("data/signals.json");
@@ -273,11 +302,18 @@ async function renderSignals() {
   const data = await fetchSignals();
   if (!data) return hideLoader();
 
+  const user = await getCurrentUser();
   const isPremium = await isPremiumUser();
   const container = document.getElementById("signalsContainer");
   const premiumNotice = document.getElementById("premiumNotice");
   let premiumLocked = false;
   container.innerHTML = "";
+
+  let userId = null, watchlist = [];
+  if (user) {
+    userId = user.id;
+    watchlist = await fetchWatchlistFromSupabase(userId);
+  }
 
   ["achat", "vente", "conservation"].forEach(category => {
     if (!data[category] || !Array.isArray(data[category])) return;
@@ -296,12 +332,22 @@ async function renderSignals() {
       }
 
       const chartId = `chart-${category}-${i}`;
-      // Luxon pour date
       const updatedDate = luxon.DateTime.fromISO(signal.updated);
       const formattedUpdatedDate = updatedDate.toLocaleString(luxon.DateTime.DATETIME_MED);
 
-      // --- Bouton liste de suivi ---
-      const isFollowed = isSymbolWatched(signal.symbol);
+      let followBtnHtml = "";
+      if (user) {
+        const isFollowed = watchlist.includes(signal.symbol);
+        followBtnHtml = `
+          <button class="follow-btn" data-symbol="${signal.symbol}">
+            ${isFollowed ? "Retirer de la liste" : "Suivre"}
+          </button>
+        `;
+      } else {
+        followBtnHtml = `
+          <button class="follow-btn" disabled title="Connectez-vous pour activer la liste de suivi">Suivre</button>
+        `;
+      }
 
       card.innerHTML = `
         ${signal.premium ? '<div class="premium-badge">Premium</div>' : ''}
@@ -312,9 +358,7 @@ async function renderSignals() {
           <p><strong>Performance (30j) :</strong> ${performanceBadge(signal.performance30j)}</p>
           <p><strong>Recommandation :</strong> <span class="recommendation">${signal.recommendation}</span></p>
           <p><strong>Dernière mise à jour :</strong> ${formattedUpdatedDate}</p>
-          <button class="follow-btn" data-symbol="${signal.symbol}">
-            ${isFollowed ? "Retirer de la liste" : "Suivre"}
-          </button>
+          ${followBtnHtml}
           <div class="chart-container">
             <canvas id="${chartId}" width="300" height="150"></canvas>
           </div>
@@ -323,11 +367,21 @@ async function renderSignals() {
       container.appendChild(card);
 
       // Gestion du bouton suivre
-      card.querySelector('.follow-btn').addEventListener('click', function(e) {
-        e.stopPropagation();
-        toggleWatch(signal.symbol);
-        this.textContent = isSymbolWatched(signal.symbol) ? "Retirer de la liste" : "Suivre";
-      });
+      if (user) {
+        card.querySelector('.follow-btn').addEventListener('click', async function(e) {
+          e.stopPropagation();
+          if (await isWatchedByUser(userId, signal.symbol)) {
+            await removeFromWatchlistSupabase(userId, signal.symbol);
+            this.textContent = "Suivre";
+            // Retire de la variable watchlist (pour la session)
+            watchlist = watchlist.filter(s => s !== signal.symbol);
+          } else {
+            await addToWatchlistSupabase(userId, signal.symbol);
+            this.textContent = "Retirer de la liste";
+            watchlist.push(signal.symbol);
+          }
+        });
+      }
 
       if (!isLocked) {
         const ctx = document.getElementById(chartId).getContext("2d");
@@ -390,12 +444,11 @@ async function renderSignals() {
     premiumNotice.style.display = "none";
   }
 
-  // Si aucune carte affichée (après filtrage)
   if (!container.querySelector('.card')) {
     container.innerHTML = `<div class="text-center text-gray-400 font-semibold text-lg py-8">Aucun signal pour ce filtre.</div>`;
   }
   // Notifications après rendu
-  checkForWatchlistNotifications(data);
+  if (user) checkForWatchlistNotifications(data, watchlist);
   hideLoader();
 }
 
@@ -422,7 +475,6 @@ document.addEventListener('DOMContentLoaded', async function() {
         card.style.display = 'none';
       }
     });
-    // Message si aucun signal visible
     const container = document.getElementById("signalsContainer");
     if (!anyVisible) {
       container.innerHTML = `<div class="text-center text-gray-400 font-semibold text-lg py-8">Aucun signal pour ce filtre.</div>`;
