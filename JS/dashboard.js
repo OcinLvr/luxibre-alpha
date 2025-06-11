@@ -1,13 +1,19 @@
-// Dashboard JS pour Luxibre Alpha - gestion watchlist Supabase
+// Dashboard JS pour Luxibre Alpha - gestion watchlist Supabase (ESM CORRECTIF)
+
+// Utilise l'import ES module pour Supabase v2+
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
 // --- Supabase Client ---
 const supabaseUrl = 'https://jrgdwozxcilasllpvikh.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpyZ2R3b3p4Y2lsYXNsbHB2aWtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4MjQ0NTEsImV4cCI6MjA2MzQwMDQ1MX0.S2oGP2rdtq1IkW-oH5mC8omm698PdCgQJtGVLlIFj3w';
-const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 // --- Auth ---
 async function getCurrentUser() {
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data: { user }, error } = await supabase.auth.getUser();
+  if (error) {
+    console.error('Erreur récupération utilisateur Supabase:', error);
+  }
   return user;
 }
 
@@ -18,7 +24,7 @@ async function fetchWatchlistFromSupabase(userId) {
     .select('symbol')
     .eq('user_id', userId);
   if (error) {
-    console.error(error);
+    console.error('Erreur récupération watchlist Supabase:', error);
     return [];
   }
   return data.map(row => row.symbol);
@@ -315,6 +321,10 @@ async function renderSignals() {
     watchlist = await fetchWatchlistFromSupabase(userId);
   }
 
+  // DEBUG LOGS POUR VERIFIER
+  console.log("DEBUG USER:", user);
+  console.log("DEBUG WATCHLIST:", watchlist);
+
   ["achat", "vente", "conservation"].forEach(category => {
     if (!data[category] || !Array.isArray(data[category])) return;
     data[category].sort((a, b) => (a.premium === b.premium) ? 0 : a.premium ? 1 : -1);
@@ -483,3 +493,19 @@ document.addEventListener('DOMContentLoaded', async function() {
 
   await renderSignals();
 });
+
+// BONUS : Bouton logout pour debug
+const addLogoutBtn = () => {
+  if (!document.getElementById('logoutBtn')) {
+    const btn = document.createElement('button');
+    btn.id = 'logoutBtn';
+    btn.textContent = 'Se déconnecter';
+    btn.style = 'position:fixed;top:10px;right:10px;z-index:9999;padding:10px 20px;background:#22c55e;color:#fff;border:none;border-radius:8px;cursor:pointer;';
+    btn.onclick = async () => {
+      await supabase.auth.signOut();
+      window.location.reload();
+    };
+    document.body.appendChild(btn);
+  }
+};
+addLogoutBtn();
