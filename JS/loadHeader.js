@@ -30,9 +30,8 @@ async function getUserInfo() {
   }
 }
 
-// Récupère les actifs suivis pour l'utilisateur
+// Récupère les actifs suivis pour l'utilisateur (table user_follows)
 async function getUserActifs(userId) {
-  // On récupère la liste des symbol suivis par l'utilisateur dans user_follows
   const { data, error } = await supabase
     .from('user_follows')
     .select('symbol')
@@ -119,11 +118,12 @@ async function loadHeader() {
       // Affiche icône utilisateur
       if (userIconWrapper) userIconWrapper.classList.remove('hidden');
       // -- GESTION MODALE UTILISATEUR --
-      userIconBtn?.addEventListener('click', async () => {
-        // Remplit la modale dynamiquement
+      // Pour éviter d'ajouter plusieurs fois le listener
+      userIconBtn?.replaceWith(userIconBtn.cloneNode(true));
+      const freshUserIconBtn = document.getElementById('userIconBtn');
+      freshUserIconBtn?.addEventListener('click', async () => {
         modalUserEmail.textContent = email;
         modalUserStatus.textContent = isPremium ? "Premium" : "Gratuit";
-        // Récupère les actifs suivis
         if (modalUserActifs) {
           modalUserActifs.innerHTML = "";
           const actifs = await getUserActifs(user.id);
@@ -140,16 +140,18 @@ async function loadHeader() {
         }
         userModal.classList.remove('hidden');
       });
-      // Ferme la modale utilisateur
-      closeUserModal?.addEventListener('click', () => userModal.classList.add('hidden'));
+      closeUserModal?.replaceWith(closeUserModal.cloneNode(true));
+      const freshCloseUserModal = document.getElementById('closeUserModal');
+      freshCloseUserModal?.addEventListener('click', () => userModal.classList.add('hidden'));
       window.addEventListener('keydown', e => {
         if (e.key === 'Escape' && !userModal.classList.contains('hidden')) userModal.classList.add('hidden');
       });
       userModal.addEventListener('mousedown', function(e){
         if (e.target === userModal) userModal.classList.add('hidden');
       });
-      // Déconnexion depuis modale user
-      userModalLogoutBtn?.addEventListener('click', async function () {
+      userModalLogoutBtn?.replaceWith(userModalLogoutBtn.cloneNode(true));
+      const freshUserModalLogoutBtn = document.getElementById('userModalLogoutBtn');
+      freshUserModalLogoutBtn?.addEventListener('click', async function () {
         await supabase.auth.signOut();
         window.location.href = "index.html";
       });
