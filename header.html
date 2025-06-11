@@ -1,69 +1,71 @@
-<nav class="max-w-7xl mx-auto flex items-center justify-between py-4 px-6 w-full relative z-50">
-  <!-- Logo -->
-  <a href="index.html" class="text-2xl font-bold text-green-600">Luxibre Alpha</a>
+<div class="relative w-full overflow-x-hidden">
+  <nav class="max-w-7xl mx-auto flex items-center justify-between py-4 px-6 w-full relative z-50 overflow-x-hidden">
+    <!-- Logo -->
+    <a href="index.html" class="text-2xl font-bold text-green-600">Luxibre Alpha</a>
 
-  <!-- Burger (mobile uniquement) -->
-  <button id="burgerBtn" class="md:hidden text-2xl focus:outline-none z-50">
-    <i class="fa fa-bars"></i>
-  </button>
+    <!-- Burger (mobile uniquement) -->
+    <button id="burgerBtn" class="md:hidden text-2xl focus:outline-none z-50">
+      <i class="fa fa-bars"></i>
+    </button>
 
-  <!-- Menu -->
-  <ul id="headerNav"
-    class="fixed top-0 left-0 h-full w-4/5 max-w-xs bg-white shadow-2xl transform -translate-x-full transition-transform duration-300 ease-in-out
-           flex flex-col gap-4 px-6 pt-10 z-50
-           md:static md:transform-none md:translate-x-0 md:flex md:flex-row md:items-center md:gap-6 md:w-auto md:h-auto md:px-0 md:pt-0 md:bg-transparent md:shadow-none">
+    <!-- Menu -->
+    <ul id="headerNav"
+      class="absolute top-0 left-0 h-full w-4/5 max-w-xs bg-white shadow-2xl transform -translate-x-full transition-transform duration-300 ease-in-out
+             flex flex-col gap-4 px-6 pt-10 z-50
+             md:static md:transform-none md:translate-x-0 md:flex md:flex-row md:items-center md:gap-6 md:w-auto md:h-auto md:px-0 md:pt-0 md:bg-transparent md:shadow-none">
 
-    <!-- Mobile user info -->
-    <li class="md:hidden flex flex-col items-start mb-2">
-      <span id="mobileUserName" class="font-bold text-black text-sm"></span>
-      <span id="mobileUserStatus" class="text-xs text-green-600"></span>
-    </li>
+      <!-- Mobile user info -->
+      <li class="md:hidden flex flex-col items-start mb-2">
+        <span id="mobileUserName" class="font-bold text-black text-sm"></span>
+        <span id="mobileUserStatus" class="text-xs text-green-600"></span>
+      </li>
 
-    <!-- Close menu (mobile) -->
-    <li class="md:hidden self-end mb-6">
-      <button id="closeMenu" class="text-2xl">
-        <i class="fa fa-times"></i>
-      </button>
-    </li>
+      <!-- Close menu (mobile) -->
+      <li class="md:hidden self-end mb-6">
+        <button id="closeMenu" class="text-2xl">
+          <i class="fa fa-times"></i>
+        </button>
+      </li>
 
-    <li class="border-b border-gray-200 w-full md:hidden"></li>
+      <li class="border-b border-gray-200 w-full md:hidden"></li>
 
-    <!-- Liens -->
-    <li><a href="index.html" class="hover:text-green-600 transition">Accueil</a></li>
-    <li><a href="#fonctionnalites" class="hover:text-green-600 transition">Fonctionnalités</a></li>
-    <li><a href="#tarifs" class="hover:text-green-600 transition">Tarifs</a></li>
-    <li><a href="dashboard.html" class="hover:text-green-600 transition">Dashboard</a></li>
+      <!-- Liens -->
+      <li><a href="index.html" class="hover:text-green-600 transition">Accueil</a></li>
+      <li><a href="#fonctionnalites" class="hover:text-green-600 transition">Fonctionnalités</a></li>
+      <li><a href="#tarifs" class="hover:text-green-600 transition">Tarifs</a></li>
+      <li><a href="dashboard.html" class="hover:text-green-600 transition">Dashboard</a></li>
 
-    <!-- Auth -->
-    <li id="loginBtnLi">
-      <a href="#" id="openLoginModal"
-         class="bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700 transition block text-center">Connexion</a>
-    </li>
-    <li id="signupBtnLi">
-      <a href="#" id="openSignupModal"
-         class="bg-gradient-to-r from-green-500 to-blue-600 text-white px-4 py-2 rounded-xl hover:from-green-600 hover:to-blue-700 transition block text-center">Inscription</a>
-    </li>
+      <!-- Auth -->
+      <li id="loginBtnLi">
+        <a href="#" id="openLoginModal"
+           class="bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700 transition block text-center">Connexion</a>
+      </li>
+      <li id="signupBtnLi">
+        <a href="#" id="openSignupModal"
+           class="bg-gradient-to-r from-green-500 to-blue-600 text-white px-4 py-2 rounded-xl hover:from-green-600 hover:to-blue-700 transition block text-center">Inscription</a>
+      </li>
 
-    <!-- Déconnexion -->
-    <li id="logoutBtnLi" class="hidden">
-      <a href="#" id="logoutBtn"
-         class="bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-700 transition block text-center">Déconnexion</a>
-    </li>
+      <!-- Déconnexion -->
+      <li id="logoutBtnLi" class="hidden">
+        <a href="#" id="logoutBtn"
+           class="bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-700 transition block text-center">Déconnexion</a>
+      </li>
 
-    <!-- Notifications -->
-    <li id="notifWrapper" class="relative hidden">
-      <button id="notifBtn" class="relative">
-        <span class="fa fa-bell text-xl"></span>
-        <span id="notifCount"
-              class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full text-xs px-1.5 py-0.5"></span>
-      </button>
-      <div id="notifDropdown"
-           class="hidden absolute right-0 mt-2 w-72 max-h-96 overflow-y-auto bg-white border rounded-lg shadow-lg z-50">
-        <ul id="notifList" class="text-gray-800 text-left"></ul>
-      </div>
-    </li>
-  </ul>
+      <!-- Notifications -->
+      <li id="notifWrapper" class="relative hidden">
+        <button id="notifBtn" class="relative">
+          <span class="fa fa-bell text-xl"></span>
+          <span id="notifCount"
+                class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full text-xs px-1.5 py-0.5"></span>
+        </button>
+        <div id="notifDropdown"
+             class="hidden absolute right-0 mt-2 w-72 max-h-96 overflow-y-auto bg-white border rounded-lg shadow-lg z-50">
+          <ul id="notifList" class="text-gray-800 text-left"></ul>
+        </div>
+      </li>
+    </ul>
 
-  <!-- Overlay pour mobile -->
-  <div id="menuOverlay" class="fixed inset-0 bg-black bg-opacity-50 hidden md:hidden z-40"></div>
-</nav>
+    <!-- Overlay pour mobile -->
+    <div id="menuOverlay" class="fixed inset-0 bg-black bg-opacity-50 hidden md:hidden z-40"></div>
+  </nav>
+</div>
