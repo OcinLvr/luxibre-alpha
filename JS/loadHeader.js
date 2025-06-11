@@ -101,24 +101,27 @@ async function loadHeader() {
       }
     });
 
+    
     // Affichage selon le statut utilisateur
     if (isLogged) {
-      loginBtnLi.style.display = "none";
-      signupBtnLi.style.display = "none";
-      logoutBtnLi.style.display = "";
-      userInfo.classList.remove('hidden');
-      userName.textContent = email;
-      userStatus.textContent = isPremium ? "Premium" : "Gratuit";
-      premiumBtnLi.style.display = isPremium ? "none" : "";
-      await updateNotifications();
-    } else {
-      loginBtnLi.style.display = "";
-      signupBtnLi.style.display = "";
-      logoutBtnLi.style.display = "none";
-      userInfo.classList.add('hidden');
-      notifWrapper.classList.add('hidden');
-      premiumBtnLi.style.display = "none";
-    }
+  loginBtnLi.style.display = "none";
+  signupBtnLi.style.display = "none";
+  logoutBtnLi.style.display = "";
+  logoutBtnLi.classList.remove('hidden'); // Affiche le bouton déconnexion !
+  userInfo.classList.remove('hidden');
+  userName.textContent = email;
+  userStatus.textContent = isPremium ? "Premium" : "Gratuit";
+  premiumBtnLi.style.display = isPremium ? "none" : "";
+  await updateNotifications();
+} else {
+  loginBtnLi.style.display = "";
+  signupBtnLi.style.display = "";
+  logoutBtnLi.style.display = "none";
+  logoutBtnLi.classList.add('hidden');  // Cache le bouton déconnexion !
+  userInfo.classList.add('hidden');
+  notifWrapper.classList.add('hidden');
+  premiumBtnLi.style.display = "none";
+}
     return isPremium;
   })();
 
