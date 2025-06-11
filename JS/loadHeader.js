@@ -6,7 +6,6 @@ const supabase = createClient(
 );
 
 async function getUserInfo() {
-  // Récupère l'utilisateur Supabase et son statut premium
   const { data: auth } = await supabase.auth.getUser();
   if (auth && auth.user) {
     const user = auth.user;
@@ -34,12 +33,9 @@ async function getUserInfo() {
 async function loadHeader() {
   const headerContainer = document.getElementById('header');
   if (!headerContainer) return;
-
-  // Charge le template header
   const res = await fetch('header.html');
   headerContainer.innerHTML = await res.text();
 
-  // Récupère les éléments DOM du header
   const loginBtnLi = document.getElementById('loginBtnLi');
   const signupBtnLi = document.getElementById('signupBtnLi');
   const premiumBtnLi = document.getElementById('premiumBtnLi');
@@ -53,28 +49,22 @@ async function loadHeader() {
   const notifDropdown = document.getElementById('notifDropdown');
   const notifList = document.getElementById('notifList');
 
-  // 1. Centralise la promesse utilisateur premium pour le reste du site
   window.isPremiumPromise = (async () => {
     const userInfoObj = await getUserInfo();
-    // Utilisation locale pour affichage
     let { isLogged, isPremium, email, user } = userInfoObj;
     let notifications = [];
 
-    // Notifications (simple)
     async function updateNotifications() {
       if (!isLogged || !user) return;
       notifWrapper.classList.remove('hidden');
-      // Récupère la liste depuis la table notifications
       const { data: notifData } = await supabase
         .from('notifications')
         .select('*')
         .eq('user_id', user.id)
         .order('created_at', { ascending: false });
       notifications = notifData || [];
-      // Affiche badge nombre non lues
       const unread = notifications.filter(n => !n.read).length;
       notifCount.textContent = unread > 0 ? unread : "";
-      // Liste déroulante
       notifList.innerHTML = notifications.length
         ? notifications.map(n => `<li class="p-2 border-b last:border-b-0 ${n.read ? '' : 'font-bold'}">${n.message}</li>`).join('')
         : '<li class="p-2 text-gray-400">Aucune notification</li>';
@@ -82,7 +72,6 @@ async function loadHeader() {
 
     notifBtn?.addEventListener('click', (e) => {
       notifDropdown.classList.toggle('hidden');
-      // Marque tous comme lus à l'ouverture
       if (!notifDropdown.classList.contains('hidden') && notifications.length) {
         const unreadIds = notifications.filter(n => !n.read).map(n => n.id);
         if (unreadIds.length) {
@@ -101,38 +90,45 @@ async function loadHeader() {
       }
     });
 
-    
-    // Affichage selon le statut utilisateur
     if (isLogged) {
-  loginBtnLi.style.display = "none";
-  signupBtnLi.style.display = "none";
-  logoutBtnLi.style.display = "";
-  logoutBtnLi.classList.remove('hidden'); // Affiche le bouton déconnexion !
-  userInfo.classList.remove('hidden');
-  userName.textContent = email;
-  userStatus.textContent = isPremium ? "Premium" : "Gratuit";
-  premiumBtnLi.style.display = isPremium ? "none" : "";
-  await updateNotifications();
-} else {
-  loginBtnLi.style.display = "";
-  signupBtnLi.style.display = "";
-  logoutBtnLi.style.display = "none";
-  logoutBtnLi.classList.add('hidden');  // Cache le bouton déconnexion !
-  userInfo.classList.add('hidden');
-  notifWrapper.classList.add('hidden');
-  premiumBtnLi.style.display = "none";
-}
+      loginBtnLi.style.display = "none";
+      signupBtnLi.style.display = "none";
+      logoutBtnLi.style.display = "";
+      logoutBtnLi.classList.remove('hidden');
+      userInfo.classList.remove('hidden');
+      userName.textContent = email;
+      userStatus.textContent = isPremium ? "Premium" : "Gratuit";
+      premiumBtnLi.style.display = isPremium ? "none" : "";
+      await updateNotifications();
+    } else {
+      loginBtnLi.style.display = "";
+      signupBtnLi.style.display = "";
+      logoutBtnLi.style.display = "none";
+      logoutBtnLi.classList.add('hidden');
+      userInfo.classList.add('hidden');
+      notifWrapper.classList.add('hidden');
+      premiumBtnLi.style.display = "none";
+    }
+    // Version mobile info utilisateur
+    const mobileUserName = document.getElementById('mobileUserName');
+    const mobileUserStatus = document.getElementById('mobileUserStatus');
+    if (isLogged) {
+      if (mobileUserName) mobileUserName.textContent = email;
+      if (mobileUserStatus) mobileUserStatus.textContent = isPremium ? "Premium" : "Gratuit";
+    } else {
+      if (mobileUserName) mobileUserName.textContent = "";
+      if (mobileUserStatus) mobileUserStatus.textContent = "";
+    }
     return isPremium;
   })();
 
-  // Déconnexion
   document.getElementById('logoutBtn')?.addEventListener('click', async function (e) {
     e.preventDefault();
     await supabase.auth.signOut();
     window.location.href = "index.html";
   });
 
-  // ----------- Mobile burger menu (doit être ici !)
+  // --- Mobile burger menu ---
   const burgerBtn = document.getElementById('burgerBtn');
   const headerNav = document.getElementById('headerNav');
   const menuOverlay = document.getElementById('menuOverlay');
@@ -142,22 +138,16 @@ async function loadHeader() {
     menuOverlay.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
   }
-
   function closeMenu() {
     headerNav.classList.add('-translate-x-full');
     menuOverlay.classList.add('hidden');
     document.body.style.overflow = '';
   }
-
   burgerBtn?.addEventListener('click', openMenu);
   menuOverlay?.addEventListener('click', closeMenu);
-
-  // Ferme le menu lors du clic sur un lien du menu (mobile)
   headerNav?.querySelectorAll('a').forEach(link =>
     link.addEventListener('click', closeMenu)
   );
-
-  // Sur desktop, le menu doit toujours être affiché
   function handleResize() {
     if (window.innerWidth >= 768) {
       headerNav.classList.remove('-translate-x-full');
@@ -169,7 +159,165 @@ async function loadHeader() {
   }
   window.addEventListener('resize', handleResize);
   handleResize();
+
+  // --- MODALE AUTH ---
+  function setupAuthModal() {
+    const authModal = document.getElementById('authModal');
+    const closeAuthModal = document.getElementById('closeAuthModal');
+    const authForm = document.getElementById('authForm');
+    const authTitle = document.getElementById('authTitle');
+    const switchAuthMode = document.getElementById('switchAuthMode');
+    const authError = document.getElementById('authError');
+    const authExtra = document.getElementById('authExtra');
+    const authSubmitBtn = document.getElementById('authSubmitBtn');
+    const authSubmitText = document.getElementById('authSubmitText');
+    const authLoader = document.getElementById('authLoader');
+    const authEmail = document.getElementById('authEmail');
+    const authPassword = document.getElementById('authPassword');
+    const emailError = document.getElementById('emailError');
+    const passwordError = document.getElementById('passwordError');
+    const togglePwd = document.getElementById('togglePwd');
+    const googleAuthBtn = document.getElementById('googleAuthBtn');
+    const forgotPwdLink = document.getElementById('forgotPwdLink');
+    let mode = 'login';
+
+    function showAuthModal(type = 'login') {
+      mode = type;
+      authModal.classList.remove('hidden');
+      authTitle.textContent = type === 'login' ? 'Connexion' : "Inscription";
+      authSubmitText.textContent = type === 'login' ? "Se connecter" : "S'inscrire";
+      switchAuthMode.textContent = type === 'login'
+        ? "Pas encore de compte ? Inscription"
+        : "Déjà un compte ? Connexion";
+      authError.textContent = '';
+      authExtra.innerHTML = '';
+      emailError.textContent = '';
+      passwordError.textContent = '';
+      authEmail.value = '';
+      authPassword.value = '';
+      authEmail.focus();
+    }
+    function closeModal() {
+      authModal.classList.add('hidden');
+    }
+    document.getElementById('openLoginModal')?.addEventListener('click', (e) => {
+      e.preventDefault(); showAuthModal('login');
+    });
+    document.getElementById('openSignupModal')?.addEventListener('click', (e) => {
+      e.preventDefault(); showAuthModal('signup');
+    });
+    closeAuthModal?.addEventListener('click', closeModal);
+    window.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && !authModal.classList.contains('hidden')) closeModal();
+    });
+    authModal.addEventListener('mousedown', function(e){
+      if (e.target === authModal) closeModal();
+    });
+    switchAuthMode.addEventListener('click', () => showAuthModal(mode === 'login' ? 'signup' : 'login'));
+
+    // Affichage/masquage mot de passe
+    togglePwd.addEventListener('click', () => {
+      if (authPassword.type === "password") {
+        authPassword.type = "text";
+        togglePwd.innerHTML = '<i class="fa fa-eye-slash"></i>';
+      } else {
+        authPassword.type = "password";
+        togglePwd.innerHTML = '<i class="fa fa-eye"></i>';
+      }
+      authPassword.focus();
+    });
+
+    // Validation live
+    authEmail.addEventListener('input', () => {
+      emailError.textContent = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(authEmail.value) ? '' : "Email invalide";
+    });
+    authPassword.addEventListener('input', () => {
+      passwordError.textContent = authPassword.value.length >= 8 ? '' : "8 caractères minimum";
+    });
+
+    // Mot de passe oublié
+    forgotPwdLink.addEventListener('click', async (e) => {
+      e.preventDefault();
+      emailError.textContent = '';
+      authError.textContent = '';
+      const email = authEmail.value.trim();
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        emailError.textContent = "Entrez un email valide";
+        authEmail.focus();
+        return;
+      }
+      authExtra.innerHTML = '';
+      authLoader.classList.remove('hidden');
+      authSubmitBtn.disabled = true;
+      forgotPwdLink.textContent = 'Envoi...';
+      const { error } = await supabase.auth.resetPasswordForEmail(email);
+      authLoader.classList.add('hidden');
+      authSubmitBtn.disabled = false;
+      forgotPwdLink.textContent = 'Mot de passe oublié ?';
+      if (error) {
+        authError.textContent = error.message || "Erreur lors de la demande de réinitialisation.";
+      } else {
+        authExtra.innerHTML = "Un email de réinitialisation a été envoyé.";
+      }
+    });
+
+    // Google OAuth
+    googleAuthBtn.addEventListener('click', async () => {
+      authError.textContent = '';
+      authLoader.classList.remove('hidden');
+      authSubmitBtn.disabled = true;
+      try {
+        const { error } = await supabase.auth.signInWithOAuth({ provider: 'google' });
+        if (error) authError.textContent = error.message || "Erreur Google";
+      } finally {
+        authLoader.classList.add('hidden');
+        authSubmitBtn.disabled = false;
+      }
+    });
+
+    // Soumission du formulaire
+    authForm.onsubmit = async function(e) {
+      e.preventDefault();
+      emailError.textContent = '';
+      passwordError.textContent = '';
+      authError.textContent = '';
+      authExtra.innerHTML = '';
+      const email = authEmail.value.trim();
+      const password = authPassword.value.trim();
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        emailError.textContent = "Entrez un email valide";
+        authEmail.focus();
+        return;
+      }
+      if (password.length < 8) {
+        passwordError.textContent = "8 caractères minimum";
+        authPassword.focus();
+        return;
+      }
+      authLoader.classList.remove('hidden');
+      authSubmitBtn.disabled = true;
+      if (mode === 'login') {
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        authLoader.classList.add('hidden');
+        authSubmitBtn.disabled = false;
+        if (error) {
+          authError.textContent = error.message || "Erreur lors de la connexion";
+        } else {
+          location.reload();
+        }
+      } else {
+        const { error } = await supabase.auth.signUp({ email, password });
+        authLoader.classList.add('hidden');
+        authSubmitBtn.disabled = false;
+        if (error) {
+          authError.textContent = error.message || "Erreur lors de l'inscription";
+        } else {
+          authExtra.innerHTML = "Un email de confirmation a été envoyé.";
+        }
+      }
+    };
+  }
+  setupAuthModal();
 }
 
-// On charge le header AU CHARGEMENT DE LA PAGE
 document.addEventListener('DOMContentLoaded', loadHeader);
