@@ -1,20 +1,6 @@
-/* ----------- MODALES (USER, NOTIFICATION) ----------- */
-
-/* On masque par défaut toute modale qui a la classe .hidden (classe Tailwind) */
-#userModal.hidden,
-#notificationModal.hidden {
-  display: none !important;
-}
-
-/* On affiche toute modale qui a la classe .show */
-#userModal.show,
-#notificationModal.show {
-  display: flex !important;
-}
-
-#userModal,
+/* Style pour la modale utilisateur */
 #notificationModal {
-  display: none; /* Sera override par .show si besoin */
+  display: none;
   position: fixed;
   top: 0;
   left: 0;
@@ -26,7 +12,10 @@
   z-index: 1000;
 }
 
-#userModal .modal-content,
+#notificationModal.show {
+  display: flex;
+}
+
 #notificationModal .modal-content {
   background-color: #1e293b; /* Couleur de fond similaire au thème du site */
   border-radius: 1rem;
@@ -35,10 +24,8 @@
   max-width: 400px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   color: #f1f5f9; /* Couleur de texte claire pour contraste */
-  position: relative;
 }
 
-#userModal h2,
 #notificationModal h2 {
   font-size: 1.5rem;
   font-weight: 700;
@@ -46,15 +33,11 @@
   margin-bottom: 1rem;
 }
 
-#userModal p,
 #notificationModal p {
   margin-bottom: 0.5rem;
 }
 
-/* Bouton fermer des modales */
-#userModal #closeUserModal,
-#notificationModal #closeNotificationModal,
-#userModal #closeModal {
+#notificationModal #closeNotificationModal {
   background: none;
   border: none;
   color: #f1f5f9;
@@ -65,19 +48,14 @@
   right: 1rem;
 }
 
-#userModal #closeUserModal:hover,
-#notificationModal #closeNotificationModal:hover,
-#userModal #closeModal:hover {
+#notificationModal #closeNotificationModal:hover {
   color: #22c55e;
 }
 
-/* Watchlist / notificationList */
-#userModal #watchlist,
 #notificationModal #notificationList {
   margin-top: 1rem;
 }
 
-#userModal #watchlist h3,
 #notificationModal #notificationList h3 {
   font-size: 1.25rem;
   font-weight: 600;
@@ -85,13 +63,11 @@
   margin-bottom: 0.5rem;
 }
 
-#userModal #watchlist ul,
 #notificationModal #notificationList ul {
   list-style-type: none;
   padding: 0;
 }
 
-#userModal #watchlist li,
 #notificationModal #notificationList li {
   padding: 0.5rem 0;
   border-bottom: 1px solid #334155;
@@ -113,6 +89,12 @@
   font-size: 0.75rem;
   font-weight: bold;
 }
+
+
+
+
+
+
 
 
 
