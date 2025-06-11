@@ -1,3 +1,39 @@
+/* HEADER NAVIGATION - couleur texte */
+nav,
+nav * {
+  color: #1e293b; /* text-gray-900 */
+}
+
+/* DARK MODE */
+@media (prefers-color-scheme: dark) {
+  nav,
+  nav * {
+    color: #f1f5f9; /* text-gray-100 */
+  }
+}
+
+/* Surcharge pour les liens/boutons qui doivent rester verts/blancs */
+nav .text-green-600,
+nav .text-white,
+nav .text-gray-900,
+nav .text-gray-100,
+nav .bg-green-600,
+nav .bg-yellow-400,
+nav .bg-red-600,
+nav .bg-gradient-to-r,
+nav .bg-blue-600 {
+  color: inherit;
+}
+
+
+
+
+
+
+
+
+
+
 #userModal {
   z-index: 1001;
 }
