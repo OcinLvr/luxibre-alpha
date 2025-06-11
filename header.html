@@ -13,17 +13,20 @@
              fixed top-0 left-0 w-4/5 max-w-xs h-full bg-white shadow-2xl z-50
              transform -translate-x-full md:transform-none md:static md:w-auto md:h-auto md:bg-transparent md:shadow-none
              transition-transform duration-300 ease-in-out px-6 pt-10 md:pt-0 md:px-0 rounded-r-xl">
+
     <!-- Bandeau utilisateur version mobile -->
     <li class="md:hidden flex flex-col items-center mb-2">
       <span id="mobileUserName" class="font-bold"></span>
       <span id="mobileUserStatus" class="text-xs text-green-600"></span>
     </li>
+
     <!-- Bouton de fermeture mobile -->
     <li class="md:hidden self-end mb-6">
       <button id="closeMenu" class="text-2xl">
         <i class="fa fa-times"></i>
       </button>
     </li>
+
     <li class="border-b border-gray-200 w-full"></li>
 
     <li><a href="index.html" class="hover:text-green-600 transition">Accueil</a></li>
@@ -34,9 +37,12 @@
     <li id="signupBtnLi">
       <a href="signup.html" class="bg-gradient-to-r from-green-500 to-blue-600 text-white px-4 py-2 rounded-xl hover:from-green-600 hover:to-blue-700 transition block text-center">Inscription</a>
     </li>
+
     <!-- Bouton de déconnexion visible si connecté -->
-    <li id="logoutBtnLi" class="hidden"><a href="#" id="logoutBtn" class="hover:text-green-600 transition">Déconnexion</a></li>
-    
+    <li id="logoutBtnLi" class="hidden">
+      <a href="#" id="logoutBtn" class="bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-700 transition block text-center">Déconnexion</a>
+    </li>
+
     <li id="notifWrapper" class="relative hidden">
       <button id="notifBtn" class="relative">
         <span class="fa fa-bell text-xl"></span>
@@ -47,12 +53,17 @@
       </div>
     </li>
 
-    <li id="userInfo" class="hidden flex-col items-end md:items-start text-right md:text-left">
-      <span id="userName" class="text-xs text-green-600"></span>
+    <!-- Informations utilisateur -->
+    <li id="userInfo" class="hidden flex-col items-start text-left">
+      <span id="userName" class="text-sm text-black"></span>
       <span id="userStatus" class="text-xs text-green-600"></span>
     </li>
-    <li id="premiumBtnLi" class="hidden"><a href="checkout.html" class="bg-yellow-400 text-gray-900 px-4 py-2 rounded-xl font-bold block text-center">Premium</a></li>
+
+    <li id="premiumBtnLi" class="hidden">
+      <a href="checkout.html" class="bg-yellow-400 text-gray-900 px-4 py-2 rounded-xl font-bold block text-center">Premium</a>
+    </li>
   </ul>
+
   <!-- Overlay -->
   <div id="menuOverlay" class="fixed inset-0 bg-black bg-opacity-50 hidden md:hidden z-40"></div>
 </nav>
