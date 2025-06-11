@@ -1,52 +1,26 @@
 <nav class="max-w-7xl mx-auto flex items-center justify-between py-4 px-6 relative z-50">
-  <!-- Logo -->
   <a href="index.html" class="text-2xl font-bold text-green-600">Luxibre Alpha</a>
-
-  <!-- Burger Button -->
-  <button id="burgerBtn" class="md:hidden text-2xl focus:outline-none z-50">
-    <i class="fa fa-bars"></i>
-  </button>
-
-  <!-- Navigation Links -->
+  <button id="burgerBtn" class="md:hidden text-2xl focus:outline-none z-50"><i class="fa fa-bars"></i></button>
   <ul id="headerNav"
       class="flex flex-col md:flex-row md:items-center md:gap-6 gap-4 text-base font-semibold
              fixed top-0 left-0 w-4/5 max-w-xs h-full bg-white shadow-2xl z-50
              transform -translate-x-full md:transform-none md:static md:w-auto md:h-auto md:bg-transparent md:shadow-none
              transition-transform duration-300 ease-in-out px-6 pt-10 md:pt-0 md:px-0 rounded-r-xl">
-
-    <!-- Bandeau utilisateur version mobile -->
     <li class="md:hidden flex flex-col items-center mb-2">
       <span id="mobileUserName" class="font-bold"></span>
       <span id="mobileUserStatus" class="text-xs text-green-600"></span>
     </li>
-
-    <!-- Bouton de fermeture mobile -->
     <li class="md:hidden self-end mb-6">
-      <button id="closeMenu" class="text-2xl">
-        <i class="fa fa-times"></i>
-      </button>
+      <button id="closeMenu" class="text-2xl"><i class="fa fa-times"></i></button>
     </li>
-
     <li class="border-b border-gray-200 w-full"></li>
-
     <li><a href="index.html" class="hover:text-green-600 transition">Accueil</a></li>
     <li><a href="#fonctionnalites" class="hover:text-green-600 transition">Fonctionnalités</a></li>
     <li><a href="#tarifs" class="hover:text-green-600 transition">Tarifs</a></li>
     <li><a href="dashboard.html" class="hover:text-green-600 transition">Dashboard</a></li>
-
-    <!-- Connexion / Inscription : désormais via modale -->
-    <li id="loginBtnLi">
-      <a href="#" id="openLoginModal" class="bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700 transition block text-center">Connexion</a>
-    </li>
-    <li id="signupBtnLi">
-      <a href="#" id="openSignupModal" class="bg-gradient-to-r from-green-500 to-blue-600 text-white px-4 py-2 rounded-xl hover:from-green-600 hover:to-blue-700 transition block text-center">Inscription</a>
-    </li>
-
-    <!-- Bouton de déconnexion visible si connecté -->
-    <li id="logoutBtnLi" class="hidden">
-      <a href="#" id="logoutBtn" class="bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-700 transition block text-center">Déconnexion</a>
-    </li>
-
+    <li id="loginBtnLi"><a href="#" id="openLoginModal" class="bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700 transition block text-center">Connexion</a></li>
+    <li id="signupBtnLi"><a href="#" id="openSignupModal" class="bg-gradient-to-r from-green-500 to-blue-600 text-white px-4 py-2 rounded-xl hover:from-green-600 hover:to-blue-700 transition block text-center">Inscription</a></li>
+    <li id="logoutBtnLi" class="hidden"><a href="#" id="logoutBtn" class="bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-700 transition block text-center">Déconnexion</a></li>
     <li id="notifWrapper" class="relative hidden">
       <button id="notifBtn" class="relative">
         <span class="fa fa-bell text-xl"></span>
@@ -56,32 +30,65 @@
         <ul id="notifList" class="text-gray-800 text-left"></ul>
       </div>
     </li>
-
-    <!-- Informations utilisateur -->
     <li id="userInfo" class="hidden flex-col items-start text-left">
       <span id="userName" class="text-sm text-black"></span>
       <span id="userStatus" class="text-xs text-green-600"></span>
     </li>
-
     <li id="premiumBtnLi" class="hidden">
       <a href="checkout.html" class="bg-yellow-400 text-gray-900 px-4 py-2 rounded-xl font-bold block text-center">Premium</a>
     </li>
   </ul>
-
-  <!-- Overlay -->
   <div id="menuOverlay" class="fixed inset-0 bg-black bg-opacity-50 hidden md:hidden z-40"></div>
 </nav>
 
-<!-- MODALE LOGIN/SIGNUP -->
+<!-- MODALE LOGIN/SIGNUP AVEC TOUTES LES OPTIONS -->
 <div id="authModal" class="hidden fixed inset-0 bg-black bg-opacity-70 z-[9999] flex items-center justify-center">
-  <div class="modal-content bg-white rounded-xl shadow-lg p-8 max-w-md w-full relative text-gray-900">
-    <button id="closeAuthModal" class="absolute top-3 right-4 text-2xl text-gray-400 hover:text-green-600">&times;</button>
-    <h2 id="authTitle" class="text-2xl font-bold mb-4 text-green-600">Connexion</h2>
-    <form id="authForm" class="space-y-4">
-      <input id="authEmail" type="email" required placeholder="Adresse email" class="w-full px-4 py-2 border rounded-lg"/>
-      <input id="authPassword" type="password" required placeholder="Mot de passe" class="w-full px-4 py-2 border rounded-lg"/>
-      <div id="authExtra" class="text-sm text-gray-600"></div>
-      <button type="submit" class="w-full bg-green-600 text-white py-2 rounded-lg font-bold">Se connecter</button>
+  <div class="modal-content bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 max-w-md w-full relative text-gray-900 dark:text-gray-100">
+    <button id="closeAuthModal" class="absolute top-3 right-4 text-2xl text-gray-400 hover:text-green-600" aria-label="Fermer">&times;</button>
+    <h2 id="authTitle" class="text-2xl font-bold mb-4 text-green-600 dark:text-green-400">Connexion</h2>
+
+    <div class="flex flex-col space-y-2 mb-4">
+      <button type="button" id="googleAuthBtn"
+        class="bg-white border border-gray-300 dark:bg-slate-700 dark:border-slate-600 flex items-center justify-center gap-2 py-2 rounded-lg shadow hover:bg-gray-50 dark:hover:bg-slate-600 focus:outline-none">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" class="w-5 h-5">
+        <span class="text-gray-700 dark:text-gray-200 font-medium">Continuer avec Google</span>
+      </button>
+    </div>
+
+    <div class="flex items-center gap-2 mb-3">
+      <div class="flex-1 border-t border-gray-200 dark:border-slate-500"></div>
+      <span class="text-xs text-gray-400 dark:text-gray-500">ou avec email</span>
+      <div class="flex-1 border-t border-gray-200 dark:border-slate-500"></div>
+    </div>
+
+    <form id="authForm" autocomplete="on" class="space-y-4">
+      <div>
+        <input id="authEmail" type="email" required autocomplete="email"
+          placeholder="Adresse email"
+          class="w-full px-4 py-2 border rounded-lg dark:bg-slate-700 dark:border-slate-600 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-400"/>
+        <div id="emailError" class="text-xs text-red-600 mt-1"></div>
+      </div>
+      <div class="relative">
+        <input id="authPassword" type="password" required autocomplete="current-password"
+          placeholder="Mot de passe"
+          class="w-full px-4 py-2 border rounded-lg dark:bg-slate-700 dark:border-slate-600 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-400 pr-10"/>
+        <button type="button" id="togglePwd" tabindex="-1"
+          class="absolute top-1/2 right-3 -translate-y-1/2 text-gray-400 hover:text-green-600 focus:outline-none"
+          aria-label="Afficher/Masquer le mot de passe">
+          <i class="fa fa-eye"></i>
+        </button>
+        <div id="passwordError" class="text-xs text-red-600 mt-1"></div>
+      </div>
+      <div class="flex justify-between items-center">
+        <span></span>
+        <a href="#" id="forgotPwdLink" class="text-green-600 hover:underline text-sm">Mot de passe oublié ?</a>
+      </div>
+      <div id="authExtra" class="text-sm text-gray-600 dark:text-gray-300"></div>
+      <button type="submit" id="authSubmitBtn"
+        class="w-full bg-green-600 text-white py-2 rounded-lg font-bold hover:bg-green-700 transition flex items-center justify-center gap-2">
+        <span id="authSubmitText">Se connecter</span>
+        <svg id="authLoader" class="hidden animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
+      </button>
     </form>
     <div class="mt-4 text-center text-sm">
       <span id="switchAuthMode" class="text-green-600 hover:underline cursor-pointer"></span>
