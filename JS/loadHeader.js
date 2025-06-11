@@ -218,8 +218,164 @@ async function loadHeader() {
   window.addEventListener('resize', handleResize);
   handleResize();
 
-  // --- MODALE AUTH (inchangé) ---
-  // ... ton setupAuthModal habituel ci-dessous ...
+  // --- MODALE AUTH ---
+  function setupAuthModal() {
+    const authModal = document.getElementById('authModal');
+    const closeAuthModal = document.getElementById('closeAuthModal');
+    const authForm = document.getElementById('authForm');
+    const authTitle = document.getElementById('authTitle');
+    const switchAuthMode = document.getElementById('switchAuthMode');
+    const authError = document.getElementById('authError');
+    const authExtra = document.getElementById('authExtra');
+    const authSubmitBtn = document.getElementById('authSubmitBtn');
+    const authSubmitText = document.getElementById('authSubmitText');
+    const authLoader = document.getElementById('authLoader');
+    const authEmail = document.getElementById('authEmail');
+    const authPassword = document.getElementById('authPassword');
+    const emailError = document.getElementById('emailError');
+    const passwordError = document.getElementById('passwordError');
+    const togglePwd = document.getElementById('togglePwd');
+    const googleAuthBtn = document.getElementById('googleAuthBtn');
+    const forgotPwdLink = document.getElementById('forgotPwdLink');
+    let mode = 'login';
+
+    function showAuthModal(type = 'login') {
+      mode = type;
+      authModal.classList.remove('hidden');
+      authTitle.textContent = type === 'login' ? 'Connexion' : "Inscription";
+      authSubmitText.textContent = type === 'login' ? "Se connecter" : "S'inscrire";
+      switchAuthMode.textContent = type === 'login'
+        ? "Pas encore de compte ? Inscription"
+        : "Déjà un compte ? Connexion";
+      authError.textContent = '';
+      authExtra.innerHTML = '';
+      emailError.textContent = '';
+      passwordError.textContent = '';
+      authEmail.value = '';
+      authPassword.value = '';
+      authEmail.focus();
+    }
+    function closeModal() {
+      authModal.classList.add('hidden');
+    }
+    document.getElementById('openLoginModal')?.addEventListener('click', (e) => {
+      e.preventDefault(); showAuthModal('login');
+    });
+    document.getElementById('openSignupModal')?.addEventListener('click', (e) => {
+      e.preventDefault(); showAuthModal('signup');
+    });
+    closeAuthModal?.addEventListener('click', closeModal);
+    window.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && !authModal.classList.contains('hidden')) closeModal();
+    });
+    authModal.addEventListener('mousedown', function(e){
+      if (e.target === authModal) closeModal();
+    });
+    switchAuthMode.addEventListener('click', () => showAuthModal(mode === 'login' ? 'signup' : 'login'));
+
+    // Affichage/masquage mot de passe
+    togglePwd.addEventListener('click', () => {
+      if (authPassword.type === "password") {
+        authPassword.type = "text";
+        togglePwd.innerHTML = '<i class="fa fa-eye-slash"></i>';
+      } else {
+        authPassword.type = "password";
+        togglePwd.innerHTML = '<i class="fa fa-eye"></i>';
+      }
+      authPassword.focus();
+    });
+
+    // Validation live
+    authEmail.addEventListener('input', () => {
+      emailError.textContent = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(authEmail.value) ? '' : "Email invalide";
+    });
+    authPassword.addEventListener('input', () => {
+      passwordError.textContent = authPassword.value.length >= 8 ? '' : "8 caractères minimum";
+    });
+
+    // Mot de passe oublié
+    forgotPwdLink.addEventListener('click', async (e) => {
+      e.preventDefault();
+      emailError.textContent = '';
+      authError.textContent = '';
+      const email = authEmail.value.trim();
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        emailError.textContent = "Entrez un email valide";
+        authEmail.focus();
+        return;
+      }
+      authExtra.innerHTML = '';
+      authLoader.classList.remove('hidden');
+      authSubmitBtn.disabled = true;
+      forgotPwdLink.textContent = 'Envoi...';
+      const { error } = await supabase.auth.resetPasswordForEmail(email);
+      authLoader.classList.add('hidden');
+      authSubmitBtn.disabled = false;
+      forgotPwdLink.textContent = 'Mot de passe oublié ?';
+      if (error) {
+        authError.textContent = error.message || "Erreur lors de la demande de réinitialisation.";
+      } else {
+        authExtra.innerHTML = "Un email de réinitialisation a été envoyé.";
+      }
+    });
+
+    // Google OAuth
+    googleAuthBtn.addEventListener('click', async () => {
+      authError.textContent = '';
+      authLoader.classList.remove('hidden');
+      authSubmitBtn.disabled = true;
+      try {
+        const { error } = await supabase.auth.signInWithOAuth({ provider: 'google' });
+        if (error) authError.textContent = error.message || "Erreur Google";
+      } finally {
+        authLoader.classList.add('hidden');
+        authSubmitBtn.disabled = false;
+      }
+    });
+
+    // Soumission du formulaire
+    authForm.onsubmit = async function(e) {
+      e.preventDefault();
+      emailError.textContent = '';
+      passwordError.textContent = '';
+      authError.textContent = '';
+      authExtra.innerHTML = '';
+      const email = authEmail.value.trim();
+      const password = authPassword.value.trim();
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        emailError.textContent = "Entrez un email valide";
+        authEmail.focus();
+        return;
+      }
+      if (password.length < 8) {
+        passwordError.textContent = "8 caractères minimum";
+        authPassword.focus();
+        return;
+      }
+      authLoader.classList.remove('hidden');
+      authSubmitBtn.disabled = true;
+      if (mode === 'login') {
+        const { error } = await supabase.auth.signInWithPassword({ email, password });
+        authLoader.classList.add('hidden');
+        authSubmitBtn.disabled = false;
+        if (error) {
+          authError.textContent = error.message || "Erreur lors de la connexion";
+        } else {
+          location.reload();
+        }
+      } else {
+        const { error } = await supabase.auth.signUp({ email, password });
+        authLoader.classList.add('hidden');
+        authSubmitBtn.disabled = false;
+        if (error) {
+          authError.textContent = error.message || "Erreur lors de l'inscription";
+        } else {
+          authExtra.innerHTML = "Un email de confirmation a été envoyé.";
+        }
+      }
+    };
+  }
+  setupAuthModal();
 }
 
 document.addEventListener('DOMContentLoaded', loadHeader);
