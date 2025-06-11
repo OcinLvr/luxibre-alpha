@@ -1,29 +1,18 @@
-/* HEADER NAVIGATION - couleur texte */
-nav,
-nav * {
-  color: #1e293b; /* text-gray-900 */
+/* HEADER - forcer la couleur du texte du header comme dans le code fourni */
+nav.bg-white,
+nav.bg-white * {
+  color: #1e293b !important; /* text-gray-900 de Tailwind */
 }
 
-/* DARK MODE */
-@media (prefers-color-scheme: dark) {
-  nav,
-  nav * {
-    color: #f1f5f9; /* text-gray-100 */
-  }
+nav.dark\:bg-slate-900,
+nav.dark\:bg-slate-900 * {
+  color: #f1f5f9 !important; /* text-gray-100 de Tailwind */
 }
 
-/* Surcharge pour les liens/boutons qui doivent rester verts/blancs */
-nav .text-green-600,
-nav .text-white,
-nav .text-gray-900,
-nav .text-gray-100,
-nav .bg-green-600,
-nav .bg-yellow-400,
-nav .bg-red-600,
-nav .bg-gradient-to-r,
-nav .bg-blue-600 {
-  color: inherit;
-}
+/* Pour les boutons et liens qui utilisent des classes utilitaires (ex: text-green-600, text-white, etc), 
+   la couleur sera gérée par Tailwind si tu gardes les classes dans ton HTML.
+   Si tu veux forcer la couleur de certains liens/boutons, ajoute leur classe dans ce fichier OU laisse Tailwind faire.
+*/
 
 
 
