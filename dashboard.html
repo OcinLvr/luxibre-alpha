@@ -17,6 +17,199 @@
 
 
   <style>
+
+
+
+
+
+
+
+
+    :root {
+      --primary-color: #22c55e;
+      --secondary-color: #1e293b;
+      --text-color: #f1f5f9;
+      --accent-color: #86efac;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0f172a;
+      margin: 0;
+    }
+    .notice {
+      background: #dcfce7;
+      color: #166534;
+      border-left: 5px solid var(--primary-color);
+      padding: 1rem 1.5rem;
+      border-radius: 0.75rem;
+      margin-bottom: 2rem;
+      font-weight: 600;
+      text-align: center;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .notice ul {
+      margin: 0.5rem 0 0.5rem 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+    .notice li {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 500;
+    }
+    .notice a {
+      margin-top: 8px;
+      display: inline-block;
+    }
+    .card {
+      background: var(--secondary-color);
+      padding: 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      position: relative;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      min-width: 290px;
+      max-width: 370px;
+      margin: 0 auto;
+      flex: 1 1 320px;
+      display: flex;
+      flex-direction: column;
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 20px rgba(34,197,94,0.4);
+    }
+    .card-content {
+      position: relative;
+      z-index: 1;
+    }
+    .card.blur .card-content {
+      filter: blur(4px);
+      pointer-events: none;
+      user-select: none;
+    }
+    .premium-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: gold;
+      color: black;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: bold;
+      z-index: 2;
+    }
+    .upgrade-message {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(15, 23, 42, 0.85);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 2rem;
+      text-align: center;
+      z-index: 2;
+      border: 1px solid rgba(34, 197, 94, 0.5);
+      cursor: pointer;
+      transition: background 0.3s;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+    .upgrade-message:hover {
+      background: rgba(34, 197, 94, 0.9);
+      color: #fff;
+    }
+    .recommendation {
+      margin-top: 0.8rem;
+      font-weight: 700;
+      color: #4ade80;
+    }
+    .chart-container {
+      height: 200px;
+      margin-top: 1rem;
+      background: #0f172a;
+      border-radius: 0.6rem;
+      cursor: pointer;
+      position: relative;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: box-shadow 0.3s ease;
+    }
+    .chart-container:hover {
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+    }
+    .performance-badge {
+      display: inline-block;
+      min-width: 56px;
+      text-align: center;
+      border-radius: 1rem;
+      font-weight: 600;
+      margin-left: 0.5rem;
+      padding: 0.15rem 0.75rem;
+      font-size: 1rem;
+    }
+    .performance-positive {
+      background: #22c55e;
+      color: #fff;
+    }
+    .performance-negative {
+      background: #f87171;
+      color: #fff;
+    }
+    .export-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      z-index: 2;
+      transition: background 0.3s;
+    }
+    .export-btn:hover {
+      background: #16a34a;
+    }
+    footer {
+      background: var(--secondary-color);
+      padding: 1rem;
+      text-align: center;
+      margin-top: 2rem;
+    }
+    footer a {
+      color: var(--primary-color);
+      margin: 0 1rem;
+      text-decoration: none;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
     /* Modal style for big chart */
     body.modal-open {
       overflow: hidden;
