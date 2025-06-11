@@ -1,26 +1,18 @@
-<nav class="bg-white shadow-sm w-full z-50 relative">
-  <div class="max-w-7xl mx-auto flex items-center justify-between py-4 px-6 relative">
+<nav class="bg-white dark:bg-slate-900 shadow-sm w-full z-50 relative box-border">
+  <div class="max-w-7xl mx-auto flex items-center justify-between py-4 px-4 sm:px-6 box-border">
     <!-- Logo -->
-    <a href="index.html" class="text-2xl font-bold text-green-600">Luxibre Alpha</a>
-
-    <!-- Burger (mobile only) -->
-    <button id="burgerBtn" class="md:hidden text-2xl focus:outline-none z-50">
-      <i class="fa fa-bars"></i>
-    </button>
+    <a href="index.html" class="text-2xl font-bold text-green-600 whitespace-nowrap">Luxibre Alpha</a>
 
     <!-- Menu -->
     <ul id="headerNav"
-      class="flex flex-col md:flex-row md:items-center md:gap-6 gap-4 text-base font-semibold
-         fixed md:static top-0 left-0 w-4/5 max-w-xs md:w-auto h-full md:h-auto bg-white md:bg-transparent shadow-2xl md:shadow-none
-         transform md:transform-none -translate-x-full md:translate-x-0
-         transition-transform duration-300 ease-in-out px-6 pt-10 md:p-0 rounded-r-xl md:rounded-none z-50">
+      class="fixed top-0 left-0 w-4/5 max-w-xs h-full bg-white dark:bg-slate-900 shadow-2xl z-50 transform -translate-x-full transition-transform duration-300 ease-in-out px-6 pt-10 rounded-r-xl
+             flex flex-col gap-4 text-base font-semibold
+             md:static md:w-auto md:max-w-none md:h-auto md:bg-transparent md:shadow-none md:transform-none md:px-0 md:pt-0 md:rounded-none md:flex-row md:items-center md:gap-6 md:ml-0">
 
-      
       <!-- Close button (mobile) -->
       <li class="md:hidden self-end mb-6">
         <button id="closeMenu" class="text-2xl"><i class="fa fa-times"></i></button>
       </li>
-
       <li class="border-b border-gray-200 w-full md:hidden"></li>
 
       <!-- Navigation Links -->
@@ -31,45 +23,36 @@
 
       <!-- Auth Buttons -->
       <li id="loginBtnLi">
-        <a href="#" id="openLoginModal"
-           class="bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700 transition block text-center">Connexion</a>
+        <a href="#" id="openLoginModal" class="bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700 transition block text-center">Connexion</a>
       </li>
       <li id="signupBtnLi">
-        <a href="#" id="openSignupModal"
-           class="bg-gradient-to-r from-green-500 to-blue-600 text-white px-4 py-2 rounded-xl hover:from-green-600 hover:to-blue-700 transition block text-center">Inscription</a>
+        <a href="#" id="openSignupModal" class="bg-gradient-to-r from-green-500 to-blue-600 text-white px-4 py-2 rounded-xl hover:from-green-600 hover:to-blue-700 transition block text-center">Inscription</a>
       </li>
-
       <li id="logoutBtnLi" class="hidden">
-        <a href="#" id="logoutBtn"
-           class="bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-700 transition block text-center">Déconnexion</a>
+        <a href="#" id="logoutBtn" class="bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-700 transition block text-center">Déconnexion</a>
       </li>
-
       <li id="notifWrapper" class="relative hidden">
         <button id="notifBtn" class="relative">
           <span class="fa fa-bell text-xl"></span>
-          <span id="notifCount"
-                class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full text-xs px-1.5 py-0.5"></span>
+          <span id="notifCount" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full text-xs px-1.5 py-0.5"></span>
         </button>
-        <div id="notifDropdown"
-             class="hidden absolute right-0 mt-2 w-72 max-h-96 overflow-y-auto bg-white border rounded-lg shadow-lg z-50">
+        <div id="notifDropdown" class="hidden absolute right-0 mt-2 w-72 max-h-96 overflow-y-auto bg-white border rounded-lg shadow-lg z-50">
           <ul id="notifList" class="text-gray-800 text-left"></ul>
         </div>
       </li>
-
-      <!-- User info -->
-    <li id="userInfo" class="hidden flex-col items-start text-left">
-      <span id="userName" class="text-sm text-black font-medium"></span>
-      <span id="userStatus" class="text-xs text-green-600"></span>
-    </li>
-
-    <!-- Premium -->
-    <li id="premiumBtnLi" class="hidden">
-      <a href="checkout.html"
-         class="bg-yellow-400 text-gray-900 px-4 py-2 rounded-xl font-bold block text-center">Premium</a>
-    </li>
+      <li id="userInfo" class="hidden flex-col items-start text-left">
+        <span id="userName" class="text-sm text-black font-medium"></span>
+        <span id="userStatus" class="text-xs text-green-600"></span>
+      </li>
+      <li id="premiumBtnLi" class="hidden">
+        <a href="checkout.html" class="bg-yellow-400 text-gray-900 px-4 py-2 rounded-xl font-bold block text-center">Premium</a>
+      </li>
     </ul>
-  </div>
 
-  <!-- Overlay -->
+    <!-- Burger (mobile only) -->
+    <button id="burgerBtn" class="md:hidden text-2xl focus:outline-none z-50 ml-2">
+      <i class="fa fa-bars"></i>
+    </button>
+  </div>
   <div id="menuOverlay" class="fixed inset-0 bg-black bg-opacity-50 hidden md:hidden z-40"></div>
 </nav>
