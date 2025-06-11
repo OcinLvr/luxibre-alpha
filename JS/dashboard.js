@@ -493,19 +493,3 @@ document.addEventListener('DOMContentLoaded', async function() {
 
   await renderSignals();
 });
-
-// BONUS : Bouton logout pour debug
-const addLogoutBtn = () => {
-  if (!document.getElementById('logoutBtn')) {
-    const btn = document.createElement('button');
-    btn.id = 'logoutBtn';
-    btn.textContent = 'Se déconnecter';
-    btn.style = 'position:fixed;top:10px;right:10px;z-index:9999;padding:10px 20px;background:#22c55e;color:#fff;border:none;border-radius:8px;cursor:pointer;';
-    btn.onclick = async () => {
-      await supabase.auth.signOut();
-      window.location.reload();
-    };
-    document.body.appendChild(btn);
-  }
-};
-addLogoutBtn();
