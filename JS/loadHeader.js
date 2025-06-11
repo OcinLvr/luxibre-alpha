@@ -32,16 +32,13 @@ async function getUserInfo() {
 
 // Récupère les actifs suivis pour l'utilisateur
 async function getUserActifs(userId) {
-  // Adapter ici selon ta structure de base (exemple table "follows" ou "actifs_suivis")
-  // Suppose table "actifs_suivis" avec colonnes "user_id" et "nom_actif"
+  // On récupère la liste des symbol suivis par l'utilisateur dans user_follows
   const { data, error } = await supabase
-    .from('actifs_suivis')
-    .select('nom_actif')
+    .from('user_follows')
+    .select('symbol')
     .eq('user_id', userId);
-  if (error) {
-    return [];
-  }
-  return (data || []).map(a => a.nom_actif);
+  if (error) return [];
+  return (data || []).map(a => a.symbol);
 }
 
 async function loadHeader() {
