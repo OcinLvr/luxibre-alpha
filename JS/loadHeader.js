@@ -46,6 +46,7 @@ async function loadHeader() {
   const res = await fetch('header.html');
   headerContainer.innerHTML = await res.text();
 
+  // Sélection des éléments (APRES injection du header)
   const loginBtnLi = document.getElementById('loginBtnLi');
   const signupBtnLi = document.getElementById('signupBtnLi');
   const premiumBtnLi = document.getElementById('premiumBtnLi');
@@ -56,15 +57,15 @@ async function loadHeader() {
   const notifDropdown = document.getElementById('notifDropdown');
   const notifList = document.getElementById('notifList');
   const userIconWrapper = document.getElementById('userIconWrapper');
-  const userIconBtn = document.getElementById('userIconBtn');
+  let userIconBtn = document.getElementById('userIconBtn');
   // Modale utilisateur
-  const userModal = document.getElementById('userModal');
-  const closeUserModal = document.getElementById('closeUserModal');
-  const modalUserEmail = document.getElementById('modalUserEmail');
-  const modalUserStatus = document.getElementById('modalUserStatus');
-  const modalUserActifs = document.getElementById('modalUserActifs');
-  const modalUserActifsEmpty = document.getElementById('modalUserActifsEmpty');
-  const userModalLogoutBtn = document.getElementById('userModalLogoutBtn');
+  let userModal = document.getElementById('userModal');
+  let closeUserModal = document.getElementById('closeUserModal');
+  let modalUserEmail = document.getElementById('modalUserEmail');
+  let modalUserStatus = document.getElementById('modalUserStatus');
+  let modalUserActifs = document.getElementById('modalUserActifs');
+  let modalUserActifsEmpty = document.getElementById('modalUserActifsEmpty');
+  let userModalLogoutBtn = document.getElementById('userModalLogoutBtn');
 
   window.isPremiumPromise = (async () => {
     const userInfoObj = await getUserInfo();
@@ -117,11 +118,12 @@ async function loadHeader() {
       notifWrapper.classList.remove('hidden');
       // Affiche icône utilisateur
       if (userIconWrapper) userIconWrapper.classList.remove('hidden');
-      // -- GESTION MODALE UTILISATEUR --
-      // Pour éviter d'ajouter plusieurs fois le listener
-      userIconBtn?.replaceWith(userIconBtn.cloneNode(true));
-      const freshUserIconBtn = document.getElementById('userIconBtn');
-      freshUserIconBtn?.addEventListener('click', async () => {
+
+      // Nettoyage/remplacement des listeners pour éviter leur empilement
+      userIconBtn = document.getElementById('userIconBtn');
+      userIconBtn.replaceWith(userIconBtn.cloneNode(true));
+      userIconBtn = document.getElementById('userIconBtn');
+      userIconBtn?.addEventListener('click', async () => {
         modalUserEmail.textContent = email;
         modalUserStatus.textContent = isPremium ? "Premium" : "Gratuit";
         if (modalUserActifs) {
@@ -140,21 +142,31 @@ async function loadHeader() {
         }
         userModal.classList.remove('hidden');
       });
-      closeUserModal?.replaceWith(closeUserModal.cloneNode(true));
-      const freshCloseUserModal = document.getElementById('closeUserModal');
-      freshCloseUserModal?.addEventListener('click', () => userModal.classList.add('hidden'));
-      window.addEventListener('keydown', e => {
-        if (e.key === 'Escape' && !userModal.classList.contains('hidden')) userModal.classList.add('hidden');
-      });
+
+      // Fermeture modale user
+      closeUserModal = document.getElementById('closeUserModal');
+      closeUserModal.replaceWith(closeUserModal.cloneNode(true));
+      closeUserModal = document.getElementById('closeUserModal');
+      closeUserModal?.addEventListener('click', () => userModal.classList.add('hidden'));
+      // Clic hors modale
+      userModal = document.getElementById('userModal');
       userModal.addEventListener('mousedown', function(e){
         if (e.target === userModal) userModal.classList.add('hidden');
       });
-      userModalLogoutBtn?.replaceWith(userModalLogoutBtn.cloneNode(true));
-      const freshUserModalLogoutBtn = document.getElementById('userModalLogoutBtn');
-      freshUserModalLogoutBtn?.addEventListener('click', async function () {
+      // Esc
+      window.addEventListener('keydown', function escListener(e){
+        if (e.key === 'Escape' && !userModal.classList.contains('hidden')) userModal.classList.add('hidden');
+      });
+
+      // Logout dans la modale
+      userModalLogoutBtn = document.getElementById('userModalLogoutBtn');
+      userModalLogoutBtn.replaceWith(userModalLogoutBtn.cloneNode(true));
+      userModalLogoutBtn = document.getElementById('userModalLogoutBtn');
+      userModalLogoutBtn?.addEventListener('click', async function () {
         await supabase.auth.signOut();
         window.location.href = "index.html";
       });
+
       await updateNotifications();
     } else {
       loginBtnLi.style.display = "";
@@ -163,7 +175,6 @@ async function loadHeader() {
       logoutBtnLi.classList.add('hidden');
       premiumBtnLi.style.display = "none";
       notifWrapper.classList.add('hidden');
-      // Cache icône utilisateur si déco
       if (userIconWrapper) userIconWrapper.classList.add('hidden');
     }
     // Version mobile info utilisateur (facultatif)
