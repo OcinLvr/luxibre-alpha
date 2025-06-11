@@ -1,13 +1,4 @@
-/* HEADER - forcer la couleur du texte du header comme dans le code fourni */
-nav.bg-white,
-nav.bg-white * {
-  color: #1e293b !important; /* text-gray-900 de Tailwind */
-}
 
-/* Pour les boutons et liens qui utilisent des classes utilitaires (ex: text-green-600, text-white, etc), 
-   la couleur sera gérée par Tailwind si tu gardes les classes dans ton HTML.
-   Si tu veux forcer la couleur de certains liens/boutons, ajoute leur classe dans ce fichier OU laisse Tailwind faire.
-*/
 
 
 
