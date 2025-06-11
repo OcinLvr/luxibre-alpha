@@ -4,11 +4,6 @@ nav.bg-white * {
   color: #1e293b !important; /* text-gray-900 de Tailwind */
 }
 
-nav.dark\:bg-slate-900,
-nav.dark\:bg-slate-900 * {
-  color: #f1f5f9 !important; /* text-gray-100 de Tailwind */
-}
-
 /* Pour les boutons et liens qui utilisent des classes utilitaires (ex: text-green-600, text-white, etc), 
    la couleur sera gérée par Tailwind si tu gardes les classes dans ton HTML.
    Si tu veux forcer la couleur de certains liens/boutons, ajoute leur classe dans ce fichier OU laisse Tailwind faire.
