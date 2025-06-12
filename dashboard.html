@@ -20,16 +20,13 @@
   <!-- html2canvas for export -->
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
-
   <style>
-    
     :root {
       --primary-color: #22c55e;
       --secondary-color: #1e293b;
       --text-color: #f1f5f9;
       --accent-color: #86efac;
     }
-      
     body {
       font-family: 'Inter', sans-serif;
       background: #0f172a;
@@ -192,24 +189,6 @@
       margin: 0 1rem;
       text-decoration: none;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
     /* Modal style for big chart */
     body.modal-open {
       overflow: hidden;
@@ -341,7 +320,7 @@
     }
   </style>
 </head>
-
+<body>
   <!-- Header partagé (uniformisé) -->
   <div id="header"></div>
 
@@ -387,6 +366,16 @@
       </div>
     </div>
     <div id="signalsContainer"></div>
+
+    <!-- Message suggestion ajout actif (affiché uniquement pour l'utilisateur connecté) -->
+    <div id="suggest-asset-message" style="display:none" class="max-w-2xl mx-auto mt-8 mb-8 bg-green-50 dark:bg-slate-700 rounded-lg p-4 flex items-center gap-3 shadow">
+      <span class="fa fa-lightbulb text-green-500 text-2xl"></span>
+      <div class="text-gray-700 dark:text-gray-100 text-base">
+        Tu souhaites voir un actif en particulier être listé sur le site&nbsp;?
+        <a href="/contact.html" class="text-green-600 underline hover:text-green-700">Contacte-nous ici</a>
+      </div>
+    </div>
+
     <!-- Section rapports de performance -->
     <section id="performanceReports" class="max-w-3xl mx-auto mb-12 px-4">
       <h2 class="text-2xl font-bold mb-4 text-green-400">Rapports de Performance</h2>
