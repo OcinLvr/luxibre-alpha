@@ -437,6 +437,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
   // Affiche le message suggestion uniquement pour les utilisateurs connectés
   function showSuggestAssetIfConnected(res) {
+    // On considère connecté si res.isLogged == true, ou (pas de clé mais res est truthy)
     if (
       res &&
       typeof res === 'object' &&
