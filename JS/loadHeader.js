@@ -71,6 +71,40 @@ async function loadHeader() {
     let { isLogged, isPremium, email, user } = userInfoObj;
     let notifications = [];
 
+    // Fonction pour marquer une notification comme lue
+    async function markNotificationAsRead(id) {
+      await supabase.from('notifications').update({ read: true }).eq('id', id);
+      const notif = notifications.find(n => n.id === id);
+      if (notif) notif.read = true;
+      renderNotifications();
+    }
+
+    // Rendering notifications with "Marquer comme lu" bouton
+    function renderNotifications() {
+      const unread = notifications.filter(n => !n.read).length;
+      notifCount.textContent = unread > 0 ? unread : "";
+      if (notifications.length) {
+        notifList.innerHTML = notifications
+          .map(n => `
+            <li class="p-2 border-b last:border-b-0 flex items-center gap-2 ${n.read ? '' : 'font-bold'}">
+              <span class="flex-1">${n.message}</span>
+              ${!n.read ? `<button class="text-xs text-green-600 underline mark-as-read-btn" data-id="${n.id}">Marquer comme lu</button>` : ''}
+            </li>
+          `).join('');
+      } else {
+        notifList.innerHTML = '<li class="p-2 text-gray-400">Aucune notification</li>';
+      }
+
+      // Ajout des listeners sur les boutons "Marquer comme lu"
+      notifList.querySelectorAll('.mark-as-read-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          const id = btn.getAttribute('data-id');
+          await markNotificationAsRead(id);
+        });
+      });
+    }
+
     async function updateNotifications() {
       if (!isLogged || !user) return;
       notifWrapper.classList.remove('hidden');
@@ -80,24 +114,11 @@ async function loadHeader() {
         .eq('user_id', user.id)
         .order('created_at', { ascending: false });
       notifications = notifData || [];
-      const unread = notifications.filter(n => !n.read).length;
-      notifCount.textContent = unread > 0 ? unread : "";
-      notifList.innerHTML = notifications.length
-        ? notifications.map(n => `<li class="p-2 border-b last:border-b-0 ${n.read ? '' : 'font-bold'}">${n.message}</li>`).join('')
-        : '<li class="p-2 text-gray-400">Aucune notification</li>';
+      renderNotifications();
     }
 
     notifBtn?.addEventListener('click', (e) => {
       notifDropdown.classList.toggle('hidden');
-      if (!notifDropdown.classList.contains('hidden') && notifications.length) {
-        const unreadIds = notifications.filter(n => !n.read).map(n => n.id);
-        if (unreadIds.length) {
-          supabase.from('notifications').update({ read: true }).in('id', unreadIds);
-          notifications.forEach(n => n.read = true);
-          notifCount.textContent = "";
-          notifList.querySelectorAll('li').forEach(l => l.classList.remove('font-bold'));
-        }
-      }
     });
 
     document.addEventListener('mousedown', function(e){
