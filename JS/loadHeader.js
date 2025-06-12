@@ -79,10 +79,13 @@ async function loadHeader() {
       renderNotifications();
     }
 
-    // Rendering notifications with "Marquer comme lu" bouton
+    // Rendering notifications avec bouton "Marquer comme lu"
     function renderNotifications() {
       const unread = notifications.filter(n => !n.read).length;
       notifCount.textContent = unread > 0 ? unread : "";
+      notifCount.style.display = unread > 0 ? "" : "none";
+      notifWrapper.classList.remove('hidden'); // Toujours visible
+
       if (notifications.length) {
         notifList.innerHTML = notifications
           .map(n => `
