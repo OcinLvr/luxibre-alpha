@@ -434,4 +434,17 @@ document.addEventListener('DOMContentLoaded', async function() {
   }
 
   await renderSignals();
+
+  // Afficher le message suggestion uniquement pour les utilisateurs connectés
+  let checkInterval = setInterval(() => {
+    if (window.isPremiumPromise) {
+      window.isPremiumPromise.then(res => {
+        if (res && typeof res === 'object' && ('isLogged' in res ? res.isLogged : true)) {
+          const msg = document.getElementById('suggest-asset-message');
+          if (msg) msg.style.display = '';
+        }
+      });
+      clearInterval(checkInterval);
+    }
+  }, 100);
 });
