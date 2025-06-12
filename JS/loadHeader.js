@@ -66,12 +66,11 @@ async function loadHeader() {
   let modalUserActifsEmpty = document.getElementById('modalUserActifsEmpty');
   let userModalLogoutBtn = document.getElementById('userModalLogoutBtn');
 
-  window.isPremiumPromise = (async () => {
-    const userInfoObj = await getUserInfo();
-    let { isLogged, isPremium, email, user } = userInfoObj;
-    let notifications = [];
-
-    window.userInfoPromise = getUserInfo();
+  window.userInfoPromise = getUserInfo();
+window.isPremiumPromise = window.userInfoPromise.then(user => user.isPremium);
+window.userInfoPromise.then(userInfoObj => {
+  let { isLogged, isPremium, email, user } = userInfoObj;
+  let notifications = [];
 
     // Fonction pour marquer une notification comme lue
     async function markNotificationAsRead(id) {
