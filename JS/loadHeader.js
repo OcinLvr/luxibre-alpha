@@ -71,6 +71,8 @@ async function loadHeader() {
     let { isLogged, isPremium, email, user } = userInfoObj;
     let notifications = [];
 
+    window.userInfoPromise = getUserInfo();
+
     // Fonction pour marquer une notification comme lue
     async function markNotificationAsRead(id) {
       await supabase.from('notifications').update({ read: true }).eq('id', id);
