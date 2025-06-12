@@ -39,6 +39,11 @@ async function getUserActifs(userId) {
   return (data || []).map(a => a.symbol);
 }
 
+// --- PROMESSES GLOBALES utilisables partout ---
+window.userInfoPromise = getUserInfo();
+window.isPremiumPromise = window.userInfoPromise.then(user => user.isPremium);
+
+// --- HEADER ---
 async function loadHeader() {
   const headerContainer = document.getElementById('header');
   if (!headerContainer) return;
@@ -66,11 +71,9 @@ async function loadHeader() {
   let modalUserActifsEmpty = document.getElementById('modalUserActifsEmpty');
   let userModalLogoutBtn = document.getElementById('userModalLogoutBtn');
 
-  window.userInfoPromise = getUserInfo();
-window.isPremiumPromise = window.userInfoPromise.then(user => user.isPremium);
-window.userInfoPromise.then(userInfoObj => {
-  let { isLogged, isPremium, email, user } = userInfoObj;
-  let notifications = [];
+  window.userInfoPromise.then(async userInfoObj => {
+    let { isLogged, isPremium, email, user } = userInfoObj;
+    let notifications = [];
 
     // Fonction pour marquer une notification comme lue
     async function markNotificationAsRead(id) {
@@ -218,8 +221,8 @@ window.userInfoPromise.then(userInfoObj => {
       if (mobileUserName) mobileUserName.textContent = "";
       if (mobileUserStatus) mobileUserStatus.textContent = "";
     }
-    return isPremium;
-  })();
+    // Fin userInfoPromise.then
+  });
 
   document.getElementById('logoutBtn')?.addEventListener('click', async function (e) {
     e.preventDefault();
