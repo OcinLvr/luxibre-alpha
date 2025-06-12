@@ -1,6 +1,5 @@
 // Dashboard JS pour Luxibre Alpha - gestion watchlist Supabase (ESM CORRECTIF)
 
-// Utilise l'import ES module pour Supabase v2+
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
 // --- Supabase Client ---
@@ -234,61 +233,6 @@ exportBigChartBtn.addEventListener("click", () => {
 closeBigChartBtn.addEventListener("click", closeBigChart);
 bigChartModal.addEventListener("click", e => { if (e.target === bigChartModal) closeBigChart(); });
 
-// --- Notifications/Watchlist historique local pour changements d'état ---
-function getWatchHistory() {
-  return JSON.parse(localStorage.getItem('watchHistory') || '{}');
-}
-function setWatchHistory(hist) {
-  localStorage.setItem('watchHistory', JSON.stringify(hist));
-}
-function checkForWatchlistNotifications(data, watchlist) {
-  const hist = getWatchHistory();
-  const notifs = [];
-  ['achat', 'vente', 'conservation'].forEach(cat => {
-    if (!data[cat]) return;
-    data[cat].forEach(signal => {
-      if (watchlist.includes(signal.symbol)) {
-        const prev = hist[signal.symbol];
-        if (prev && prev !== cat) {
-          notifs.push({
-            symbol: signal.symbol,
-            name: signal.name,
-            from: prev,
-            to: cat,
-            updated: signal.updated
-          });
-        }
-        hist[signal.symbol] = cat;
-      }
-    });
-  });
-  setWatchHistory(hist);
-  showNotifBadge(notifs);
-}
-function showNotifBadge(notifs) {
-  const notifWrapper = document.getElementById('notifWrapper');
-  const notifCount = document.getElementById('notifCount');
-  const notifList = document.getElementById('notifList');
-  if (notifs.length > 0) {
-    notifWrapper.classList.remove('hidden');
-    notifCount.textContent = notifs.length;
-    notifList.innerHTML = notifs.map(n =>
-      `<li class="py-2 px-2 border-b border-gray-100">
-        <strong>${n.name}</strong><br>
-        Changement: <span class="capitalize">${n.from}</span> → <span class="capitalize">${n.to}</span><br>
-        <span class="text-xs text-gray-400">${luxon.DateTime.fromISO(n.updated).toLocaleString(luxon.DateTime.DATETIME_MED)}</span>
-      </li>`
-    ).join('');
-  } else {
-    notifWrapper.classList.add('hidden');
-    notifCount.textContent = '';
-    notifList.innerHTML = '';
-  }
-}
-document.getElementById('notifBtn')?.addEventListener('click', () => {
-  document.getElementById('notifDropdown').classList.toggle('hidden');
-});
-
 // --- Rendu des signaux et dashboard ---
 async function fetchSignals() {
   try {
@@ -457,8 +401,6 @@ async function renderSignals() {
   if (!container.querySelector('.card')) {
     container.innerHTML = `<div class="text-center text-gray-400 font-semibold text-lg py-8">Aucun signal pour ce filtre.</div>`;
   }
-  // Notifications après rendu
-  if (user) checkForWatchlistNotifications(data, watchlist);
   hideLoader();
 }
 
