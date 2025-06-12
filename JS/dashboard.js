@@ -435,15 +435,22 @@ document.addEventListener('DOMContentLoaded', async function() {
 
   await renderSignals();
 
-  // Afficher le message suggestion uniquement pour les utilisateurs connectés
+
+  // Affiche le message suggestion uniquement pour les utilisateurs connectés
+document.addEventListener('DOMContentLoaded', function () {
+  // Fonction pour afficher le message si connecté
+  function showSuggestAssetIfConnected(res) {
+    // Teste res.isLogged si défini, ou fallback : considère connecté si res est un objet non null
+    if (res && (typeof res === 'object') && (res.isLogged === true || (!('isLogged' in res) && res))) {
+      const msg = document.getElementById('suggest-asset-message');
+      if (msg) msg.style.display = '';
+    }
+  }
+
+  // Attend que window.isPremiumPromise soit dispo et résolue
   let checkInterval = setInterval(() => {
-    if (window.isPremiumPromise) {
-      window.isPremiumPromise.then(res => {
-        if (res && typeof res === 'object' && ('isLogged' in res ? res.isLogged : true)) {
-          const msg = document.getElementById('suggest-asset-message');
-          if (msg) msg.style.display = '';
-        }
-      });
+    if (window.isPremiumPromise && typeof window.isPremiumPromise.then === 'function') {
+      window.isPremiumPromise.then(showSuggestAssetIfConnected);
       clearInterval(checkInterval);
     }
   }, 100);
