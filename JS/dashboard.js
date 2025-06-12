@@ -436,67 +436,19 @@ document.addEventListener('DOMContentLoaded', async function() {
   await renderSignals();
 
   // Affiche le message suggestion uniquement pour les utilisateurs connectés
-  function showSuggestAssetIfConnected(res) {
-    // On considère connecté si res.isLogged == true, ou (pas de clé mais res est truthy)
-    if (
-      res &&
-      typeof res === 'object' &&
-      ((typeof res.isLogged !== 'undefined' && res.isLogged === true) ||
-        (typeof res.isLogged === 'undefined' && res))
-    ) {
-      const msg = document.getElementById('suggest-asset-message');
-      if (msg) msg.style.display = '';
-    }
-  }
-  let checkInterval = setInterval(() => {
-    if (window.isPremiumPromise && typeof window.isPremiumPromise.then === 'function') {
-      window.isPremiumPromise.then(showSuggestAssetIfConnected);
-      clearInterval(checkInterval);
-    }
-  }, 100);
-});
-
-
-document.addEventListener('DOMContentLoaded', function () {
-  // Ajoute une bannière temporaire pour debug mobile
-  function showDebugBanner(message, color = '#333') {
-    let banner = document.getElementById('debugBanner');
-    if (!banner) {
-      banner = document.createElement('div');
-      banner.id = 'debugBanner';
-      banner.style.position = 'fixed';
-      banner.style.top = '0';
-      banner.style.left = '0';
-      banner.style.width = '100vw';
-      banner.style.zIndex = '9999';
-      banner.style.color = '#fff';
-      banner.style.fontWeight = 'bold';
-      banner.style.textAlign = 'center';
-      banner.style.padding = '8px 0';
-      document.body.appendChild(banner);
-    }
-    banner.style.background = color;
-    banner.textContent = message;
-    setTimeout(() => { banner.remove(); }, 7000);
-  }
-
-  let checkInterval = setInterval(() => {
-    if (window.isPremiumPromise && typeof window.isPremiumPromise.then === 'function') {
-      window.isPremiumPromise.then(res => {
+  let showSuggestMsgInterval = setInterval(() => {
+    if (window.userInfoPromise && typeof window.userInfoPromise.then === 'function') {
+      window.userInfoPromise.then(res => {
         const msg = document.getElementById('suggest-asset-message');
-        if (!msg) {
-          showDebugBanner("DIV #suggest-asset-message introuvable dans le DOM", "#eab308");
-          return;
-        }
-        if (res && typeof res === 'object' && res.isLogged === true) {
-          msg.style.display = '';
-          showDebugBanner("Utilisateur connecté : message affiché", "#22c55e");
-        } else {
-          msg.style.display = 'none';
-          showDebugBanner("Utilisateur NON connecté : message masqué", "#ef4444");
+        if (msg) {
+          if (res && res.isLogged) {
+            msg.style.display = '';
+          } else {
+            msg.style.display = 'none';
+          }
         }
       });
-      clearInterval(checkInterval);
+      clearInterval(showSuggestMsgInterval);
     }
   }, 200);
 });
