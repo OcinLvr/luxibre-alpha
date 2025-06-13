@@ -1,153 +1,231 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Luxibre Alpha - Signaux Boursiers Nouvelle Génération</title>
-  <meta name="description" content="La plateforme #1 des signaux boursiers et crypto. Transparence, performance, communauté. Essayez gratuitement.">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Tailwind CDN (prod: utiliser un build local pour performance) -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Luxibre Alpha – Signaux financiers premium</title>
+  <meta name="description" content="Luxibre Alpha : Recevez chaque jour les meilleurs signaux de trading, accédez à des outils premium et boostez vos performances financières.">
   <link rel="icon" href="favicon.ico">
+  <!-- FontAwesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Tailwind + Inter font -->
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    html { scroll-behavior: smooth; }
+  </style>
 </head>
-<body class="bg-slate-50 text-gray-900">
+<body class="overflow-x-hidden bg-white text-gray-900">
+
   <!-- Header dynamique -->
   <div id="header"></div>
+  <script type="module" src="JS/loadHeader.js"></script>
 
-  <!-- HERO -->
-  <section class="flex flex-col-reverse md:flex-row items-center justify-between gap-8 md:gap-0 p-6 md:p-12 bg-gradient-to-r from-teal-50 to-blue-50">
-    <div class="flex-1 max-w-xl">
-      <h1 class="text-4xl md:text-5xl font-extrabold mb-3 leading-tight">
-        Des signaux boursiers puissants.<br>
-        Transparents. Pour <span class="text-teal-500">vous</span>.
-      </h1>
-      <p class="text-lg md:text-xl text-slate-600 mb-5">
-        Recevez chaque jour les meilleures opportunités, sans bruit, sans bullshit.<br>
-        <span class="block text-base text-slate-400 mt-2">+92% d’utilisateurs satisfaits • 100% transparence • 1 clic pour démarrer</span>
-      </p>
-      <a href="dashboard.html" class="inline-block bg-gradient-to-r from-teal-400 to-blue-500 text-white font-bold text-lg px-8 py-3 rounded-full shadow-lg hover:scale-105 hover:shadow-2xl transition-all duration-150">
-        Essayer gratuitement
+  <main id="accueil">
+    <!-- Hero Section -->
+    <section class="py-24 bg-gradient-to-r from-green-500 to-blue-500 text-white text-center">
+      <div class="max-w-2xl mx-auto px-6">
+        <h1 class="text-4xl md:text-6xl font-extrabold mb-6 leading-tight">Boostez vos résultats avec des <span class="text-yellow-300">signaux premium</span></h1>
+        <p class="text-xl md:text-2xl mb-8">Recevez chaque matin les meilleures opportunités de trading, accédez à des outils exclusifs et prenez une longueur d’avance sur le marché.</p>
+        <a href="signup.html" class="inline-block bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-bold py-4 px-8 rounded-xl text-lg shadow-lg transition">Je passe à l'action</a>
+      </div>
+    </section>
+
+    <!-- Statistiques Section -->
+    <section class="py-12 bg-white">
+      <div class="max-w-4xl mx-auto flex flex-wrap justify-center gap-10 px-6">
+        <div class="text-center">
+          <div class="text-4xl font-extrabold text-green-600">+1200</div>
+          <div class="text-gray-700">Utilisateurs actifs</div>
+        </div>
+        <div class="text-center">
+          <div class="text-4xl font-extrabold text-green-600">95%</div>
+          <div class="text-gray-700">Taux de réussite</div>
+        </div>
+        <div class="text-center">
+          <div class="text-4xl font-extrabold text-green-600">100%</div>
+          <div class="text-gray-700">Transparence</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Fonctionnalités Section (mix : emoji + icônes, wording impactant) -->
+    <section id="fonctionnalites" class="py-20 bg-gray-50">
+      <div class="max-w-7xl mx-auto px-6">
+        <h2 class="text-4xl font-bold text-center mb-16">Pourquoi Luxibre Alpha ?</h2>
+        <div class="grid md:grid-cols-4 gap-10">
+          <div class="bg-white p-8 rounded-xl shadow-lg text-center hover:shadow-xl transition">
+            <div class="text-5xl mb-4">📈</div>
+            <h3 class="text-2xl font-semibold mb-2">Signaux Quotidiens</h3>
+            <p class="text-gray-600">Des opportunités concrètes chaque matin pour ne plus rater le bon moment.</p>
+          </div>
+          <div class="bg-white p-8 rounded-xl shadow-lg text-center hover:shadow-xl transition">
+            <div class="text-5xl mb-4">📊</div>
+            <h3 class="text-2xl font-semibold mb-2">Graphiques Dynamiques</h3>
+            <p class="text-gray-600">Visualisez les tendances en un clin d’œil grâce à nos outils premium.</p>
+          </div>
+          <div class="bg-white p-8 rounded-xl shadow-lg text-center hover:shadow-xl transition">
+            <div class="text-5xl mb-4">🔒</div>
+            <h3 class="text-2xl font-semibold mb-2">Espace Premium</h3>
+            <p class="text-gray-600">Accès réservé, données exclusives, pour ceux qui veulent vraiment performer.</p>
+          </div>
+          <div class="bg-white p-8 rounded-xl shadow-lg text-center hover:shadow-xl transition">
+            <div class="text-5xl mb-4">🤝</div>
+            <h3 class="text-2xl font-semibold mb-2">Communauté & Support</h3>
+            <p class="text-gray-600">Un support humain et une communauté bienveillante pour vous accompagner.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Démo rapide (inspiration nouvelle version) -->
+    <section class="max-w-4xl mx-auto bg-gradient-to-r from-slate-50 to-blue-100 rounded-2xl shadow-lg my-12 py-8 px-4 text-center">
+      <h2 class="text-2xl font-bold mb-6">Essayez sans compte</h2>
+      <div class="mx-auto mb-6 rounded-xl shadow overflow-hidden">
+        <video src="demo/demo-signaux.mp4" controls autoplay loop muted poster="img/dashboard-demo.png" class="rounded-xl"></video>
+      </div>
+      <a href="dashboard.html?demo=1" class="inline-block border-2 border-blue-500 text-blue-700 font-bold text-lg px-7 py-2 rounded-full bg-white hover:bg-blue-50 transition">
+        Voir la démo en direct
       </a>
-    </div>
-    <div class="flex-1 md:flex md:justify-end mb-6 md:mb-0">
-      <img src="img/dashboard-demo.png" alt="Aperçu Luxibre Alpha" class="w-80 md:w-[340px] rounded-2xl shadow-xl mx-auto" loading="lazy">
-    </div>
-  </section>
+    </section>
 
-  <!-- VALEUR AJOUTÉE -->
-  <section class="max-w-6xl mx-auto py-12 px-4">
-    <h2 class="text-3xl font-bold text-center mb-8">Pourquoi choisir Luxibre Alpha ?</h2>
-    <div class="flex flex-wrap justify-center gap-6">
-      <div class="bg-white rounded-xl shadow-md p-7 text-center max-w-xs flex-1">
-        <img src="img/icon-rocket.svg" alt="" class="w-10 mx-auto mb-4">
-        <h3 class="font-bold text-lg mb-2">Performance vérifiée</h3>
-        <p>Un historique public, une méthodologie limpide, des signaux backtestés et validés par la communauté.</p>
+    <!-- Tarifs Section -->
+    <section id="tarifs" class="py-20 bg-gradient-to-r from-blue-50 to-green-50">
+      <div class="max-w-4xl mx-auto px-6 text-center">
+        <h2 class="text-3xl font-bold mb-2">Passez à <span class="text-green-700">Premium</span> et débloquez tout le potentiel de Luxibre Alpha</h2>
+        <div class="flex justify-center mb-8">
+          <span class="inline-block bg-yellow-400 text-gray-900 font-bold px-4 py-1 rounded-full text-sm shadow-md">Meilleur choix</span>
+        </div>
+        <div class="grid md:grid-cols-2 gap-6 items-center mb-10">
+          <!-- Avantages premium -->
+          <ul class="space-y-4 text-left mx-auto">
+            <li class="flex items-start gap-3 text-lg">
+              <span class="text-green-500 text-2xl"><i class="fa fa-check-circle"></i></span>
+              <span><strong>Signaux illimités</strong> chaque jour sur tous vos actifs préférés</span>
+            </li>
+            <li class="flex items-start gap-3 text-lg">
+              <span class="text-green-500 text-2xl"><i class="fa fa-chart-line"></i></span>
+              <span>Accès <strong>exclusif à l’espace Premium</strong> et aux outils avancés</span>
+            </li>
+            <li class="flex items-start gap-3 text-lg">
+              <span class="text-green-500 text-2xl"><i class="fa fa-bolt"></i></span>
+              <span>Notifications <strong>prioritaires et en temps réel</strong></span>
+            </li>
+            <li class="flex items-start gap-3 text-lg">
+              <span class="text-green-500 text-2xl"><i class="fa fa-shield-alt"></i></span>
+              <span>Support <strong>prioritaire</strong> 24/7</span>
+            </li>
+            <li class="flex items-start gap-3 text-lg">
+              <span class="text-green-500 text-2xl"><i class="fa fa-star"></i></span>
+              <span>Aucune publicité, expérience 100% optimisée</span>
+            </li>
+          </ul>
+          <!-- Carte prix -->
+          <div class="bg-white shadow-xl rounded-2xl p-10 flex flex-col items-center">
+            <div class="text-5xl font-extrabold text-green-600 mb-2">5 € <span class="text-lg font-normal text-gray-500">/ 30 jours</span></div>
+            <div class="text-gray-700 mb-6 text-lg">Essayez sans engagement.<br>Résiliation à tout moment.</div>
+            <a href="checkout.html" class="bg-gradient-to-r from-green-500 to-blue-600 text-white px-8 py-3 rounded-xl font-semibold hover:from-green-600 hover:to-blue-700 transition text-lg shadow-lg">Devenir Premium</a>
+            <div class="text-xs text-gray-400 mt-4">Paiement sécurisé — Stripe</div>
+          </div>
+        </div>
+        <!-- Comparatif Gratuit vs Premium -->
+        <div class="overflow-x-auto mt-8">
+          <table class="min-w-full text-sm text-left border-collapse">
+            <thead>
+              <tr>
+                <th class="px-4 py-2 bg-green-100 text-green-800 font-semibold rounded-tl-xl">Fonctionnalité</th>
+                <th class="px-4 py-2 bg-gray-100 font-semibold">Gratuit</th>
+                <th class="px-4 py-2 bg-yellow-100 font-semibold rounded-tr-xl">Premium</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b">
+                <td class="px-4 py-2">Nombre de signaux suivis</td>
+                <td class="px-4 py-2 text-center">1</td>
+                <td class="px-4 py-2 text-center font-bold text-green-700">Illimité</td>
+              </tr>
+              <tr class="border-b">
+                <td class="px-4 py-2">Outils avancés (graphiques, alertes...)</td>
+                <td class="px-4 py-2 text-center"><span class="text-red-500"><i class="fa fa-times"></i></span></td>
+                <td class="px-4 py-2 text-center"><span class="text-green-500"><i class="fa fa-check"></i></span></td>
+              </tr>
+              <tr class="border-b">
+                <td class="px-4 py-2">Notifications prioritaires</td>
+                <td class="px-4 py-2 text-center"><span class="text-red-500"><i class="fa fa-times"></i></span></td>
+                <td class="px-4 py-2 text-center"><span class="text-green-500"><i class="fa fa-check"></i></span></td>
+              </tr>
+              <tr class="border-b">
+                <td class="px-4 py-2">Support client prioritaire</td>
+                <td class="px-4 py-2 text-center"><span class="text-red-500"><i class="fa fa-times"></i></span></td>
+                <td class="px-4 py-2 text-center"><span class="text-green-500"><i class="fa fa-check"></i></span></td>
+              </tr>
+              <tr>
+                <td class="px-4 py-2">Publicité</td>
+                <td class="px-4 py-2 text-center">Peut s'afficher</td>
+                <td class="px-4 py-2 text-center font-bold text-green-700">Aucune</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-8 text-gray-500 text-xs">
+          Si vous avez la moindre question sur l’abonnement ou le paiement, contactez-nous via le support.
+        </div>
       </div>
-      <div class="bg-white rounded-xl shadow-md p-7 text-center max-w-xs flex-1">
-        <img src="img/icon-bell.svg" alt="" class="w-10 mx-auto mb-4">
-        <h3 class="font-bold text-lg mb-2">Alertes instantanées</h3>
-        <p>Sois informé dès qu’une opportunité se présente. Personnalise tes alertes, ne rate jamais un mouvement clé.</p>
-      </div>
-      <div class="bg-white rounded-xl shadow-md p-7 text-center max-w-xs flex-1">
-        <img src="img/icon-user.svg" alt="" class="w-10 mx-auto mb-4">
-        <h3 class="font-bold text-lg mb-2">Communauté & support humain</h3>
-        <p>Pose tes questions, donne ton avis, et échange avec des utilisateurs engagés et bienveillants.</p>
-      </div>
-      <div class="bg-white rounded-xl shadow-md p-7 text-center max-w-xs flex-1">
-        <img src="img/icon-chart.svg" alt="" class="w-10 mx-auto mb-4">
-        <h3 class="font-bold text-lg mb-2">Simplicité et puissance</h3>
-        <p>Une interface claire, rapide, agréable. Tout est pensé pour qu’investir redevienne un plaisir.</p>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- DÉMO RAPIDE -->
-  <section class="max-w-4xl mx-auto bg-gradient-to-r from-slate-50 to-blue-100 rounded-2xl shadow-lg my-12 py-8 px-4 text-center">
-    <h2 class="text-2xl font-bold mb-6">Essayez sans compte</h2>
-    <div class="mx-auto mb-6 rounded-xl shadow overflow-hidden">
-      <video src="demo/demo-signaux.mp4" controls autoplay loop muted poster="img/dashboard-demo.png" class="rounded-xl"></video>
-    </div>
-    <a href="dashboard.html?demo=1" class="inline-block border-2 border-blue-500 text-blue-700 font-bold text-lg px-7 py-2 rounded-full bg-white hover:bg-blue-50 transition">
-      Voir la démo en direct
-    </a>
-  </section>
+    <!-- Témoignages Section -->
+    <section class="py-20 bg-white">
+      <h2 class="text-3xl font-bold text-center mb-8">Témoignages</h2>
+      <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8 px-6">
+        <div class="bg-gray-50 p-6 rounded-xl shadow">
+          <p class="italic mb-2">"Cette plateforme a transformé ma façon de trader. Les signaux sont précis et fiables."</p>
+          <p class="font-bold">— Jean D.</p>
+        </div>
+        <div class="bg-gray-50 p-6 rounded-xl shadow">
+          <p class="italic mb-2">"Je recommande Luxibre Alpha à tous les traders sérieux. Les résultats parlent d’eux-mêmes."</p>
+          <p class="font-bold">— Marie L.</p>
+        </div>
+      </div>
+    </section>
 
-  <!-- AVIS & CHIFFRES -->
-  <section class="max-w-5xl mx-auto bg-white rounded-2xl shadow-lg my-12 px-4 py-10">
-    <h2 class="text-2xl font-bold text-center mb-8">Ils ont adopté Luxibre Alpha</h2>
-    <div class="flex flex-wrap justify-center gap-6 mb-8">
-      <div class="bg-slate-50 rounded-lg p-6 shadow w-full max-w-xs text-center">
-        <span class="text-yellow-400 text-xl mb-2 block">★★★★★</span>
-        <p class="mb-1">“J’ai doublé la performance de mon portefeuille en suivant seulement 3 signaux par mois !”</p>
-        <span class="text-slate-400 text-sm">– Jean, utilisateur premium</span>
+    <!-- Section CTA finale -->
+    <section class="py-16 bg-gradient-to-r from-green-500 to-blue-500 text-white">
+      <div class="max-w-4xl mx-auto px-6 text-center">
+        <h3 class="text-4xl md:text-5xl font-bold mb-6">Faites le choix de l'efficacité</h3>
+        <p class="text-xl md:text-2xl mb-8">Votre avenir financier commence maintenant. Ne laissez pas passer les meilleures opportunités.</p>
+        <a href="signup.html" class="inline-block bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-bold py-4 px-8 rounded-xl text-lg shadow-lg transition">Je m’inscris</a>
       </div>
-      <div class="bg-slate-50 rounded-lg p-6 shadow w-full max-w-xs text-center">
-        <span class="text-yellow-400 text-xl mb-2 block">★★★★★</span>
-        <p class="mb-1">“Enfin une plateforme qui ne me noie pas sous les infos. Simple, efficace, et honnête.”</p>
-        <span class="text-slate-400 text-sm">– Clara, utilisatrice</span>
-      </div>
-      <div class="bg-slate-50 rounded-lg p-6 shadow w-full max-w-xs text-center">
-        <span class="text-yellow-400 text-xl mb-2 block">★★★★☆</span>
-        <p class="mb-1">“Le mode démo m’a convaincu de passer premium. Les signaux sont vraiment de qualité.”</p>
-        <span class="text-slate-400 text-sm">– Momo, abonné</span>
-      </div>
-    </div>
-    <div class="flex flex-wrap gap-4 justify-center text-blue-700 text-lg font-semibold">
-      <div class="bg-teal-50 rounded-lg px-6 py-3 shadow">+1200 utilisateurs actifs</div>
-      <div class="bg-teal-50 rounded-lg px-6 py-3 shadow">87% taux de réussite des signaux majeurs</div>
-      <div class="bg-teal-50 rounded-lg px-6 py-3 shadow">100% transparence</div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ENCAR PREMIUM / SECURITE -->
-  <section class="max-w-3xl mx-auto bg-gradient-to-r from-blue-100 to-teal-50 rounded-2xl shadow-lg my-12 py-10 px-6 text-center">
-    <h2 class="text-2xl font-bold mb-4">Prêt à passer à la vitesse supérieure ?</h2>
-    <ul class="flex flex-wrap justify-center gap-4 mb-6">
-      <li class="bg-white rounded-md px-5 py-2 shadow text-base">Accès à tous les signaux en temps réel</li>
-      <li class="bg-white rounded-md px-5 py-2 shadow text-base">Support prioritaire</li>
-      <li class="bg-white rounded-md px-5 py-2 shadow text-base">Export des données</li>
-      <li class="bg-white rounded-md px-5 py-2 shadow text-base">Avis détaillés d’experts</li>
-    </ul>
-    <a href="tarifs.html" class="inline-block bg-gradient-to-r from-teal-400 to-blue-500 text-white font-bold text-lg px-7 py-2 rounded-full shadow hover:scale-105 transition">
-      Voir les options Premium
-    </a>
-  </section>
-
-  <section class="max-w-2xl mx-auto my-8 text-center">
-    <div class="flex flex-wrap justify-center gap-4 items-center text-slate-500 text-base font-medium">
-      <span>🇫🇷 Plateforme française</span>
-      <span>🔒 Données protégées &amp; sécurisées</span>
-      <span>📄 Méthodologie publique</span>
-      <a href="status.html" class="text-teal-600 underline font-semibold">Voir le statut du service</a>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer class="bg-slate-100 border-t border-slate-200 mt-16 py-8 px-4">
-    <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-base">
-      <div class="mb-2 md:mb-0">
-        <b>Luxibre Alpha</b> &copy; 2025<br>
-        <a href="mailto:contact@luxibre.com" class="text-blue-600 hover:underline">Contact</a>
+    <!-- Trust & sécurité / social -->
+    <section class="max-w-2xl mx-auto my-8 text-center">
+      <div class="flex flex-wrap justify-center gap-4 items-center text-slate-500 text-base font-medium">
+        <span>🇫🇷 Plateforme française</span>
+        <span>🔒 Données protégées &amp; sécurisées</span>
+        <span>📄 Méthodologie publique</span>
+        <a href="status.html" class="text-teal-600 underline font-semibold">Voir le statut du service</a>
       </div>
-      <div class="mb-2 md:mb-0">
-        <a href="faq.html" class="hover:underline">FAQ</a> | 
-        <a href="about.html" class="hover:underline">À propos</a> | 
-        <a href="terms.html" class="hover:underline">Mentions légales</a> | 
-        <a href="privacy.html" class="hover:underline">Confidentialité</a>
-      </div>
-      <div>
-        <a href="https://twitter.com/luxibre" target="_blank" class="hover:underline">Twitter/X</a> •
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="py-10 bg-gray-100 mt-16">
+    <div class="max-w-7xl mx-auto px-6 text-center text-sm text-gray-600">
+      &copy; 2025 <span class="font-semibold text-green-600">Luxibre Alpha</span>. Tous droits réservés. |
+      <a href="/legal/mentions-legales.html" class="underline hover:text-green-600 transition">Mentions légales</a> |
+      <a href="/legal/cgu.html" class="underline hover:text-green-600 transition">CGU</a> |
+      <a href="/legal/rgpd.html" class="underline hover:text-green-600 transition">Politique de confidentialité</a>
+      <span class="block mt-2">
+        <a href="https://twitter.com/luxibre" target="_blank" class="hover:underline mr-2">Twitter/X</a>
         <a href="https://t.me/luxibre" target="_blank" class="hover:underline">Telegram</a>
-      </div>
-    </div>
-    <div class="text-center text-slate-400 mt-3 text-sm">
-      <small>Investir comporte des risques. Faites vos propres recherches.</small>
+      </span>
     </div>
   </footer>
 
-  <!-- JS dynamiques -->
-  <script src="JS/loadHeader.js" type="module"></script>
+  <!-- Feedback bouton et status JS -->
   <script>
-    // Micro-animation bouton feedback utilisateur exemple
+    // Feedback bouton
     const feedbackBtn = document.createElement('button');
     feedbackBtn.textContent = "💬 Donne ton avis";
     feedbackBtn.className = "fixed right-4 bottom-4 z-50 px-4 py-2 bg-blue-500 text-white font-bold rounded-full shadow-lg hover:bg-blue-600 transition";
@@ -156,7 +234,7 @@
     };
     document.body.appendChild(feedbackBtn);
 
-    // Apparition d'un bandeau statut données (exemple)
+    // Bandeau statut données (exemple)
     function showStatusBanner(statusText, color = "bg-emerald-500") {
       const banner = document.createElement('div');
       banner.textContent = statusText;
