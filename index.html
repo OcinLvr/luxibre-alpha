@@ -23,36 +23,35 @@
   <script type="module" src="JS/loadHeader.js"></script>
 
   <main id="accueil">
-    <!-- Hero Section -->
-    <section class="py-24 bg-gradient-to-r from-green-500 to-blue-500 text-white text-center">
-      <div class="max-w-2xl mx-auto px-6">
-        <h1 class="text-4xl md:text-6xl font-extrabold mb-6 leading-tight drop-shadow-lg">
-          <span class="block md:inline">Boostez vos résultats</span>
-          <span class="block md:inline">avec des <span class="text-yellow-300">signaux premium</span></span>
+    <!-- Hero Section (moins imposante) -->
+    <section class="py-16 md:py-16 bg-gradient-to-r from-green-500 to-blue-500 text-white text-center">
+      <div class="max-w-xl mx-auto px-4">
+        <h1 class="text-3xl md:text-4xl font-extrabold mb-4 leading-tight drop-shadow-lg">
+          Boostez vos résultats avec des <span class="text-yellow-300">signaux premium</span>
         </h1>
-        <p class="text-xl md:text-2xl mb-8 font-medium drop-shadow">
-          Recevez chaque matin les meilleures opportunités de trading, accédez à des outils exclusifs, et prenez une longueur d’avance sur le marché.
+        <p class="text-lg md:text-xl mb-6 font-medium drop-shadow">
+          Recevez chaque jour les meilleures opportunités de trading, accédez à des outils exclusifs et prenez une longueur d’avance sur le marché.
         </p>
-        <div class="flex flex-col md:flex-row items-center justify-center gap-4 mb-8">
-          <a href="signup.html" class="inline-block bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-bold py-4 px-8 rounded-xl text-lg shadow-lg transition">
+        <div class="flex flex-col md:flex-row items-center justify-center gap-4 mb-6">
+          <a href="signup.html" class="inline-block bg-yellow-400 hover:bg-yellow-300 text-gray-900 font-bold py-3 px-7 rounded-xl text-base shadow-lg transition">
             Je passe à l'action
           </a>
-          <a href="#fonctionnalites" class="inline-block bg-white bg-opacity-20 border border-white text-white font-bold py-4 px-8 rounded-xl text-lg shadow transition hover:bg-opacity-40">
+          <a href="#fonctionnalites" class="inline-block bg-white bg-opacity-20 border border-white text-white font-bold py-3 px-7 rounded-xl text-base shadow transition hover:bg-opacity-40">
             Découvrir les fonctionnalités
           </a>
         </div>
-        <div class="flex flex-wrap justify-center gap-6 mt-8">
+        <div class="flex flex-wrap justify-center gap-6 mt-6">
           <div class="flex flex-col items-center">
-            <div class="text-3xl font-extrabold text-yellow-200 drop-shadow">+1200</div>
-            <div class="text-white text-opacity-90">Utilisateurs actifs</div>
+            <div class="text-2xl font-extrabold text-yellow-200 drop-shadow">+1200</div>
+            <div class="text-white text-opacity-90 text-sm">Utilisateurs actifs</div>
           </div>
           <div class="flex flex-col items-center">
-            <div class="text-3xl font-extrabold text-yellow-200 drop-shadow">95%</div>
-            <div class="text-white text-opacity-90">Taux de réussite</div>
+            <div class="text-2xl font-extrabold text-yellow-200 drop-shadow">95%</div>
+            <div class="text-white text-opacity-90 text-sm">Taux de réussite</div>
           </div>
           <div class="flex flex-col items-center">
-            <div class="text-3xl font-extrabold text-yellow-200 drop-shadow">100%</div>
-            <div class="text-white text-opacity-90">Transparence</div>
+            <div class="text-2xl font-extrabold text-yellow-200 drop-shadow">100%</div>
+            <div class="text-white text-opacity-90 text-sm">Transparence</div>
           </div>
         </div>
       </div>
@@ -222,7 +221,7 @@
     </div>
   </footer>
 
-  <!-- Feedback bouton et status JS -->
+  <!-- Feedback bouton JS -->
   <script>
     // Feedback bouton
     const feedbackBtn = document.createElement('button');
@@ -232,16 +231,6 @@
       alert("Merci pour votre retour ! (Formulaire à venir)");
     };
     document.body.appendChild(feedbackBtn);
-
-    // Bandeau statut données (exemple)
-    function showStatusBanner(statusText, color = "bg-emerald-500") {
-      const banner = document.createElement('div');
-      banner.textContent = statusText;
-      banner.className = "fixed top-0 left-1/2 -translate-x-1/2 px-8 py-2 rounded-b-xl text-white font-bold shadow-lg z-50 " + color;
-      document.body.appendChild(banner);
-      setTimeout(() => banner.remove(), 7000);
-    }
-    showStatusBanner("✅ Données actualisées à 12:30");
   </script>
 </body>
 </html>
