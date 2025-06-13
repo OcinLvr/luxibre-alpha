@@ -2,24 +2,17 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Dashboard moderne pour Luxibre Alpha">
-  <title>Luxibre Alpha - Dashboard Moderne</title>
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Luxibre Alpha - Dashboard</title>
+  <link rel="icon" href="favicon.ico">
+  <!-- Chart.js + Chart.js Zoom Plugin -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.umd.min.js"></script>
+  <!-- Luxon pour dates -->
+  <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
+  <!-- html2canvas pour export PNG -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css">
-
-  <!-- Chart.js + Luxon adapter + zoom plugin -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/luxon@1.25.0"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.0.0"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@1.2.1/dist/chartjs-plugin-zoom.min.js"></script>
-
-  <!-- html2canvas for export -->
-  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-
   <style>
     :root {
       --primary-color: #22c55e;
@@ -320,123 +313,73 @@
     }
   </style>
 </head>
-<body>
-  <!-- Header partagé (uniformisé) -->
-  <div id="header"></div>
+<body class="bg-gray-50">
 
-  <script type="module" src="JS/loadHeader.js"></script>
-  <script type="module" src="JS/dashboard.js"></script>
+  <!-- Loader -->
+  <div id="loader" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-20" style="display:none">
+    <div class="animate-spin rounded-full h-16 w-16 border-4 border-blue-300 border-t-blue-600"></div>
+  </div>
 
-  <!-- Navigation spécifique au dashboard -->
-  <nav class="dashboard-nav flex gap-2 sm:justify-center p-4 bg-gray-800">
-    <select id="signalFilter" class="text-sm sm:text-base px-3 py-1.5 bg-green-500 text-white font-medium rounded-full">
-      <option value="all">Tous les signaux</option>
-      <option value="achat">Achat</option>
-      <option value="vente">Vente</option>
-      <option value="conservation">Conservation</option>
-    </select>
-    <select id="typeFilter" class="text-sm sm:text-base px-3 py-1.5 bg-green-500 text-white font-medium rounded-full">
-      <option value="all">Tous les types</option>
-      <option value="etf">ETF</option>
-      <option value="actions">Actions</option>
-      <option value="cryptomonnaie">Cryptomonnaie</option>
-    </select>
-  </nav>
+  <main class="max-w-5xl mx-auto px-2 py-8">
+    <h1 class="text-2xl font-bold mb-6 text-center">Tableau de bord • Luxibre Alpha</h1>
 
-  <main>
-    <!-- Loader -->
-    <div id="loader">
-      <i class="fa fa-spinner fa-spin text-4xl text-green-500"></i>
-    </div>
-    <!-- Notice premium améliorée -->
-    <div id="premiumNotice" class="notice" style="display: none;">
-      <div>
-        <span class="inline-block bg-yellow-400 text-black font-bold px-3 py-1 rounded-full mb-2">Premium</span>
-        <p>
-          Certains signaux sont réservés aux abonnés premium.<br>
-          <span class="block my-2 font-semibold">Débloquez :</span>
-        </p>
-        <ul>
-          <li><i class="fa fa-check text-green-500"></i> Signaux illimités</li>
-          <li><i class="fa fa-chart-line text-green-500"></i> Outils avancés</li>
-          <li><i class="fa fa-bolt text-green-500"></i> Notifications prioritaires</li>
-          <li><i class="fa fa-star text-green-500"></i> Zéro pub</li>
-        </ul>
-        <a href="/#tarifs" class="bg-gradient-to-r from-green-500 to-blue-600 text-white px-6 py-2 rounded-xl font-semibold hover:from-green-600 hover:to-blue-700 mt-2 transition">Je deviens Premium</a>
-      </div>
-    </div>
-    <div id="signalsContainer" class="text-gray-200"></div>
-
-    <!-- Message suggestion ajout actif (affiché uniquement pour l'utilisateur connecté) -->
-    <div id="suggest-asset-message" style="display:none" class="max-w-2xl mx-auto mt-8 mb-8 bg-green-50 dark:bg-slate-700 rounded-lg p-4 flex items-center gap-3 shadow">
-      <span class="fa fa-lightbulb text-green-500 text-2xl"></span>
-      <div class="text-gray-700 dark:text-gray-100 text-base">
-        Tu souhaites voir un actif en particulier être listé sur le site&nbsp;?
-        <a href="/contact.html" class="text-green-600 underline hover:text-green-700">Contacte-nous ici</a>
-      </div>
+    <div id="premiumNotice" class="mb-4 p-4 rounded-lg bg-yellow-100 border border-yellow-300 text-yellow-800 text-center font-semibold" style="display:none">
+      Certains signaux sont réservés aux membres Premium. <a href="#tarifs" class="underline text-blue-700 hover:text-blue-900">Voir nos offres</a>
     </div>
 
-    <!-- Section rapports de performance -->
-    <section id="performanceReports" class="max-w-3xl mx-auto mb-12 px-4">
-      <h2 class="text-2xl font-bold mb-4 text-green-400">Rapports de Performance</h2>
-      <div class="bg-gray-800 rounded-lg p-6 mb-2 shadow-lg text-gray-200">
-        <p class="mb-2"><span class="font-semibold text-green-300">Mai 2025 :</span> Les signaux premium ont généré un rendement moyen de <span class="font-bold text-green-400">+8,2%</span> sur 30 jours, contre <span class="font-bold text-yellow-400">+2,4%</span> pour les signaux gratuits.</p>
-        <ul class="list-disc pl-6 text-sm">
-          <li>Meilleure action : <span class="font-semibold">X Corp</span> (+13,5%)</li>
-          <li>Meilleur ETF : <span class="font-semibold">GreenEnergy</span> (+10,7%)</li>
-          <li>Meilleure crypto : <span class="font-semibold">SOL</span> (+24,1%)</li>
-        </ul>
-      </div>
-      <div class="bg-gray-800 rounded-lg p-6 shadow-lg text-gray-200">
-        <p class="mb-2"><span class="font-semibold text-green-300">Avril 2025 :</span> Les abonnés premium ont profité de <span class="font-bold text-green-400">3 alertes exclusives</span> et d’un taux de réussite de <span class="font-bold text-green-400">92%</span>.</p>
-      </div>
-    </section>
-    <!-- Section témoignages -->
-    <section id="testimonials" class="max-w-3xl mx-auto mb-10 px-4">
-      <h2 class="text-2xl font-bold mb-4 text-green-400">Témoignages</h2>
-      <div class="grid md:grid-cols-2 gap-6">
-        <div class="bg-gray-900 rounded-lg p-6 shadow text-gray-100">
-          <p class="italic mb-2">« Les signaux premium sont ultra-précis. J’ai augmenté mes gains depuis mon abonnement ! »</p>
-          <div class="flex items-center gap-2">
-            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Avatar" class="w-8 h-8 rounded-full border border-green-400">
-            <span class="font-bold text-green-300">Jean D.</span>
-          </div>
-        </div>
-        <div class="bg-gray-900 rounded-lg p-6 shadow text-gray-100">
-          <p class="italic mb-2">« L’interface est claire, les outils graphiques sont top et le service client très réactif. »</p>
-          <div class="flex items-center gap-2">
-            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Avatar" class="w-8 h-8 rounded-full border border-green-400">
-            <span class="font-bold text-green-300">Marie L.</span>
-          </div>
-        </div>
-      </div>
-    </section>
+    <div class="mb-6 flex flex-wrap gap-3 justify-center">
+      <select id="signalFilter" class="border px-3 py-2 rounded shadow-sm">
+        <option value="all">Tous les signaux</option>
+        <option value="achat">Achat</option>
+        <option value="vente">Vente</option>
+        <option value="conservation">Conservation</option>
+      </select>
+      <select id="typeFilter" class="border px-3 py-2 rounded shadow-sm">
+        <option value="all">Tous types</option>
+        <option value="crypto">Crypto</option>
+        <option value="bourse">Bourse</option>
+        <option value="forex">Forex</option>
+      </select>
+    </div>
+
+    <div id="signalsContainer" class="grid md:grid-cols-2 gap-6"></div>
+
+    <div id="suggest-asset-message" class="mt-10 text-blue-600 text-center text-sm font-medium" style="display:none">
+      Un actif manque ? <a href="https://forms.gle/xxxxx" target="_blank" class="underline">Suggérez-nous un ajout !</a>
+    </div>
   </main>
 
-  <!-- Modal grand graphique -->
-  <div id="bigChartModal" role="dialog" aria-modal="true" aria-labelledby="bigChartTitle">
-    <div id="bigChartContent">
-      <div id="bigChartHeader">
-        <h3 id="bigChartTitle">Graphique</h3>
-        <button id="closeBigChartBtn" aria-label="Fermer le graphique"><i class="fas fa-times"></i></button>
+  <!-- Modal pour grand graphique -->
+  <div id="bigChartModal">
+    <div id="bigChartBox" class="relative">
+      <button id="closeBigChartBtn" class="absolute right-4 top-4 text-xl text-gray-400 hover:text-red-500" title="Fermer"><i class="fa fa-times"></i></button>
+      <div class="p-5 border-b flex flex-col sm:flex-row sm:items-center gap-2">
+        <h2 id="bigChartTitle" class="text-lg font-bold flex-1"></h2>
+        <div class="flex gap-1 flex-wrap">
+          <button class="quick-range-btn" data-range="all">Tout</button>
+          <button class="quick-range-btn" data-range="30">30j</button>
+          <button class="quick-range-btn" data-range="7">7j</button>
+          <button class="quick-range-btn" data-range="1">1j</button>
+        </div>
       </div>
-      <canvas id="bigChartCanvas"></canvas>
-      <div id="predictionsContainer"></div>
-      <div id="bigChartActions">
-        <button id="resetZoomBtn" aria-label="Réinitialiser Zoom">Réinitialiser Zoom</button>
-        <button id="exportBigChartBtn" aria-label="Exporter le Graphique">Exporter le Graphique</button>
+      <div class="flex flex-wrap gap-2 px-5 pt-3 pb-1">
+        <span class="font-semibold mr-2">Indicateurs :</span>
+        <button class="indicator-toggle-btn" data-indicator="rsi">RSI</button>
+        <button class="indicator-toggle-btn" data-indicator="macd">MACD</button>
+        <!-- Ajoute ici d'autres indicateurs si tu veux -->
       </div>
+      <div class="px-5 pt-0" style="height:320px; min-width:280px;">
+        <canvas id="bigChartCanvas"></canvas>
+      </div>
+      <div class="flex gap-2 px-5 pb-3 pt-2">
+        <button id="resetZoomBtn" class="bg-gray-200 rounded px-3 py-1 text-sm hover:bg-blue-50"><i class="fa fa-search-minus mr-1"></i>Réinitialiser le zoom</button>
+        <button id="exportBigChartBtn" class="bg-blue-500 text-white rounded px-3 py-1 text-sm hover:bg-blue-600"><i class="fa fa-download mr-1"></i>Exporter PNG</button>
+      </div>
+      <div id="predictionsContainer" class="px-5 pb-3"></div>
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer class="py-10 bg-gray-100 mt-16">
-    <div class="max-w-7xl mx-auto px-6 text-center text-sm text-gray-600">
-      &copy; 2025 <span class="font-semibold text-green-600">Luxibre Alpha</span>. Tous droits réservés. |
-      <a href="/legal/mentions-legales.html" class="underline hover:text-green-600 transition">Mentions légales</a> |
-      <a href="/legal/cgu.html" class="underline hover:text-green-600 transition">CGU</a> |
-      <a href="/legal/rgpd.html" class="underline hover:text-green-600 transition">RGPD</a>
-    </div>
-  </footer>
+  <script src="JS/dashboard.js" type="module"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </body>
 </html>
