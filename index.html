@@ -17,7 +17,6 @@
   </style>
 </head>
 <body class="overflow-x-hidden bg-white text-gray-900">
-
   <!-- Header dynamique -->
   <div id="header"></div>
   <script type="module" src="JS/loadHeader.js"></script>
@@ -232,45 +231,49 @@
     document.body.appendChild(feedbackBtn);
   </script>
 
-  <!-- Modale Avis Utilisateur -->
-  <div id="avisModalOverlay" class="fixed inset-0 z-50 bg-black bg-opacity-40 hidden transition-opacity"></div>
-  <div id="avisModal" class="fixed left-1/2 top-1/2 z-50 w-[95vw] max-w-md -translate-x-1/2 -translate-y-1/2 bg-white rounded-2xl shadow-xl border border-gray-200 p-6 hidden">
-    <div class="flex items-center justify-between mb-4">
-      <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
-        <span class="text-blue-500">💬</span>
-        Donnez votre avis
-      </h2>
-      <button id="avisModalClose" class="text-gray-400 hover:text-gray-700 text-2xl leading-none" aria-label="Fermer"><i class="fa fa-times"></i></button>
-    </div>
-    <form id="avisForm" class="space-y-4">
-      <div>
-        <label for="avis-message" class="block text-sm font-medium text-gray-700 mb-1">Votre avis <span class="text-red-500">*</span></label>
-        <textarea id="avis-message" name="avis-message" rows="4" required maxlength="1000" class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Votre retour ou suggestion..."></textarea>
+  <!-- Modale Avis Utilisateur responsive et centrée -->
+  <div id="avisModalOverlay"
+       class="fixed inset-0 z-50 bg-black bg-opacity-40 hidden transition-opacity"></div>
+  <div id="avisModal"
+       class="fixed inset-0 z-50 flex items-center justify-center px-2 py-8 sm:px-0 sm:py-0 hidden">
+    <div class="w-full max-w-md bg-white rounded-2xl shadow-xl border border-gray-200 p-6 relative overflow-y-auto max-h-[92vh]">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-bold text-gray-800 flex items-center gap-2">
+          <span class="text-blue-500">💬</span>
+          Donnez votre avis
+        </h2>
+        <button id="avisModalClose" class="text-gray-400 hover:text-gray-700 text-2xl leading-none" aria-label="Fermer"><i class="fa fa-times"></i></button>
       </div>
-      <div>
-        <label for="avis-email" class="block text-sm font-medium text-gray-700 mb-1">Email (optionnel, pour recevoir une réponse)</label>
-        <input type="email" id="avis-email" name="avis-email" class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Votre adresse email (facultatif)">
-      </div>
-      <div class="flex items-center gap-3">
-        <label class="text-sm font-medium text-gray-700">Note&nbsp;:</label>
-        <div id="avis-stars" class="flex gap-1 text-yellow-400 text-xl cursor-pointer select-none">
-          <span data-star="1" class="fa fa-star avis-star"></span>
-          <span data-star="2" class="fa fa-star avis-star"></span>
-          <span data-star="3" class="fa fa-star avis-star"></span>
-          <span data-star="4" class="fa fa-star avis-star"></span>
-          <span data-star="5" class="fa fa-star avis-star"></span>
+      <form id="avisForm" class="space-y-4">
+        <div>
+          <label for="avis-message" class="block text-sm font-medium text-gray-700 mb-1">Votre avis <span class="text-red-500">*</span></label>
+          <textarea id="avis-message" name="avis-message" rows="4" required maxlength="1000" class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Votre retour ou suggestion..."></textarea>
         </div>
-        <input type="hidden" id="avis-note" name="avis-note" value="5">
-      </div>
-      <div>
-        <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 rounded-lg shadow-md transition">Envoyer mon avis</button>
-      </div>
-      <div id="avisFormMsg" class="text-sm mt-2 text-center"></div>
-    </form>
+        <div>
+          <label for="avis-email" class="block text-sm font-medium text-gray-700 mb-1">Email (optionnel, pour recevoir une réponse)</label>
+          <input type="email" id="avis-email" name="avis-email" class="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" placeholder="Votre adresse email (facultatif)">
+        </div>
+        <div class="flex items-center gap-3">
+          <label class="text-sm font-medium text-gray-700">Note&nbsp;:</label>
+          <div id="avis-stars" class="flex gap-1 text-yellow-400 text-xl cursor-pointer select-none">
+            <span data-star="1" class="fa fa-star avis-star"></span>
+            <span data-star="2" class="fa fa-star avis-star"></span>
+            <span data-star="3" class="fa fa-star avis-star"></span>
+            <span data-star="4" class="fa fa-star avis-star"></span>
+            <span data-star="5" class="fa fa-star avis-star"></span>
+          </div>
+          <input type="hidden" id="avis-note" name="avis-note" value="5">
+        </div>
+        <div>
+          <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 rounded-lg shadow-md transition">Envoyer mon avis</button>
+        </div>
+        <div id="avisFormMsg" class="text-sm mt-2 text-center"></div>
+      </form>
+    </div>
   </div>
 
   <script>
-    // Gestion modale
+    // Gestion modale améliorée (scroll et responsive fix)
     const avisBtn = document.getElementById('avisBtn');
     const avisModal = document.getElementById('avisModal');
     const avisOverlay = document.getElementById('avisModalOverlay');
@@ -278,13 +281,13 @@
     function openAvisModal() {
       avisModal.classList.remove('hidden');
       avisOverlay.classList.remove('hidden');
-      document.body.style.overflow = 'hidden';
+      document.body.classList.add('overflow-hidden');
       document.getElementById('avis-message').focus();
     }
     function closeAvisModal() {
       avisModal.classList.add('hidden');
       avisOverlay.classList.add('hidden');
-      document.body.style.overflow = '';
+      document.body.classList.remove('overflow-hidden');
       document.getElementById('avisFormMsg').textContent = '';
     }
     avisBtn && avisBtn.addEventListener('click', e => { e.preventDefault(); openAvisModal(); });
@@ -334,6 +337,6 @@
         currentNote = 5;
       }, 900);
     };
-  </script> 
+  </script>
 </body>
 </html>
