@@ -1,8 +1,7 @@
-// Dashboard JS pour Luxibre Alpha - gestion watchlist Supabase (ESM CORRECTIF)
+// Dashboard JS pour Luxibre Alpha - version améliorée graphiques (Zoom, plages rapides, indicateurs optionnels)
 
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-// --- Supabase Client ---
 const supabaseUrl = 'https://jrgdwozxcilasllpvikh.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpyZ2R3b3p4Y2lsYXNsbHB2aWtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4MjQ0NTEsImV4cCI6MjA2MzQwMDQ1MX0.S2oGP2rdtq1IkW-oH5mC8omm698PdCgQJtGVLlIFj3w';
 const supabase = createClient(supabaseUrl, supabaseKey);
@@ -99,11 +98,16 @@ function performanceBadge(value) {
 
 // Loader
 const loader = document.getElementById('loader');
-function showLoader() { loader.style.display = 'block'; }
+function showLoader() { loader.style.display = 'flex'; }
 function hideLoader() { loader.style.display = 'none'; }
 
 // Variables globales pour modal graphique
 let bigChartInstance = null;
+let bigChartDataFull = null;
+let bigChartSignal = null;
+let bigChartIndicators = {};
+let bigChartRange = 'all';
+
 const bigChartModal = document.getElementById("bigChartModal");
 const bigChartCanvas = document.getElementById("bigChartCanvas").getContext('2d');
 const bigChartTitle = document.getElementById("bigChartTitle");
@@ -120,73 +124,22 @@ async function openBigChart(signal) {
     return;
   }
 
-  bigChartTitle.textContent = signal.name + " - Prix Historique";
+  bigChartSignal = signal;
+  bigChartRange = 'all';
+  bigChartIndicators = { rsi: false, macd: false };
 
-  // Détruire l'ancien graphique si présent
-  if (bigChartInstance) {
-    bigChartInstance.destroy();
-  }
+  // Données complètes "brutes"
+  bigChartDataFull = {
+    labels: (signal.dates || signal.history.map((_, idx) => `J-${signal.history.length - idx}`)),
+    price: [...signal.history],
+    rsi: signal.rsi || null,
+    macd: signal.macd || null
+    // Ajoute ici d'autres indicateurs si dispo
+  };
 
-  bigChartInstance = new Chart(bigChartCanvas, {
-    type: "line",
-    data: {
-      labels: signal.history.map((_, idx) => `J-${signal.history.length - idx}`),
-      datasets: [{
-        label: `${signal.name} - Prix de clôture`,
-        data: signal.history,
-        borderColor: "#3b82f6",
-        backgroundColor: "rgba(59, 130, 246, 0.1)",
-        fill: true,
-        tension: 0.4,
-        pointRadius: 3,
-        pointHoverRadius: 6,
-        pointBackgroundColor: "#3b82f6",
-        borderWidth: 2
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      animation: {
-        duration: 1000,
-        easing: 'easeInOutQuart'
-      },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          mode: 'index',
-          intersect: false,
-          backgroundColor: 'rgba(0, 0, 0, 0.8)',
-          titleFont: { size: 16 },
-          bodyFont: { size: 14 },
-          padding: 10,
-          displayColors: false
-        },
-        zoom: {
-          pan: { enabled: true, mode: 'xy', modifierKey: 'ctrl' },
-          zoom: {
-            wheel: { enabled: true },
-            pinch: { enabled: true },
-            mode: 'xy',
-          }
-        }
-      },
-      scales: {
-        x: {
-          display: true,
-          ticks: { color: '#9ca3af', font: { size: 12 } },
-          grid: { color: '#374151', drawBorder: false }
-        },
-        y: {
-          beginAtZero: false,
-          ticks: { color: '#9ca3af', font: { size: 12 } },
-          grid: { color: '#374151' }
-        }
-      }
-    }
-  });
+  renderBigChart();
 
-  // Afficher les prédictions de prix si premium
+  // Affiche les prédictions
   const predictionsDiv = document.getElementById('predictionsContainer');
   if (isPremium) {
     if (signal.predictions) {
@@ -203,10 +156,10 @@ async function openBigChart(signal) {
     predictionsDiv.innerHTML = `<p>Les prédictions de prix sont réservées aux membres premium.</p>`;
   }
 
-  // Ouvrir la modal
   document.body.classList.add('modal-open');
   bigChartModal.classList.add("active");
 }
+
 function closeBigChart() {
   if (bigChartInstance) {
     bigChartInstance.destroy();
@@ -215,6 +168,193 @@ function closeBigChart() {
   document.body.classList.remove('modal-open');
   bigChartModal.classList.remove("active");
 }
+
+// --- Gestion des boutons de plages rapides ---
+function setQuickRange(range) {
+  bigChartRange = range;
+  renderBigChart();
+}
+
+// --- Gestion des indicateurs optionnels ---
+function toggleIndicator(indicator) {
+  bigChartIndicators[indicator] = !bigChartIndicators[indicator];
+  renderBigChart();
+}
+
+// --- Calcul du min/max du prix sur la période affichée ---
+function getMinMax(data) {
+  let min = Math.min(...data);
+  let max = Math.max(...data);
+  return { min, max };
+}
+
+function renderBigChart() {
+  // Détermine la plage de données à afficher selon le range sélectionné
+  const total = bigChartDataFull.labels.length;
+  let start = 0, end = total;
+  if (bigChartRange === '30' && total > 30) { start = total - 30; }
+  if (bigChartRange === '7' && total > 7) { start = total - 7; }
+  if (bigChartRange === '1' && total > 1) { start = total - 1; }
+  // else all
+
+  const slice = (arr) => arr ? arr.slice(start, end) : null;
+
+  const labels = slice(bigChartDataFull.labels);
+  const price = slice(bigChartDataFull.price);
+  const rsi = bigChartIndicators.rsi && bigChartDataFull.rsi ? slice(bigChartDataFull.rsi) : null;
+  const macd = bigChartIndicators.macd && bigChartDataFull.macd ? slice(bigChartDataFull.macd) : null;
+
+  // Détruit l'ancien graphique si existant
+  if (bigChartInstance) bigChartInstance.destroy();
+
+  // Min/max badge
+  const { min, max } = getMinMax(price);
+  // Variation %
+  const variation = price.length > 1 ? ((price[price.length - 1] - price[0]) / price[0] * 100).toFixed(2) : 0;
+
+  // Mise à jour du titre
+  let rangeLabel = '';
+  if (bigChartRange === '30') rangeLabel = '30j';
+  else if (bigChartRange === '7') rangeLabel = '7j';
+  else if (bigChartRange === '1') rangeLabel = '1j';
+  else rangeLabel = 'Tout';
+  bigChartTitle.innerHTML = `${bigChartSignal.name} <span class="badge-minmax">Min $${min.toFixed(2)}</span> <span class="badge-minmax">Max $${max.toFixed(2)}</span> <span class="badge-minmax ${variation >= 0 ? 'text-green-700' : 'text-red-700'}">${variation >= 0 ? "+" : ""}${variation}%</span> <span class="chart-indicator-label">(${rangeLabel})</span>`;
+
+  // Prépare les datasets
+  let datasets = [{
+    label: "Prix de clôture",
+    data: price,
+    borderColor: "#3b82f6",
+    backgroundColor: getGradient(bigChartCanvas),
+    fill: true,
+    tension: 0.35,
+    pointRadius: 2,
+    pointHoverRadius: 7,
+    pointBackgroundColor: "#3b82f6",
+    borderWidth: 2,
+    yAxisID: 'y'
+  }];
+  if (rsi) {
+    datasets.push({
+      label: "RSI",
+      data: rsi,
+      borderColor: "#f59e42",
+      backgroundColor: "rgba(251,191,36,0.08)",
+      fill: false,
+      tension: 0.3,
+      pointRadius: 0,
+      borderWidth: 2,
+      yAxisID: 'y2'
+    });
+  }
+  if (macd) {
+    datasets.push({
+      label: "MACD",
+      data: macd,
+      borderColor: "#10b981",
+      backgroundColor: "rgba(16,185,129,0.08)",
+      fill: false,
+      tension: 0.3,
+      pointRadius: 0,
+      borderWidth: 2,
+      yAxisID: 'y2'
+    });
+  }
+
+  bigChartInstance = new Chart(bigChartCanvas, {
+    type: "line",
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 900, easing: 'easeInOutQuart' },
+      plugins: {
+        legend: { display: true, position: 'top', labels: { font: { size: 13 } } },
+        tooltip: {
+          enabled: true,
+          mode: 'index',
+          intersect: false,
+          backgroundColor: '#222e3a',
+          borderColor: "#3b82f6",
+          borderWidth: 1,
+          titleFont: { size: 15, weight: 'bold' },
+          bodyFont: { size: 13 },
+          callbacks: {
+            title: (items) => `Jour : ${items[0].label}`,
+            label: (ctx) => {
+              if (ctx.dataset.label === "Prix de clôture") {
+                return `Prix : $${ctx.parsed.y.toFixed(2)}`;
+              }
+              if (ctx.dataset.label === "RSI") {
+                return `RSI : ${ctx.parsed.y.toFixed(2)}`;
+              }
+              if (ctx.dataset.label === "MACD") {
+                return `MACD : ${ctx.parsed.y.toFixed(2)}`;
+              }
+              return '';
+            }
+          },
+          padding: 12,
+          displayColors: true
+        },
+        zoom: {
+          pan: { enabled: true, mode: 'x', modifierKey: 'ctrl' },
+          zoom: {
+            wheel: { enabled: true },
+            pinch: { enabled: true },
+            drag: { enabled: true },
+            mode: 'x',
+            onZoomComplete: ({chart}) => {
+              // Optionnel : tu peux faire une action ici, par ex afficher la période zoomée
+            }
+          },
+          limits: { x: { min: 0, max: labels.length - 1 } }
+        }
+      },
+      scales: {
+        x: {
+          display: true,
+          ticks: { color: '#374151', font: { size: 12 } },
+          grid: { color: '#e5e7eb', drawBorder: false }
+        },
+        y: {
+          type: 'linear',
+          position: 'left',
+          beginAtZero: false,
+          ticks: { color: '#374151', font: { size: 13 } },
+          grid: { color: '#e5e7eb' }
+        },
+        y2: {
+          type: 'linear',
+          display: (rsi || macd) ? true : false,
+          position: 'right',
+          beginAtZero: false,
+          grid: { drawOnChartArea: false },
+          ticks: { color: '#f59e42', font: { size: 11 } },
+        }
+      }
+    }
+  });
+
+  function getGradient(ctx) {
+    const grad = ctx.createLinearGradient(0, 0, 0, ctx.canvas.height);
+    grad.addColorStop(0, "rgba(59,130,246,0.20)");
+    grad.addColorStop(1, "rgba(59,130,246,0.03)");
+    return grad;
+  }
+
+  // Active les boutons UI
+  document.querySelectorAll('.quick-range-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.range === bigChartRange);
+    btn.onclick = () => setQuickRange(btn.dataset.range);
+  });
+  document.querySelectorAll('.indicator-toggle-btn').forEach(btn => {
+    let key = btn.dataset.indicator;
+    btn.classList.toggle('active', !!bigChartIndicators[key]);
+    btn.onclick = () => toggleIndicator(key);
+  });
+}
+
 resetZoomBtn.addEventListener("click", () => { if (bigChartInstance) bigChartInstance.resetZoom(); });
 exportBigChartBtn.addEventListener("click", () => {
   isPremiumUser().then(isPremium => {
@@ -265,10 +405,6 @@ async function renderSignals() {
     watchlist = await fetchWatchlistFromSupabase(userId);
   }
 
-  // DEBUG LOGS POUR VERIFIER
-  console.log("DEBUG USER:", user);
-  console.log("DEBUG WATCHLIST:", watchlist);
-
   ["achat", "vente", "conservation"].forEach(category => {
     if (!data[category] || !Array.isArray(data[category])) return;
     data[category].sort((a, b) => (a.premium === b.premium) ? 0 : a.premium ? 1 : -1);
@@ -313,7 +449,7 @@ async function renderSignals() {
           <p><strong>Recommandation :</strong> <span class="recommendation">${signal.recommendation}</span></p>
           <p><strong>Dernière mise à jour :</strong> ${formattedUpdatedDate}</p>
           ${followBtnHtml}
-          <div class="chart-container">
+          <div class="chart-container" title="Cliquer pour zoomer">
             <canvas id="${chartId}" width="300" height="150"></canvas>
           </div>
         </div>
@@ -327,7 +463,6 @@ async function renderSignals() {
           if (await isWatchedByUser(userId, signal.symbol)) {
             await removeFromWatchlistSupabase(userId, signal.symbol);
             this.textContent = "Suivre";
-            // Retire de la variable watchlist (pour la session)
             watchlist = watchlist.filter(s => s !== signal.symbol);
           } else {
             await addToWatchlistSupabase(userId, signal.symbol);
@@ -339,10 +474,18 @@ async function renderSignals() {
 
       if (!isLocked) {
         const ctx = document.getElementById(chartId).getContext("2d");
+        // Simple graphique (mini) pour la carte (pas de zoom ici)
+        let labels = signal.dates || signal.history.map((_, idx) => `J-${signal.history.length - idx}`);
+        let min = Math.min(...signal.history);
+        let max = Math.max(...signal.history);
+        let last = signal.history[signal.history.length-1];
+        let first = signal.history[0];
+        let variation = ((last - first) / first * 100).toFixed(2);
+
         new Chart(ctx, {
           type: "line",
           data: {
-            labels: signal.history.map((_, idx) => `J-${signal.history.length - idx}`),
+            labels,
             datasets: [{
               label: `${signal.name} - Prix de clôture`,
               data: signal.history,
@@ -380,7 +523,10 @@ async function renderSignals() {
                 titleFont: { size: 14 },
                 bodyFont: { size: 12 },
                 padding: 8,
-                displayColors: false
+                displayColors: false,
+                callbacks: {
+                  afterBody: () => `Min: $${min.toFixed(2)} | Max: $${max.toFixed(2)} | Var: ${variation>=0?"+":""}${variation}%`
+                }
               }
             }
           }
