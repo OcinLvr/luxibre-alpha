@@ -386,11 +386,13 @@ async function fetchSignals() {
     return null;
   }
 }
-
 async function renderSignals() {
   showLoader();
   const data = await fetchSignals();
-  if (!data) return hideLoader();
+if (!data) {
+  hideLoader();
+  return;
+}
 
   const user = await getCurrentUser();
   const isPremium = await isPremiumUser();
