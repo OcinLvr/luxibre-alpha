@@ -14,6 +14,9 @@
   <style>
     body { font-family: 'Inter', sans-serif; }
     html { scroll-behavior: smooth; }
+    /* Optionnel : animation fade-in */
+    .fade-in { opacity: 1 !important; transform: none !important; transition: opacity 0.7s, transform 0.7s; }
+    section { opacity: 0; transform: translateY(30px); }
   </style>
 </head>
 <body class="overflow-x-hidden bg-white text-gray-900">
@@ -220,17 +223,6 @@
     </div>
   </footer>
 
-  <!-- Feedback bouton JS -->
-  <script>
-    // Ajout du bouton feedback
-    const feedbackBtn = document.createElement('button');
-    feedbackBtn.textContent = "💬 Donne ton avis";
-    feedbackBtn.className = "fixed right-4 bottom-4 z-50 px-4 py-2 bg-blue-500 text-white font-bold rounded-full shadow-lg hover:bg-blue-600 transition feedback-btn";
-    feedbackBtn.id = "avisBtn";
-    feedbackBtn.type = "button";
-    document.body.appendChild(feedbackBtn);
-  </script>
-
   <!-- Modale Avis Utilisateur responsive et centrée -->
   <div id="avisModalOverlay"
        class="fixed inset-0 z-50 bg-black bg-opacity-40 hidden transition-opacity"></div>
@@ -272,71 +264,7 @@
     </div>
   </div>
 
-  <script>
-    // Gestion modale améliorée (scroll et responsive fix)
-    const avisBtn = document.getElementById('avisBtn');
-    const avisModal = document.getElementById('avisModal');
-    const avisOverlay = document.getElementById('avisModalOverlay');
-    const avisClose = document.getElementById('avisModalClose');
-    function openAvisModal() {
-      avisModal.classList.remove('hidden');
-      avisOverlay.classList.remove('hidden');
-      document.body.classList.add('overflow-hidden');
-      document.getElementById('avis-message').focus();
-    }
-    function closeAvisModal() {
-      avisModal.classList.add('hidden');
-      avisOverlay.classList.add('hidden');
-      document.body.classList.remove('overflow-hidden');
-      document.getElementById('avisFormMsg').textContent = '';
-    }
-    avisBtn && avisBtn.addEventListener('click', e => { e.preventDefault(); openAvisModal(); });
-    avisClose && avisClose.addEventListener('click', closeAvisModal);
-    avisOverlay && avisOverlay.addEventListener('click', closeAvisModal);
-    window.addEventListener('keydown', e => {
-      if (e.key === 'Escape' && !avisModal.classList.contains('hidden')) closeAvisModal();
-    });
-
-    // Étoiles
-    const avisStars = document.querySelectorAll('#avis-stars .avis-star');
-    const avisNote = document.getElementById('avis-note');
-    let currentNote = 5;
-    avisStars.forEach(star => {
-      star.addEventListener('mouseenter', () => {
-        const val = parseInt(star.dataset.star, 10);
-        avisStars.forEach((s, i) => s.classList.toggle('text-yellow-300', i < val));
-      });
-      star.addEventListener('mouseleave', () => {
-        avisStars.forEach((s, i) => s.classList.toggle('text-yellow-300', i < currentNote));
-      });
-      star.addEventListener('click', () => {
-        currentNote = parseInt(star.dataset.star, 10);
-        avisNote.value = currentNote;
-        avisStars.forEach((s, i) => s.classList.toggle('text-yellow-300', i < currentNote));
-      });
-    });
-    avisStars.forEach((s, i) => s.classList.toggle('text-yellow-300', i < currentNote));
-
-    // Soumission (à adapter pour l'envoi réel)
-    document.getElementById('avisForm').onsubmit = async function(e) {
-      e.preventDefault();
-      const msg = document.getElementById('avis-message').value.trim();
-      const email = document.getElementById('avis-email').value.trim();
-      const note = avisNote.value;
-      if (!msg) {
-        document.getElementById('avisFormMsg').textContent = "Merci d'écrire un avis.";
-        return;
-      }
-      document.getElementById('avisFormMsg').textContent = "Envoi...";
-      // À remplacer par ton POST AJAX/Supabase/Backend :
-      setTimeout(() => {
-        document.getElementById('avisFormMsg').textContent = "Merci pour votre retour !";
-        setTimeout(closeAvisModal, 1200);
-        document.getElementById('avisForm').reset();
-        avisStars.forEach((s, i) => s.classList.toggle('text-yellow-300', i < 5));
-        currentNote = 5;
-      }, 900);
-    };
-  </script>
+  <!-- JS principal -->
+  <script src="main.js"></script>
 </body>
 </html>
