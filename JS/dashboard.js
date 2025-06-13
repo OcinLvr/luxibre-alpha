@@ -382,7 +382,7 @@ async function fetchSignals() {
   } catch (err) {
     console.error("Erreur lors du chargement des signaux:", err);
     document.getElementById("signalsContainer").textContent = "Erreur lors du chargement des signaux.";
-    hideLoader();
+    hideLoader(); // ← S’assure que le loader disparait même en cas d’erreur
     return null;
   }
 }
