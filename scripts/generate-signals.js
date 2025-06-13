@@ -45,14 +45,6 @@ const CRYPTOS = [
   { symbol: "DOGE", name: "Dogecoin", type: "crypto", premium: false }
 ];
 
-// Harmonisation pour dashboard.js : "actions", "etf", "cryptomonnaie"
-function assetTypeToDashboardType(assetType) {
-  if (assetType === "stock") return "actions";
-  if (assetType === "etf") return "etf";
-  if (assetType === "crypto") return "cryptomonnaie";
-  return assetType;
-}
-
 // Utilitaires classiques
 function SMA(data, period) {
   if (data.length < period) return null;
