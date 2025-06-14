@@ -3,24 +3,332 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Dashboard nouvelle génération pour Luxibre Alpha">
-  <title>Luxibre Alpha - Dashboard</title>
+  <meta name="description" content="Dashboard moderne pour Luxibre Alpha">
+  <title>Luxibre Alpha - Dashboard Moderne</title>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Chart.js + Luxon adapter + zoom plugin -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/luxon@1.25.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.0.0"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@1.2.1/dist/chartjs-plugin-zoom.min.js"></script>
+
+  <!-- html2canvas for export -->
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
   <style>
-    body { font-family: 'Inter', sans-serif; }
+    :root {
+      --primary-color: #22c55e;
+      --secondary-color: #1e293b;
+      --text-color: #f1f5f9;
+      --accent-color: #86efac;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0f172a;
+      color: var(--text-color);
+      margin: 0;
+    }
+    .notice {
+      background: #dcfce7;
+      color: #166534;
+      border-left: 5px solid var(--primary-color);
+      padding: 1rem 1.5rem;
+      border-radius: 0.75rem;
+      margin-bottom: 2rem;
+      font-weight: 600;
+      text-align: center;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .notice ul {
+      margin: 0.5rem 0 0.5rem 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+    .notice li {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 500;
+    }
+    .notice a {
+      margin-top: 8px;
+      display: inline-block;
+    }
+    .card {
+      background: var(--secondary-color);
+      padding: 1.5rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+      position: relative;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      min-width: 290px;
+      max-width: 370px;
+      margin: 0 auto;
+      flex: 1 1 320px;
+      display: flex;
+      flex-direction: column;
+    }
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 20px rgba(34,197,94,0.4);
+    }
+    .card-content {
+      position: relative;
+      z-index: 1;
+    }
+    .card.blur .card-content {
+      filter: blur(4px);
+      pointer-events: none;
+      user-select: none;
+    }
+    .premium-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: gold;
+      color: black;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: bold;
+      z-index: 2;
+    }
+    .upgrade-message {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(15, 23, 42, 0.85);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 2rem;
+      text-align: center;
+      z-index: 2;
+      border: 1px solid rgba(34, 197, 94, 0.5);
+      cursor: pointer;
+      transition: background 0.3s;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+    .upgrade-message:hover {
+      background: rgba(34, 197, 94, 0.9);
+      color: #fff;
+    }
+    .recommendation {
+      margin-top: 0.8rem;
+      font-weight: 700;
+      color: #4ade80;
+    }
+    .chart-container {
+      height: 200px;
+      margin-top: 1rem;
+      background: #0f172a;
+      border-radius: 0.6rem;
+      cursor: pointer;
+      position: relative;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: box-shadow 0.3s ease;
+    }
+    .chart-container:hover {
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+    }
+    .performance-badge {
+      display: inline-block;
+      min-width: 56px;
+      text-align: center;
+      border-radius: 1rem;
+      font-weight: 600;
+      margin-left: 0.5rem;
+      padding: 0.15rem 0.75rem;
+      font-size: 1rem;
+    }
+    .performance-positive {
+      background: #22c55e;
+      color: #fff;
+    }
+    .performance-negative {
+      background: #f87171;
+      color: #fff;
+    }
+    .export-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      z-index: 2;
+      transition: background 0.3s;
+    }
+    .export-btn:hover {
+      background: #16a34a;
+    }
+    footer {
+      background: var(--secondary-color);
+      padding: 1rem;
+      text-align: center;
+      margin-top: 2rem;
+    }
+    footer a {
+      color: var(--primary-color);
+      margin: 0 1rem;
+      text-decoration: none;
+    }
+    /* Modal style for big chart */
+    body.modal-open {
+      overflow: hidden;
+    }
+    #bigChartModal {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(15, 23, 42, 0.9);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      overflow-y: auto;
+    }
+    #bigChartModal.active {
+      display: flex;
+    }
+    #bigChartContent {
+      background-color: var(--secondary-color);
+      border-radius: 1rem;
+      padding: 1.5rem;
+      width: 90%;
+      max-width: 900px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 0 20px var(--primary-color);
+      position: relative;
+      overflow-y: auto;
+    }
+    #bigChartHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    #bigChartHeader h3 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent-color);
+    }
+    #closeBigChartBtn {
+      background: transparent;
+      border: none;
+      color: var(--accent-color);
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+    #closeBigChartBtn:hover {
+      color: var(--primary-color);
+    }
+    #bigChartCanvas {
+      flex-grow: 1;
+      max-height: 70vh;
+      background: #0f172a;
+      border-radius: 0.6rem;
+    }
+    #predictionsContainer {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: #0f172a;
+      border-radius: 0.6rem;
+    }
+    #bigChartActions {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+    }
+    #bigChartActions button {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    #bigChartActions button:hover {
+      background: #16a34a;
+    }
+    /* Loader */
+    #loader {
+      display: none;
+      margin: 2rem auto;
+      text-align: center;
+    }
+    /* Responsive */
+    #signalsContainer {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+      align-items: stretch;
+      margin-bottom: 2rem;
+    }
+    @media (max-width: 900px) {
+      #signalsContainer {
+        gap: 1.25rem;
+      }
+    }
+    @media (max-width: 700px) {
+      .card {
+        min-width: 90vw;
+        max-width: 97vw;
+        padding: 1rem;
+      }
+      #signalsContainer {
+        gap: 1rem;
+      }
+    }
+    @media (max-width: 600px) {
+      .card {
+        min-width: 98vw;
+        max-width: 99vw;
+        padding: 0.7rem;
+      }
+    }
+    @media (max-width: 480px) {
+      .card {
+        border-radius: 0.5rem;
+        padding: 0.5rem;
+      }
+      #signalsContainer {
+        gap: 0.5rem;
+      }
+    }
   </style>
 </head>
-<body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100">
-
-  <!-- Header -->
+<body>
+  <!-- Header partagé (uniformisé) -->
   <div id="header"></div>
+
   <script type="module" src="JS/loadHeader.js"></script>
   <script type="module" src="JS/dashboard.js"></script>
 
-  <nav class="flex gap-2 sm:justify-center p-4 bg-gray-800">
+  <!-- Navigation spécifique au dashboard -->
+  <nav class="dashboard-nav flex gap-2 sm:justify-center p-4 bg-gray-800">
     <select id="signalFilter" class="text-sm sm:text-base px-3 py-1.5 bg-green-500 text-white font-medium rounded-full">
       <option value="all">Tous les signaux</option>
       <option value="achat">Achat</option>
@@ -37,62 +345,65 @@
 
   <main>
     <!-- Loader -->
-    <div id="loader" class="hidden my-8 text-center">
+    <div id="loader">
       <i class="fa fa-spinner fa-spin text-4xl text-green-500"></i>
     </div>
-
-    <!-- Notice premium enrichie -->
-    <div id="premiumNotice" class="hidden p-6 rounded-xl bg-green-100 text-green-900 text-center font-semibold shadow-md max-w-xl mx-auto my-8">
-      <span class="inline-block bg-yellow-400 text-black font-bold px-3 py-1 rounded-full mb-2">Premium</span>
-      <p>Certains signaux sont réservés aux abonnés premium.<br><span class="block my-2 font-semibold">Débloquez :</span></p>
-      <ul class="flex flex-wrap justify-center gap-3 mb-2">
-        <li><i class="fa fa-check text-green-600"></i> Signaux IA illimités</li>
-        <li><i class="fa fa-trophy text-green-600"></i> Classements</li>
-        <li><i class="fa fa-gamepad text-green-600"></i> Défis & badges</li>
-        <li><i class="fa fa-users text-green-600"></i> Communauté</li>
-      </ul>
-      <a href="/#tarifs" class="bg-gradient-to-r from-green-500 to-blue-600 text-white px-6 py-2 rounded-xl font-semibold hover:from-green-600 hover:to-blue-700 mt-2 transition">Je deviens Premium</a>
+    <!-- Notice premium améliorée -->
+    <div id="premiumNotice" class="notice" style="display: none;">
+      <div>
+        <span class="inline-block bg-yellow-400 text-black font-bold px-3 py-1 rounded-full mb-2">Premium</span>
+        <p>
+          Certains signaux sont réservés aux abonnés premium.<br>
+          <span class="block my-2 font-semibold">Débloquez :</span>
+        </p>
+        <ul>
+          <li><i class="fa fa-check text-green-500"></i> Signaux illimités</li>
+          <li><i class="fa fa-chart-line text-green-500"></i> Outils avancés</li>
+          <li><i class="fa fa-bolt text-green-500"></i> Notifications prioritaires</li>
+          <li><i class="fa fa-star text-green-500"></i> Zéro pub</li>
+        </ul>
+        <a href="/#tarifs" class="bg-gradient-to-r from-green-500 to-blue-600 text-white px-6 py-2 rounded-xl font-semibold hover:from-green-600 hover:to-blue-700 mt-2 transition">Je deviens Premium</a>
+      </div>
     </div>
+    <div id="signalsContainer"></div>
 
-    <div id="signalsContainer" class="flex flex-wrap justify-center gap-6 mb-8"></div>
-
-    <!-- Suggestion ajout d'actif (utilisateur connecté) -->
+    <!-- Message suggestion ajout actif (affiché uniquement pour l'utilisateur connecté) -->
     <div id="suggest-asset-message" style="display:none" class="max-w-2xl mx-auto mt-8 mb-8 bg-green-50 dark:bg-slate-700 rounded-lg p-4 flex items-center gap-3 shadow">
       <span class="fa fa-lightbulb text-green-500 text-2xl"></span>
       <div class="text-gray-700 dark:text-gray-100 text-base">
-        Tu veux voir un actif ajouté ? <a href="/contact.html" class="text-green-600 underline hover:text-green-700">Contacte-nous ici</a>
+        Tu souhaites voir un actif en particulier être listé sur le site&nbsp;?
+        <a href="/contact.html" class="text-green-600 underline hover:text-green-700">Contacte-nous ici</a>
       </div>
     </div>
 
-    <!-- Rapports de performance -->
+    <!-- Section rapports de performance -->
     <section id="performanceReports" class="max-w-3xl mx-auto mb-12 px-4">
       <h2 class="text-2xl font-bold mb-4 text-green-400">Rapports de Performance</h2>
       <div class="bg-gray-800 rounded-lg p-6 mb-2 shadow-lg text-gray-200">
-        <p class="mb-2"><span class="font-semibold text-green-300">Mai 2025 :</span> Les signaux premium IA ont généré un rendement moyen de <span class="font-bold text-green-400">+8,2%</span> sur portefeuille simulé.</p>
+        <p class="mb-2"><span class="font-semibold text-green-300">Mai 2025 :</span> Les signaux premium ont généré un rendement moyen de <span class="font-bold text-green-400">+8,2%</span> sur 30 jours, contre <span class="font-bold text-yellow-400">+2,4%</span> pour les signaux gratuits.</p>
         <ul class="list-disc pl-6 text-sm">
-          <li>Meilleure action : <span class="font-semibold">X Corp</span> (+13,5%)</li>
-          <li>Meilleur ETF : <span class="font-semibold">GreenEnergy</span> (+10,7%)</li>
-          <li>Meilleure crypto : <span class="font-semibold">SOL</span> (+24,1%)</li>
+          <li>Meilleure action : <span class="font-semibold">X Corp</span> (+13,5%)</li>
+          <li>Meilleur ETF : <span class="font-semibold">GreenEnergy</span> (+10,7%)</li>
+          <li>Meilleure crypto : <span class="font-semibold">SOL</span> (+24,1%)</li>
         </ul>
       </div>
       <div class="bg-gray-800 rounded-lg p-6 shadow-lg text-gray-200">
-        <p class="mb-2"><span class="font-semibold text-green-300">Avril 2025 :</span> Les abonnés premium ont profité de <span class="font-bold text-green-400">3 alertes exclusives</span> et de <span class="font-bold">+6,9%</span> de rendement moyen.</p>
+        <p class="mb-2"><span class="font-semibold text-green-300">Avril 2025 :</span> Les abonnés premium ont profité de <span class="font-bold text-green-400">3 alertes exclusives</span> et d’un taux de réussite de <span class="font-bold text-green-400">92%</span>.</p>
       </div>
     </section>
-
-    <!-- Témoignages -->
+    <!-- Section témoignages -->
     <section id="testimonials" class="max-w-3xl mx-auto mb-10 px-4">
       <h2 class="text-2xl font-bold mb-4 text-green-400">Témoignages</h2>
       <div class="grid md:grid-cols-2 gap-6">
         <div class="bg-gray-900 rounded-lg p-6 shadow text-gray-100">
-          <p class="italic mb-2">« Les signaux IA sont ultra-précis. J’ai augmenté mes gains ! »</p>
+          <p class="italic mb-2">« Les signaux premium sont ultra-précis. J’ai augmenté mes gains depuis mon abonnement ! »</p>
           <div class="flex items-center gap-2">
             <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Avatar" class="w-8 h-8 rounded-full border border-green-400">
             <span class="font-bold text-green-300">Jean D.</span>
           </div>
         </div>
         <div class="bg-gray-900 rounded-lg p-6 shadow text-gray-100">
-          <p class="italic mb-2">« Dashboard personnalisable, défis, communauté : best-in-class. »</p>
+          <p class="italic mb-2">« L’interface est claire, les outils graphiques sont top et le service client très réactif. »</p>
           <div class="flex items-center gap-2">
             <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Avatar" class="w-8 h-8 rounded-full border border-green-400">
             <span class="font-bold text-green-300">Marie L.</span>
@@ -102,25 +413,25 @@
     </section>
   </main>
 
-  <!-- Modal grand graphique interactif -->
-  <div id="bigChartModal" role="dialog" aria-modal="true" aria-labelledby="bigChartTitle" class="fixed inset-0 bg-gray-950 bg-opacity-90 z-50 hidden items-center justify-center">
-    <div class="bg-gray-900 rounded-xl shadow-lg p-8 max-w-3xl w-full relative flex flex-col">
-      <div class="flex justify-between items-center mb-4">
-        <h3 id="bigChartTitle" class="text-xl font-bold text-green-300">Graphique</h3>
-        <button id="closeBigChartBtn" aria-label="Fermer le graphique" class="text-green-400 hover:text-green-200 text-2xl"><i class="fas fa-times"></i></button>
+  <!-- Modal grand graphique -->
+  <div id="bigChartModal" role="dialog" aria-modal="true" aria-labelledby="bigChartTitle">
+    <div id="bigChartContent">
+      <div id="bigChartHeader">
+        <h3 id="bigChartTitle">Graphique</h3>
+        <button id="closeBigChartBtn" aria-label="Fermer le graphique"><i class="fas fa-times"></i></button>
       </div>
-      <canvas id="bigChartCanvas" class="rounded-lg bg-gray-800" style="height:350px;min-height:200px"></canvas>
-      <div id="predictionsContainer" class="mt-4 bg-gray-800 rounded-lg p-4"></div>
-      <div id="bigChartActions" class="flex flex-row gap-3 justify-end mt-4">
-        <button id="resetZoomBtn" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition">Réinitialiser Zoom</button>
-        <button id="exportBigChartBtn" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">Exporter</button>
+      <canvas id="bigChartCanvas"></canvas>
+      <div id="predictionsContainer"></div>
+      <div id="bigChartActions">
+        <button id="resetZoomBtn" aria-label="Réinitialiser Zoom">Réinitialiser Zoom</button>
+        <button id="exportBigChartBtn" aria-label="Exporter le Graphique">Exporter le Graphique</button>
       </div>
     </div>
   </div>
 
   <!-- Footer -->
-  <footer class="py-10 bg-gray-100 dark:bg-gray-900 mt-16">
-    <div class="max-w-7xl mx-auto px-6 text-center text-sm text-gray-600 dark:text-gray-400">
+  <footer class="py-10 bg-gray-100 mt-16">
+    <div class="max-w-7xl mx-auto px-6 text-center text-sm text-gray-600">
       &copy; 2025 <span class="font-semibold text-green-600">Luxibre Alpha</span>. Tous droits réservés. |
       <a href="/legal/mentions-legales.html" class="underline hover:text-green-600 transition">Mentions légales</a> |
       <a href="/legal/cgu.html" class="underline hover:text-green-600 transition">CGU</a> |
