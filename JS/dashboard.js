@@ -1,4 +1,5 @@
 // Dashboard JS pour Luxibre Alpha - version améliorée graphiques (Zoom, plages rapides, indicateurs optionnels)
+// Gestion premium avancée compatible avec loadHeader.js
 
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
@@ -64,27 +65,12 @@ async function isWatchedByUser(userId, symbol) {
   return !!data;
 }
 
-// --- Premium utils (inchangé) ---
-function waitUntil(conditionFn, interval = 100, maxTry = 30) {
-  return new Promise((resolve, reject) => {
-    let tries = 0;
-    const timer = setInterval(() => {
-      if (conditionFn()) {
-        clearInterval(timer);
-        resolve();
-      }
-      tries++;
-      if (tries >= maxTry) {
-        clearInterval(timer);
-        reject('Timeout');
-      }
-    }, interval);
-  });
-}
-
+// --- Premium utils (s'appuie sur la promesse globale window.isPremiumPromise fournie par loadHeader.js) ---
 async function isPremiumUser() {
+  // window.isPremiumPromise est défini par loadHeader.js et géré globalement
   if (!window.isPremiumPromise) {
-    await waitUntil(() => window.isPremiumPromise, 100, 30);
+    // fallback très temporaire si jamais loadHeader pas chargé (dev/test)
+    return false;
   }
   return await window.isPremiumPromise;
 }
@@ -382,17 +368,18 @@ async function fetchSignals() {
   } catch (err) {
     console.error("Erreur lors du chargement des signaux:", err);
     document.getElementById("signalsContainer").textContent = "Erreur lors du chargement des signaux.";
-    hideLoader(); // ← S’assure que le loader disparait même en cas d’erreur
+    hideLoader();
     return null;
   }
 }
+
 async function renderSignals() {
   showLoader();
   const data = await fetchSignals();
-if (!data) {
-  hideLoader();
-  return;
-}
+  if (!data) {
+    hideLoader();
+    return;
+  }
 
   const user = await getCurrentUser();
   const isPremium = await isPremiumUser();
