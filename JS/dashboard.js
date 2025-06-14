@@ -1,71 +1,38 @@
-// Dashboard JS pour Luxibre Alpha - gestion watchlist Supabase (ESM CORRECTIF)
+// Dashboard JS pour Luxibre Alpha - gestion watchlist, premium, gamification
 
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
 // --- Supabase Client ---
 const supabaseUrl = 'https://jrgdwozxcilasllpvikh.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpyZ2R3b3p4Y2lsYXNsbHB2aWtoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc4MjQ0NTEsImV4cCI6MjA2MzQwMDQ1MX0.S2oGP2rdtq1IkW-oH5mC8omm698PdCgQJtGVLlIFj3w';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIs...'; // Remplace par ta clé publique
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 // --- Auth ---
 async function getCurrentUser() {
-  const { data: { user }, error } = await supabase.auth.getUser();
-  if (error) {
-    console.error('Erreur récupération utilisateur Supabase:', error);
-  }
+  const { data: { user } } = await supabase.auth.getUser();
   return user;
 }
 
-// --- Watchlist (Supabase) ---
+// --- Watchlist ---
 async function fetchWatchlistFromSupabase(userId) {
   const { data, error } = await supabase
     .from('user_follows')
     .select('symbol')
     .eq('user_id', userId);
-  if (error) {
-    console.error('Erreur récupération watchlist Supabase:', error);
-    return [];
-  }
-  return data.map(row => row.symbol);
+  return data ? data.map(row => row.symbol) : [];
 }
-
 async function addToWatchlistSupabase(userId, symbol) {
-  const { error } = await supabase
-    .from('user_follows')
-    .insert([{ user_id: userId, symbol }]);
-  if (error && !String(error.message).includes("duplicate")) {
-    alert("Erreur lors de l'ajout à la liste de suivi");
-    console.error(error);
-  }
+  await supabase.from('user_follows').insert([{ user_id: userId, symbol }]);
 }
-
 async function removeFromWatchlistSupabase(userId, symbol) {
-  const { error } = await supabase
-    .from('user_follows')
-    .delete()
-    .eq('user_id', userId)
-    .eq('symbol', symbol);
-  if (error) {
-    alert("Erreur lors du retrait de la liste de suivi");
-    console.error(error);
-  }
+  await supabase.from('user_follows').delete().eq('user_id', userId).eq('symbol', symbol);
 }
-
 async function isWatchedByUser(userId, symbol) {
-  const { data, error } = await supabase
-    .from('user_follows')
-    .select('id')
-    .eq('user_id', userId)
-    .eq('symbol', symbol)
-    .maybeSingle();
-  if (error) {
-    console.error(error);
-    return false;
-  }
+  const { data } = await supabase.from('user_follows').select('id').eq('user_id', userId).eq('symbol', symbol).maybeSingle();
   return !!data;
 }
 
-// --- Premium utils (inchangé) ---
+// --- Premium utils ---
 function waitUntil(conditionFn, interval = 100, maxTry = 30) {
   return new Promise((resolve, reject) => {
     let tries = 0;
@@ -82,30 +49,20 @@ function waitUntil(conditionFn, interval = 100, maxTry = 30) {
     }, interval);
   });
 }
-
 async function isPremiumUser() {
-  if (!window.isPremiumPromise) {
-    await waitUntil(() => window.isPremiumPromise, 100, 30);
-  }
+  if (!window.isPremiumPromise) await waitUntil(() => window.isPremiumPromise, 100, 30);
   return await window.isPremiumPromise;
-}
-
-function performanceBadge(value) {
-  const isPositive = value >= 0;
-  const cls = isPositive ? "performance-badge performance-positive" : "performance-badge performance-negative";
-  const sign = isPositive && value > 0 ? "+" : "";
-  return `<span class="${cls}">${sign}${value}%</span>`;
 }
 
 // Loader
 const loader = document.getElementById('loader');
-function showLoader() { loader.style.display = 'block'; }
-function hideLoader() { loader.style.display = 'none'; }
+function showLoader() { loader && (loader.style.display = 'block'); }
+function hideLoader() { loader && (loader.style.display = 'none'); }
 
 // Variables globales pour modal graphique
 let bigChartInstance = null;
 const bigChartModal = document.getElementById("bigChartModal");
-const bigChartCanvas = document.getElementById("bigChartCanvas").getContext('2d');
+const bigChartCanvas = document.getElementById("bigChartCanvas")?.getContext('2d');
 const bigChartTitle = document.getElementById("bigChartTitle");
 const closeBigChartBtn = document.getElementById("closeBigChartBtn");
 const resetZoomBtn = document.getElementById("resetZoomBtn");
@@ -122,10 +79,7 @@ async function openBigChart(signal) {
 
   bigChartTitle.textContent = signal.name + " - Prix Historique";
 
-  // Détruire l'ancien graphique si présent
-  if (bigChartInstance) {
-    bigChartInstance.destroy();
-  }
+  if (bigChartInstance) bigChartInstance.destroy();
 
   bigChartInstance = new Chart(bigChartCanvas, {
     type: "line",
@@ -147,76 +101,52 @@ async function openBigChart(signal) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      animation: {
-        duration: 1000,
-        easing: 'easeInOutQuart'
-      },
+      animation: { duration: 1000, easing: 'easeInOutQuart' },
       plugins: {
         legend: { display: false },
         tooltip: {
-          mode: 'index',
-          intersect: false,
+          mode: 'index', intersect: false,
           backgroundColor: 'rgba(0, 0, 0, 0.8)',
-          titleFont: { size: 16 },
-          bodyFont: { size: 14 },
-          padding: 10,
-          displayColors: false
+          titleFont: { size: 16 }, bodyFont: { size: 14 },
+          padding: 10, displayColors: false
         },
         zoom: {
           pan: { enabled: true, mode: 'xy', modifierKey: 'ctrl' },
-          zoom: {
-            wheel: { enabled: true },
-            pinch: { enabled: true },
-            mode: 'xy',
-          }
+          zoom: { wheel: { enabled: true }, pinch: { enabled: true }, mode: 'xy' }
         }
       },
       scales: {
-        x: {
-          display: true,
-          ticks: { color: '#9ca3af', font: { size: 12 } },
-          grid: { color: '#374151', drawBorder: false }
-        },
-        y: {
-          beginAtZero: false,
-          ticks: { color: '#9ca3af', font: { size: 12 } },
-          grid: { color: '#374151' }
-        }
+        x: { display: true, ticks: { color: '#9ca3af', font: { size: 12 } }, grid: { color: '#374151', drawBorder: false } },
+        y: { beginAtZero: false, ticks: { color: '#9ca3af', font: { size: 12 } }, grid: { color: '#374151' } }
       }
     }
   });
 
-  // Afficher les prédictions de prix si premium
+  // Prédictions IA
   const predictionsDiv = document.getElementById('predictionsContainer');
-  if (isPremium) {
-    if (signal.predictions) {
-      predictionsDiv.innerHTML = `
-        <h4>Prédictions de prix</h4>
-        <p>Jour 1: $${signal.predictions.day1}</p>
-        <p>Jour 3: $${signal.predictions.day3}</p>
-        <p>Jour 7: $${signal.predictions.day7}</p>
-      `;
-    } else {
-      predictionsDiv.innerHTML = `<p>Les prédictions de prix ne sont pas disponibles pour ce signal.</p>`;
-    }
+  if (isPremium && signal.predictions) {
+    predictionsDiv.innerHTML = `
+      <h4 class="font-bold text-green-400 mb-2">Prédictions IA</h4>
+      <p>Jour 1 : $${signal.predictions.day1}</p>
+      <p>Jour 3 : $${signal.predictions.day3}</p>
+      <p>Jour 7 : $${signal.predictions.day7}</p>
+    `;
+  } else if (!isPremium) {
+    predictionsDiv.innerHTML = `<p class="italic text-gray-400">Les prédictions IA sont réservées aux membres premium.</p>`;
   } else {
-    predictionsDiv.innerHTML = `<p>Les prédictions de prix sont réservées aux membres premium.</p>`;
+    predictionsDiv.innerHTML = `<p>Pas de prédiction IA disponible pour ce signal.</p>`;
   }
 
-  // Ouvrir la modal
   document.body.classList.add('modal-open');
-  bigChartModal.classList.add("active");
+  bigChartModal.classList.remove("hidden");
 }
 function closeBigChart() {
-  if (bigChartInstance) {
-    bigChartInstance.destroy();
-    bigChartInstance = null;
-  }
+  if (bigChartInstance) { bigChartInstance.destroy(); bigChartInstance = null; }
   document.body.classList.remove('modal-open');
-  bigChartModal.classList.remove("active");
+  bigChartModal.classList.add("hidden");
 }
-resetZoomBtn.addEventListener("click", () => { if (bigChartInstance) bigChartInstance.resetZoom(); });
-exportBigChartBtn.addEventListener("click", () => {
+resetZoomBtn?.addEventListener("click", () => { if (bigChartInstance) bigChartInstance.resetZoom(); });
+exportBigChartBtn?.addEventListener("click", () => {
   isPremiumUser().then(isPremium => {
     if (!isPremium) {
       alert("Cette fonctionnalité est réservée aux utilisateurs premium.");
@@ -230,17 +160,16 @@ exportBigChartBtn.addEventListener("click", () => {
     });
   });
 });
-closeBigChartBtn.addEventListener("click", closeBigChart);
-bigChartModal.addEventListener("click", e => { if (e.target === bigChartModal) closeBigChart(); });
+closeBigChartBtn?.addEventListener("click", closeBigChart);
+bigChartModal?.addEventListener("click", e => { if (e.target === bigChartModal) closeBigChart(); });
 
-// --- Rendu des signaux et dashboard ---
+// --- Rendu des signaux ---
 async function fetchSignals() {
   try {
     const res = await fetch("data/signals.json");
     if (!res.ok) throw new Error("HTTP error " + res.status);
     return await res.json();
   } catch (err) {
-    console.error("Erreur lors du chargement des signaux:", err);
     document.getElementById("signalsContainer").textContent = "Erreur lors du chargement des signaux.";
     hideLoader();
     return null;
@@ -265,23 +194,19 @@ async function renderSignals() {
     watchlist = await fetchWatchlistFromSupabase(userId);
   }
 
-  // DEBUG LOGS POUR VERIFIER
-  console.log("DEBUG USER:", user);
-  console.log("DEBUG WATCHLIST:", watchlist);
-
   ["achat", "vente", "conservation"].forEach(category => {
     if (!data[category] || !Array.isArray(data[category])) return;
     data[category].sort((a, b) => (a.premium === b.premium) ? 0 : a.premium ? 1 : -1);
 
     data[category].forEach((signal, i) => {
       const card = document.createElement("div");
-      card.className = "card";
+      card.className = "card flex flex-col bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 max-w-xs min-w-[290px] mb-4";
       card.dataset.category = category;
       card.dataset.type = signal.type;
 
       const isLocked = signal.premium && !isPremium;
       if (isLocked) {
-        card.classList.add("blur");
+        card.classList.add("opacity-60", "pointer-events-none");
         premiumLocked = true;
       }
 
@@ -293,29 +218,30 @@ async function renderSignals() {
       if (user) {
         const isFollowed = watchlist.includes(signal.symbol);
         followBtnHtml = `
-          <button class="follow-btn" data-symbol="${signal.symbol}">
+          <button class="follow-btn bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200 px-3 py-1 rounded-full font-medium text-xs mt-2" data-symbol="${signal.symbol}">
             ${isFollowed ? "Retirer de la liste" : "Suivre"}
           </button>
         `;
       } else {
         followBtnHtml = `
-          <button class="follow-btn" disabled title="Connectez-vous pour activer la liste de suivi">Suivre</button>
+          <button class="follow-btn bg-gray-200 dark:bg-gray-700 text-gray-500 px-3 py-1 rounded-full font-medium text-xs mt-2" disabled title="Connectez-vous pour activer la liste de suivi">Suivre</button>
         `;
       }
 
       card.innerHTML = `
-        ${signal.premium ? '<div class="premium-badge">Premium</div>' : ''}
-        ${isLocked ? '<button class="upgrade-message" onclick="window.location.href=\'/#tarifs\'">Devenez Premium</button>' : ''}
-        <div class="card-content">
-          <h3>${signal.name}</h3>
+        ${signal.premium ? '<div class="absolute top-4 right-4 bg-yellow-400 text-black text-xs font-bold py-1 px-2 rounded-full">Premium</div>' : ''}
+        <div class="flex-1 flex flex-col">
+          <h3 class="font-bold text-lg mb-1">${signal.name}</h3>
           <p><strong>Prix actuel :</strong> $${signal.price.toFixed(2)}</p>
-          <p><strong>Performance (30j) :</strong> ${performanceBadge(signal.performance30j)}</p>
-          <p><strong>Recommandation :</strong> <span class="recommendation">${signal.recommendation}</span></p>
-          <p><strong>Dernière mise à jour :</strong> ${formattedUpdatedDate}</p>
+          <p><strong>Performance (30j) :</strong>
+            <span class="inline-block rounded-full px-2 py-0.5 ${signal.performance30j>=0?'bg-green-100 text-green-700':'bg-red-100 text-red-700'} ml-1">${signal.performance30j>=0?'+':''}${signal.performance30j}%</span>
+          </p>
+          <p><strong>Recommandation :</strong> <span class="font-semibold text-green-500">${signal.recommendation}</span></p>
+          <p class="mb-2 text-xs text-gray-500">Dernière mise à jour : ${formattedUpdatedDate}</p>
           ${followBtnHtml}
-          <div class="chart-container">
-            <canvas id="${chartId}" width="300" height="150"></canvas>
-          </div>
+        </div>
+        <div class="chart-container mt-4 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-900 shadow" style="height:150px;">
+          <canvas id="${chartId}" width="300" height="150"></canvas>
         </div>
       `;
       container.appendChild(card);
@@ -327,7 +253,6 @@ async function renderSignals() {
           if (await isWatchedByUser(userId, signal.symbol)) {
             await removeFromWatchlistSupabase(userId, signal.symbol);
             this.textContent = "Suivre";
-            // Retire de la variable watchlist (pour la session)
             watchlist = watchlist.filter(s => s !== signal.symbol);
           } else {
             await addToWatchlistSupabase(userId, signal.symbol);
@@ -359,44 +284,28 @@ async function renderSignals() {
           options: {
             responsive: true,
             maintainAspectRatio: false,
-            animation: {
-              duration: 1000,
-              easing: 'easeInOutQuart'
-            },
+            animation: { duration: 1000, easing: 'easeInOutQuart' },
             scales: {
               x: { display: false },
-              y: {
-                beginAtZero: false,
-                ticks: { color: '#9ca3af' },
-                grid: { color: '#374151' }
-              }
+              y: { beginAtZero: false, ticks: { color: '#9ca3af' }, grid: { color: '#374151' } }
             },
             plugins: {
               legend: { display: false },
               tooltip: {
-                mode: 'index',
-                intersect: false,
+                mode: 'index', intersect: false,
                 backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                titleFont: { size: 14 },
-                bodyFont: { size: 12 },
-                padding: 8,
-                displayColors: false
+                titleFont: { size: 14 }, bodyFont: { size: 12 }, padding: 8, displayColors: false
               }
             }
           }
         });
-        card.querySelector('.chart-container').addEventListener('click', () => {
-          openBigChart(signal);
-        });
+        card.querySelector('.chart-container').addEventListener('click', () => openBigChart(signal));
       }
     });
   });
 
-  if (premiumLocked && !isPremium) {
-    premiumNotice.style.display = "block";
-  } else {
-    premiumNotice.style.display = "none";
-  }
+  if (premiumLocked && !isPremium) premiumNotice.style.display = "block";
+  else premiumNotice.style.display = "none";
 
   if (!container.querySelector('.card')) {
     container.innerHTML = `<div class="text-center text-gray-400 font-semibold text-lg py-8">Aucun signal pour ce filtre.</div>`;
@@ -441,11 +350,8 @@ document.addEventListener('DOMContentLoaded', async function() {
       window.userInfoPromise.then(res => {
         const msg = document.getElementById('suggest-asset-message');
         if (msg) {
-          if (res && res.isLogged) {
-            msg.style.display = '';
-          } else {
-            msg.style.display = 'none';
-          }
+          if (res && res.isLogged) msg.style.display = '';
+          else msg.style.display = 'none';
         }
       });
       clearInterval(showSuggestMsgInterval);
