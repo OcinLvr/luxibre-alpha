@@ -1,24 +1,26 @@
-<nav class="bg-white dark:bg-slate-900 shadow-sm w-full z-50 relative">
-  <div class="max-w-7xl mx-auto flex items-center justify-between py-4 px-4 sm:px-6">
+<nav class="bg-white dark:bg-slate-900 shadow-sm w-full z-50 relative box-border">
+  <div class="max-w-7xl mx-auto flex items-center justify-between py-4 px-4 sm:px-6 box-border">
     <!-- Logo -->
     <a href="index.html" class="text-2xl font-bold text-green-600 whitespace-nowrap">Luxibre Alpha</a>
 
     <!-- Menu -->
     <ul id="headerNav"
-      class="fixed top-0 left-0 w-4/5 max-w-xs h-full bg-white text-gray-700 dark:bg-slate-900 shadow-2xl z-50 transform -translate-x-full transition-transform duration-300 px-6 pt-10 rounded-r-3xl flex flex-col gap-4 text-base font-semibold
-      md:static md:w-auto md:max-w-none md:h-auto md:bg-transparent md:shadow-none md:transform-none md:px-0 md:pt-0 md:rounded-none md:flex-row md:items-center md:gap-6 md:ml-0">
+      class="fixed top-0 left-0 w-4/5 max-w-xs h-full bg-white text-gray-700 dark:bg-slate-900 shadow-2xl z-50 transform -translate-x-full transition-transform duration-300 ease-in-out px-6 pt-10 rounded-r-xl
+             flex flex-col gap-4 text-base font-semibold
+             md:static md:w-auto md:max-w-none md:h-auto md:bg-transparent md:shadow-none md:transform-none md:px-0 md:pt-0 md:rounded-none md:flex-row md:items-center md:gap-6 md:ml-0">
+
       <!-- Close button (mobile) -->
       <li class="md:hidden self-end mb-6">
         <button id="closeMenu" class="text-2xl"><i class="fa fa-times"></i></button>
       </li>
       <li class="border-b border-gray-200 w-full md:hidden"></li>
+
       <!-- Navigation Links -->
       <li><a href="../index.html" class="hover:text-green-600 transition">Accueil</a></li>
       <li><a href="../#fonctionnalites" class="hover:text-green-600 transition">Fonctionnalités</a></li>
       <li><a href="../#tarifs" class="hover:text-green-600 transition">Tarifs</a></li>
       <li><a href="../dashboard.html" class="hover:text-green-600 transition">Dashboard</a></li>
-      <li><a href="../learning-center.html" class="hover:text-green-600 transition">Learning Center</a></li>
-      <li><a href="../marketplace.html" class="hover:text-green-600 transition">Marketplace</a></li>
+
       <!-- Auth Buttons -->
       <li id="loginBtnLi">
         <a href="#" id="openLoginModal" class="bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700 transition block text-center">Connexion</a>
@@ -39,7 +41,7 @@
       <!-- Notifications -->
       <div id="notifWrapper" class="relative hidden">
         <button id="notifBtn" class="relative p-2 hover:bg-green-50 dark:hover:bg-slate-800 rounded transition focus:outline-none">
-          <span class="fa fa-bell text-gray-700 dark:text-gray-200 text-xl"></span>
+          <span class="fa fa-bell text-gray-700 text-xl"></span>
           <span id="notifCount" class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full text-xs px-1.5 py-0.5"></span>
         </button>
         <div id="notifDropdown" class="hidden absolute right-0 mt-2 w-72 max-h-96 overflow-y-auto bg-white dark:bg-slate-800 border rounded-lg shadow-lg z-50">
@@ -53,7 +55,7 @@
         </button>
       </div>
       <!-- Burger (mobile only) -->
-      <button id="burgerBtn" class="md:hidden text-gray-700 dark:text-gray-100 text-2xl focus:outline-none z-50 ml-2">
+      <button id="burgerBtn" class="md:hidden text-gray-700 text-2xl focus:outline-none z-50 ml-2">
         <i class="fa fa-bars"></i>
       </button>
     </div>
@@ -61,7 +63,7 @@
   <div id="menuOverlay" class="fixed inset-0 bg-black bg-opacity-50 hidden md:hidden z-40"></div>
 </nav>
 
-<!-- MODALE LOGIN/SIGNUP (options, Google, reset, œil, etc) -->
+<!-- MODALE LOGIN/SIGNUP TOUTES OPTIONS (voir plus haut pour le code complet avec Google, reset, œil, etc) -->
 <div id="authModal" class="hidden fixed inset-0 bg-black bg-opacity-70 z-[9999] flex items-center justify-center">
   <div class="modal-content bg-white dark:bg-slate-800 rounded-xl shadow-lg p-8 max-w-md w-full relative text-gray-900 dark:text-gray-100">
     <button id="closeAuthModal" class="absolute top-3 right-4 text-2xl text-gray-400 hover:text-green-600" aria-label="Fermer">&times;</button>
@@ -105,7 +107,7 @@
       <button type="submit" id="authSubmitBtn"
         class="w-full bg-green-600 text-white py-2 rounded-lg font-bold hover:bg-green-700 transition flex items-center justify-center gap-2">
         <span id="authSubmitText">Se connecter</span>
-        <svg id="authLoader" class="hidden animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg>
+        <svg id="authLoader" class="hidden animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path></svg>
       </button>
     </form>
     <div class="mt-4 text-center text-sm">
