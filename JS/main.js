@@ -1,15 +1,13 @@
 // Luxibre Alpha - JS d'accueil et micro-interactions
-
-// Apparition en douceur des sections (animation fade-in)
 document.addEventListener('DOMContentLoaded', function () {
-  // Animation fade-in
+  // Apparition en douceur des sections
   setTimeout(() => {
     document.querySelectorAll('section').forEach(section => {
-      section.classList.add('fade-in');
+      section.classList.add('transition-opacity', 'duration-1000', 'opacity-100');
     });
   }, 100);
 
-  // Effet smooth scroll sur les liens internes
+  // Smooth scroll sur les liens internes
   document.querySelectorAll('a[href^="#"]').forEach(link => {
     link.addEventListener('click', function(e) {
       const target = document.querySelector(this.getAttribute('href'));
@@ -20,14 +18,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // Micro-animation sur le bouton principal (si tu utilises la classe .cta-btn)
-  const cta = document.querySelector('.cta-btn');
-  if (cta) {
-    cta.addEventListener('mouseenter', () => cta.classList.add('cta-animate'));
-    cta.addEventListener('mouseleave', () => cta.classList.remove('cta-animate'));
-  }
-
-  // Ajout dynamique du bouton feedback s'il n'existe pas déjà
+  // Bouton feedback dynamique
   if (!document.getElementById('avisBtn')) {
     const feedbackBtn = document.createElement('button');
     feedbackBtn.textContent = "💬 Donne ton avis";
@@ -37,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.body.appendChild(feedbackBtn);
   }
 
-  // --- Gestion de la modale feedback ---
+  // Gestion modale feedback
   const avisBtn = document.getElementById('avisBtn');
   const avisModal = document.getElementById('avisModal');
   const avisOverlay = document.getElementById('avisModalOverlay');
@@ -113,7 +104,3 @@ document.addEventListener('DOMContentLoaded', function () {
     };
   }
 });
-
-// Optionnel : Animation fade-in (à ajouter dans ton CSS si tu veux l'effet)
-// .fade-in { opacity: 1; transform: none; transition: opacity 0.7s, transform 0.7s; }
-// section.fade-in { opacity: 1; transform: none; }
