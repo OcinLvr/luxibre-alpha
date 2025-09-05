@@ -4,7 +4,7 @@
       "name": "iShares EURO STOXX Banks 30-15 UCITS ETF (DE)",
       "symbol": "EXA1.AS",
       "type": "etf",
-      "price": 14.540300369262695,
+      "price": 14.504300117492676,
       "history": [
         5.373300075531006,
         5.471399784088135,
@@ -690,38 +690,38 @@
         14.245200157165527,
         14.28320026397705,
         14.49269962310791,
-        14.540300369262695
+        14.504300117492676
       ],
       "recommendation": "Acheter",
-      "score": 68,
+      "score": 66,
       "premium": false,
-      "updated": "2025-09-05T12:31:07.447Z",
+      "updated": "2025-09-05T13:23:20.945Z",
       "confidence": "Bonne",
       "audit": [
         "Golden cross (sma50 > sma200)",
         "Momentum haussier",
         "MACD positif",
         "Tendance faible (ADX<25)",
-        "Cours au-dessus VWAP",
+        "Cours sous VWAP",
         "Risqué pour peu de rendement"
       ],
       "indicators": {
-        "rsi": 39.44077381479402,
-        "macd": 0.1128140754425555,
+        "rsi": 38.22627353706668,
+        "macd": 0.10994226048654276,
         "bollinger": {
-          "middle": 14.716430044174194,
-          "upper": 15.32566329017812,
-          "lower": 14.107196798170268
+          "middle": 14.714630031585694,
+          "upper": 15.326142645140884,
+          "lower": 14.103117418030504
         },
-        "sma50": 13.906958045959472,
-        "sma200": 11.6827215051651,
-        "ema20": 14.468349423404252,
-        "adx": 21.118452370411962,
+        "sma50": 13.906238040924073,
+        "sma200": 11.68254150390625,
+        "ema20": 14.464920827997583,
+        "adx": 23.547452925866637,
         "atr": 0.22099992207118443,
-        "stochastic": 39.65742432460945,
-        "vwap": 14.511389104349952,
-        "momentum": 0.17730045318603516,
-        "sharpe": 3.402380179065724
+        "stochastic": 36.13317262942282,
+        "vwap": 14.510848332167905,
+        "momentum": 0.14130020141601562,
+        "sharpe": 3.402533924911936
       },
       "predictions": {
         "day1": 12.49,
@@ -729,7 +729,7 @@
         "day7": 12.56,
         "confidence": "Bonne"
       },
-      "performance30j": 7.61
+      "performance30j": 7.34
     }
   ],
   "vente": [],
@@ -2932,7 +2932,7 @@
       "recommendation": "Conserver",
       "score": 51,
       "premium": false,
-      "updated": "2025-09-05T12:31:04.341Z",
+      "updated": "2025-09-05T13:23:19.420Z",
       "confidence": "Faible",
       "audit": [
         "Momentum haussier",
@@ -3080,7 +3080,7 @@
       "recommendation": "Conserver",
       "score": 49,
       "premium": true,
-      "updated": "2025-09-05T12:31:04.497Z",
+      "updated": "2025-09-05T13:23:19.501Z",
       "confidence": "Faible",
       "audit": [
         "Momentum baissier",
@@ -3226,7 +3226,7 @@
       "recommendation": "Conserver",
       "score": 48,
       "premium": true,
-      "updated": "2025-09-05T12:31:04.640Z",
+      "updated": "2025-09-05T13:23:19.566Z",
       "confidence": "Faible",
       "audit": [
         "Momentum haussier",
@@ -3372,7 +3372,7 @@
       "recommendation": "Conserver",
       "score": 51,
       "premium": true,
-      "updated": "2025-09-05T12:31:04.739Z",
+      "updated": "2025-09-05T13:23:19.723Z",
       "confidence": "Faible",
       "audit": [
         "Momentum haussier",
@@ -3520,7 +3520,7 @@
       "recommendation": "Conserver",
       "score": 48,
       "premium": false,
-      "updated": "2025-09-05T12:31:04.880Z",
+      "updated": "2025-09-05T13:23:19.794Z",
       "confidence": "Faible",
       "audit": [
         "Momentum haussier",
@@ -3669,7 +3669,7 @@
       "recommendation": "Conserver",
       "score": 50,
       "premium": true,
-      "updated": "2025-09-05T12:31:04.994Z",
+      "updated": "2025-09-05T13:23:19.865Z",
       "confidence": "Faible",
       "audit": [
         "Momentum baissier",
@@ -3815,7 +3815,7 @@
       "recommendation": "Conserver",
       "score": 50,
       "premium": false,
-      "updated": "2025-09-05T12:31:05.157Z",
+      "updated": "2025-09-05T13:23:19.925Z",
       "confidence": "Faible",
       "audit": [
         "Momentum baissier",
@@ -3961,7 +3961,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-09-05T12:31:05.371Z",
+      "updated": "2025-09-05T13:23:19.988Z",
       "confidence": "Faible",
       "audit": [
         "Momentum haussier",
@@ -4108,7 +4108,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-09-05T12:31:05.539Z",
+      "updated": "2025-09-05T13:23:20.077Z",
       "confidence": "Faible",
       "audit": [
         "Momentum haussier",
@@ -4255,7 +4255,7 @@
       "recommendation": "Conserver",
       "score": 46,
       "premium": true,
-      "updated": "2025-09-05T12:31:05.650Z",
+      "updated": "2025-09-05T13:23:20.152Z",
       "confidence": "Faible",
       "audit": [
         "Momentum haussier",
@@ -4401,7 +4401,7 @@
       "recommendation": "Conserver",
       "score": 56,
       "premium": false,
-      "updated": "2025-09-05T12:31:05.859Z",
+      "updated": "2025-09-05T13:23:20.209Z",
       "confidence": "Modérée",
       "audit": [
         "Momentum haussier",
@@ -4546,7 +4546,7 @@
       "recommendation": "Conserver",
       "score": 51,
       "premium": true,
-      "updated": "2025-09-05T12:31:05.973Z",
+      "updated": "2025-09-05T13:23:20.272Z",
       "confidence": "Faible",
       "audit": [
         "Momentum haussier",
@@ -4694,7 +4694,7 @@
       "recommendation": "Conserver",
       "score": 40,
       "premium": false,
-      "updated": "2025-09-05T12:31:06.120Z",
+      "updated": "2025-09-05T13:23:20.329Z",
       "confidence": "Faible",
       "audit": [
         "Momentum baissier",
@@ -4840,7 +4840,7 @@
       "recommendation": "Conserver",
       "score": 40,
       "premium": true,
-      "updated": "2025-09-05T12:31:06.293Z",
+      "updated": "2025-09-05T13:23:20.390Z",
       "confidence": "Faible",
       "audit": [
         "Momentum baissier",
@@ -4986,7 +4986,7 @@
       "recommendation": "Conserver",
       "score": 40,
       "premium": false,
-      "updated": "2025-09-05T12:31:06.543Z",
+      "updated": "2025-09-05T13:23:20.471Z",
       "confidence": "Faible",
       "audit": [
         "Momentum baissier",
@@ -5132,7 +5132,7 @@
       "recommendation": "Conserver",
       "score": 54,
       "premium": true,
-      "updated": "2025-09-05T12:31:06.668Z",
+      "updated": "2025-09-05T13:23:20.523Z",
       "confidence": "Modérée",
       "audit": [
         "Momentum haussier",
@@ -5278,7 +5278,7 @@
       "recommendation": "Conserver",
       "score": 51,
       "premium": false,
-      "updated": "2025-09-05T12:31:06.831Z",
+      "updated": "2025-09-05T13:23:20.589Z",
       "confidence": "Faible",
       "audit": [
         "Momentum baissier",
@@ -5424,7 +5424,7 @@
       "recommendation": "Conserver",
       "score": 50,
       "premium": true,
-      "updated": "2025-09-05T12:31:07.041Z",
+      "updated": "2025-09-05T13:23:20.647Z",
       "confidence": "Faible",
       "audit": [
         "Momentum baissier",
@@ -5571,7 +5571,7 @@
       "recommendation": "Conserver",
       "score": 45,
       "premium": false,
-      "updated": "2025-09-05T12:31:07.194Z",
+      "updated": "2025-09-05T13:23:20.708Z",
       "confidence": "Faible",
       "audit": [
         "Momentum haussier",
@@ -5717,7 +5717,7 @@
       "recommendation": "Conserver",
       "score": 52,
       "premium": true,
-      "updated": "2025-09-05T12:31:07.304Z",
+      "updated": "2025-09-05T13:23:20.773Z",
       "confidence": "Faible",
       "audit": [
         "Momentum haussier",
