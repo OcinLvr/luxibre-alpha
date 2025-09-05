@@ -3927,7 +3927,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-09-05T19:17:49.174Z",
+      "updated": "2025-09-05T20:24:11.389Z",
       "confidence": "Faible",
       "audit": [
         "Golden cross (sma50 > sma200)",
@@ -4224,7 +4224,7 @@
       "recommendation": "Conserver",
       "score": 57,
       "premium": true,
-      "updated": "2025-09-05T19:17:49.871Z",
+      "updated": "2025-09-05T20:24:12.120Z",
       "confidence": "Faible",
       "audit": [
         "Golden cross (sma50 > sma200)",
@@ -4523,7 +4523,7 @@
       "recommendation": "Conserver",
       "score": 49,
       "premium": false,
-      "updated": "2025-09-05T19:17:50.504Z",
+      "updated": "2025-09-05T20:24:13.580Z",
       "confidence": "Faible",
       "audit": [
         "Golden cross (sma50 > sma200)",
@@ -4821,7 +4821,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-09-05T19:17:51.170Z",
+      "updated": "2025-09-05T20:24:14.277Z",
       "confidence": "Faible",
       "audit": [
         "Golden cross (sma50 > sma200)",
@@ -5121,7 +5121,7 @@
       "recommendation": "Conserver",
       "score": 55,
       "premium": false,
-      "updated": "2025-09-05T19:17:51.747Z",
+      "updated": "2025-09-05T20:24:15.042Z",
       "confidence": "Faible",
       "audit": [
         "Golden cross (sma50 > sma200)",
@@ -5419,7 +5419,7 @@
       "recommendation": "Conserver",
       "score": 40,
       "premium": true,
-      "updated": "2025-09-05T19:17:52.033Z",
+      "updated": "2025-09-05T20:24:15.776Z",
       "confidence": "Faible",
       "audit": [
         "Death cross (sma50 < sma200)",
@@ -5717,7 +5717,7 @@
       "recommendation": "Conserver",
       "score": 49,
       "premium": false,
-      "updated": "2025-09-05T19:17:52.318Z",
+      "updated": "2025-09-05T20:24:16.514Z",
       "confidence": "Faible",
       "audit": [
         "Golden cross (sma50 > sma200)",
