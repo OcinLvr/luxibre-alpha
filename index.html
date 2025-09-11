@@ -938,30 +938,41 @@
 
     <script>
 document.addEventListener("DOMContentLoaded", () => {
-  const discoverBtn = document.getElementById("discoverBtn");
-  if (!discoverBtn) return;
+  const ctaBtn = document.querySelector('a[href="signup.html"]'); // ton bouton "Je découvre gratuitement"
 
-  discoverBtn.addEventListener("click", async (e) => {
-    e.preventDefault(); // on empêche systématiquement la navigation
-
-    // on récupère l'état utilisateur exposé par loadHeader.js
-    const userInfo = await window.userInfoPromise;
-
-    if (userInfo.isLogged) {
-      // utilisateur déjà connecté
-      alert("Vous êtes déjà connecté à votre compte ✅");
-    } else {
-      // utilisateur non connecté → ouvre la modale d'inscription
-      const signupModalTrigger = document.getElementById("openSignupModal");
-      if (signupModalTrigger) {
-        signupModalTrigger.click();
+  if (ctaBtn) {
+    ctaBtn.addEventListener("click", async (e) => {
+      e.preventDefault(); // bloque la redirection
+      // Vérifie si l’utilisateur est connecté via la promesse globale
+      const userInfo = await window.userInfoPromise;
+      if (userInfo && userInfo.isLogged) {
+        // déjà connecté → affiche un message
+        alert("Vous êtes déjà connecté à votre compte ✅");
       } else {
-        console.warn("Bouton d'ouverture de la modale d'inscription introuvable (#openSignupModal)");
+        // pas connecté → ouvre la modale d'inscription existante
+        const authModal = document.getElementById('authModal');
+        if (authModal) {
+          authModal.classList.remove('hidden');
+          // si tu veux forcer le mode inscription :
+          const authTitle = document.getElementById('authTitle');
+          if (authTitle) authTitle.textContent = "Inscription";
+          const switchAuthMode = document.getElementById('switchAuthMode');
+          if (switchAuthMode) switchAuthMode.textContent = "Déjà inscrit ? Se connecter";
+        }
       }
-    }
-  });
+    });
+  }
+
+  // bouton pour fermer la modale
+  const closeAuthModal = document.getElementById('closeAuthModal');
+  if (closeAuthModal) {
+    closeAuthModal.addEventListener("click", () => {
+      document.getElementById('authModal').classList.add('hidden');
+    });
+  }
 });
 </script>
+
 
     
 </body>
