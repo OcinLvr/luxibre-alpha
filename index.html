@@ -942,17 +942,27 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!discoverBtn) return;
 
   discoverBtn.addEventListener("click", async (e) => {
-    // on attend que loadHeader.js ait récupéré l'état utilisateur
+    e.preventDefault(); // on empêche systématiquement la navigation
+
+    // on récupère l'état utilisateur exposé par loadHeader.js
     const userInfo = await window.userInfoPromise;
+
     if (userInfo.isLogged) {
-      e.preventDefault(); // bloque la redirection
+      // utilisateur déjà connecté
       alert("Vous êtes déjà connecté à votre compte ✅");
-      // ou tu peux ouvrir une modale custom ici si tu préfères
+    } else {
+      // utilisateur non connecté → ouvre la modale d'inscription
+      const signupModalTrigger = document.getElementById("openSignupModal");
+      if (signupModalTrigger) {
+        signupModalTrigger.click();
+      } else {
+        console.warn("Bouton d'ouverture de la modale d'inscription introuvable (#openSignupModal)");
+      }
     }
-    // sinon, on laisse le lien rediriger vers signup.html
   });
 });
-    </script>
+</script>
+
     
 </body>
 </html>
