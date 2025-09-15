@@ -420,6 +420,26 @@ async function loadHeader() {
     };
   }
   setupAuthModal();
+  // Après la ligne setupAuthModal();
+window.userInfoPromise.then(userInfo => {
+  const discoverBtn = document.getElementById('discoverBtn');
+  if (discoverBtn) {
+    discoverBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (!userInfo.isLogged) {
+        // fonction déclarée dans setupAuthModal
+        const authModal = document.getElementById('authModal');
+        // showAuthModal est défini dans setupAuthModal : on l'expose sur window pour y accéder ici
+        if (window.showAuthModal) {
+          window.showAuthModal('signup');
+        }
+      } else {
+        // utilisateur déjà connecté → tu fais ce que tu veux (redirection, message, etc.)
+        alert("Vous êtes déjà connecté !");
+      }
+    });
+  }
+});
 }
 
 document.addEventListener('DOMContentLoaded', loadHeader);
