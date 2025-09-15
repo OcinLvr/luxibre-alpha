@@ -418,6 +418,9 @@ async function loadHeader() {
         }
       }
     };
+    // rendre la fonction accessible partout
+window.showAuthModal = showAuthModal;
+    
   }
   setupAuthModal();
   // Après la ligne setupAuthModal();
