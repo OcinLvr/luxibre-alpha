@@ -3703,9 +3703,8 @@
       "name": "Bitcoin",
       "symbol": "BTC",
       "type": "cryptomonnaie",
-      "price": 107035.91,
+      "price": 107636.42,
       "history": [
-        97862.53,
         96625.29,
         97509.03,
         97596.94,
@@ -3954,12 +3953,13 @@
         108198,
         106463.3,
         107208.91,
-        107035.91
+        108676.78,
+        107636.42
       ],
       "recommendation": "Conserver",
       "score": 55,
       "premium": true,
-      "updated": "2025-10-19T23:20:07.856Z",
+      "updated": "2025-10-20T01:56:59.589Z",
       "confidence": "Faible",
       "audit": [
         "Golden cross (sma50 > sma200)",
@@ -3974,38 +3974,37 @@
         "Signaux contradictoires : fiabilité réduite"
       ],
       "indicators": {
-        "rsi": 25.235716830941882,
-        "macd": -2150.2516115364997,
+        "rsi": 25.183159202440706,
+        "macd": -2197.657072364338,
         "bollinger": {
-          "middle": 115984.39850000001,
-          "upper": 128190.9763663363,
-          "lower": 103777.82063366372
+          "middle": 115744.87749999997,
+          "upper": 128260.43742980875,
+          "lower": 103229.3175701912
         },
-        "sma50": 114181.36680000002,
-        "sma200": 107759.74169999998,
-        "ema20": 113110.68289930791,
-        "adx": 49.52856633811624,
-        "atr": 4555.641428571428,
-        "stochastic": 15.448972200577296,
-        "vwap": 114769.92308543021,
-        "momentum": -8032.069999999992,
-        "sharpe": 8.258097495027306
+        "sma50": 114201.95360000001,
+        "sma200": 107890.25649999999,
+        "ema20": 112730.71468667743,
+        "adx": 49.63368159511859,
+        "atr": 4638.097857142857,
+        "stochastic": 18.976268091659026,
+        "vwap": 114624.88197295746,
+        "momentum": -7637.610000000001,
+        "sharpe": 8.26255491637955
       },
       "predictions": {
-        "day1": 122255.1,
-        "day3": 122549.11,
-        "day7": 123137.12,
+        "day1": 122294.36,
+        "day3": 122588.26,
+        "day7": 123176.06,
         "confidence": "Bonne"
       },
-      "performance30j": -7.53
+      "performance30j": -6.63
     },
     {
       "name": "Ethereum",
       "symbol": "ETH",
       "type": "cryptomonnaie",
-      "price": 3877.06,
+      "price": 3919.18,
       "history": [
-        2738.58,
         2676.09,
         2726.32,
         2693.58,
@@ -4254,12 +4253,13 @@
         3894.91,
         3832.99,
         3890.4,
-        3877.06
+        3983.89,
+        3919.18
       ],
       "recommendation": "Conserver",
       "score": 49,
       "premium": true,
-      "updated": "2025-10-19T23:20:07.917Z",
+      "updated": "2025-10-20T01:56:59.716Z",
       "confidence": "Faible",
       "audit": [
         "Golden cross (sma50 > sma200)",
@@ -4272,22 +4272,22 @@
         "Signaux contradictoires : fiabilité réduite"
       ],
       "indicators": {
-        "rsi": 35.73975283489264,
-        "macd": -120.31734570109893,
+        "rsi": 32.66052474549301,
+        "macd": -113.7688344676626,
         "bollinger": {
-          "middle": 4206.827500000001,
-          "upper": 4780.001612739751,
-          "lower": 3633.653387260251
+          "middle": 4200.8285,
+          "upper": 4777.35559654534,
+          "lower": 3624.3014034546595
         },
-        "sma50": 4292.9133999999995,
-        "sma200": 3191.1303000000016,
-        "ema20": 4113.133180457827,
-        "adx": 28.520494330214714,
-        "atr": 300.31928571428574,
-        "stochastic": 29.38454641519101,
-        "vwap": 4165.643467741302,
-        "momentum": -279.1500000000001,
-        "sharpe": 2.960214835615547
+        "sma50": 4285.5954,
+        "sma200": 3202.1785500000015,
+        "ema20": 4103.8667551090575,
+        "adx": 34.67895050901397,
+        "atr": 300.74571428571426,
+        "stochastic": 32.756412309071685,
+        "vwap": 4158.567792085502,
+        "momentum": -325.50999999999976,
+        "sharpe": 2.959646471780723
       },
       "predictions": {
         "day1": null,
@@ -4295,15 +4295,14 @@
         "day7": null,
         "confidence": "Faible (volatilité élevée)"
       },
-      "performance30j": -13.51
+      "performance30j": -11.87
     },
     {
       "name": "XRP",
       "symbol": "XRP",
       "type": "cryptomonnaie",
-      "price": 2.3482,
+      "price": 2.3618,
       "history": [
-        2.4738,
         2.5607,
         2.739,
         2.7626,
@@ -4552,12 +4551,13 @@
         2.3282,
         2.2941,
         2.3602,
-        2.3482
+        2.3913,
+        2.3618
       ],
       "recommendation": "Conserver",
       "score": 54,
       "premium": false,
-      "updated": "2025-10-19T23:20:07.999Z",
+      "updated": "2025-10-20T01:56:59.931Z",
       "confidence": "Faible",
       "audit": [
         "Golden cross (sma50 > sma200)",
@@ -4571,22 +4571,22 @@
         "Signaux contradictoires : fiabilité réduite"
       ],
       "indicators": {
-        "rsi": 26.2555335063349,
-        "macd": -0.15554079724866599,
+        "rsi": 26.60050738695719,
+        "macd": -0.1514613064856607,
         "bollinger": {
-          "middle": 2.6744600000000003,
-          "upper": 3.2230960593325966,
-          "lower": 2.125823940667404
+          "middle": 2.6523500000000007,
+          "upper": 3.206771552611369,
+          "lower": 2.0979284473886324
         },
-        "sma50": 2.82099,
-        "sma200": 2.5883770000000004,
-        "ema20": 2.5904050632017834,
-        "adx": 47.4889329873302,
-        "atr": 0.21927142857142853,
-        "stochastic": 45.0515142054324,
-        "vwap": 2.6538259542707676,
-        "momentum": -0.1825000000000001,
-        "sharpe": 6.386591824186732
+        "sma50": 2.813574,
+        "sma200": 2.5900820000000007,
+        "ema20": 2.572346984620687,
+        "adx": 46.79898522608563,
+        "atr": 0.22128571428571428,
+        "stochastic": 47.946761889303694,
+        "vwap": 2.6454208200248988,
+        "momentum": -0.24549999999999983,
+        "sharpe": 6.38477623784978
       },
       "predictions": {
         "day1": null,
@@ -4594,15 +4594,14 @@
         "day7": null,
         "confidence": "Faible (volatilité élevée)"
       },
-      "performance30j": -21.12
+      "performance30j": -20.53
     },
     {
       "name": "Cardano",
       "symbol": "ADA",
       "type": "cryptomonnaie",
-      "price": 0.6293,
+      "price": 0.6451,
       "history": [
-        0.7997,
         0.8106,
         0.8,
         0.7811,
@@ -4851,16 +4850,18 @@
         0.6453,
         0.6246,
         0.6343,
-        0.6293
+        0.653,
+        0.6451
       ],
       "recommendation": "Conserver",
-      "score": 50,
+      "score": 55,
       "premium": true,
-      "updated": "2025-10-19T23:20:08.048Z",
+      "updated": "2025-10-20T01:57:00.176Z",
       "confidence": "Faible",
       "audit": [
         "Golden cross (sma50 > sma200)",
         "Momentum baissier",
+        "RSI survendu",
         "MACD négatif",
         "Tendance forte (ADX>25)",
         "Volatilité élevée",
@@ -4870,22 +4871,22 @@
         "Signaux contradictoires : fiabilité réduite"
       ],
       "indicators": {
-        "rsi": 30.24667931688805,
-        "macd": -0.0549399729307829,
+        "rsi": 27.988338192419832,
+        "macd": -0.05280896268141233,
         "bollinger": {
-          "middle": 0.7520800000000001,
-          "upper": 0.9408644654626012,
-          "lower": 0.563295534537399
+          "middle": 0.74516,
+          "upper": 0.9351013425244752,
+          "lower": 0.5552186574755249
         },
-        "sma50": 0.8102760000000001,
-        "sma200": 0.7412579999999991,
-        "ema20": 0.7237958842634719,
-        "adx": 39.5066413662239,
-        "atr": 0.06311428571428572,
-        "stochastic": 12.832929782082331,
-        "vwap": 0.74440708632951,
-        "momentum": -0.07150000000000001,
-        "sharpe": 7.093304549002717
+        "sma50": 0.807424,
+        "sma200": 0.7413494999999992,
+        "ema20": 0.7183432150129365,
+        "adx": 44.023323615160365,
+        "atr": 0.06321428571428574,
+        "stochastic": 18.496503496503514,
+        "vwap": 0.7404433396926133,
+        "momentum": -0.08399999999999996,
+        "sharpe": 7.086290043624383
       },
       "predictions": {
         "day1": null,
@@ -4893,15 +4894,14 @@
         "day7": null,
         "confidence": "Faible (volatilité élevée)"
       },
-      "performance30j": -29.58
+      "performance30j": -27.07
     },
     {
       "name": "Solana",
       "symbol": "SOL",
       "type": "cryptomonnaie",
-      "price": 186.38,
+      "price": 184.09,
       "history": [
-        196.8,
         194.29,
         199.43,
         194.53,
@@ -5150,12 +5150,13 @@
         184.88,
         182.05,
         187.63,
-        186.38
+        187.94,
+        184.09
       ],
       "recommendation": "Conserver",
-      "score": 49,
+      "score": 50,
       "premium": false,
-      "updated": "2025-10-19T23:20:08.099Z",
+      "updated": "2025-10-20T01:57:00.294Z",
       "confidence": "Faible",
       "audit": [
         "Golden cross (sma50 > sma200)",
@@ -5163,27 +5164,28 @@
         "MACD négatif",
         "Tendance forte (ADX>25)",
         "Volatilité élevée",
+        "Stochastique survendu",
         "Cours sous VWAP",
         "Risqué pour peu de rendement",
         "Signaux contradictoires : fiabilité réduite"
       ],
       "indicators": {
-        "rsi": 35.02972819932049,
-        "macd": -8.71202466040421,
+        "rsi": 32.78023073636234,
+        "macd": -8.936934392831375,
         "bollinger": {
-          "middle": 208.40950000000004,
-          "upper": 246.99174745916187,
-          "lower": 169.8272525408382
+          "middle": 207.25500000000005,
+          "upper": 247.10803526709105,
+          "lower": 167.40196473290905
         },
-        "sma50": 215.1446,
-        "sma200": 174.64294999999996,
-        "ema20": 202.26186591119495,
-        "adx": 29.94054360135902,
-        "atr": 16.977857142857147,
-        "stochastic": 20.865296103099098,
-        "vwap": 206.29294054886583,
-        "momentum": -10.819999999999993,
-        "sharpe": 5.223665330817132
+        "sma50": 214.845,
+        "sma200": 174.98559999999998,
+        "ema20": 200.66563378355173,
+        "adx": 34.439538527275324,
+        "atr": 17.06071428571429,
+        "stochastic": 18.096000000000004,
+        "vwap": 205.625337240592,
+        "momentum": -24.78,
+        "sharpe": 5.227213255082513
       },
       "predictions": {
         "day1": null,
@@ -5191,15 +5193,14 @@
         "day7": null,
         "confidence": "Faible (volatilité élevée)"
       },
-      "performance30j": -22.21
+      "performance30j": -22.1
     },
     {
       "name": "Polkadot",
       "symbol": "DOT",
       "type": "cryptomonnaie",
-      "price": 2.915,
+      "price": 2.968,
       "history": [
-        5.226,
         5.133,
         5.171,
         5.022,
@@ -5448,12 +5449,13 @@
         3.019,
         2.893,
         2.934,
-        2.915
+        3.009,
+        2.968
       ],
       "recommendation": "Conserver",
       "score": 42,
       "premium": true,
-      "updated": "2025-10-19T23:20:08.143Z",
+      "updated": "2025-10-20T01:57:00.419Z",
       "confidence": "Faible",
       "audit": [
         "Death cross (sma50 < sma200)",
@@ -5468,22 +5470,22 @@
         "Signaux contradictoires : fiabilité réduite"
       ],
       "indicators": {
-        "rsi": 27.323420074349457,
-        "macd": -0.30894014678360016,
+        "rsi": 21.64090368608798,
+        "macd": -0.3028654078543265,
         "bollinger": {
-          "middle": 3.6362500000000004,
-          "upper": 4.7634706305777055,
-          "lower": 2.509029369422295
+          "middle": 3.5938000000000003,
+          "upper": 4.739348183185675,
+          "lower": 2.4482518168143255
         },
-        "sma50": 3.8995400000000005,
-        "sma200": 3.966624999999999,
-        "ema20": 3.458553885886404,
-        "adx": 45.35315985130109,
-        "atr": 0.3417142857142857,
-        "stochastic": 8.463385354141655,
-        "vwap": 3.62857388343461,
-        "momentum": -0.3330000000000002,
-        "sharpe": 8.45740587128149
+        "sma50": 3.88592,
+        "sma200": 3.9616499999999992,
+        "ema20": 3.4199342414264473,
+        "adx": 56.71819262782404,
+        "atr": 0.333142857142857,
+        "stochastic": 11.672683513838745,
+        "vwap": 3.5985566578728028,
+        "momentum": -0.4089999999999998,
+        "sharpe": 8.461559851461255
       },
       "predictions": {
         "day1": null,
@@ -5491,15 +5493,14 @@
         "day7": null,
         "confidence": "Faible (volatilité élevée)"
       },
-      "performance30j": -33.13
+      "performance30j": -30.38
     },
     {
       "name": "Dogecoin",
       "symbol": "DOGE",
       "type": "cryptomonnaie",
-      "price": 0.18868,
+      "price": 0.19239,
       "history": [
-        0.26422,
         0.2625,
         0.27184,
         0.27175,
@@ -5748,16 +5749,18 @@
         0.18851,
         0.18476,
         0.18967,
-        0.18868
+        0.19542,
+        0.19239
       ],
       "recommendation": "Conserver",
-      "score": 49,
+      "score": 54,
       "premium": false,
-      "updated": "2025-10-19T23:20:08.184Z",
+      "updated": "2025-10-20T01:57:00.540Z",
       "confidence": "Faible",
       "audit": [
         "Golden cross (sma50 > sma200)",
         "Momentum baissier",
+        "RSI survendu",
         "MACD négatif",
         "Tendance forte (ADX>25)",
         "Volatilité élevée",
@@ -5766,22 +5769,22 @@
         "Signaux contradictoires : fiabilité réduite"
       ],
       "indicators": {
-        "rsi": 31.67123600639708,
-        "macd": -0.015393551509727488,
+        "rsi": 28.26061320754718,
+        "macd": -0.014779786217260421,
         "bollinger": {
-          "middle": 0.22398749999999995,
-          "upper": 0.28366549389222123,
-          "lower": 0.1643095061077787
+          "middle": 0.2222985,
+          "upper": 0.2826947479877683,
+          "lower": 0.16190225201223177
         },
-        "sma50": 0.23627179999999992,
-        "sma200": 0.20696729999999988,
-        "ema20": 0.21464384548270243,
-        "adx": 36.657527987205846,
-        "atr": 0.023425714285714282,
-        "stochastic": 32.08627125673993,
-        "vwap": 0.22543083239785452,
-        "momentum": -0.01867000000000002,
-        "sharpe": 5.649248267160692
+        "sma50": 0.23598019999999995,
+        "sma200": 0.2071516999999999,
+        "ema20": 0.21310520260231008,
+        "adx": 43.478773584905646,
+        "atr": 0.023077857142857146,
+        "stochastic": 35.79934127185205,
+        "vwap": 0.22408299253784994,
+        "momentum": -0.02162,
+        "sharpe": 5.674177369959587
       },
       "predictions": {
         "day1": null,
@@ -5789,7 +5792,7 @@
         "day7": null,
         "confidence": "Faible (volatilité élevée)"
       },
-      "performance30j": -29.54
+      "performance30j": -26.26
     }
   ]
 }
