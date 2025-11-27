@@ -3734,7 +3734,7 @@
       "name": "Bitcoin",
       "symbol": "BTC",
       "type": "cryptomonnaie",
-      "price": 90708.51,
+      "price": 91399.83,
       "history": [
         86092.94,
         87523.62,
@@ -3985,12 +3985,12 @@
         88266.2,
         87325.01,
         90468.84,
-        90708.51
+        91399.83
       ],
       "recommendation": "Conserver",
       "score": 40,
       "premium": true,
-      "updated": "2025-11-27T22:22:52.559Z",
+      "updated": "2025-11-27T23:22:34.536Z",
       "confidence": "Faible",
       "audit": [
         "Death cross (sma50 < sma200)",
@@ -4003,30 +4003,30 @@
         "Signaux contradictoires : fiabilité réduite"
       ],
       "indicators": {
-        "rsi": 33.22598957099284,
-        "macd": -4803.4140684624,
+        "rsi": 34.9207351525033,
+        "macd": -4748.266034274377,
         "bollinger": {
-          "middle": 93889.94649999999,
-          "upper": 107201.2410785108,
-          "lower": 80578.65192148919
+          "middle": 93924.5125,
+          "upper": 107206.1393777012,
+          "lower": 80642.8856222988
         },
-        "sma50": 103477.20099999996,
-        "sma200": 109918.11195000008,
-        "ema20": 93354.05640384284,
-        "adx": 33.54802085801432,
-        "atr": 4076.9664285714307,
-        "stochastic": 52.73482830134451,
-        "vwap": 95513.20296590125,
-        "momentum": 4171.62999999999,
-        "sharpe": 9.33858909740878
+        "sma50": 103491.02739999996,
+        "sma200": 109921.56855000005,
+        "ema20": 93419.89640384284,
+        "adx": 30.158529694993426,
+        "atr": 4149.100714285715,
+        "stochastic": 56.31467341913735,
+        "vwap": 95421.55203664496,
+        "momentum": 4862.949999999997,
+        "sharpe": 9.341791383604464
       },
       "predictions": {
-        "day1": 114847.91,
-        "day3": 114993.25,
-        "day7": 115283.92,
+        "day1": 114858.97,
+        "day3": 115004.44,
+        "day7": 115295.38,
         "confidence": "Bonne"
       },
-      "performance30j": -17.56
+      "performance30j": -16.93
     },
     {
       "name": "Ethereum",
@@ -4288,7 +4288,7 @@
       "recommendation": "Conserver",
       "score": 51,
       "premium": true,
-      "updated": "2025-11-27T22:22:52.667Z",
+      "updated": "2025-11-27T23:22:34.881Z",
       "confidence": "Faible",
       "audit": [
         "Golden cross (sma50 > sma200)",
@@ -4586,7 +4586,7 @@
       "recommendation": "Conserver",
       "score": 38,
       "premium": false,
-      "updated": "2025-11-27T22:22:52.864Z",
+      "updated": "2025-11-27T23:22:35.265Z",
       "confidence": "Faible",
       "audit": [
         "Death cross (sma50 < sma200)",
@@ -4884,7 +4884,7 @@
       "recommendation": "Conserver",
       "score": 45,
       "premium": true,
-      "updated": "2025-11-27T22:22:53.294Z",
+      "updated": "2025-11-27T23:22:35.516Z",
       "confidence": "Faible",
       "audit": [
         "Death cross (sma50 < sma200)",
@@ -5183,7 +5183,7 @@
       "recommendation": "Conserver",
       "score": 37,
       "premium": false,
-      "updated": "2025-11-27T22:22:53.526Z",
+      "updated": "2025-11-27T23:22:35.689Z",
       "confidence": "Faible",
       "audit": [
         "Death cross (sma50 < sma200)",
@@ -5482,7 +5482,7 @@
       "recommendation": "Conserver",
       "score": 40,
       "premium": true,
-      "updated": "2025-11-27T22:22:53.759Z",
+      "updated": "2025-11-27T23:22:35.875Z",
       "confidence": "Faible",
       "audit": [
         "Death cross (sma50 < sma200)",
@@ -5781,7 +5781,7 @@
       "recommendation": "Conserver",
       "score": 38,
       "premium": false,
-      "updated": "2025-11-27T22:22:53.997Z",
+      "updated": "2025-11-27T23:22:36.042Z",
       "confidence": "Faible",
       "audit": [
         "Death cross (sma50 < sma200)",
