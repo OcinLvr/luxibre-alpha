@@ -4693,7 +4693,7 @@
       "recommendation": "Conserver",
       "score": 51,
       "premium": false,
-      "updated": "2025-12-15T07:21:21.647Z",
+      "updated": "2025-12-15T08:27:25.075Z",
       "confidence": "Faible",
       "audit": [
         "Momentum baissier",
@@ -4839,7 +4839,7 @@
       "recommendation": "Conserver",
       "score": 50,
       "premium": true,
-      "updated": "2025-12-15T07:21:22.683Z",
+      "updated": "2025-12-15T08:27:26.125Z",
       "confidence": "Faible",
       "audit": [
         "Momentum haussier",
@@ -4987,7 +4987,7 @@
       "recommendation": "Conserver",
       "score": 48,
       "premium": true,
-      "updated": "2025-12-15T07:21:23.770Z",
+      "updated": "2025-12-15T08:27:27.160Z",
       "confidence": "Faible",
       "audit": [
         "Momentum baissier",
@@ -5029,7 +5029,7 @@
       "name": "iShares EURO STOXX Banks 30-15 UCITS ETF (DE)",
       "symbol": "EXA1.AS",
       "type": "etf",
-      "price": 16.303499221801758,
+      "price": 16.45599937438965,
       "history": [
         5.373300075531006,
         5.471399784088135,
@@ -5784,12 +5784,13 @@
         16.200700759887695,
         16.2460994720459,
         16.53700065612793,
-        16.303499221801758
+        16.303499221801758,
+        16.45599937438965
       ],
       "recommendation": "Conserver",
       "score": 58,
       "premium": false,
-      "updated": "2025-12-15T07:21:24.025Z",
+      "updated": "2025-12-15T08:27:27.313Z",
       "confidence": "Faible",
       "audit": [
         "Golden cross (sma50 > sma200)",
@@ -5802,30 +5803,30 @@
         "Signaux contradictoires : fiabilité réduite"
       ],
       "indicators": {
-        "rsi": 76.31910721184647,
-        "macd": 0.30474868531882215,
+        "rsi": 75.1399116045131,
+        "macd": 0.3134056546265569,
         "bollinger": {
-          "middle": 15.75160002708435,
-          "upper": 16.630956305142224,
-          "lower": 14.87224374902648
+          "middle": 15.803914976119994,
+          "upper": 16.719434863627285,
+          "lower": 14.888395088612704
         },
-        "sma50": 15.270692043304443,
-        "sma200": 13.581440024375915,
-        "ema20": 15.874957424050866,
-        "adx": 52.638214423692915,
-        "atr": 0.2256427492414202,
-        "stochastic": 74.3153700773891,
-        "vwap": 15.715898199342307,
-        "momentum": 0.4273996353149414,
-        "sharpe": 2.96645708891552
+        "sma50": 15.299232025146484,
+        "sma200": 13.608316020965576,
+        "ema20": 15.930294752654559,
+        "adx": 50.27982320902623,
+        "atr": 0.21024996893746511,
+        "stochastic": 79.45098234766131,
+        "vwap": 15.73186578937699,
+        "momentum": 0.3894996643066406,
+        "sharpe": 2.960251862215861
       },
       "predictions": {
-        "day1": 14.07,
-        "day3": 14.1,
-        "day7": 14.15,
+        "day1": 14.1,
+        "day3": 14.13,
+        "day7": 14.18,
         "confidence": "Bonne"
       },
-      "performance30j": 8.43
+      "performance30j": 9.29
     }
   ]
 }
