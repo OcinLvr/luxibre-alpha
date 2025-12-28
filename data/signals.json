@@ -1152,7 +1152,7 @@
       "recommendation": "Vendre",
       "score": 24,
       "premium": true,
-      "updated": "2025-12-28T08:32:47.211Z",
+      "updated": "2025-12-28T09:25:35.514Z",
       "confidence": "Bonne",
       "audit": [
         "Death cross (sma50 < sma200)",
@@ -5541,9 +5541,8 @@
       "name": "Cardano",
       "symbol": "ADA",
       "type": "cryptomonnaie",
-      "price": 0.3515,
+      "price": 0.3687,
       "history": [
-        0.6795,
         0.6979,
         0.7221,
         0.7138,
@@ -5792,50 +5791,49 @@
         0.3564,
         0.3435,
         0.3494,
-        0.3515
+        0.3696,
+        0.3687
       ],
       "recommendation": "Conserver",
-      "score": 42,
+      "score": 38,
       "premium": true,
-      "updated": "2025-12-27T17:21:04.332Z",
+      "updated": "2025-12-28T09:25:36.446Z",
       "confidence": "Faible",
       "audit": [
         "Death cross (sma50 < sma200)",
-        "Momentum baissier",
-        "RSI survendu",
+        "Momentum haussier",
         "MACD négatif",
-        "Tendance forte (ADX>25)",
+        "Tendance faible (ADX<25)",
         "Volatilité élevée",
-        "Stochastique survendu",
         "Cours sous VWAP",
         "Risqué pour peu de rendement",
         "Signaux contradictoires : fiabilité réduite"
       ],
       "indicators": {
-        "rsi": 28.214548126377636,
-        "macd": -0.025674005597846994,
+        "rsi": 40.12784090909091,
+        "macd": -0.022444628355549112,
         "bollinger": {
-          "middle": 0.38703999999999994,
-          "upper": 0.45757284057798886,
-          "lower": 0.316507159422011
+          "middle": 0.38473499999999994,
+          "upper": 0.45113142384948146,
+          "lower": 0.3183385761505184
         },
-        "sma50": 0.43157599999999996,
-        "sma200": 0.6675025000000006,
-        "ema20": 0.3804703468617807,
-        "adx": 43.57090374724473,
-        "atr": 0.020585714285714294,
-        "stochastic": 15.92178770949716,
-        "vwap": 0.40326259376349155,
-        "momentum": -0.02130000000000004,
-        "sharpe": 4.205950123903669
+        "sma50": 0.427938,
+        "sma200": 0.6659455000000004,
+        "ema20": 0.38090899863429206,
+        "adx": 19.744318181818187,
+        "atr": 0.02073571428571429,
+        "stochastic": 42.37037037037039,
+        "vwap": 0.40191769084626616,
+        "momentum": 0.0027000000000000357,
+        "sharpe": 4.170862259158477
       },
       "predictions": {
         "day1": 0.54,
         "day3": 0.54,
-        "day7": 0.54,
+        "day7": 0.53,
         "confidence": "Bonne"
       },
-      "performance30j": -16.33
+      "performance30j": -11.09
     }
   ]
 }
