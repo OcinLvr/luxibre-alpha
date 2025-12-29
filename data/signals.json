@@ -4985,7 +4985,7 @@
       "recommendation": "Conserver",
       "score": 50,
       "premium": false,
-      "updated": "2025-12-29T09:26:40.133Z",
+      "updated": "2025-12-29T10:20:06.691Z",
       "confidence": "Faible",
       "audit": [
         "Momentum baissier",
@@ -5025,7 +5025,7 @@
       "name": "iShares EURO STOXX Banks 30-15 UCITS ETF (DE)",
       "symbol": "EXA1.AS",
       "type": "etf",
-      "price": 16.92620086669922,
+      "price": 16.92329978942871,
       "history": [
         5.373300075531006,
         5.471399784088135,
@@ -5788,12 +5788,12 @@
         16.95870018005371,
         16.95330047607422,
         17,
-        16.92620086669922
+        16.92329978942871
       ],
       "recommendation": "Conserver",
       "score": 57,
       "premium": false,
-      "updated": "2025-12-29T09:26:40.950Z",
+      "updated": "2025-12-29T10:20:07.688Z",
       "confidence": "Faible",
       "audit": [
         "Golden cross (sma50 > sma200)",
@@ -5807,22 +5807,22 @@
         "Signaux contradictoires : fiabilité réduite"
       ],
       "indicators": {
-        "rsi": 75.48466728032224,
-        "macd": 0.39933961724247524,
+        "rsi": 75.35505887638725,
+        "macd": 0.39910819227502614,
         "bollinger": {
-          "middle": 16.35759515762329,
-          "upper": 17.201965242127873,
-          "lower": 15.513225073118708
+          "middle": 16.357450103759767,
+          "upper": 17.201430323346848,
+          "lower": 15.513469884172688
         },
-        "sma50": 15.596220111846923,
-        "sma200": 13.790974545478822,
-        "ema20": 16.408388506615474,
-        "adx": 50.969334560644484,
+        "sma50": 15.596162090301513,
+        "sma200": 13.790960040092468,
+        "ema20": 16.408112213542093,
+        "adx": 50.710117752774494,
         "atr": 0.2141427993774414,
-        "stochastic": 93.23750274182456,
-        "vwap": 15.952922966857201,
-        "momentum": 0.36590003967285156,
-        "sharpe": 2.912817326172876
+        "stochastic": 92.97166591949217,
+        "vwap": 15.95376412627163,
+        "momentum": 0.36299896240234375,
+        "sharpe": 2.912824826333977
       },
       "predictions": {
         "day1": 14.29,
@@ -5830,7 +5830,7 @@
         "day7": 14.37,
         "confidence": "Bonne"
       },
-      "performance30j": 5.7
+      "performance30j": 5.68
     }
   ]
 }
