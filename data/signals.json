@@ -4838,7 +4838,7 @@
       "recommendation": "Conserver",
       "score": 54,
       "premium": false,
-      "updated": "2025-12-30T15:18:32.210Z",
+      "updated": "2025-12-30T16:22:42.220Z",
       "confidence": "Modérée",
       "audit": [
         "Momentum haussier",
@@ -4983,7 +4983,7 @@
       "recommendation": "Conserver",
       "score": 56,
       "premium": false,
-      "updated": "2025-12-30T15:18:33.298Z",
+      "updated": "2025-12-30T16:22:43.265Z",
       "confidence": "Modérée",
       "audit": [
         "Momentum haussier",
@@ -5022,7 +5022,7 @@
       "name": "iShares EURO STOXX Banks 30-15 UCITS ETF (DE)",
       "symbol": "EXA1.AS",
       "type": "etf",
-      "price": 17.09149932861328,
+      "price": 17.106199264526367,
       "history": [
         5.373300075531006,
         5.471399784088135,
@@ -5787,12 +5787,12 @@
         16.95330047607422,
         17,
         16.863399505615234,
-        17.09149932861328
+        17.106199264526367
       ],
       "recommendation": "Conserver",
       "score": 57,
       "premium": false,
-      "updated": "2025-12-30T15:18:33.644Z",
+      "updated": "2025-12-30T16:22:43.476Z",
       "confidence": "Faible",
       "audit": [
         "Golden cross (sma50 > sma200)",
@@ -5806,22 +5806,22 @@
         "Signaux contradictoires : fiabilité réduite"
       ],
       "indicators": {
-        "rsi": 76.18789615316437,
-        "macd": 0.39045256191780453,
+        "rsi": 76.37028232506738,
+        "macd": 0.39162520637811227,
         "bollinger": {
-          "middle": 16.475935077667238,
-          "upper": 17.29541498259314,
-          "lower": 15.656455172741335
+          "middle": 16.47667007446289,
+          "upper": 17.298380408665338,
+          "lower": 15.654959740260447
         },
-        "sma50": 15.686210079193115,
-        "sma200": 13.84222903728485,
-        "ema20": 16.510933296734343,
-        "adx": 52.37579230632875,
+        "sma50": 15.686504077911376,
+        "sma200": 13.842302536964416,
+        "ema20": 16.512333290630828,
+        "adx": 52.740564650134765,
         "atr": 0.21927152361188615,
-        "stochastic": 95.45270740113678,
-        "vwap": 16.031025360222078,
-        "momentum": 0.4208984375,
-        "sharpe": 2.8998867662011785
+        "stochastic": 96.90901257709518,
+        "vwap": 16.032383230376652,
+        "momentum": 0.43559837341308594,
+        "sharpe": 2.8998487424097408
       },
       "predictions": {
         "day1": 14.35,
@@ -5829,7 +5829,7 @@
         "day7": 14.43,
         "confidence": "Bonne"
       },
-      "performance30j": 10.91
+      "performance30j": 11.01
     }
   ]
 }
