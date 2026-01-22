@@ -5,9 +5,8 @@
       "name": "Polkadot",
       "symbol": "DOT",
       "type": "cryptomonnaie",
-      "price": 1.935,
+      "price": 1.975,
       "history": [
-        4.615,
         4.795,
         4.598,
         4.676,
@@ -256,41 +255,40 @@
         2.064,
         2.028,
         1.896,
-        1.935
+        1.953,
+        1.975
       ],
       "recommendation": "Vendre",
-      "score": 34,
+      "score": 22,
       "premium": true,
-      "updated": "2026-01-21T11:28:50.982Z",
-      "confidence": "Faible",
+      "updated": "2026-01-22T04:11:29.010Z",
+      "confidence": "Bonne",
       "audit": [
         "Death cross (sma50 < sma200)",
         "Momentum baissier",
         "MACD négatif",
         "Tendance faible (ADX<25)",
         "Volatilité élevée",
-        "Stochastique survendu",
         "Cours sous VWAP",
-        "Risqué pour peu de rendement",
-        "Signaux contradictoires : fiabilité réduite"
+        "Risqué pour peu de rendement"
       ],
       "indicators": {
-        "rsi": 38.4009009009009,
-        "macd": -0.005040168747558749,
+        "rsi": 42.47491638795987,
+        "macd": -0.00959009003411282,
         "bollinger": {
-          "middle": 2.1126,
-          "upper": 2.296401414575623,
-          "lower": 1.9287985854243772
+          "middle": 2.10395,
+          "upper": 2.2923277853145114,
+          "lower": 1.9155722146854892
         },
-        "sma50": 2.01272,
-        "sma200": 3.1874700000000025,
-        "ema20": 2.0545321614300356,
-        "adx": 23.198198198198206,
-        "atr": 0.12507142857142858,
-        "stochastic": 13.64605543710023,
-        "vwap": 2.039773960183283,
-        "momentum": -0.28900000000000015,
-        "sharpe": 3.8123498786911383
+        "sma50": 2.0052600000000003,
+        "sma200": 3.180450000000002,
+        "ema20": 2.0485086902747978,
+        "adx": 15.050167224080258,
+        "atr": 0.12714285714285714,
+        "stochastic": 22.174840085287872,
+        "vwap": 2.0434019029417074,
+        "momentum": -0.14100000000000001,
+        "sharpe": 3.7988155540078865
       },
       "predictions": {
         "day1": null,
@@ -298,7 +296,7 @@
         "day7": null,
         "confidence": "Faible (volatilité élevée)"
       },
-      "performance30j": 9.76
+      "performance30j": 13.7
     }
   ],
   "conservation": [
@@ -5817,7 +5815,7 @@
       "recommendation": "Conserver",
       "score": 42,
       "premium": true,
-      "updated": "2026-01-22T02:11:05.914Z",
+      "updated": "2026-01-22T04:11:28.129Z",
       "confidence": "Faible",
       "audit": [
         "Death cross (sma50 < sma200)",
