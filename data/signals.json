@@ -603,9 +603,8 @@
       "name": "Polkadot",
       "symbol": "DOT",
       "type": "cryptomonnaie",
-      "price": 1.921,
+      "price": 1.923,
       "history": [
-        4.676,
         4.741,
         4.949,
         4.563,
@@ -854,12 +853,13 @@
         1.953,
         1.924,
         1.923,
-        1.921
+        1.926,
+        1.923
       ],
       "recommendation": "Vendre",
       "score": 34,
       "premium": true,
-      "updated": "2026-01-24T22:25:00.023Z",
+      "updated": "2026-01-25T08:33:39.533Z",
       "confidence": "Faible",
       "audit": [
         "Death cross (sma50 < sma200)",
@@ -873,22 +873,22 @@
         "Signaux contradictoires : fiabilité réduite"
       ],
       "indicators": {
-        "rsi": 40.25374855824684,
-        "macd": -0.027486951728245668,
+        "rsi": 41.46054181389869,
+        "macd": -0.03142833791357669,
         "bollinger": {
-          "middle": 2.08035,
-          "upper": 2.3023628599878845,
-          "lower": 1.8583371400121156
+          "middle": 2.0664000000000002,
+          "upper": 2.2898756362559465,
+          "lower": 1.842924363744054
         },
-        "sma50": 1.9931400000000006,
-        "sma200": 3.1653250000000024,
-        "ema20": 2.0215741692009255,
-        "adx": 19.492502883506326,
-        "atr": 0.127,
-        "stochastic": 10.660980810234554,
-        "vwap": 2.050340981599262,
-        "momentum": -0.256,
-        "sharpe": 3.771137999562358
+        "sma50": 1.9891400000000001,
+        "sma200": 3.1568400000000025,
+        "ema20": 2.012616992087681,
+        "adx": 17.0789163722026,
+        "atr": 0.12407142857142858,
+        "stochastic": 11.087420042643936,
+        "vwap": 2.058831939702146,
+        "momentum": -0.14100000000000001,
+        "sharpe": 3.7586544240704507
       },
       "predictions": {
         "day1": null,
@@ -896,7 +896,7 @@
         "day7": null,
         "confidence": "Faible (volatilité élevée)"
       },
-      "performance30j": 11.56
+      "performance30j": 0.73
     }
   ],
   "conservation": [
@@ -5810,7 +5810,7 @@
       "recommendation": "Conserver",
       "score": 36,
       "premium": true,
-      "updated": "2026-01-25T07:26:14.463Z",
+      "updated": "2026-01-25T08:33:38.661Z",
       "confidence": "Faible",
       "audit": [
         "Death cross (sma50 < sma200)",
