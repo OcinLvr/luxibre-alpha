@@ -302,9 +302,8 @@
       "name": "Bitcoin",
       "symbol": "BTC",
       "type": "cryptomonnaie",
-      "price": 69577.06,
+      "price": 68674.29,
       "history": [
-        108669.37,
         105721.05,
         106118.7,
         105465.42,
@@ -553,39 +552,40 @@
         66208,
         68812,
         69786.96,
-        69577.06
+        68792,
+        68674.29
       ],
       "recommendation": "Vendre",
-      "score": 22,
+      "score": 26,
       "premium": true,
-      "updated": "2026-02-15T23:32:37.725Z",
+      "updated": "2026-02-16T02:40:47.778Z",
       "confidence": "Bonne",
       "audit": [
         "Death cross (sma50 < sma200)",
         "Momentum baissier",
         "MACD négatif",
-        "Tendance faible (ADX<25)",
+        "Tendance forte (ADX>25)",
         "Volatilité élevée",
         "Cours sous VWAP",
         "Risqué pour peu de rendement"
       ],
       "indicators": {
-        "rsi": 39.710153730385095,
-        "macd": -5056.088927856181,
+        "rsi": 35.59861828273435,
+        "macd": -4892.880192842422,
         "bollinger": {
-          "middle": 74146.53899999999,
-          "upper": 89087.94584844622,
-          "lower": 59205.13215155376
+          "middle": 73085.1525,
+          "upper": 86556.0123150094,
+          "lower": 59614.2926849906
         },
-        "sma50": 84254.0522,
-        "sma200": 100564.69509999994,
-        "ema20": 73772.98564494163,
-        "adx": 20.57969253922981,
-        "atr": 4655.532857142856,
-        "stochastic": 49.51939187092769,
-        "vwap": 75265.89798378272,
-        "momentum": -702.2700000000041,
-        "sharpe": 7.328685789354585
+        "sma50": 83854.29100000001,
+        "sma200": 100325.33559999993,
+        "ema20": 73219.74869008013,
+        "adx": 28.80276343453131,
+        "atr": 4522.829999999999,
+        "stochastic": 45.355871932645634,
+        "vwap": 75070.9127422764,
+        "momentum": -1427.7000000000116,
+        "sharpe": 7.231293217121631
       },
       "predictions": {
         "day1": null,
@@ -593,7 +593,7 @@
         "day7": null,
         "confidence": "Faible (volatilité élevée)"
       },
-      "performance30j": -26.85
+      "performance30j": -26.66
     }
   ],
   "conservation": [
