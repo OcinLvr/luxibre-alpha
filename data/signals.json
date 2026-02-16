@@ -558,7 +558,7 @@
       "recommendation": "Vendre",
       "score": 26,
       "premium": true,
-      "updated": "2026-02-16T05:03:44.355Z",
+      "updated": "2026-02-16T07:11:15.781Z",
       "confidence": "Bonne",
       "audit": [
         "Death cross (sma50 < sma200)",
@@ -5555,9 +5555,8 @@
       "name": "Polkadot",
       "symbol": "DOT",
       "type": "cryptomonnaie",
-      "price": 1.408,
+      "price": 1.352,
       "history": [
-        4.189,
         3.921,
         3.84,
         3.782,
@@ -5806,12 +5805,13 @@
         1.282,
         1.329,
         1.42,
-        1.408
+        1.356,
+        1.352
       ],
       "recommendation": "Conserver",
       "score": 38,
       "premium": true,
-      "updated": "2026-02-15T23:32:38.608Z",
+      "updated": "2026-02-16T07:11:16.633Z",
       "confidence": "Faible",
       "audit": [
         "Death cross (sma50 < sma200)",
@@ -5824,22 +5824,22 @@
         "Signaux contradictoires : fiabilité réduite"
       ],
       "indicators": {
-        "rsi": 44.29882044560943,
-        "macd": -0.14311913690357114,
+        "rsi": 37.77490297542045,
+        "macd": -0.1389825835325611,
         "bollinger": {
-          "middle": 1.4657,
-          "upper": 1.841489888102381,
-          "lower": 1.089910111897619
+          "middle": 1.4369999999999998,
+          "upper": 1.7670121209895175,
+          "lower": 1.1069878790104821
         },
-        "sma50": 1.8063199999999997,
-        "sma200": 2.879545000000002,
-        "ema20": 1.4761695284715342,
-        "adx": 11.402359108781157,
-        "atr": 0.10950000000000001,
-        "stochastic": 64.61864406779661,
-        "vwap": 1.6028724710315752,
-        "momentum": 0.07199999999999984,
-        "sharpe": 3.216931011552368
+        "sma50": 1.7953399999999997,
+        "sma200": 2.867640000000001,
+        "ema20": 1.459863133467935,
+        "adx": 24.45019404915911,
+        "atr": 0.10792857142857142,
+        "stochastic": 54.0130151843818,
+        "vwap": 1.5811131012258552,
+        "momentum": 0.03200000000000003,
+        "sharpe": 3.1921197448656957
       },
       "predictions": {
         "day1": null,
@@ -5847,7 +5847,7 @@
         "day7": null,
         "confidence": "Faible (volatilité élevée)"
       },
-      "performance30j": -35.32
+      "performance30j": -34.5
     }
   ]
 }
