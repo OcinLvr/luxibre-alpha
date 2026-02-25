@@ -5803,7 +5803,7 @@
       "recommendation": "Conserver",
       "score": 56,
       "premium": false,
-      "updated": "2026-02-25T09:50:53.845Z",
+      "updated": "2026-02-25T10:47:01.199Z",
       "confidence": "Modérée",
       "audit": [
         "Momentum haussier",
@@ -5826,7 +5826,7 @@
         "adx": 4.45710455764069,
         "atr": 7.098857142857142,
         "stochastic": 65.56668630917308,
-        "vwap": 262.580294480489,
+        "vwap": 262.58242178043565,
         "momentum": 10.409999999999968,
         "sharpe": 27.648168248068494
       },
