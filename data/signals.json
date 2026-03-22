@@ -5,9 +5,8 @@
       "name": "Dogecoin",
       "symbol": "DOGE",
       "type": "cryptomonnaie",
-      "price": 0.09427,
+      "price": 0.09143,
       "history": [
-        0.1992,
         0.21278,
         0.21845,
         0.23598,
@@ -256,39 +255,42 @@
         0.09526,
         0.09353,
         0.09414,
-        0.09427
+        0.09134,
+        0.09143
       ],
       "recommendation": "Vendre",
-      "score": 22,
+      "score": 34,
       "premium": false,
-      "updated": "2026-03-21T20:33:35.211Z",
-      "confidence": "Bonne",
+      "updated": "2026-03-22T04:56:49.910Z",
+      "confidence": "Faible",
       "audit": [
         "Death cross (sma50 < sma200)",
         "Momentum baissier",
         "MACD négatif",
         "Tendance faible (ADX<25)",
         "Volatilité élevée",
+        "Stochastique survendu",
         "Cours sous VWAP",
-        "Risqué pour peu de rendement"
+        "Risqué pour peu de rendement",
+        "Signaux contradictoires : fiabilité réduite"
       ],
       "indicators": {
-        "rsi": 57.65288087663485,
-        "macd": -0.0006748004414774272,
+        "rsi": 53.74958704988436,
+        "macd": -0.0011231485291922222,
         "bollinger": {
-          "middle": 0.09445099999999998,
-          "upper": 0.10139121008327555,
-          "lower": 0.08751078991672441
+          "middle": 0.09419799999999998,
+          "upper": 0.10137477532043462,
+          "lower": 0.08702122467956533
         },
-        "sma50": 0.09665420000000001,
-        "sma200": 0.15669875000000005,
-        "ema20": 0.09554164313954466,
-        "adx": 15.305761753269705,
-        "atr": 0.004902857142857142,
-        "stochastic": 43.00894854586132,
-        "vwap": 0.09547287340581595,
-        "momentum": -0.001799999999999996,
-        "sharpe": 2.8478898383113505
+        "sma50": 0.09634140000000001,
+        "sma200": 0.15603940000000002,
+        "ema20": 0.09489758642354194,
+        "adx": 7.499174099768737,
+        "atr": 0.00497357142857143,
+        "stochastic": 15.717981888745157,
+        "vwap": 0.09524684429099718,
+        "momentum": -0.005949999999999997,
+        "sharpe": 2.829675439089972
       },
       "predictions": {
         "day1": 0.08,
@@ -296,7 +298,7 @@
         "day7": 0.08,
         "confidence": "Bonne"
       },
-      "performance30j": -5.81
+      "performance30j": -7.08
     }
   ],
   "conservation": [
@@ -5809,7 +5811,7 @@
       "recommendation": "Conserver",
       "score": 42,
       "premium": true,
-      "updated": "2026-03-22T02:44:23.762Z",
+      "updated": "2026-03-22T04:56:48.891Z",
       "confidence": "Faible",
       "audit": [
         "Death cross (sma50 < sma200)",
