@@ -5,9 +5,8 @@
       "name": "Dogecoin",
       "symbol": "DOGE",
       "type": "cryptomonnaie",
-      "price": 0.09143,
+      "price": 0.09045,
       "history": [
-        0.21278,
         0.21845,
         0.23598,
         0.24151,
@@ -256,12 +255,13 @@
         0.09353,
         0.09414,
         0.09134,
-        0.09143
+        0.09021,
+        0.09045
       ],
       "recommendation": "Vendre",
       "score": 34,
       "premium": false,
-      "updated": "2026-03-22T15:31:53.405Z",
+      "updated": "2026-03-23T07:18:46.487Z",
       "confidence": "Faible",
       "audit": [
         "Death cross (sma50 < sma200)",
@@ -275,30 +275,30 @@
         "Signaux contradictoires : fiabilité réduite"
       ],
       "indicators": {
-        "rsi": 53.74958704988436,
-        "macd": -0.0011231485291922222,
+        "rsi": 49.91724594505131,
+        "macd": -0.0014318124126741216,
         "bollinger": {
-          "middle": 0.09419799999999998,
-          "upper": 0.10137477532043462,
-          "lower": 0.08702122467956533
+          "middle": 0.09416049999999998,
+          "upper": 0.10139929402939465,
+          "lower": 0.0869217059706053
         },
-        "sma50": 0.09634140000000001,
-        "sma200": 0.15603940000000002,
-        "ema20": 0.09489758642354194,
-        "adx": 7.499174099768737,
-        "atr": 0.00497357142857143,
-        "stochastic": 15.717981888745157,
-        "vwap": 0.09524684429099718,
-        "momentum": -0.005949999999999997,
-        "sharpe": 2.829675439089972
+        "sma50": 0.0960428,
+        "sma200": 0.15542365000000002,
+        "ema20": 0.09436888204782404,
+        "adx": 0.16550810989735967,
+        "atr": 0.004874999999999999,
+        "stochastic": 8.251473477406666,
+        "vwap": 0.09507110018034791,
+        "momentum": -0.012609999999999996,
+        "sharpe": 2.8128095910970523
       },
       "predictions": {
         "day1": 0.08,
         "day3": 0.08,
-        "day7": 0.08,
+        "day7": 0.07,
         "confidence": "Bonne"
       },
-      "performance30j": -7.08
+      "performance30j": -5.31
     }
   ],
   "conservation": [
@@ -5811,7 +5811,7 @@
       "recommendation": "Conserver",
       "score": 36,
       "premium": true,
-      "updated": "2026-03-23T05:07:41.955Z",
+      "updated": "2026-03-23T07:18:45.504Z",
       "confidence": "Faible",
       "audit": [
         "Death cross (sma50 < sma200)",
