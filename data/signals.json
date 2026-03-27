@@ -859,7 +859,7 @@
       "recommendation": "Vendre",
       "score": 34,
       "premium": false,
-      "updated": "2026-03-27T19:02:15.497Z",
+      "updated": "2026-03-27T20:45:49.953Z",
       "confidence": "Faible",
       "audit": [
         "Death cross (sma50 < sma200)",
@@ -5811,7 +5811,7 @@
       "recommendation": "Conserver",
       "score": 36,
       "premium": true,
-      "updated": "2026-03-27T19:02:14.575Z",
+      "updated": "2026-03-27T20:45:49.015Z",
       "confidence": "Faible",
       "audit": [
         "Death cross (sma50 < sma200)",
