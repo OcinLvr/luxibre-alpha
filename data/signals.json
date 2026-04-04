@@ -5,10 +5,8 @@
       "name": "Cardano",
       "symbol": "ADA",
       "type": "cryptomonnaie",
-      "price": 0.2483,
+      "price": 0.2455,
       "history": [
-        0.8323,
-        0.7932,
         0.7828,
         0.7633,
         0.7391,
@@ -256,12 +254,14 @@
         0.2432,
         0.2417,
         0.2483,
-        0.2483
+        0.2393,
+        0.2462,
+        0.2455
       ],
       "recommendation": "Vendre",
       "score": 22,
       "premium": true,
-      "updated": "2026-04-02T19:03:11.268Z",
+      "updated": "2026-04-04T10:39:08.499Z",
       "confidence": "Bonne",
       "audit": [
         "Death cross (sma50 < sma200)",
@@ -273,30 +273,30 @@
         "Risqué pour peu de rendement"
       ],
       "indicators": {
-        "rsi": 37.740693196405644,
-        "macd": -0.007356091402971332,
+        "rsi": 42.90780141843972,
+        "macd": -0.007485184750638363,
         "bollinger": {
-          "middle": 0.25981000000000004,
-          "upper": 0.28858998610145603,
-          "lower": 0.23103001389854405
+          "middle": 0.25722500000000004,
+          "upper": 0.2874032620440608,
+          "lower": 0.22704673795593924
         },
-        "sma50": 0.26706,
-        "sma200": 0.4520379999999998,
-        "ema20": 0.2555929158469458,
-        "adx": 24.518613607188716,
-        "atr": 0.012300000000000009,
-        "stochastic": 35.011441647597216,
-        "vwap": 0.26265167952848495,
-        "momentum": -0.0063,
-        "sharpe": 2.2298958756825873
+        "sma50": 0.265978,
+        "sma200": 0.44573149999999984,
+        "ema20": 0.25312066677705375,
+        "adx": 14.184397163120572,
+        "atr": 0.01263571428571429,
+        "stochastic": 28.604118993134982,
+        "vwap": 0.25985352469115847,
+        "momentum": -0.0002999999999999947,
+        "sharpe": 2.2103659501335082
       },
       "predictions": {
-        "day1": 0.15,
+        "day1": 0.14,
         "day3": 0.14,
         "day7": 0.13,
         "confidence": "Bonne"
       },
-      "performance30j": -10.13
+      "performance30j": -5.21
     }
   ],
   "conservation": [
@@ -5805,7 +5805,7 @@
       "recommendation": "Conserver",
       "score": 39,
       "premium": true,
-      "updated": "2026-04-04T09:44:19.128Z",
+      "updated": "2026-04-04T10:39:07.531Z",
       "confidence": "Faible",
       "audit": [
         "Death cross (sma50 < sma200)",
