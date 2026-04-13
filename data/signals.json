@@ -5,9 +5,8 @@
       "name": "Cardano",
       "symbol": "ADA",
       "type": "cryptomonnaie",
-      "price": 0.2498,
+      "price": 0.238,
       "history": [
-        0.7413,
         0.7877,
         0.7912,
         0.8029,
@@ -256,47 +255,50 @@
         0.2542,
         0.2543,
         0.2496,
-        0.2498
+        0.2362,
+        0.238
       ],
       "recommendation": "Vendre",
-      "score": 22,
+      "score": 34,
       "premium": true,
-      "updated": "2026-04-12T10:44:29.560Z",
-      "confidence": "Bonne",
+      "updated": "2026-04-13T22:49:48.339Z",
+      "confidence": "Faible",
       "audit": [
         "Death cross (sma50 < sma200)",
         "Momentum baissier",
         "MACD négatif",
         "Tendance faible (ADX<25)",
         "Volatilité élevée",
+        "Stochastique survendu",
         "Cours sous VWAP",
-        "Risqué pour peu de rendement"
+        "Risqué pour peu de rendement",
+        "Signaux contradictoires : fiabilité réduite"
       ],
       "indicators": {
-        "rsi": 56.57534246575343,
-        "macd": -0.0031752045123996098,
+        "rsi": 46.941176470588225,
+        "macd": -0.0048347123641612755,
         "bollinger": {
-          "middle": 0.250405,
-          "upper": 0.2665020152512818,
-          "lower": 0.23430798474871817
+          "middle": 0.248315,
+          "upper": 0.2645262646021216,
+          "lower": 0.23210373539787843
         },
-        "sma50": 0.261308,
-        "sma200": 0.42107249999999996,
-        "ema20": 0.2526955836737855,
-        "adx": 13.150684931506866,
-        "atr": 0.01257142857142858,
-        "stochastic": 48.42767295597484,
-        "vwap": 0.25811416268360077,
-        "momentum": -0.0008999999999999841,
-        "sharpe": 2.130971972091601
+        "sma50": 0.260364,
+        "sma200": 0.41837449999999987,
+        "ema20": 0.2501241221907261,
+        "adx": 6.117647058823549,
+        "atr": 0.012771428571428583,
+        "stochastic": 11.320754716981108,
+        "vwap": 0.2572494569176372,
+        "momentum": -0.008100000000000024,
+        "sharpe": 2.120160417659078
       },
       "predictions": {
         "day1": 0.12,
         "day3": 0.12,
-        "day7": 0.11,
+        "day7": 0.1,
         "confidence": "Bonne"
       },
-      "performance30j": -5.31
+      "performance30j": -12.05
     }
   ],
   "conservation": [
@@ -5802,7 +5804,7 @@
       "recommendation": "Conserver",
       "score": 50,
       "premium": true,
-      "updated": "2026-04-13T21:00:39.212Z",
+      "updated": "2026-04-13T22:49:47.478Z",
       "confidence": "Faible",
       "audit": [
         "Death cross (sma50 < sma200)",
