@@ -5514,7 +5514,7 @@
       "recommendation": "Conserver",
       "score": 48,
       "premium": true,
-      "updated": "2026-04-21T18:01:13.951Z",
+      "updated": "2026-04-21T20:05:32.359Z",
       "confidence": "Faible",
       "audit": [
         "Death cross (sma50 < sma200)",
@@ -5811,7 +5811,7 @@
       "recommendation": "Conserver",
       "score": 38,
       "premium": true,
-      "updated": "2026-04-21T18:01:14.866Z",
+      "updated": "2026-04-21T20:05:33.151Z",
       "confidence": "Faible",
       "audit": [
         "Death cross (sma50 < sma200)",
