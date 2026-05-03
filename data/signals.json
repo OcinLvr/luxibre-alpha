@@ -301,9 +301,8 @@
       "name": "Solana",
       "symbol": "SOL",
       "type": "cryptomonnaie",
-      "price": 83.59,
+      "price": 84.15,
       "history": [
-        195.87,
         202.93,
         214.43,
         205.1,
@@ -552,12 +551,13 @@
         83.02,
         83.05,
         83.76,
-        83.59
+        84.26,
+        84.15
       ],
       "recommendation": "Vendre",
       "score": 24,
       "premium": false,
-      "updated": "2026-05-02T17:51:12.449Z",
+      "updated": "2026-05-03T16:57:08.911Z",
       "confidence": "Bonne",
       "audit": [
         "Death cross (sma50 < sma200)",
@@ -568,30 +568,30 @@
         "Risqué pour peu de rendement"
       ],
       "indicators": {
-        "rsi": 39.570063694267546,
-        "macd": -0.36369408278089566,
+        "rsi": 53.26192794547226,
+        "macd": -0.3231069274651901,
         "bollinger": {
-          "middle": 85.446,
-          "upper": 88.91361820274378,
-          "lower": 81.97838179725622
+          "middle": 85.359,
+          "upper": 88.7757522590905,
+          "lower": 81.9422477409095
         },
-        "sma50": 85.623,
-        "sma200": 117.80395000000003,
-        "ema20": 84.73838654434581,
-        "adx": 20.859872611464915,
-        "atr": 2.501428571428573,
-        "stochastic": 27.96504369538087,
-        "vwap": 84.83752852392365,
-        "momentum": -2.6099999999999994,
-        "sharpe": 2.722111847431965
+        "sma50": 85.558,
+        "sma200": 117.25835000000002,
+        "ema20": 84.74008215689182,
+        "adx": 6.5238558909445175,
+        "atr": 2.3278571428571433,
+        "stochastic": 34.95630461922609,
+        "vwap": 84.9490354376929,
+        "momentum": -2.799999999999997,
+        "sharpe": 2.7147189020784843
       },
       "predictions": {
-        "day1": 55.61,
-        "day3": 54.31,
-        "day7": 51.69,
+        "day1": 55.24,
+        "day3": 53.93,
+        "day7": 51.32,
         "confidence": "Bonne"
       },
-      "performance30j": 3.98
+      "performance30j": 4.11
     },
     {
       "name": "Polkadot",
@@ -853,7 +853,7 @@
       "recommendation": "Vendre",
       "score": 24,
       "premium": true,
-      "updated": "2026-05-03T13:22:14.691Z",
+      "updated": "2026-05-03T16:57:09.270Z",
       "confidence": "Bonne",
       "audit": [
         "Death cross (sma50 < sma200)",
@@ -5804,7 +5804,7 @@
       "recommendation": "Conserver",
       "score": 44,
       "premium": true,
-      "updated": "2026-05-03T15:53:07.306Z",
+      "updated": "2026-05-03T16:57:07.298Z",
       "confidence": "Faible",
       "audit": [
         "Death cross (sma50 < sma200)",
