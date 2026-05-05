@@ -597,10 +597,8 @@
       "name": "Polkadot",
       "symbol": "DOT",
       "type": "cryptomonnaie",
-      "price": 1.223,
+      "price": 1.229,
       "history": [
-        3.836,
-        3.98,
         3.775,
         3.81,
         3.743,
@@ -848,46 +846,47 @@
         1.205,
         1.204,
         1.227,
-        1.223
+        1.209,
+        1.228,
+        1.229
       ],
       "recommendation": "Vendre",
-      "score": 24,
+      "score": 32,
       "premium": true,
-      "updated": "2026-05-03T16:57:09.270Z",
+      "updated": "2026-05-05T23:53:45.437Z",
       "confidence": "Bonne",
       "audit": [
         "Death cross (sma50 < sma200)",
-        "Momentum baissier",
         "MACD négatif",
-        "Tendance faible (ADX<25)",
+        "Tendance forte (ADX>25)",
         "Cours sous VWAP",
         "Risqué pour peu de rendement"
       ],
       "indicators": {
-        "rsi": 45.45454545454543,
-        "macd": -0.022487471268262782,
+        "rsi": 36.702127659574465,
+        "macd": -0.020344671602934294,
         "bollinger": {
-          "middle": 1.2446,
-          "upper": 1.3283887820653815,
-          "lower": 1.1608112179346184
+          "middle": 1.2492999999999999,
+          "upper": 1.3214667513471403,
+          "lower": 1.1771332486528594
         },
-        "sma50": 1.3059399999999999,
-        "sma200": 1.8840599999999987,
-        "ema20": 1.24359584145853,
-        "adx": 9.090909090909129,
-        "atr": 0.043785714285714254,
-        "stochastic": 31.333333333333407,
-        "vwap": 1.260686741337316,
-        "momentum": -0.03799999999999981,
-        "sharpe": 2.2780481061223163
+        "sma50": 1.2930800000000002,
+        "sma200": 1.8667149999999986,
+        "ema20": 1.2397704431571965,
+        "adx": 26.59574468085107,
+        "atr": 0.04364285714285713,
+        "stochastic": 35.33333333333341,
+        "vwap": 1.2591824763177648,
+        "momentum": 0,
+        "sharpe": 2.269966339594037
       },
       "predictions": {
-        "day1": 0.68,
+        "day1": 0.67,
         "day3": 0.65,
-        "day7": 0.6,
+        "day7": 0.59,
         "confidence": "Bonne"
       },
-      "performance30j": -2.39
+      "performance30j": -0.97
     }
   ],
   "conservation": [
@@ -5799,7 +5798,7 @@
       "recommendation": "Conserver",
       "score": 49,
       "premium": true,
-      "updated": "2026-05-05T22:03:50.238Z",
+      "updated": "2026-05-05T23:53:44.594Z",
       "confidence": "Faible",
       "audit": [
         "Death cross (sma50 < sma200)",
