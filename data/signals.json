@@ -5558,9 +5558,8 @@
       "name": "Bitcoin",
       "symbol": "BTC",
       "type": "cryptomonnaie",
-      "price": 76690.98,
+      "price": 77140.14,
       "history": [
-        116484.4,
         117117.99,
         115690.55,
         115752.4,
@@ -5809,17 +5808,17 @@
         77547.62,
         75443.91,
         76650,
-        76690.98
+        76975.99,
+        77140.14
       ],
       "recommendation": "Conserver",
       "score": 42,
       "premium": true,
-      "updated": "2026-05-24T23:07:03.124Z",
+      "updated": "2026-05-25T04:17:33.595Z",
       "confidence": "Faible",
       "audit": [
         "Death cross (sma50 < sma200)",
-        "Momentum baissier",
-        "RSI survendu",
+        "Momentum haussier",
         "MACD négatif",
         "Tendance forte (ADX>25)",
         "Cours sous VWAP",
@@ -5827,30 +5826,30 @@
         "Signaux contradictoires : fiabilité réduite"
       ],
       "indicators": {
-        "rsi": 29.04632621033963,
-        "macd": -216.72073246524087,
+        "rsi": 32.52191752426475,
+        "macd": -214.59992162731942,
         "bollinger": {
-          "middle": 79003.3455,
-          "upper": 82991.34177020124,
-          "lower": 75015.34922979875
+          "middle": 78829.21699999998,
+          "upper": 82766.7844008763,
+          "lower": 74891.64959912364
         },
-        "sma50": 76767.99360000002,
-        "sma200": 80524.3898,
-        "ema20": 77846.30680456464,
-        "adx": 41.90734757932074,
-        "atr": 1999.4957142857145,
-        "stochastic": 30.48036578345585,
-        "vwap": 78727.91002111293,
-        "momentum": -716.6100000000006,
-        "sharpe": 5.378723278614769
+        "sma50": 76936.39660000004,
+        "sma200": 80405.06305000001,
+        "ema20": 77803.61150795767,
+        "adx": 34.956164951470505,
+        "atr": 1962.1857142857148,
+        "stochastic": 37.39978218629551,
+        "vwap": 78709.2803207332,
+        "momentum": 196.1600000000035,
+        "sharpe": 5.401365326682678
       },
       "predictions": {
-        "day1": 63201.41,
-        "day3": 62821.46,
-        "day7": 62061.55,
+        "day1": 63285.86,
+        "day3": 62909.74,
+        "day7": 62157.5,
         "confidence": "Bonne"
       },
-      "performance30j": -1.24
+      "performance30j": -1.95
     }
   ]
 }
