@@ -302,11 +302,8 @@
       "name": "Solana",
       "symbol": "SOL",
       "type": "cryptomonnaie",
-      "price": 69.72,
+      "price": 71.93,
       "history": [
-        187.63,
-        187.94,
-        189.79,
         185.71,
         180.16,
         191.43,
@@ -553,47 +550,50 @@
         72.38,
         71.88,
         69.6,
-        69.72
+        68.01,
+        67.61,
+        71.79,
+        71.93
       ],
       "recommendation": "Vendre",
-      "score": 26,
+      "score": 24,
       "premium": false,
-      "updated": "2026-06-24T19:52:17.861Z",
+      "updated": "2026-06-27T17:16:34.080Z",
       "confidence": "Bonne",
       "audit": [
         "Death cross (sma50 < sma200)",
         "Momentum baissier",
         "MACD négatif",
-        "Tendance forte (ADX>25)",
+        "Tendance faible (ADX<25)",
         "Volatilité élevée",
-        "Cours sous VWAP",
+        "Cours au-dessus VWAP",
         "Risqué pour peu de rendement"
       ],
       "indicators": {
-        "rsi": 64.716391246092,
-        "macd": -1.7088436134730216,
+        "rsi": 56.67695019832525,
+        "macd": -1.4070234463038673,
         "bollinger": {
-          "middle": 68.8135,
-          "upper": 75.79532576408207,
-          "lower": 61.831674235917944
+          "middle": 69.683,
+          "upper": 75.54029664606463,
+          "lower": 63.825703353935374
         },
-        "sma50": 78.88979999999998,
-        "sma200": 96.43705,
-        "ema20": 71.53956543918558,
-        "adx": 29.432782492183975,
-        "atr": 3.4757142857142838,
-        "stochastic": 51.006191950464384,
-        "vwap": 70.90248441026327,
-        "momentum": -2.260000000000005,
-        "sharpe": 3.240503614259574
+        "sma50": 77.6908,
+        "sma200": 95.46794999999996,
+        "ema20": 71.17135754305049,
+        "adx": 13.353900396650495,
+        "atr": 4.149999999999999,
+        "stochastic": 65.97853014037993,
+        "vwap": 69.75276483788639,
+        "momentum": -1.2099999999999937,
+        "sharpe": 3.286696293387371
       },
       "predictions": {
-        "day1": 56.94,
-        "day3": 56.11,
-        "day7": 54.46,
+        "day1": 57.04,
+        "day3": 56.24,
+        "day7": 54.64,
         "confidence": "Bonne"
       },
-      "performance30j": -16.59
+      "performance30j": -12.19
     }
   ],
   "conservation": [
@@ -5811,7 +5811,7 @@
       "recommendation": "Conserver",
       "score": 38,
       "premium": true,
-      "updated": "2026-06-27T15:19:07.486Z",
+      "updated": "2026-06-27T17:16:33.195Z",
       "confidence": "Faible",
       "audit": [
         "Death cross (sma50 < sma200)",
