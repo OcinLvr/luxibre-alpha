@@ -557,7 +557,7 @@
       "recommendation": "Vendre",
       "score": 28,
       "premium": true,
-      "updated": "2026-08-04T05:53:21.446Z",
+      "updated": "2026-08-04T08:45:09.045Z",
       "confidence": "Bonne",
       "audit": [
         "Death cross (sma50 < sma200)",
@@ -5547,9 +5547,8 @@
       "name": "Polkadot",
       "symbol": "DOT",
       "type": "cryptomonnaie",
-      "price": 0.797,
+      "price": 0.8229,
       "history": [
-        2.336,
         2.284,
         2.258,
         2.209,
@@ -5798,47 +5797,48 @@
         0.758,
         0.78,
         0.797,
-        0.797
+        0.823,
+        0.8229
       ],
       "recommendation": "Conserver",
-      "score": 39,
+      "score": 40,
       "premium": true,
-      "updated": "2026-08-03T19:44:08.985Z",
+      "updated": "2026-08-04T08:45:09.903Z",
       "confidence": "Faible",
       "audit": [
         "Death cross (sma50 < sma200)",
         "Momentum haussier",
         "MACD négatif",
         "Tendance faible (ADX<25)",
-        "Cours sous VWAP",
+        "Cours au-dessus VWAP",
         "Risqué pour peu de rendement",
         "Signaux contradictoires : fiabilité réduite"
       ],
       "indicators": {
-        "rsi": 42.71356783919599,
-        "macd": -0.024145403702243495,
+        "rsi": 44.36860068259385,
+        "macd": -0.018244800074631584,
         "bollinger": {
-          "middle": 0.80795,
-          "upper": 0.8733670467080255,
-          "lower": 0.7425329532919744
+          "middle": 0.808095,
+          "upper": 0.8717798953834424,
+          "lower": 0.7444101046165577
         },
-        "sma50": 0.85348,
-        "sma200": 1.2398300000000002,
-        "ema20": 0.8044184028063499,
-        "adx": 14.572864321608002,
-        "atr": 0.02871428571428571,
-        "stochastic": 43.20000000000004,
-        "vwap": 0.8236919701600804,
-        "momentum": 0.038000000000000034,
-        "sharpe": 3.238157447833569
+        "sma50": 0.850278,
+        "sma200": 1.2334845,
+        "ema20": 0.8084189177323451,
+        "adx": 11.262798634812297,
+        "atr": 0.028792857142857127,
+        "stochastic": 70.0877192982456,
+        "vwap": 0.8227253356552792,
+        "momentum": 0.06289999999999996,
+        "sharpe": 3.245001006627174
       },
       "predictions": {
-        "day1": 0.71,
+        "day1": 0.7,
         "day3": 0.69,
         "day7": 0.67,
         "confidence": "Bonne"
       },
-      "performance30j": -9.43
+      "performance30j": -6.91
     }
   ]
 }
