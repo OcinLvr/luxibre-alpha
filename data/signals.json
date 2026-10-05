@@ -260,7 +260,7 @@
       "recommendation": "Acheter",
       "score": 68,
       "premium": true,
-      "updated": "2026-10-05T06:41:53.015Z",
+      "updated": "2026-10-05T15:43:47.129Z",
       "confidence": "Bonne",
       "audit": [
         "Golden cross (sma50 > sma200)",
@@ -556,7 +556,7 @@
       "recommendation": "Acheter",
       "score": 68,
       "premium": false,
-      "updated": "2026-10-05T06:41:53.907Z",
+      "updated": "2026-10-05T15:43:48.153Z",
       "confidence": "Bonne",
       "audit": [
         "Golden cross (sma50 > sma200)",
