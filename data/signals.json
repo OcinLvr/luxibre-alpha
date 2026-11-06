@@ -5557,9 +5557,8 @@
       "name": "Bitcoin",
       "symbol": "BTC",
       "type": "cryptomonnaie",
-      "price": 80386.43,
+      "price": 75983.31,
       "history": [
-        65769,
         68832.01,
         68335.99,
         72683.26,
@@ -5808,47 +5807,49 @@
         76674.13,
         77336.75,
         80428.31,
-        80386.43
+        75969.06,
+        75983.31
       ],
       "recommendation": "Conserver",
-      "score": 52,
+      "score": 51,
       "premium": true,
-      "updated": "2026-11-05T23:58:38.623Z",
+      "updated": "2026-11-06T06:23:29.714Z",
       "confidence": "Faible",
       "audit": [
         "Golden cross (sma50 > sma200)",
-        "Momentum haussier",
+        "Momentum baissier",
         "MACD négatif",
-        "Tendance faible (ADX<25)",
+        "Tendance forte (ADX>25)",
+        "Stochastique survendu",
         "Cours sous VWAP",
         "Risqué pour peu de rendement",
         "Signaux contradictoires : fiabilité réduite"
       ],
       "indicators": {
-        "rsi": 46.46155880031264,
-        "macd": -907.6261696849106,
+        "rsi": 35.20082914606439,
+        "macd": -1375.9370130436582,
         "bollinger": {
-          "middle": 80144.611,
-          "upper": 84157.44342369726,
-          "lower": 76131.77857630275
+          "middle": 79653.99750000001,
+          "upper": 84320.29147745953,
+          "lower": 74987.7035225405
         },
-        "sma50": 82074.50259999999,
-        "sma200": 73211.91450000004,
-        "ema20": 79881.19689224077,
-        "adx": 7.076882399374732,
-        "atr": 1989.885000000001,
-        "stochastic": 75.23218305519563,
-        "vwap": 80617.92048258579,
-        "momentum": 2606.0999999999913,
-        "sharpe": 9.539517834140945
+        "sma50": 81978.8466,
+        "sma200": 73190.41990000005,
+        "ema20": 79129.33451250831,
+        "adx": 29.598341707871224,
+        "atr": 2288.6800000000003,
+        "stochastic": 13.832586908634593,
+        "vwap": 80076.21948052755,
+        "momentum": -1197.1100000000006,
+        "sharpe": 9.570703618947032
       },
       "predictions": {
-        "day1": 77565.58,
-        "day3": 77644.03,
-        "day7": 77800.93,
+        "day1": 77493.12,
+        "day3": 77570.05,
+        "day7": 77723.9,
         "confidence": "Bonne"
       },
-      "performance30j": -3.47
+      "performance30j": -6.99
     }
   ]
 }
